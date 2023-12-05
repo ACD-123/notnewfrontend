@@ -13,6 +13,7 @@ import ShoppingCart from "../pages/Account/ShoppingCart"
 import CategoryKeyword from "../components/Products/Archive/CategoryKeyword"
 import Checkout from "../pages/Account/Checkout"
 import SingleProduct from "../components/Products/Archive/SingleProduct"
+import MainDashboard from '../components/CustomerDashboard/MainDashboard'
 import "../assets/css/app.css"
 const PublicRoutes = () => {
 	return (
@@ -32,6 +33,7 @@ const PublicRoutes = () => {
 					<Route path="/categorykeyword" element={<CategoryKeyword />} />
 					<Route path="/checkout" element={<Checkout />} />
 					<Route path="/singleproduct" element={<SingleProduct />} />
+					<Route path="/customerdashboard" element={<MainDashboard />} />
 				</Routes>
 			</BrowserRouter>
 		</>

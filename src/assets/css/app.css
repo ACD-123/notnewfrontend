@@ -1667,7 +1667,188 @@ padding: 15px 0px 15px 30px;
   background: linear-gradient(90.32deg, #8B2CA0 -32.5%, #00C3C9 124.2%);
   color: #fff;
 }
+/* CUSTOMER DASHBOARD */
+.main-dasboard-tabs .tab-buttons button.active {
+  border-bottom: 2px solid #7246a6;
+}
+.main-dasboard-tabs .tab-buttons {
+  display: flex;
+  gap: 50px;
+  border-bottom: 2px solid #D6D6D6;
+  margin-bottom: 11px;
+}
+.whatyouthink a:hover {
+  color: #000;
+}
+.whatyouthink {
+  position: absolute;
+  right: 0;
+}
+.main-dasboard-tabs {
+  position: relative;
+}
+.whatyouthink a {
+  text-decoration: unset;
+  border: 0;
+  font-size: 16px;
+  color: #949494;
+  font-weight: 300;
+  transition: .9s;
+}
+.main-dasboard-tabs .tab-buttons button {
+    background: #ff10;
+    border: 0;
+    box-shadow: unset;
+    color: #757474;
+    font-size: 22px;
+    text-transform: capitalize;
+    padding: 0 0 13px 0;
+}
+
+section#activity-main-dashboard .left-menu ul {
+  margin: 0;
+  padding: 0;
+}
+
+.left-menu.open {
+  display: block;
+}
+.left-menu {
+  display: block;
+}
+.mobile-menu-toggle {
+  display: none;
+}
+section#activity-main-dashboard .left-menu ul li.active {
+  background: #C6C6C6;
+}
+.delivery-bttn a {
+  color: #FFA149;
+  text-decoration: inherit;
+}
+.rightarrow {
+  text-align: right;
+}
+section#activity-main-dashboard .left-menu ul li {
+  list-style: none;
+  font-size: 24px;
+  font-family: 'Cairo';
+  line-height: 34px;
+  text-transform: capitalize;
+  cursor: pointer;
+  padding: 10px 10px;
+  border-radius: 6px;
+}
+.ongoing .product-image .prd-details h5 {
+  margin: 0;
+}
+.refund-reorder button.refund {
+  border-color: #EF2A2A;
+  background: #ff10;
+  color: #EF2A2A;
+}
+.orderdeliver-bttn a {
+  color: #70BE44;
+  text-decoration: unset;
+}
+.refund-reorder button {
+  width: 100%;
+  padding: 10px 0;
+  margin: 4px 0;
+  border-radius: 9px;
+  border: 1px solid #fff;
+  color: #fff;
+}
+.ongoing .product-image .prd-details h3 {
+  font-size: 19px;
+  line-height: 29px;
+  color: #000000;
+}
+.ongoing .product-image {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+section#purchasehistory .tab-buttons {
+  margin: 20px 0;
+}
+.ongoing .product-image .image img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+/* Refund */
+.refund-popup-inner, .request-sent-inner {
+  width: 50%;
+  margin: 0 auto;
+  display: table;
+  position: absolute;
+  top: 30%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  padding: 20px 30px;
+  z-index: 11111;
+  border-radius: 20px;
+}
+.request-sent-inner img {
+  width: 10%;
+}
+.request-sent-inner {
+  text-align: center;
+}
+h6.refundstatus.inprocess {
+  color: #fd3505;
+}
+.request-sent-inner button {
+  padding: 10px 30px;
+  color: #fff;
+  border: 0;
+  font-size: 20px;
+  border-radius: 10px;
+}
+/* Example CSS */
+.refund-approval h4 {
+  text-align: center;
+  color: #484848;
+  font-size: 15px;
+  line-height: 34px;
+  line-height: 24px;
+}
+h6.refundstatus.hold {
+  color: #FFA149;
+}
+h6.refundstatus.refunded {
+  color: #70BE44;
+}
+.refund-approval {
+  text-align: center;
+}
+.ongoing .refund-popup,.ongoing .request-sent-popup {
+    position: fixed;
+    background: #000000a3;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 11111;
+}
 /* Mobile responsive */
+
+@media (max-width: 767px) {
+  .left-menu {
+    display: none;
+  }
+  .mobile-menu-toggle {
+    display: block;
+  }
+  .left-menu {
+    display: none;
+  }
+}
+
 @media only screen and (max-width: 600px){
   .product-detail{
       display: block;
