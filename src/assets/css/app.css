@@ -456,6 +456,15 @@ form#loginForm input#username, form#loginForm input#password {
   font-size: 20px;
   text-decoration: unset;
 }
+.saved-profile .grid .grid-profile {
+  width: 100%;
+}
+
+.saved-profile .grid {
+  display: flex;
+  width: 100%;
+  gap: 30px;
+}
 section#signin form#loginForm input[type="submit"] {
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   box-shadow: 0px 5px 11px 0px #0000003B;
@@ -472,7 +481,43 @@ section#signin form#loginForm input[type="submit"] {
 }
 
 /* Header */
-/* Basic styling for the form */
+.cart-user .user .dropdown-content ul li a {
+  text-decoration: unset;
+  color: #000;
+  font-size: 18px;
+  line-height: 28px;
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.cart-user .user .dropdown-content ul li:hover {
+  color: #7246a6;
+}
+
+.cart-user .user .dropdown-content ul li {
+  list-style: none;
+  margin-bottom: 10px;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: .9s;
+}
+.cart-user .user .dropdown-content ul {
+  margin: 0;
+  padding: 0;
+}
+.avatar-container {
+  cursor: pointer;
+}
+.cart-user .user .dropdown-content {
+  position: absolute;
+  z-index: 1;
+  background: #fff;
+  padding: 20px 20px;
+  width: 320px;
+  right: 0;
+  border-radius: 10px;
+  box-shadow: 0px 0px 11px #ccc;
+}
 .header-top form#searchForm {
   max-width: 100%;
   padding: 0 0;
@@ -1834,6 +1879,269 @@ h6.refundstatus.refunded {
     left: 0;
     right: 0;
     z-index: 11111;
+    overflow-y: scroll;
+}
+.refund-popup-inner .image-gallery img {
+  width: 100%;
+}
+.refund-popup-inner ul.image-gallery li {
+  list-style: none;
+}
+.refunddetailss button.chseimage img {
+  width: 10%;
+}
+.refund-popup-inner .main-refund-popup h1 {
+  text-align: center;
+  font-size: 36px;
+  line-height: 35px;
+  margin: 0;
+}
+.refund-popup::-webkit-scrollbar {
+  width: 0;
+}
+.refunddetailss h3 span {
+  font-size: 16px;
+  color: #ada9a9;
+  font-weight: 100;
+}
+.refunddetailss #totalordervalue {
+  border: 1px solid #ccc;
+  padding: 10px 10px;
+  border-radius: 10px;
+}
+.refunddetailss .product-image img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.refunddetailss .product-order-details h5 {
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: bold;
+}
+.refunddetailss .order-details {
+  padding: 0;
+  border: 0;
+  background: #ff10;
+}
+.refunddetailss button.chseimage {
+  width: 32%;
+  padding: 20px 0;
+  border: 1px solid #ccc;
+  font-size: 17px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  background: #ff10;
+  color: #000;
+  box-shadow: unset;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+}
+.refund-popup-inner ul.image-gallery {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+.refund-popup-inner {
+  top: 20px;
+}
+.refund-popup-inner button.sendrefunddetails {
+  width: 60%;
+  margin: 0 auto;
+  display: table;
+  border: 0;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 19px;
+  padding: 13px 0;
+}
+.refunddetailss p {
+  font-size: 13px;
+  color: #8F8F8F;
+  line-height: 23px;
+}
+.refunddetailss textarea {
+  resize: unset;
+  border-radius: 10px;
+  border-color: #ccc;
+  padding: 10px 10px;
+}
+.refunddetailss h3 {
+  font-size: 20px;
+  line-height: 30px;
+}
+/* .profile-innerdetails {
+  display: flex;
+  width: 100%;
+  border: 1px solid #C7C2C2;
+  padding: 20px 10px;
+  border-radius: 10px;
+  gap: 20px;
+  align-items: center;
+} */
+.profile-innerdetails img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 30px;
+}
+.profile-innerdetails h3, .list-view-profile h3 {
+  color: #616161;
+  font-size: 26px;
+  line-height: 36px;
+  font-weight: 500;
+}
+.prf-id-name {
+  display: flex;
+  width: 100%;
+  gap: 13px;
+  padding: 20px 10px;
+  border-radius: 10px;
+  border: 1px solid #C7C2C2;
+  align-items: center;
+}
+.list-view-profile {
+  border: 1px solid #ccc;
+  margin: 5px 0px;
+  padding: 10px 30px;
+  border-radius: 10px;
+  display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.profile-innerdetails img.heart {
+  width: 17px !important;
+  object-fit: unset;
+  height: auto;
+  display: table;
+  border-radius: 0;
+}
+.sorting button {
+  float: right;
+  background: #D9D9D9;
+  border: 0;
+  padding: 8px 30px;
+  border-radius: 20px;
+  font-family: 'Cairo';
+  box-shadow: unset;
+  font-size: 17px;
+  margin-left: 20px;
+}
+select#sort {
+  float: right;
+  background: #D9D9D9;
+  border: 0;
+  padding: 5px 30px;
+  border-radius: 20px;
+  font-family: 'Cairo';
+}
+.list-view-profile {
+  display: flex;
+  gap: 20px;
+}
+.profile-innerdetails button, .list-view-profile button {
+  background: #ff10;
+  padding: 0;
+  border: 0;
+  box-shadow: unset;
+  color: #929EDA;
+  font-size: 16px;
+  line-height: 26px;
+}
+
+/* Wishlist */
+.wishlist-categories-list ul li button {
+  padding: 9px 21px;
+  font-size: 24px;
+  color: #ABABAB;
+  background: #ff10;
+  border: 1px solid #B1B1B1;
+  box-shadow: unset;
+  border-radius: 10px;
+}
+.wishlistproduct-detail h3 {
+  font-size: 20px;
+  line-height: 30px;
+}
+button.addntee {
+  border: 0;
+  padding: 0 0;
+  font-size: 16px;
+  width: auto;
+  margin: 0 auto;
+  display: table;
+  text-decoration: underline !important;
+}
+.wishlist-buttonss button, .wishlist-buttonss select {
+  width: 100%;
+  background: #ff10;
+  text-align: center;
+  padding: 10px 0;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  box-shadow: unset;
+  border-radius: 10px;
+}
+.wishlist-buttonss button.buynow-wishlist {
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  color: #fff;
+}
+.wishlistproduct-detail img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+.wishlistproduct-detail {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.wishlist-categories-list ul li.allcategory button {
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  color: #fff;
+  border-color: #249bbe;
+}
+.wishlist-categories-list ul li {
+  list-style: none;
+}
+.wishlist-categories-list ul {
+  display: flex;
+  padding: 0;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+.deleted-button button {
+  background: #ff10;
+  box-shadow: unset;
+  padding: 17px 20px;
+  color: #AAAAAA;
+  border: 1px solid #A9A9A9;
+  font-size: 22px;
+  border-radius: 10px;
+}
+.sort-wishlist {
+  display: flex;
+  justify-content: end;
+}
+.sort-wishlist  h4 select {
+  border: 0;
+  color: #757474;
+}
+.sort-wishlist {
+  display: flex;
+  justify-content: end;
+  gap: 20px;
+  align-items: center;
+}
+.sort-wishlist h4 {
+  font-size: 22px;
+  color: #757474;
 }
 /* Mobile responsive */
 

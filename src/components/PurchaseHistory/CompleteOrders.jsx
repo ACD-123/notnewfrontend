@@ -5,6 +5,7 @@ import Prdimage from '../../assets/Images/Singleproduct/prdimage.png';
 import Prdimage1 from '../../assets/Images/Singleproduct/Product1.png';
 import Prdimage2 from '../../assets/Images/Singleproduct/Product2.png';
 import Checkpay from '../../assets/Images/check-pay.png'
+import RefundPopup from './RedundPopup'
 
 const CompleteOrders = () => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
@@ -73,14 +74,10 @@ const CompleteOrders = () => {
             <div className='refund-popup-inner'>
             {/* Refund Details Popup */}
             <div className='refunddetailss'>
-            <h3>Ask for a Refund</h3>
-            <h4>Reason reasons</h4>
-            <textarea style={{minHeight:"200px", width: "100%"}} placeholder='Message us'>
-            </textarea>
-            <p>Make sure the reason you give should be genuine otherwise your refund will be rejected </p>
+              <RefundPopup />
             </div>
             {/* Your form elements and submit button */}
-            <button onClick={() => handleSubmitDetails(index)}>Send</button>
+            <button className='sendrefunddetails' onClick={() => handleSubmitDetails(index)}>Send</button>
             </div>
           </div>
         )}

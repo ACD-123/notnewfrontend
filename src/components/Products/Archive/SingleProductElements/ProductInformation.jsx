@@ -3,6 +3,12 @@ import Attribute from './Attributes'
 import ShippingPolicyData from "./ShippingPolicyData"
 import { Link } from 'react-router-dom'
 const ProductInformation = () => {
+
+  const handleDropdownItemClick = (componentName) => {
+    // Here, you can navigate to the 'Activity' component and pass the selected component name as a query parameter or state
+    // For example, using query parameter
+    window.location.href = `/customerdashboard?component=${componentName}`;
+  };
   return (
     <>
     <div className='product-info'>
@@ -16,7 +22,7 @@ const ProductInformation = () => {
         <div className='pay-buttons'>
             <Link to="/checkout"><button>Buy It Now</button></Link>
             <Link to="/shoppingcart"><button>Add to Cart</button></Link>
-            <Link><button>Add to Watchlist</button></Link>
+            <Link onClick={() => handleDropdownItemClick('componentC')}><button>Add to Watchlist</button></Link>
         </div>
         <ShippingPolicyData />
     </div>
@@ -25,3 +31,4 @@ const ProductInformation = () => {
 }
 
 export default ProductInformation
+

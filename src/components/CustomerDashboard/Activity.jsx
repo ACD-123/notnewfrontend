@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../Header';
-import Footer from '../Footer';
-import Test from './Test';
+import SavedSellers from './SavedSellers'
+import RecentlyViewed from './RecentlyViewed'
 import Leftmenuimage from '../../assets/Images/leftmenu.png'
 import MainPurchase from '../PurchaseHistory/MainPurchase'
+import SavedSearches from './SavedSearches'
+import { useLocation } from 'react-router-dom';
+import Wishlist from './Wishlist';
 const Activity = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('component'); // Initial menu selection
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
+  const location = useLocation();
 
+  useEffect(() => {
+    // Extract the component name from the query parameter or state passed from the Header component
+    const searchParams = new URLSearchParams(location.search);
+    const componentName = searchParams.get('component');
+
+    if (componentName) {
+      setSelectedMenuItem(componentName);
+    }
+  }, [location.search]);
   // Function to handle menu item clicks
   const handleMenuItemClick = (menu) => {
     setSelectedMenuItem(menu);
@@ -24,27 +37,27 @@ const Activity = () => {
   const renderComponent = () => {
     switch (selectedMenuItem) {
       case 'component':
-        return <Test />;
+        return ;
       case 'componentA':
-        return <Footer />;
+        return <RecentlyViewed />;
       case 'componentB':
-        return <Test />;
+        return ;
       case 'componentC':
-        return <Test />;
+        return <Wishlist /> ;
       case 'componentD':
         return <MainPurchase />;
       case 'componentE':
-        return <Test />;
+        return ;
       case 'componentF':
-        return <Test />;
+        return ;
       case 'componentG':
-        return <Test />;
+        return <SavedSearches />;
       case 'componentH':
-        return <Test />;
+        return <SavedSellers />;
       case 'componentI':
-        return <Test />;
+        return ;
       default:
-        return <Test />; // Default to Test component if no matching menu item is found
+        return ; // Default to Test component if no matching menu item is found
     }
   };
 
@@ -70,7 +83,7 @@ const Activity = () => {
             bids/Offers
             </li>
             <li className={selectedMenuItem === 'componentC' ? 'active' : ''} onClick={() => handleMenuItemClick('componentC')}>
-            watchlist
+            Wishlist
             </li>
             <li className={selectedMenuItem === 'componentD' ? 'active' : ''} onClick={() => handleMenuItemClick('componentD')}>
             purchase history
