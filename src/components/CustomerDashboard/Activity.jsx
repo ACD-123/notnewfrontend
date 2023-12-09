@@ -7,6 +7,7 @@ import MainPurchase from '../PurchaseHistory/MainPurchase'
 import SavedSearches from './SavedSearches'
 import { useLocation } from 'react-router-dom';
 import Wishlist from './Wishlist';
+import Dashboard from './Dashboard'
 const Activity = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('component'); // Initial menu selection
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
@@ -37,7 +38,7 @@ const Activity = () => {
   const renderComponent = () => {
     switch (selectedMenuItem) {
       case 'component':
-        return ;
+        return <Dashboard />;
       case 'componentA':
         return <RecentlyViewed />;
       case 'componentB':
