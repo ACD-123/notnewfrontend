@@ -26,9 +26,9 @@ const ShoppingCart = () => {
       {/* Header */}
       <Header />
       {/* Header */}
-      <section id="cart-details" style={{ padding: "30px 0px" }}>
+      <section id="cart-details" style={{ padding: "20px 0px" }}>
         <div className="container">
-          <h1>Shopping Cart</h1>
+          <h2>Shopping Cart</h2>
 
           <div className="row">
             <div className="col-lg-8">

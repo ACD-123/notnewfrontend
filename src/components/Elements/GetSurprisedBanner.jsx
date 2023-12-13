@@ -12,7 +12,7 @@ const GetSurprisedBanner = () => {
   return (
    <>
    <section id='getsurpriseprice'
-   style={{padding: "30px 0px"}}
+   style={{padding: "0px 0px 30px 0px"}}
    >
     <div className='container'>
         <div className='row'

@@ -15,7 +15,7 @@ const SignIn = () => {
       <section id="signin" style={Signinbg}>
         <div className="container">
           <div className="row align-items-center">
-            <div className="col-lg-5">
+            <div className="col-lg-6">
               <div className="welcome-registration">
                 <Link to="/"><img src={Logo} width="auto" height="100%" /></Link>
                 <h1>Welcome to account registration</h1>
@@ -30,7 +30,7 @@ const SignIn = () => {
                 </p>
               </div>
             </div>
-            <div className="col-lg-7">
+            <div className="col-lg-6 dsa">
               <div className="signup-form-fields signinbutton">
                 <div className="topbuttons" style={{ margin: "20px 0px" }}>
                   <ul>

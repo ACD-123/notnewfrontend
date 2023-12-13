@@ -16,7 +16,7 @@ const Search = () => {
     />
   </div>
   <div class="input-group">
-    <input type="text" id="search" name="search" placeholder='Find Filter' />
+    <input type="text" id="search" name="search" placeholder='Search All 2,656 items' />
   </div>
 </form>
     </>

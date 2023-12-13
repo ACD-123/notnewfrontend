@@ -59,7 +59,7 @@ const ProductCard = () => {
   return (
     <>
       <section id='productcard'
-      style={{padding: "30px 0px"}}
+      style={{padding: "15px 0px"}}
       >
         <div className='container'>
           <div className='row'>

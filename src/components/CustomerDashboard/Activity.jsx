@@ -8,6 +8,8 @@ import SavedSearches from './SavedSearches'
 import { useLocation } from 'react-router-dom';
 import Wishlist from './Wishlist';
 import Dashboard from './Dashboard'
+import BuyAgain from './BuyAgain';
+import BidsOffer from './BidsOffer';
 const Activity = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('component'); // Initial menu selection
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
@@ -42,13 +44,13 @@ const Activity = () => {
       case 'componentA':
         return <RecentlyViewed />;
       case 'componentB':
-        return ;
+        return <BidsOffer /> ;
       case 'componentC':
         return <Wishlist /> ;
       case 'componentD':
         return <MainPurchase />;
       case 'componentE':
-        return ;
+        return <BuyAgain />;
       case 'componentF':
         return ;
       case 'componentG':

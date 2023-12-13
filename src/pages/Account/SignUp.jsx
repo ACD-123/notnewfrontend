@@ -36,7 +36,7 @@ const SignUp = () => {
       <section id='singup' style={Submitcss}>
         <div className='container'>
           <div className='row align-items-center'>
-            <div className='col-lg-5'>
+            <div className='col-lg-6'>
               <div className='welcome-registration'>
                 <Link to="/"><img src={Logo} width="auto" height="100%" alt="Logo" /></Link>
                 <h1>Welcome to account registration</h1>
@@ -49,7 +49,7 @@ const SignUp = () => {
                 </p>
               </div>
             </div>
-            <div className='col-lg-7'>
+            <div className='col-lg-6 fffsa'>
               <div className='signup-form-fields register'>
                 <div className='topbuttons' style={{ margin: "20px 0px" }}>
                   <ul>

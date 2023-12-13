@@ -15,6 +15,8 @@ import Checkout from "../pages/Account/Checkout"
 import SingleProduct from "../components/Products/Archive/SingleProduct"
 import MainDashboard from '../components/CustomerDashboard/MainDashboard'
 import "../assets/css/app.css"
+import BidView from "../components/CustomerDashboard/BidView"
+import CategoryPage from "../pages/Account/CategoryPage"
 const PublicRoutes = () => {
 	return (
 		<>
@@ -34,6 +36,9 @@ const PublicRoutes = () => {
 					<Route path="/checkout" element={<Checkout />} />
 					<Route path="/singleproduct" element={<SingleProduct />} />
 					<Route path="/customerdashboard" element={<MainDashboard />} />
+					<Route path="/bidView" element={<BidView />} />
+					<Route path="/category" element={<CategoryPage />} />
+					
 				</Routes>
 			</BrowserRouter>
 		</>

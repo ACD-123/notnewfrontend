@@ -78,7 +78,7 @@ const SavedSellers = () => {
         </div>
     </div>
     <div className='row'
-    style={{paddingTop: "30px"}}
+    style={{paddingTop: "10px"}}
     >
     <div className='saved-profile'>
       <div>
