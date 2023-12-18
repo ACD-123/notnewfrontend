@@ -7,6 +7,11 @@ import Image from '../../../../assets/Images/Singleproduct/Sidebar/notnew.png'
 import Heart from '../../../../assets/Images/Singleproduct/Sidebar/heart.png'
 import { Link } from 'react-router-dom'
 const SingleProductSidebar = () => {
+    const handleDropdownItemClick = (componentName) => {
+        // Here, you can navigate to the 'Activity' component and pass the selected component name as a query parameter or state
+        // For example, using query parameter
+        window.location.href = `/customerdashboard?component=${componentName}`;
+      };
   return (
    <>
    <div className='singleproduct-sidebar'>
@@ -57,9 +62,9 @@ const SingleProductSidebar = () => {
     </div>
     <div className='storecontactdetails'>
         <ul>
-            <li><Link to="#"><img src={Heart} /> Save this Seller</Link></li>
+            <li onClick={() => handleDropdownItemClick('componentH')}><Link><img src={Heart} /> Save this Seller</Link></li>
             <li><Link to="#">Contact Seller</Link></li>
-            <li><Link to="#">Visit Seller Shop</Link></li>
+            <li><Link to="/sellershop">Visit Seller Shop</Link></li>
             <li><Link to="#">View Other Products</Link></li>
         </ul>
     </div>

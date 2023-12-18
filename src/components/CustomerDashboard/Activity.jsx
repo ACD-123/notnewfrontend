@@ -10,6 +10,7 @@ import Wishlist from './Wishlist';
 import Dashboard from './Dashboard'
 import BuyAgain from './BuyAgain';
 import BidsOffer from './BidsOffer';
+import Chat from './Chat';
 const Activity = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('component'); // Initial menu selection
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
@@ -58,7 +59,7 @@ const Activity = () => {
       case 'componentH':
         return <SavedSellers />;
       case 'componentI':
-        return ;
+        return <Chat />;
       default:
         return ; // Default to Test component if no matching menu item is found
     }

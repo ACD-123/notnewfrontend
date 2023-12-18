@@ -17,6 +17,10 @@ import MainDashboard from '../components/CustomerDashboard/MainDashboard'
 import "../assets/css/app.css"
 import BidView from "../components/CustomerDashboard/BidView"
 import CategoryPage from "../pages/Account/CategoryPage"
+import SellerShop from "../components/Seller/SellerPages/SellerShop"
+import AuctionSingleProductPage from '../components/Auction/AuctionSingleProductPage'
+import BidWin from "../components/Auction/BidWin"
+import SearchHistory from "../components/AccountsSetting/PersonalInfoAllPages/SearchHistory"
 const PublicRoutes = () => {
 	return (
 		<>
@@ -38,7 +42,10 @@ const PublicRoutes = () => {
 					<Route path="/customerdashboard" element={<MainDashboard />} />
 					<Route path="/bidView" element={<BidView />} />
 					<Route path="/category" element={<CategoryPage />} />
-					
+					<Route path="/sellershop" element={<SellerShop />} />
+					<Route path="/auctionproduct" element={<AuctionSingleProductPage />} />
+					<Route path="/bidwin" element={<BidWin />} />
+					<Route path="/searchhistory" element={<SearchHistory />} />
 				</Routes>
 			</BrowserRouter>
 		</>

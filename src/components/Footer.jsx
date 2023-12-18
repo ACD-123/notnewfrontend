@@ -21,7 +21,7 @@ const Footer = () => {
 								<div className="nav-links-footer">
 									<h6>Buy</h6>
 									<ul>
-										<li><Link to="signup">Registration</Link></li>
+										<li><Link to="/signup">Registration</Link></li>
 										<li><Link to="#">Auction Help</Link></li>
 										<li><Link to="#">Stores</Link></li>
 									</ul>

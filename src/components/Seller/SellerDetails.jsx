@@ -5,6 +5,11 @@ import ReviewSection from './ReviewSection'
 import PopularProductSearch from './PopularProductSearch'
 import SellerFeedback from './SellerFeedback'
 const SellerDetails = () => {
+    const handleDropdownItemClick = (componentName) => {
+        // Here, you can navigate to the 'Activity' component and pass the selected component name as a query parameter or state
+        // For example, using query parameter
+        window.location.href = `/customerdashboard?component=${componentName}`;
+      };
   return (
     <div className='sellerdetails' style={{padding: "50px 0px"}}>
         <div className='container'>
@@ -26,9 +31,9 @@ const SellerDetails = () => {
                 </div>
                 <div className='col-lg-3'>
                     <div className='seller-callto-actions'>
-                        <Link to="#"><button>Visit Seller Shop</button></Link>
-                        <Link to="#"><button className='saveseller'>Save this seller</button></Link>
-                        <Link to="#"><button className='messageseller'>Message seller</button></Link>
+                        <Link to="/sellershop"><button>Visit Seller Shop</button></Link>
+                        <Link><button onClick={() => handleDropdownItemClick('componentH')} className='saveseller'>Save this seller</button></Link>
+                        <Link><button onClick={() => handleDropdownItemClick('componentI')} className='messageseller'>Message seller</button></Link>
                     </div>
                 </div>
             </div>
@@ -37,7 +42,7 @@ const SellerDetails = () => {
             style={{padding: "40px 0px"}}
             >
                 <div className='col-lg-6 review'>
-                    <h1>Detailed Seller Ratings</h1>
+                    <h2>Detailed Seller Ratings</h2>
                     <p className='monthtext'>Last 12 months</p>
                 <ReviewSection />
                 <PopularProductSearch />

@@ -7,12 +7,13 @@ import WinningBidProduct from "../WinnigBidProduct";
 import BidPlacement from "../Elements/BidPlacement";
 import ReviewBid from "../Elements/ReviewBid";
 import PlaceYourBid from "../Elements/PlaceYourBid";
-
+import Checkimg from '../../assets/Images/Auction/check.png'
 const BidView = () => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
   const [requestSentVisible, setRequestSentVisible] = useState({});
-  const [editBidVisible, setEditBidVisible] = useState({}); // New state for edit bid popup
-
+  const [editBidVisible, setEditBidVisible] = useState({});
+  const [confirmBidVisible, setConfirmBidVisible] = useState(false);
+  const [additionalPopupVisible, setAdditionalPopupVisible] = useState(false);
   const handleRefundClick = (elementId) => {
     setRefundDetailsVisible({
       ...refundDetailsVisible,
@@ -53,6 +54,25 @@ const BidView = () => {
       [elementId]: false,
     });
   };
+ 
+
+  const handleCloseAdditionalPopup = () => {
+    setAdditionalPopupVisible(false); // Close additional popup
+     window.location.href = '/bidwin';// Redirect to '/bidView' when the button is clicked
+  };
+  const handleConfirmBidClick = () => {
+    setRequestSentVisible({
+      ...requestSentVisible,
+      element1: false, // Close the requestSentVisible popup for element1
+    });
+    setAdditionalPopupVisible(true); // Show the additionalPopupVisible popup
+  };
+  const handleDropdownItemClick = (componentName) => {
+    // Here, you can navigate to the 'Activity' component and pass the selected component name as a query parameter or state
+    // For example, using query parameter
+    window.location.href = `/customerdashboard?component=${componentName}`;
+  };
+
   return (
     <>
       {/* Header */}
@@ -134,7 +154,7 @@ const BidView = () => {
             <ReviewBid />
             <div className="biddnbtns">
               <button onClick={() => handleEditBidClick("element1")}>Edit bid</button>
-              <button onClick={() => handleCloseRequestSent("element1")}>Confirm Bid</button>
+              <button onClick={handleConfirmBidClick}>Confirm Bid</button>
             </div>
             <p style={{ color: "#767676", fontSize: "12px", lineHeight: "22px", margin: "20px 0px" }}>
             When you place your bid, it means you're committing to buy this item if you're the winning bidder. 
@@ -142,6 +162,19 @@ const BidView = () => {
               new window or tab.. The import charges shown may change based on your winning bid
             </p>
           </div>
+        </div>
+      )}
+      {additionalPopupVisible && (
+        <div className="additional-popup">
+          <div className='confirmmm'
+    style={{textAlign: "center"}}
+    >
+          <div className='cnfm'>
+            <img src={Checkimg} />
+            <h2>Your Bid has been<br /> Successfully submitted</h2>
+        </div>
+          <button onClick={handleCloseAdditionalPopup}>Close</button>
+        </div>
         </div>
       )}
              

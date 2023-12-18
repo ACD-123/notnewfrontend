@@ -58,27 +58,43 @@ const productData = [
 const ProductCard = () => {
   return (
     <>
-      <section id='productcard'
-      style={{padding: "15px 0px"}}
-      >
+      <section id='productcard' style={{ padding: "15px 0px" }}>
         <div className='container'>
           <div className='row'>
             {productData.map((product) => (
               <div className='col' key={product.id}>
                 <div className='productlist'>
-                <Link to="/singleproduct"><img src={product.image} alt={product.title} /></Link>
-                {product.auction && <span className='auction-badge'>Auction</span>}
-                <div className='px-2'>
-                <Link to="/singleproduct"><h4>{product.title}</h4></Link>
-                <p>
-                    <ul>
-                    <li className='price'>${product.salePrice} </li>
-                    <li className='sale'><del>${product.price}</del> </li>
-                    <li className='discount'>{product.discount}% OFF</li>
-                    </ul>
+                  {/* Conditional rendering of Link based on auction property */}
+                  {product.auction ? (
+                    <Link to="/auctionproduct">
+                      <img src={product.image} alt={product.title} />
+                    </Link>
+                  ) : (
+                    <Link to="/singleproduct">
+                      <img src={product.image} alt={product.title} />
+                    </Link>
+                  )}
+                  {product.auction && <span className='auction-badge'>Auction</span>}
+                  <div className='px-2'>
+                    {/* Conditional rendering of Link based on auction property */}
+                    {product.auction ? (
+                      <Link to="/auctionproduct">
+                        <h4>{product.title}</h4>
+                      </Link>
+                    ) : (
+                      <Link to="/singleproduct">
+                        <h4>{product.title}</h4>
+                      </Link>
+                    )}
+                    <p>
+                      <ul>
+                        <li className='price'>${product.salePrice} </li>
+                        <li className='sale'><del>${product.price}</del> </li>
+                        <li className='discount'>{product.discount}% OFF</li>
+                      </ul>
                     </p>
+                  </div>
                 </div>
-                    </div>
               </div>
             ))}
           </div>
