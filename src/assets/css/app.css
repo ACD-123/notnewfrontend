@@ -1847,7 +1847,7 @@ section#purchasehistory .tab-buttons {
   border-radius: 10px;
 }
 /* Refund */
-.refund-popup-inner, .request-sent-inner, .form-sec-address, .success-popup-inner {
+.refund-popup-inner, .request-sent-inner, .form-sec-address, .success-popup-inner, .prd-mng-popup-inner {
   width: 50%;
   margin: 0 auto;
   display: table;
@@ -1894,7 +1894,7 @@ h6.refundstatus.refunded {
 .refund-approval {
   text-align: center;
 }
-.ongoing .refund-popup,.ongoing .request-sent-popup,.popup-address, .success-popupbank {
+.ongoing .refund-popup,.ongoing .request-sent-popup,.popup-address, .success-popupbank, .prd-mng-popup {
     position: fixed;
     background: #000000a3;
     top: 0;
@@ -3147,9 +3147,10 @@ section#searchhistory .list-inline {
 }
 section#searchhistory .title-buton button {
   color: #fff;
-  padding: 10px 70px;
+  padding: 3px 16px;
   border: 0;
   border-radius: 13px;
+  margin-left: 10px;
 }
 section#searchhistory .title-buton h3 {
   padding: 0;
@@ -3216,6 +3217,115 @@ section#selleraccountsetup ::placeholder {
 
 .success-popupbank {
   text-align: center;
+}
+
+/* Seller Dashbaord */
+.order-feeds {
+  border: 0.81px solid #C4C4C4;
+  background: #F9F9F9;
+  margin: 20px 0;
+  padding: 11px 20px;
+  border-radius: 10px;
+}
+.dabb select, .dabb button {
+  background: #ff10;
+  padding: 8px 30px;
+  font-size: 12px;
+  color: #fff;
+  box-shadow: unset;
+  border: 1px solid #fff;
+  line-height: 18px;
+  border-radius: 10px;
+}
+section#selleng-dashbaord .product-item .img-title p:last-child {
+  color: #0688FF;
+}
+.order-feeds .product-item .dropdown button {
+  background: #ff10;
+  border: 1px solid #979797;
+  color: #AAAAAA;
+  padding: 6px 30px;
+  box-shadow: unset;
+}
+section#selleng-dashbaord .product-item .img-title p {
+  color: #000;
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: bold;
+}
+.dabb select option {
+  color: #000;
+}
+.img-title img {
+  width: 160px;
+  height: 111px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.img-title {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.product-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0;
+  align-items: center;
+}
+.dabb h1 {
+  font-size: 50px;
+  line-height: 60px;
+}
+.dabb h4 {
+  font-size: 18px;
+  line-height: 29px;
+  margin: 0;
+}
+.dabb {
+  background: linear-gradient(115.46deg, #8B2CA0 -11.54%, #03BFC8 137.87%);
+  padding: 20px 20px;
+  border-radius: 10px;
+  color: #fff;
+}
+section#product-management button.listing {
+  color: #fff;
+  border: 0;
+  padding: 16px 30px;
+  border-radius: 12px;
+  float: right;
+}
+ul.active-inactive-schedule li.active {
+  color: #000;
+  border-bottom: 3px solid #427cb6;
+}
+ul.active-inactive-schedule li {
+  list-style: none;
+  cursor: pointer;
+}
+.seller-productmngement-popup label {
+  margin-bottom: 9px;
+}
+.seller-productmngement-popup label input {
+  margin-right: 7px;
+}
+ul.active-inactive-schedule {
+  margin: 0;
+  padding: 16px 13px;
+  display: flex;
+  gap: 70px;
+  color: #BFBFBF;
+  font-family: 'Cairo';
+  border-top: 1px solid #CFCFCF;
+  border-bottom: 1px solid #CFCFCF;
+}
+.seller-productmngement-popup button {
+  padding: 7px 30px;
+  color: #fff;
+  border: 0;
+  border-radius: 10px;
+  margin: 20px 0;
 }
 /* Mobile responsive */
 

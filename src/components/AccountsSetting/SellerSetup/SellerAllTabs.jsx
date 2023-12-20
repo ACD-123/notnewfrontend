@@ -3,7 +3,8 @@ import Leftmenuimage from '../../../assets/Images/leftmenu.png'
 import { useLocation } from 'react-router-dom';
 import Chat from '../../CustomerDashboard/Chat'
 import Selling from './SellingDashboard';
-
+import ProductManagement from './ProductManagement';
+import SellingNotifications from '../NotificationPreferences/SellingNotifications'
 
 const SellerAllTabs = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('selling1'); // Initial menu selection
@@ -37,7 +38,7 @@ const SellerAllTabs = () => {
       case 'selling1':
         return <Selling />;
       case 'selling2':
-        return ;
+        return <ProductManagement />;
         case 'selling3':
         return ;
         case 'selling4':
@@ -51,7 +52,7 @@ const SellerAllTabs = () => {
         case 'selling8':
         return ;
         case 'selling9':
-        return ;
+        return <SellingNotifications /> ;
       default:
         return ; // Default to Test component if no matching menu item is found
     }

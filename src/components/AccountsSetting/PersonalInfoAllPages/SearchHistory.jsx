@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SearchIcon from '../../../assets/Images/searchicon.png';
 import { Link } from 'react-router-dom';
 
 const SearchHistory = () => {
   // Example search history data (replace this with your actual data)
-  const searchHistory = [
+  const initialSearchHistory = [
     { term: 'SportsShoes', alert: 'Email Alerts on' },
     { term: 'Running Gear', alert: 'Email Alerts off' },
     { term: 'Fitness Trackers', alert: 'Email Alerts on' },
@@ -15,6 +15,33 @@ const SearchHistory = () => {
     { term: 'Machin- HKC Product k66', alert: 'Email Alerts on' },
   ];
 
+  const [searchHistory, setSearchHistory] = useState(initialSearchHistory);
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const toggleSelect = (index) => {
+    const selectedIndex = selectedItems.indexOf(index);
+    let newSelectedItems = [...selectedItems];
+
+    if (selectedIndex === -1) {
+      newSelectedItems = [...selectedItems, index];
+    } else {
+      newSelectedItems.splice(selectedIndex, 1);
+    }
+
+    setSelectedItems(newSelectedItems);
+  };
+
+  const clearSelected = () => {
+    const newHistory = searchHistory.filter((item, index) => !selectedItems.includes(index));
+    setSearchHistory(newHistory);
+    setSelectedItems([]);
+  };
+
+  const clearHistory = () => {
+    setSearchHistory([]);
+    setSelectedItems([]);
+  };
+
   return (
     <section id='searchhistory'>
       <div className='row'>
@@ -24,7 +51,10 @@ const SearchHistory = () => {
             <p>{searchHistory.length} Searches</p>
           </div>
           <div>
-            <button>Clear history</button>
+            <button onClick={clearSelected} disabled={selectedItems.length === 0}>
+              Delete selected
+            </button>
+            <button onClick={clearHistory}>Clear history</button>
           </div>
         </div>
       </div>
@@ -33,10 +63,19 @@ const SearchHistory = () => {
           <div className='historylist' key={index}>
             <div className='list-inline'>
               <div>
+                <input
+                  type='checkbox'
+                  checked={selectedItems.includes(index)}
+                  onChange={() => toggleSelect(index)}
+                />
+              </div>
+              <div>
                 <img src={SearchIcon} alt='Search Icon' />
               </div>
               <div>
-               <Link to='/category'> <h4>{item.term}</h4></Link>
+                <Link to='/category'>
+                  <h4>{item.term}</h4>
+                </Link>
                 <p>{item.alert}</p>
               </div>
             </div>

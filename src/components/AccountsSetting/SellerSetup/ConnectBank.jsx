@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import Checkpay from '../../../assets/Images/check-pay.png'
+import Checkpay from '../../../assets/Images/check-pay.png';
+import SellingDetailsDashBoard from './SellingDetailsDashBoard';
+
+
 const ConnectBank = () => {
-  // State variables to hold form data
+  // State variables to hold form data and control component rendering
   const [selectedBank, setSelectedBank] = useState('');
   const [accountName, setAccountName] = useState('');
   const [accountNumber, setAccountNumber] = useState('');
   const [bicSwift, setBicSwift] = useState('');
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showNewComponent, setShowNewComponent] = useState(false); // State to render new component
 
   // Function to handle form submission
   const handleSubmit = (event) => {
@@ -19,11 +23,18 @@ const ConnectBank = () => {
     setShowSuccessPopup(true);
   };
 
+  // Function to handle closing the success popup and show the new component
+  const handleClosePopup = () => {
+    setShowSuccessPopup(false);
+    setShowNewComponent(true); // Show the new component
+  };
+
   return (
     <>
-      <section id='letsconnectbank'>
-        <h3>Lets connect your bank</h3>
-        <form onSubmit={handleSubmit}>
+      {!showNewComponent ? (
+        <section id='letsconnectbank'>
+          <h3>Lets connect your bank</h3>
+          <form onSubmit={handleSubmit}>
           <div>
             <select
               value={selectedBank}
@@ -60,17 +71,22 @@ const ConnectBank = () => {
               placeholder="BIC/SWIFT"
             />
           </div>
-          <button type="submit">Finish Setup</button>
-        </form>
-      </section>
+            <button type="submit">Finish Setup</button>
+          </form>
+        </section>
+      ) : (
+        <SellingDetailsDashBoard /> // Render the new component when showNewComponent is true
+      )}
 
       {/* Success Popup */}
-      {showSuccessPopup && (
+      {showSuccessPopup && !showNewComponent && (
         <div className="success-popupbank">
-            <div className="success-popup-inner">
-            <img src={Checkpay} />
-          <h3>Shop setup successful</h3>
-          <p>We hope you enjoy selling on our platform</p>
+          <div className="success-popup-inner">
+            <img src={Checkpay} alt="Check Pay" />
+            <h3>Shop setup successful</h3>
+            <p>We hope you enjoy selling on our platform</p>
+            {/* Close button in the success popup */}
+            <button onClick={handleClosePopup}>Close</button>
           </div>
         </div>
       )}
