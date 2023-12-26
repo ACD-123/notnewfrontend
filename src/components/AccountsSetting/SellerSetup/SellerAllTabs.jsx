@@ -5,6 +5,7 @@ import Chat from '../../CustomerDashboard/Chat'
 import Selling from './SellingDashboard';
 import ProductManagement from './ProductManagement';
 import SellingNotifications from '../NotificationPreferences/SellingNotifications'
+import BidsNoffers from './BidsNoffers';
 
 const SellerAllTabs = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('selling1'); // Initial menu selection
@@ -42,7 +43,7 @@ const SellerAllTabs = () => {
         case 'selling3':
         return ;
         case 'selling4':
-        return ;
+        return <BidsNoffers />;
         case 'selling5':
         return <Chat /> ;
         case 'selling6':

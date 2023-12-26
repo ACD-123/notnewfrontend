@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Dp from '../../assets/Images/Chat/list1.png'
 import Dp1 from '../../assets/Images/Chat/list2.png'
 import Convoimage from '../../assets/Images/Seller/sellerimage.png'
+import Sendbutton from '../../assets/Images/send.png'
+
 function Chat() {
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -147,7 +149,7 @@ function Chat() {
                 />
                 </div>
                 <div className='col-lg-3'>
-                <button onClick={sendMessage}>Send</button>
+                <button onClick={sendMessage}> Send</button>
                 </div>
                 </div>
               </div>
