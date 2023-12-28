@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from 'react';
-import Leftmenuimage from '../../../assets/Images/leftmenu.png'
+import Leftmenuimage from '../../../assets/Images/leftmenu.png';
 import { useLocation } from 'react-router-dom';
-import Chat from '../../CustomerDashboard/Chat'
+import Chat from '../../CustomerDashboard/Chat';
 import Selling from './SellingDashboard';
 import ProductManagement from './ProductManagement';
-import SellingNotifications from '../NotificationPreferences/SellingNotifications'
+import SellingNotifications from '../NotificationPreferences/SellingNotifications';
 import BidsNoffers from './BidsNoffers';
+import OngoingOrders from '../../PurchaseHistory/OngoingOrders';
+import CompleteOrders from '../../PurchaseHistory/CompleteOrders';
+import OngoingOrderManagement from '../../OrderManagement/OngoingOrderManagement';
+import CompleteOrderManagement from '../../OrderManagement/CompleteOrderManagement';
 
 const SellerAllTabs = () => {
-  const [selectedMenuItem, setSelectedMenuItem] = useState('selling1'); // Initial menu selection
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
+  const [selectedMenuItem, setSelectedMenuItem] = useState('selling1');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOrderManagementOpen, setIsOrderManagementOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    // Extract the component name from the query parameter or state passed from the Header component
     const searchParams = new URLSearchParams(location.search);
     const componentName = searchParams.get('selling1');
 
@@ -21,91 +25,107 @@ const SellerAllTabs = () => {
       setSelectedMenuItem(componentName);
     }
   }, [location.search]);
-  // Function to handle menu item clicks
+
   const handleMenuItemClick = (menu) => {
     setSelectedMenuItem(menu);
-    // Close the menu after selecting an item (for mobile view)
-    setIsMenuOpen(false);
+    setIsOrderManagementOpen(false); // Close order management dropdown on menu change
   };
 
-  // Function to toggle menu visibility
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // Render the component based on the selected menu item
+  const toggleOrderManagement = () => {
+    setIsOrderManagementOpen(!isOrderManagementOpen);
+  };
+
   const renderComponent = () => {
     switch (selectedMenuItem) {
       case 'selling1':
         return <Selling />;
       case 'selling2':
         return <ProductManagement />;
-        case 'selling3':
-        return ;
-        case 'selling4':
+      case 'selling3':
+        return null;
+      case 'sellings1':
+        return <OngoingOrderManagement />;
+        case 'sellings2':
+          return <CompleteOrderManagement />; 
+      case 'selling4':
         return <BidsNoffers />;
-        case 'selling5':
-        return <Chat /> ;
-        case 'selling6':
-        return ;
-        case 'selling7':
-        return ;
-        case 'selling8':
-        return ;
-        case 'selling9':
-        return <SellingNotifications /> ;
+      case 'selling5':
+        return <Chat />;
+      case 'selling6':
+        return null; // You can add the component for Feedbacks here
+      case 'selling7':
+        return null; // You can add the component for Discounts & coupons here
+      case 'selling8':
+        return null; // You can add the component for Transactions here
+      case 'selling9':
+        return <SellingNotifications />;
       default:
-        return ; // Default to Test component if no matching menu item is found
+        return null;
     }
   };
+
 
   return (
     <>
       <section id='activity-main-dashboard'>
-        {/* Toggle button for mobile menu */}
         <button className="mobile-menu-toggle" onClick={toggleMenu}>
-          <img src={Leftmenuimage} />
+          <img src={Leftmenuimage} alt="Menu" />
         </button>
         <div className='row'>
-        <div className='col-lg-3'>
-        {/* Left Menu (including toggle for mobile view) */}
-        <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
-          <ul>
-            <li className={selectedMenuItem === 'selling1' ? 'active' : ''} onClick={() => handleMenuItemClick('selling1')}>
-            Dashboard
-            </li>
-            <li className={selectedMenuItem === 'selling2' ? 'active' : ''} onClick={() => handleMenuItemClick('selling2')}>
-            Product Management           </li>
-            <li className={selectedMenuItem === 'selling3' ? 'active' : ''} onClick={() => handleMenuItemClick('selling3')}>
-            Order Management
-            </li>
-            <li className={selectedMenuItem === 'selling4' ? 'active' : ''} onClick={() => handleMenuItemClick('selling4')}>
-            Bids & Offers
-            </li>
-            <li className={selectedMenuItem === 'selling5' ? 'active' : ''} onClick={() => handleMenuItemClick('selling5')}>
-            Chats
-            </li>
-            <li className={selectedMenuItem === 'selling6' ? 'active' : ''} onClick={() => handleMenuItemClick('selling6')}>
-            Feedbacks
-            </li>
-            <li className={selectedMenuItem === 'selling7' ? 'active' : ''} onClick={() => handleMenuItemClick('selling7')}>
-            Discounts & coupons
-            </li>
-            <li className={selectedMenuItem === 'selling8' ? 'active' : ''} onClick={() => handleMenuItemClick('selling8')}>
-            Transactions
-            </li>
-            <li className={selectedMenuItem === 'selling9' ? 'active' : ''} onClick={() => handleMenuItemClick('selling9')}>
-            Shop Settings
-            </li>
-          </ul>
-        </div>
-        </div>
-        <div className='col-lg-9'>
-        {/* Render the selected component */}
-        <div className="main-content">
-          {renderComponent()}
-        </div>
-        </div>
+          <div className='col-lg-3'>
+            <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
+              <ul>
+                <li className={selectedMenuItem === 'selling1' ? 'active' : ''} onClick={() => handleMenuItemClick('selling1')}>
+                  Dashboard
+                </li>
+                <li className={selectedMenuItem === 'selling2' ? 'active' : ''} onClick={() => handleMenuItemClick('selling2')}>
+                  Product Management
+                </li>
+                <li className='ordaw' onClick={toggleOrderManagement}>
+                  Order Management
+                  {isOrderManagementOpen && (
+                    <div className='dropp'>
+                      <ul>
+                        <li className={selectedMenuItem === 'sellings1' ? 'active' : ''} onClick={() => handleMenuItemClick('sellings1')}>
+                          Ongoing Orders
+                        </li>
+                        <li className={selectedMenuItem === 'sellings2' ? 'active' : ''} onClick={() => handleMenuItemClick('sellings2')}>
+                        Completed Orders
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </li>
+                <li className={selectedMenuItem === 'selling4' ? 'active' : ''} onClick={() => handleMenuItemClick('selling4')}>
+                  Bids & Offers
+                </li>
+                <li className={selectedMenuItem === 'selling5' ? 'active' : ''} onClick={() => handleMenuItemClick('selling5')}>
+                  Chats
+                </li>
+                <li className={selectedMenuItem === 'selling6' ? 'active' : ''} onClick={() => handleMenuItemClick('selling6')}>
+                  Feedbacks
+                </li>
+                <li className={selectedMenuItem === 'selling7' ? 'active' : ''} onClick={() => handleMenuItemClick('selling7')}>
+                  Discounts & coupons
+                </li>
+                <li className={selectedMenuItem === 'selling8' ? 'active' : ''} onClick={() => handleMenuItemClick('selling8')}>
+                  Transactions
+                </li>
+                <li className={selectedMenuItem === 'selling9' ? 'active' : ''} onClick={() => handleMenuItemClick('selling9')}>
+                  Shop Settings
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className='col-lg-9'>
+            <div className="main-content">
+              {renderComponent()}
+            </div>
+          </div>
         </div>
       </section>
     </>
