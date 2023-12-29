@@ -3581,6 +3581,18 @@ button.addmrelcati {
 .innerlisting-activated img {
   width: 80px;
 }
+.ordmangemnt .viedeails button {
+  width: 47%;
+  padding: 9px 0;
+  border: 1px solid #fff;
+}
+button.rviews {
+  margin-top: 9px;
+  background: #ff10;
+  box-shadow: unset;
+  border: 1px solid #3e7fb6 !important;
+  color: #5a61ae !important;
+}
 .detailed-product-info button.updteordr {
   margin: 0 auto;
   display: table;
@@ -3645,6 +3657,13 @@ button.addmrelcati {
   color: #0E0E0E;
   font-weight: bold;
 }
+.reviews-view-ordrmngment .detailed-product-info h3.details
+,.reviews-view-ordrmngment .order-price-detail,.reviews-view-ordrmngment .detailed-product-info .deliverystatus,
+.reviews-view-ordrmngment .not-order-detail, .reviews-view-ordrmngment .detailed-product-info button.updteordr
+{
+  display: none;
+}
+ 
 .detailed-product-info .product-image img {
   width: 130px;
   height: 122px;
@@ -3656,12 +3675,15 @@ button.addmrelcati {
   align-items: center;
 }
 button.bckkkkk {
-  padding: 5px 31px;
+  padding: 5px 17px;
   float: right;
-  border: 0;
   color: #fff;
   border-radius: 10px;
   font-size: 15px;
+  background: #ff10;
+  border: 1px solid #ccc;
+  color: #333;
+  opacity: 1;
 }
 .product-image .prd-details p.size-color span {
   font-weight: bold;
@@ -3703,6 +3725,124 @@ h5.qunty {
   padding: 8px 20px;
   border-radius: 20px;
   float: right;
+}
+.customer-reviews p {
+  background: #F5F5F5;
+  padding: 19px 10px;
+  border-radius: 10px;
+}
+.prf-id-name div a {
+  text-decoration: unset;
+  font-size: 15px;
+  font-weight: 100;
+}
+.reviews-view-ordrmngment button.bckkkkk {
+  float: unset;
+  margin: 0 auto;
+  background: linear-gradient(92.1deg, #00C3C9 6.25%, #8B2CA0 101.18%);
+  display: table;
+  color: #fff;
+  padding: 13px 111px;
+}
+.stars-values {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+button.refndbtnnn {
+  width: 100% !important;
+}
+.admin-seller-order-status h6 span {
+  font-weight: bold;
+}
+.admin-seller-order-status h6 em {
+  font-style: normal;
+}
+.refnd-objct {
+  padding: 20px 0;
+}
+.refund-images-gallry img {
+  height: 110px;
+  width: 100%;
+}
+
+.refund-images-gallry {
+  display: flex;
+  justify-content: space-between;
+}
+.refnd-objct select {
+  color: #818181;
+  float: right;
+  padding: 10px 30px;
+  border-radius: 30px;
+  border: 1px solid #3d80b7;
+}
+.stars-values {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+.admin-seller-order-status {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* BIDS N OFFERS */
+.biddata {
+  padding: 20px 20px;
+}
+.biddata table, tbody, tr, td {
+  padding: 20px;
+}
+.biddata table thead {
+  background: #EFEFEF;
+}
+.biddata table {
+  text-align: center;
+}
+.biddata table, thead, th {
+  padding: 20px;
+}
+.bidders-results {
+  display: flex;
+  justify-content: space-between;
+  background: linear-gradient(267.47deg, #00C3C9 0%, #8B2CA0 98.98%);
+  padding: 20px 20px;
+  border-radius: 10px;
+  color: #fff;
+  text-align: center;
+}
+.detaild-product-infi .prd-imgg img {
+  width: 100%;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+.product-image .prd-details .bids-prd {
+  display: flex;
+  gap: 10px;
+  font-weight: 500;
+  color: #443f3f;
+}
+.bid-offer-tabs .tab-buttons {
+  border: 0;
+  gap: 10px;
+}
+.bid-offer-tabs button.active {
+  border: 0 !important;
+}
+.bid-offer-tabs .tab-buttons button.active {
+  background: linear-gradient(97.83deg, #8B2CA0 -1.36%, #00C3C9 107.39%);
+  color: #fff;
+}
+.bid-offer-tabs .tab-buttons button {
+  background: #F1F1F1;
+  font-size: 15px;
+  color: #494040;
+  padding: 14px 27px;
+  border-radius: 10px;
 }
 /* Mobile responsive */
 

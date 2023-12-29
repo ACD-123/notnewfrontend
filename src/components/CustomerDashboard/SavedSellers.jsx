@@ -3,6 +3,8 @@ import Profileimage1 from '../../assets/Images/Profilesimage/1.png'
 import Profileimage2 from '../../assets/Images/Profilesimage/2.png'
 import Profileimage3 from '../../assets/Images/Profilesimage/3.png'
 import Heart from '../../assets/Images/Heart.png'
+import { Link } from 'react-router-dom';
+
 const SavedSellers = () => {
   const [profiles, setProfiles] = useState([
     { id: 1, name: 'John Doe', profileType: 'User', imageUrl: Profileimage1 },
@@ -42,7 +44,7 @@ const SavedSellers = () => {
         <div>
           <h3>{profile.name}</h3>
           <img className='heart' src={Heart} alt='Heart' />
-          <button onClick={() => visitProfile(profile.id)}>Visit Profile</button>
+          <Link to="/sellershop">Visit Profile</Link>
         </div>
       </div>
     </div>
