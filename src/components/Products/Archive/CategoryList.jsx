@@ -67,7 +67,7 @@ const CategoryList = () => {
           <div className='row'>
             {productData.map((product) => (
               <div className='col' key={product.id}>
-                <div className='productlist'>
+                <div className='productlist ctrrr'>
                 <img src={product.image} alt={product.title} />
                 <Link to="/singlecategory"><h5 style={{textAlign: "center", padding: "20px 0px"}}>{product.title}</h5></Link>
                 </div>

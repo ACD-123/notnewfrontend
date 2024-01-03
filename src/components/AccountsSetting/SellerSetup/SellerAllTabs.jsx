@@ -9,11 +9,14 @@ import BidsNoffers from './BidsNoffers';
 import OngoingOrderManagement from '../../OrderManagement/OngoingOrderManagement';
 import CompleteOrderManagement from '../../OrderManagement/CompleteOrderManagement';
 import RefundManagement from '../../OrderManagement/RefundManagement';
+import EditBankDetails from './EditBankDetails';
+import EditProfileSetup from './EditProfileSetup';
 
 const SellerAllTabs = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('selling1');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isOrderManagementOpen, setIsOrderManagementOpen] = useState(false);
+  const [isOrderManagementOpens, setIsOrderManagementOpens] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -36,6 +39,9 @@ const SellerAllTabs = () => {
 
   const toggleOrderManagement = () => {
     setIsOrderManagementOpen(!isOrderManagementOpen);
+  };
+  const toggleOrderManagements = () => {
+    setIsOrderManagementOpens(!isOrderManagementOpens);
   };
 
   const renderComponent = () => {
@@ -62,7 +68,11 @@ const SellerAllTabs = () => {
         return null; // You can add the component for Discounts & coupons here
       case 'selling8':
         return null; // You can add the component for Transactions here
-      case 'selling9':
+        case 'sellingss1':
+        return <EditProfileSetup />;
+      case 'sellingss2':
+        return <EditBankDetails />;
+        case 'sellingss3':
         return <SellingNotifications />;
       default:
         return null;
@@ -119,8 +129,23 @@ const SellerAllTabs = () => {
                 <li className={selectedMenuItem === 'selling8' ? 'active' : ''} onClick={() => handleMenuItemClick('selling8')}>
                   Transactions
                 </li>
-                <li className={selectedMenuItem === 'selling9' ? 'active' : ''} onClick={() => handleMenuItemClick('selling9')}>
-                  Shop Settings
+                <li className='ordaw' onClick={toggleOrderManagements}>
+                Shop Settings
+                  {isOrderManagementOpens && (
+                    <div className='dropp'>
+                      <ul>
+                        <li className={selectedMenuItem === 'sellingss1' ? 'active' : ''} onClick={() => handleMenuItemClick('sellingss1')}>
+                        Business Profile Setting
+                        </li>
+                        <li className={selectedMenuItem === 'sellingss2' ? 'active' : ''} onClick={() => handleMenuItemClick('sellingss2')}>
+                        Bank account
+                        </li>
+                        <li className={selectedMenuItem === 'sellingss3' ? 'active' : ''} onClick={() => handleMenuItemClick('sellingss3')}>
+                        Notifications Settings
+                        </li>
+                      </ul>
+                    </div>
+                  )}
                 </li>
               </ul>
             </div>

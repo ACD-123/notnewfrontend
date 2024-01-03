@@ -520,7 +520,7 @@ section#signin form#loginForm input[type="submit"] {
 }
 .cart-user .user .dropdown-content {
   position: absolute;
-  z-index: 1;
+  z-index: 99999;
   background: #fff;
   padding: 20px 20px;
   width: 320px;
@@ -3793,8 +3793,53 @@ button.refndbtnnn {
 .biddata {
   padding: 20px 20px;
 }
+.profile0-details div h2 {
+  background: -webkit-linear-gradient(#6e4ba8, #2898be);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+button.updte-profile {
+  width: 90% !important;
+  padding: 14px 0;
+  color: #fff;
+  border: 0;
+  border-radius: 13px;
+}
+.stars-values div span {
+  font-size: 42px;
+  color: #FFB038;
+}
+.signup-form-fields.register button.svavava {
+  border: 0;
+  float: right;
+  width: 23% !important;
+  padding: 11px 0;
+}
+.profile0-details {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+section#letsconnectbank form button.savee {
+  float: right;
+  width: 29%;
+  padding: 10px 0px;
+  color: #fff;
+  border: 0;
+  border-radius: 12px;
+}
 .biddata table, tbody, tr, td {
   padding: 20px;
+}
+.paymentstatus {
+  display: flex;
+  justify-content: end;
+  text-align: center;
+}
+.paymentstatus h5 {
+  font-size: 14px;
+  color: #858585;
 }
 .biddata table thead {
   background: #EFEFEF;
@@ -3845,8 +3890,52 @@ button.refndbtnnn {
   border-radius: 10px;
 }
 /* Mobile responsive */
-
-@media (max-width: 767px) {
+@media (max-width: 1366px) {
+  section#productcard .col .productlist h5 {
+    font-size: 16px;
+}
+section#productcard .col .productlist img {
+  height: 140px;
+  width: 100%;
+}
+  .me-auto.my-2.my-lg-0.navbar-nav.navbar-nav-scroll {
+    gap: 19px;
+}
+}
+@media (max-width: 1024px) {
+  .navbar-expand-lg .navbar-nav .nav-link {
+    font-size: 13px;
+}
+  section#getsurpriseprice .text-button button.dark img {
+    padding-left: 14px;
+}
+  section#getsurpriseprice .text-button button.dark {
+    font-size: 11px;
+    padding: 7px 10px 7px 10px;
+}
+  section#getsurpriseprice .text-button {
+    padding: 30px 30px;
+}
+  section#getsurpriseprice .text-button h1 {
+    font-size: 35px;
+    line-height: 42px;
+}
+  section#productcard .col .ctrrr img {
+    width: auto;
+    margin: 0 auto;
+    display: table;
+}
+.me-auto.my-2.my-lg-0.navbar-nav.navbar-nav-scroll {
+  gap: 9px;
+}
+}
+@media (max-width: 800px) {
+  #mobile-header {
+    display: block !important;
+  }
+  #desktop-header {
+    display: none;
+  }
   .left-menu {
     display: none;
   }
@@ -3867,4 +3956,52 @@ button.refndbtnnn {
   div#totalordervalue{
       margin-top: 20px;
   }
+}
+@media only screen and (max-width: 480px){
+  .navbar-expand-lg .navbar-nav .nav-link {
+    font-size: 13px;
+    text-align: center;
+}
+  #navbarScroll .me-auto.my-2.my-lg-0.navbar-nav.navbar-nav-scroll {
+    height: 100% !important;
+    text-align: center;
+    margin: 0 auto;
+    max-height: 329px !important;
+}
+  .navbar-collapse.show {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    text-align: center;
+    margin: 0px auto;
+    display: table;
+    height: 100%;
+    width: 100%;
+    bottom: 0;
+    z-index: 1111111;
+    background: #ccc;
+}
+  header#mobile-header button.navbar-toggler.collapsed,.navbar-toggler:focus,.navbar-toggler {
+    background: #ff10;
+    border: 1px solid #ccc;
+}
+  form#searchForm .se {
+    top: 8px;
+    left: 8px;
+}
+  header .header-top input#search {
+    padding: 3px 0 4px 30px !important;
+}
+.header-top form#searchForm .input-group.categoruu select {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.header-top form#searchForm .input-group.categoruu {
+  width: 40%;
+}
+}
+
+#mobile-header {
+  display: none;
 }

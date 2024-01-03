@@ -21,6 +21,14 @@ const ShoppingCart = () => {
     console.log("Discount code applied:", discountCode);
     // You can implement further logic like API calls or validation here
   };
+
+  const handleRemoveSection = () => {
+    const sectionToRemove = document.getElementById('sectionToRemove');
+    if (sectionToRemove) {
+      sectionToRemove.remove();
+    }
+    // You might want to add further logic, such as updating the cart state, etc.
+  };
   return (
     <>
       {/* Header */}
@@ -32,7 +40,7 @@ const ShoppingCart = () => {
 
           <div className="row">
             <div className="col-lg-8">
-              <div className="order-details">
+              <div className="order-details" id="sectionToRemove">
                 <h3 id="storetitle">Seller: NOT NEW_Official store</h3>
                 <div className="row">
                   <div className="col-lg-9">
@@ -73,9 +81,13 @@ const ShoppingCart = () => {
                   >
                     Save for later
                   </button>
-                  <button className="btn btn-info btn-lg danger" type="button">
-                    Remove
-                  </button>
+                  <button
+            className="btn btn-info btn-lg danger"
+            type="button"
+            onClick={handleRemoveSection} // Call the function to remove the section
+          >
+            Remove
+          </button>
                 </div>
               </div>
               <div className="order-details" id="border-order-details">

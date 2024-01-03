@@ -117,6 +117,8 @@ const BidsNoffers = () => {
       bidEnd: '18:32:24',
       currentBid: '32',
       totalBid: '33.00',
+      paymentStatus: 'Paid',
+      bidStatus: 'Lost',
       note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
     },
     {
@@ -163,6 +165,8 @@ const BidsNoffers = () => {
       bidEnd: '16:23:12',
       currentBid: '98',
       totalBid: '23.00',
+      paymentStatus: 'Unpaid',
+      bidStatus: 'Winner',
       note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
     },
     {
@@ -209,6 +213,8 @@ const BidsNoffers = () => {
       bidEnd: '12:42:56',
       currentBid: '48',
       totalBid: '44.00',
+      paymentStatus: 'Unpaid',
+      bidStatus: 'Winner',
       note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
     },
     {
@@ -255,6 +261,8 @@ const BidsNoffers = () => {
       bidEnd: '14:22:56',
       currentBid: '22',
       totalBid: '66.00',
+      paymentStatus: 'Paid',
+      bidStatus: 'Lost',
       note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
     },
     
@@ -324,7 +332,52 @@ const BidsNoffers = () => {
         
       ))}
     </div></div>}
-        {activeTab === 'rr2' && <div>ProductProductProductProduct</div>}
+        {activeTab === 'rr2' && <div><div className='ongoing ordmangemnt'>  
+      {ordersData.map((order, index) => (
+        <div className='row align-items-center' key={order.orderNumber}>
+          <div className='col-lg-10'>
+            <div className='product-image'>
+              <div className='image'>
+                {order.images.map((image, imgIndex) => (
+                  <img key={imgIndex} src={image} alt={`Product ${imgIndex + 1}`} />
+                ))}
+              </div>
+              <div className='prd-details'>
+                <h5>Order # : <b>{order.orderNumber}</b></h5>
+                <h3>{order.productName}</h3>
+                <h6 style={{fontWeight: "Bold", color: "#000"}}>Current Bid: ${order.currentBid}</h6>
+                <h4 style={{
+                          color:
+                            order.bidStatus === "Winner"
+                              ? "#8b2ca0"
+                              : order.bidStatus === "Lost"
+                              ? "green"
+                              : "black", fontWeight: "bold"
+                        }}>{order.bidStatus}</h4>
+              </div>
+            </div>
+            
+          </div>
+
+          <div className='col-lg-2'>
+          <div className='paymentstatus'>
+            <h5>
+              Status <br /> <span style={{
+                          color:
+                            order.paymentStatus === "Unpaid"
+                              ? "#B01212"
+                              : order.paymentStatus === "Paid"
+                              ? "green"
+                              : "black",
+                        }}>{order.paymentStatus}</span>
+            </h5>
+          </div>
+          </div>
+          <hr />
+        </div>
+        
+      ))}
+    </div></div>}
         
       </div>
     </div>
