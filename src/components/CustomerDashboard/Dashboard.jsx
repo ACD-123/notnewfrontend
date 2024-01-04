@@ -4,21 +4,21 @@ const Dashboard = () => {
   return (
    <>
    <section id='dashboard-panel'>
-    <div className='row'>
+    <div className='row firstrow'>
         <h3>Hi, Customer</h3>
-        <div className='col-lg-4'>
+        <div className='col-lg-4 col-sm-4'>
             <div className='dashboard-result'>
             <h2>20</h2>
             <p>Order Completed</p>
             </div>
         </div>
-        <div className='col-lg-4'>
+        <div className='col-lg-4 col-sm-4'>
         <div className='dashboard-result'>
             <h2>20</h2>
             <p>Order Completed</p>
             </div>
         </div>
-        <div className='col-lg-4'>
+        <div className='col-lg-4 col-sm-4'>
         <div className='dashboard-result'>
             <h2>20</h2>
             <p>Order Completed</p>

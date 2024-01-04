@@ -47,8 +47,8 @@ const SellingDetailsDashBoard = () => {
     <>
     <section id='selleng-dashbaord'>
       <h3>Hi Seller,</h3>
-        <div className='row'>
-            <div className='col-lg-4'>
+        <div className='row minndabb'>
+            <div className='col-lg-4 col'>
               <div className='dabb'>
                 <h4>Completed Orders</h4>
                 <h1>20</h1>
@@ -59,7 +59,7 @@ const SellingDetailsDashBoard = () => {
                 </select>
                 </div>
             </div>
-            <div className='col-lg-4'>
+            <div className='col-lg-4 col'>
             <div className='dabb'>
                 <h4>Offers</h4>
                 <h1>20</h1>
@@ -70,7 +70,7 @@ const SellingDetailsDashBoard = () => {
                 </select>
                 </div>
             </div>
-            <div className='col-lg-4'>
+            <div className='col-lg-4 col'>
             <div className='dabb'>
                 <h4>Earnings</h4>
                 <h1>$ 680.00</h1>

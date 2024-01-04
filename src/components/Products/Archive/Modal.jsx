@@ -23,8 +23,8 @@ const Modal = ({ show, onClose, children }) => {
   };
 
   return (
-    <div style={modalStyles} onClick={onClose}>
-      <div style={modalContentStyles} onClick={(e) => e.stopPropagation()}>
+    <div className='ctegorypop' style={modalStyles} onClick={onClose}>
+      <div className='ctegorypopinner' style={modalContentStyles} onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>

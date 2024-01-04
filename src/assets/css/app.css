@@ -3903,6 +3903,17 @@ section#productcard .col .productlist img {
 }
 }
 @media (max-width: 1024px) {
+  .thumbnails {
+    display: flex;
+}
+  section#single-product .product-gallery {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap-reverse;
+}
+  .store img {
+    width: 100%;
+}
   .navbar-expand-lg .navbar-nav .nav-link {
     font-size: 13px;
 }
@@ -3958,6 +3969,471 @@ section#productcard .col .productlist img {
   }
 }
 @media only screen and (max-width: 480px){
+  section#banners .banner-text-button {
+    padding: 15px 20px;
+}
+  .selling-activity button {
+    padding: 6px 20px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+  .prnform {
+    padding: 10px 10px;
+}
+  .img-title {
+    gap: 10px;
+    margin-bottom: 10px;
+}
+  .dropdown button {
+    padding: 3px 10px !important;
+}
+  .detaildashbritemdetail .img-title img {
+    width: 100px;
+    height: 90px;
+}
+  .product-item {
+    display: block;
+}
+  .dabb h4 {
+    font-size: 12px;
+    line-height: 21px;
+    margin: 0;
+}
+  .dabb {
+    padding: 10px 10px;
+    text-align: center;
+}
+.dabb select, .dabb button {
+  width: 100%;
+  padding: 3px 1px;
+  font-size: 10px;
+  margin: 0;
+  line-height: 16px;
+}
+  .dabb h1 {
+    font-size: 20px;
+    line-height: 30px;
+}
+  .row.minndabb .col {
+    width: 33.33%;
+    padding: 0 4px;
+}
+
+.row.minndabb {
+    display: flex;
+}
+  .success-popup-inner {
+    width: 94%;
+    padding: 20px 0;
+}
+  .success-popupbank {
+    z-index: 999999999;
+}
+  section#letsconnectbank form {
+    width: 100%;
+}
+  .selling-activity {
+    padding-top: 40px;
+}
+  .ctegorypopinner {
+    min-width: 97% !important;
+}
+  .keyword-filter-list ul li {
+    margin-bottom: 10px;
+}
+
+.keyword-filter-list ul {
+    display: block;
+    column-count: 2;
+    text-align: center;
+}
+  .keyword-filter-list ul li {
+    padding: 4px 10px;
+}
+  .all-catergylisting .col ul li:last-child a {
+    font-size: 12px;
+    line-height: 17px;
+}
+  .all-catergylisting .col {
+    width: 50%;
+}
+  section#searchhistory .title-buton button {
+    color: #fff;
+    padding: 3px 10px;
+    border: 0;
+    border-radius: 13px;
+    margin-left: 10px;
+}
+  section#searchhistory .title-buton h3 {
+    font-size: 16px;
+}
+  section#searchhistory {
+    padding-top: 40px;
+}
+  .saved-images .row .col {
+    width: 33.33%;
+}
+  .addresselected ul li span {
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 22px;
+    width: 30%;
+}
+  .addresselected ul li em {
+    font-style: normal;
+    width: 70%;
+    float: unset;
+    font-size: 12px;
+    line-height: 22px;
+}
+  section#addresses-personal {
+    padding-top: 50px;
+}
+  section#prsnlinfo {
+    padding-top: 50px;
+}
+  .popup-address {
+    z-index: 99999999 !important;
+}
+  .form-sec-address {
+    width: 93%;
+    padding: 10px 10px;
+}
+  section#sign-security .chngepaswrd {
+    padding: 10px 10px;
+    width: 92%;
+    margin: 0 auto;
+}
+  section#sign-security .chngepaswrd form {
+    width: 100%;
+    margin: 0 auto;
+}
+  .messages-container .message-input {
+    position: unset;
+}
+  .messages-cont {
+    height: auto;
+    padding: 10px 20px;
+}
+  .chatlist {
+    height: 100% !important;
+}
+  .prf-id-name div a {
+    font-size: 11px;
+    line-height: 20px;
+}
+  .saved-profile .grid {
+    gap: 4px;
+}
+.profile-innerdetails h3, .list-view-profile h3 {
+  font-size: 13px;
+  line-height: 22px;
+}
+  .prf-id-name {
+    width: 100%;
+    gap: 3px;
+    padding: 7px 5px;
+    margin-right: 1px !important;
+}
+  .profile-innerdetails img {
+    width: 70px;
+    height: 70px;
+
+}
+  .ongoing .product-image .prd-details h5 {
+    font-size: 15px;
+    line-height: 24px;
+}
+  section#purchaseDate h3 {
+    font-size: 11px;
+    line-height: 22px;
+}
+  .buyagain-filterbuttons ul {
+    gap: 7px;
+    margin-bottom: 10px;
+}
+  .buyagain-filterbuttons ul li {
+    padding: 5px 5px;
+}
+  .request-sent-inner {
+    width: 90%;
+    padding: 13px 1px;
+}
+  .refunddetailss button.chseimage {
+    width: 100%;
+}
+  .refund-popup-inner .main-refund-popup h1 {
+    font-size: 26px;
+    line-height: 25px;
+}
+  .refund-popup-inner {
+    width: 93%;
+    padding: 10px 10px;
+}
+  .refund-popup {
+    z-index: 9999999999999999999999999999999999999999 !important;
+}
+  .wishlistproduct-detail p {
+    margin-bottom: 0;
+    font-size: 12px;
+    line-height: 21px;
+}
+  .wishlistproduct-detail h3 {
+    font-size: 14px;
+    line-height: 24px;
+    margin: 0;
+}
+  .wishlistproduct-detail img {
+    width: 110px;
+    height: 90px;
+}
+  .wishlistproduct-detail {
+    text-align: left;
+}
+  .wishlistprice-detials {
+    text-align: center;
+}
+  .wishlist-categories-list ul {
+    gap: 7px;
+}
+  .wishlist-categories-list ul li button {
+    padding: 1px 11px;
+    font-size: 12px;
+    line-height: 22px;
+}
+  section#wishlist-dashboard .wishlist {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    text-align: center;
+    margin-bottom: 12px;
+}
+  .increase-bid-button {
+    margin-top: 10px;
+}
+  .winning-bid .product-image img {
+    width: 100% !important;
+}
+
+.winning-bid .product-image {
+    display: block;
+}
+  .ongoing .bid-product .product-image .image img {
+    width: 120px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+  .bidding-results {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+  section#dashboard-panel .ongoing .rightarrow img, section#purchasehistory .ongoing .rightarrow img {
+    width: 50%;
+}
+
+section#dashboard-panel .row, section#purchasehistory .row {
+    position: relative;
+}
+section#dashboard-panel .ongoing .rightarrow, section#purchasehistory .ongoing .rightarrow {
+    position: absolute;
+    right: 30px;
+    bottom: 2px;
+}
+  .ongoing .product-image .prd-details h3 {
+    font-size: 11px;
+    line-height: 16px;
+}
+  section#dashboard-panel .ongoing .product-image img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+  section#dashboard-panel .firstrow .col-sm-4 {
+    width: 33.3%;
+}
+  section#dashboard-panel .firstrow .dashboard-result p {
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+}
+
+section#dashboard-panel .firstrow .dashboard-result h2 {
+    padding: 0;
+    margin: 0;
+}
+section#dashboard-panel .firstrow .dashboard-result {
+    padding: 1px;
+}
+section#dashboard-panel .firstrow {
+    display: flex;
+}
+  .left-menu.open li {
+    color: #fff;
+}
+.left-menu.open {
+  position: absolute;
+  z-index: 9999999;
+  background: #7246a6;
+  width: 100%;
+  top: 37px;
+  border-radius: 10px;
+  padding: 10px 13px;
+}
+  section#activity-main-dashboard {
+    position: relative;
+}
+  section#activity-main-dashboard button.mobile-menu-toggle img {
+    width: 51%;
+}
+section#activity-main-dashboard button.mobile-menu-toggle {
+  background: #ff10;
+  z-index: 1111111;
+  border: 2px solid #ccc;
+  box-shadow: unset;
+  width: 13%;
+  padding: 4px 0px;
+  border-radius: 4px;
+  position: absolute;
+  right: 10px;
+}
+  .main-dasboard-tabs {
+    padding: 20px 10px !important;
+}
+  .main-dasboard-tabs .tab-buttons {
+    justify-content: center;
+}
+  .whatyouthink {
+    position: unset;
+    text-align: center;
+}
+  #border-order-details .discountfields button {
+    width: 25%;
+    margin: 0 10px;
+    padding: 7px 0;
+    font-size: 16px;
+}
+  #border-order-details .discountfields input[type="text"] {
+    width: 62%;
+    padding: 9px 20px;
+}
+  #sectionToRemove .product-detail .product-image img {
+    width: 100%;
+}
+  section#product-recents-viewed .headings h3 {
+    text-align: center;
+}
+
+section#product-recents-viewed .headings h3 span {
+    float: unset;
+    margin: 0 auto;
+    display: table;
+}
+.footer-widgets h6 {
+  margin-top: 10px;
+}
+  section#categorylistings .row .col {
+    flex: 1 0 50%;
+}
+  section#productcard .row .col {
+    flex: 1 0 50%;
+}
+  .footer-widgets .row {
+    display: block;
+}
+  .pay-buttons button {
+    width: 100%;
+    margin-bottom: 10px;
+}
+  .pay-buttons {
+    display: block;
+}
+  .review-bids-list ul li:last-child em {
+    font-size: 11px;
+    line-height: 21px;
+}
+  .review-bids-list ul li em {
+    font-size: 12px;
+    width: 50%;
+}
+.review-bids-list ul li span {
+  font-size: 12px;
+  line-height: 24px;
+  width: 50%;
+}
+  .yourmax-bid button.plcebid {
+    margin-top: 10px;
+}
+  .inngerbidplace, .reviewinner, .innreditpopup, .confirmmm {
+    width: 96%;
+    padding: 10px 20px;
+}
+  .about-product th, .about-product td {
+    padding: 1px;
+}
+  .product-details .tabs button {
+    padding: 4px 10px;
+}
+  .seller-feedback {
+    width: 100%;
+}
+.popular-search ul li {
+  padding: 5px 10px;
+  font-size: 13px;
+  width: 100%;
+  margin: 0 0 10px 0;
+}
+.popular-search ul {
+    column-count: 2;
+}
+  .profile-details-seller h4 {
+    font-size: 17px;
+    line-height: 25px;
+}
+  .profile-details-seller ul li {
+    font-size: 12px;
+    line-height: 22px;
+}
+  .thumbnails img {
+    height: 59px;
+}
+  .shippingpolicy h4 img {
+    width: 100%;
+    margin: 0 !important;
+}
+  .sellerdetails {
+    padding: 30px 0px !important;
+}
+  .profile-details-seller {
+    gap: 13px;
+}
+.profile-details-seller .image img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.product-details {
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+  section#featuredproduct .noenCon h3 {
+    padding-left: 0 !important;
+}
+  .render #productcard {
+    padding: 24px 0px !important;
+}
+  section#getsurpriseprice .text-button button.dark img {
+    display: none;
+}
+section#getsurpriseprice .text-button {
+  padding: 10px 20px;
+}
+  section#getsurpriseprice .text-button h1 {
+    font-size: 25px;
+    line-height: 32px;
+}
   .navbar-expand-lg .navbar-nav .nav-link {
     font-size: 13px;
     text-align: center;

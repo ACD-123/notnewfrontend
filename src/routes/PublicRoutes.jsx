@@ -21,6 +21,7 @@ import SellerShop from "../components/Seller/SellerPages/SellerShop"
 import AuctionSingleProductPage from '../components/Auction/AuctionSingleProductPage'
 import BidWin from "../components/Auction/BidWin"
 import SearchHistory from "../components/AccountsSetting/PersonalInfoAllPages/SearchHistory"
+
 const PublicRoutes = () => {
 	return (
 		<>

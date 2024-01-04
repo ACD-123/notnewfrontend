@@ -128,7 +128,7 @@ const Wishlist = () => {
   return (
     <section id="wishlist-dashboard">
       <h3>Wishlist</h3>
-      <div className="row align-items-center">
+      <div className="row wishlist align-items-center">
         <div className="col-lg-6">
           <div className="deleted-button">
             <button onClick={deleteSelectedProducts}>Delete Selected</button>
