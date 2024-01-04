@@ -3969,6 +3969,157 @@ section#productcard .col .productlist img {
   }
 }
 @media only screen and (max-width: 480px){
+  .emailresend-recieve ul {
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+}
+  section#emailverification .email-verifyfields .emailfields .myemailfields .myinputfields {
+    width: 100%;
+}
+section#emailverification .email-verifyfields .emailfields .myemailfields {
+  margin: 0 0 20px 0;
+  gap: 10px;
+}
+  #emailverification .col-lg-7 {
+    min-height: auto;
+}
+  section#emailverification .email-verifyfields img {
+    width: 100%;
+}
+  section#signin {
+    min-height: auto !important;
+    background-position: center;
+}
+  .remember-password label {
+    padding-left: 10px;
+    font-size: 11px;
+    line-height: 21px;
+}
+  .remember-password .remm a {
+    font-size: 11px;
+    line-height: 21px;
+}
+  #signin .dsa {
+    min-height: auto;
+    padding: 0 20px;
+}
+  #signin .topbuttons ul {
+    justify-content: center;
+}
+  .verifyfromgoogle .images-google img {
+    width: 60%;
+    margin: 0 auto;
+    display: table;
+}
+  .verifyfromgoogle .images-google ul {
+    gap: 30px;
+}
+  .welcome-registration h1 {
+    font-size: 27px;
+    line-height: 37px;
+}
+  .checkpay h1 {
+    color: #1E1E1E;
+    font-size: 30px;
+    line-height: 40px;
+}
+  .request-sent-popup {
+    z-index: 9999999999999999999 !important;
+}
+  .dropp li {
+    color: #000 !important;
+}
+  section#listing-creating-form input.colr {
+    height: 36px;
+}
+  .actvtebuttns button {
+    width: 100%;
+    padding: 9px 0;
+}
+  section#listing-creating-form ::placeholder {
+    font-size: 12px;
+    color: #333 !important;
+}
+  section#listing-creating-form div {
+    font-size: 12px;
+}
+  section#listing-creating-form textarea {
+    height: 90px;
+}
+  section#listing-creating-form input, section#listing-creating-form textarea {
+    padding: 9px 9px;
+}
+  section#listing-creating-form form {
+    min-width: 100%;
+}
+  section#listing-creating-form h4:after {
+    display: none;
+  }
+  .seller-productmngement-popup h1 {
+    font-size: 20px;
+    line-height: 30px;
+}
+  .prd-mng-popup-inner {
+    width: 93%;
+    top: 90px;
+    padding: 10px 19px;
+}
+  .prd-mng-popup {
+    z-index: 999999999;
+}
+  ul.active-inactive-schedule li {
+    font-size: 12px;
+}
+  ul.active-inactive-schedule {
+    gap: 20px;
+}
+  section#product-management button.listing {
+    float: unset;
+    padding: 7px 20px;
+    margin-bottom: 21px;
+}
+  section#singlecategory .col-lg-9 {
+    padding: 0;
+}
+  .seller-shop .tab-buttons button:first-child img {
+    padding-right: 4px;
+    width: 22%;
+}
+  .seller-shop .tab-buttons {
+    padding-top: 20px;
+}
+
+.seller-shop .tab-buttons button:first-child {
+    padding: 6px 10px;
+    font-size: 12px;
+}
+.category-shop-about .main-dasboard-tabs .tab-buttons {
+  gap: 23px;
+}
+  section#sellershop .sellerdetails {
+    padding: 10px 10px !important;
+}
+  section#sellershop .seller-mesge ul {
+    margin: 10px 0px;
+    gap: 13px;
+    justify-content: center;
+}
+  section#sellershop .sellerdetails .details-seller ul li {
+    font-size: 12px;
+    line-height: 22px;
+}
+
+section#sellershop .sellerdetails .details-seller ul {
+    gap: 10px;
+}
+  .details-seller h2 {
+    font-size: 20px;
+    line-height: 30px;
+}
+  .profile-seller-shop {
+    gap: 10px;
+}
   section#banners .banner-text-button {
     padding: 15px 20px;
 }
