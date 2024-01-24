@@ -12,7 +12,7 @@ import ForgotVerification from "../pages/Account/ForgotVerification"
 import ShoppingCart from "../pages/Account/ShoppingCart"
 import CategoryKeyword from "../components/Products/Archive/CategoryKeyword"
 import Checkout from "../pages/Account/Checkout"
-import SingleProduct from "../components/Products/Archive/SingleProduct"
+import SingleProduct from "../components/Products/Archive/SingleProduct_old"
 import MainDashboard from '../components/CustomerDashboard/MainDashboard'
 import "../assets/css/app.css"
 import BidView from "../components/CustomerDashboard/BidView"
@@ -29,20 +29,20 @@ const PublicRoutes = () => {
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/signup" element={<SignUp />} />
-					<Route path="/emailverification" element={<EmailVerification />} />
+					<Route path="/emailverification/:id/:guid/:expires/:email" element={<EmailVerification />} />
 					<Route path="/signin" element={<SignIn />} />
 					<Route path="/topcategory" element={<TopCategory />} />
-					<Route path="/singlecategory" element={<SingleCategory />} />
+					<Route path="/singlecategory/:guid" element={<SingleCategory />} />
 					<Route path="/passwordrecovery" element={<PasswordRecovery />} />
-					<Route path="/forgotverification" element={<ForgotVerification />} />
-					<Route path="/resetpassword" element={<ResetPassword />} />
+					<Route path="/forgotverification/:email" element={<ForgotVerification />} />
+					<Route path="/resetpassword/:email" element={<ResetPassword />} />
 					<Route path="/shoppingcart" element={<ShoppingCart />} />
-					<Route path="/categorykeyword" element={<CategoryKeyword />} />
+					<Route path="/categorykeyword/:guid" element={<CategoryKeyword />} />
 					<Route path="/checkout" element={<Checkout />} />
-					<Route path="/singleproduct" element={<SingleProduct />} />
+					<Route path="/singleproduct/:guid" element={<SingleProduct />} />
 					<Route path="/customerdashboard" element={<MainDashboard />} />
 					<Route path="/bidView" element={<BidView />} />
-					<Route path="/category" element={<CategoryPage />} />
+					<Route path="/allcategories" element={<CategoryPage />} />
 					<Route path="/sellershop" element={<SellerShop />} />
 					<Route path="/auctionproduct" element={<AuctionSingleProductPage />} />
 					<Route path="/bidwin" element={<BidWin />} />

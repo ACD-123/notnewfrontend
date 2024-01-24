@@ -374,7 +374,8 @@ section#emailverification .emailresend-recieve li.resend a {
   color: #C96767;
   text-decoration: underline;
 }
-section#emailverification .email-verifyfields .emailfields input[type="submit"] {
+/* section#emailverification .email-verifyfields .emailfields input[type="submit"] { */
+  section#emailverification .email-verifyfields .emailfields button {
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   box-shadow: 0px 5px 11px 0px #0000003B;
   padding: 11px 20px;
@@ -414,7 +415,7 @@ section#signin {
 .signinbutton .topbuttons ul li:first-child a {
   text-decoration: underline !important;
 }
-form#loginForm input#username, form#loginForm input#password {
+form#loginForm input#email, form#loginForm input#password {
   width: 100%;
     background: #4D4D4D91;
     color: #fff;
@@ -469,7 +470,8 @@ section#savedsellers p {
   width: 100%;
   gap: 30px;
 }
-section#signin form#loginForm input[type="submit"] {
+/* section#signin form#loginForm input[type="button"] { */
+  section#signin form#loginForm button {
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   box-shadow: 0px 5px 11px 0px #0000003B;
   padding: 11px 20px;
@@ -877,10 +879,10 @@ section#categorylistings .productlist ul li {
 section#categorylistings .productlist ul {
   padding: 0;
 }
-section#categorylistings .productlist ul li:last-child a {
+/* section#categorylistings .productlist ul li:last-child a {
   color: #00C3C9;
   text-transform: capitalize;
-}
+} */
 
 /* Single Category */
 section#singlecategory ul.pagination {
@@ -4665,4 +4667,7 @@ section#getsurpriseprice .text-button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.error{
+  color: red !important;
 }

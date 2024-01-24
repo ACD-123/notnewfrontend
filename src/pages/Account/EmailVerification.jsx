@@ -1,7 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Emailverifyimagebg from "../../assets/Images/Accountimages/signup.png";
 import Logo from "../../assets/Images/logo.png";
 import Line from "../../assets/Images/Accountimages/line.png"
+import AuthServices from "../../services/API/AuthService"; //~/services/API/AuthService
+import { toast } from "react-toastify";
 
 var Emailverifybg = {
   backgroundImage: `url(${Emailverifyimagebg})`,
@@ -11,7 +13,14 @@ var Emailverifybg = {
 
 const EmailVerification = () => {
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
-
+  const [email, setEmail] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+  const extractEmail = () =>{
+    const { pathname } = window.location;
+    const email = pathname.split("/").pop();
+    setEmail(email);
+  }
   const handleInputChange = (index, value) => {
     if (value.length > 1) {
       value = value.slice(0, 1); // Limit input to one character
@@ -29,15 +38,38 @@ const EmailVerification = () => {
     event.preventDefault();
     // Get the values from each input field for further processing
     const code = inputRefs.map((ref) => ref.current.value).join("");
-    console.log("Submitted code:", code);
-
+    setIsLoading(true);
+    setEnabled(true);
+    let data = {
+      otp: code,
+    };
+    AuthServices.verifyAuthOtp(data)
+      .then((response) => {
+        toast.success(response.message);
+        setTimeout(() => {
+          window.location.href = "/signin";
+        }, 6000);
+      })
+      .catch((e) => {
+        toast.error("Otp is not Correct");
+        setIsLoading(false);
+        setEnabled(false);
+      })
+      .then(() => {
+        setIsLoading(false);
+        setEnabled(false);
+      });
+    // console.log("Submitted code:", code);
+    // verifyOtp
     // Redirect to another page after processing the form
-    if (code === "1234") {
-      // Replace "1234" with the desired verification code
-      window.location.href = '/signin'; // Redirect to success page after code verification
-    }
+    // if (code === "1234") {
+    //   // Replace "1234" with the desired verification code
+    //   window.location.href = '/signin'; // Redirect to success page after code verification
+    // }
   };
-
+  useEffect(() => {
+    extractEmail();
+  }, []);
   return (
     <>
       <section id="emailverification" style={Emailverifybg}>
@@ -63,8 +95,13 @@ const EmailVerification = () => {
                 <h1>Email Verification</h1>
                 <img src={Line} />
                 <p>
-                  Please enter 4 digit numeric Code sent to Your Email to
-                  verify.
+                  Please enter 4 digit numeric Code sent to
+                  <br />
+                  Your Email 
+                  <br />
+                  {email} 
+                  <br />
+                  to verify.
                 </p>
                 <div className="emailfields">
                   <form onSubmit={handleSubmit}>
@@ -88,7 +125,9 @@ const EmailVerification = () => {
                         <li className="resend"><a href="#">Resend</a></li>
                       </ul>
                     </div>
-                    <input className="btn btn-primary" type="submit" value="Submit" />
+                    <button className="btn btn-primary" type="submit" disabled={enabled}>
+                      {isLoading ? "loading.." : "Submit"}
+                    </button>
                   </form>
                 </div>
               </div>
