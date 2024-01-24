@@ -76,16 +76,24 @@ const SetupSellerAccount = () => {
     }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
+      setIsLoading(true);
+      setEnabled(true);
       SellerServices.save(formData)
       .then((response) => {
-        toast.success(response);
-        setTimeout(() => {
+        console.log('response', response)
+        // setTimeout(() => {
           setFormSubmitted(true);
-        }, 6000);
+        // }, 6000);
       })
       .catch((e) => {
         toast.error(e.message);
-      });
+        setIsLoading(false);
+        setEnabled(false);
+      })
+      .then(() => {
+        setIsLoading(false);
+        setEnabled(false);
+      });;
       // Set the formSubmitted state to true after form submission
       // setFormSubmitted(true);
     }

@@ -135,6 +135,10 @@ const SignUp = () => {
           toast.error(response.message);
           setIsLoading(false);
           setEnabled(false);
+        }else if(response.status === "username"){
+          toast.error(response.message);
+          setIsLoading(false);
+          setEnabled(false);
         }
       })
       .catch((e) => {

@@ -58,6 +58,9 @@ const SignIn = () => {
         .then((response) => {
           if (response == "NotExits") {
             toast.error("User Does not Exits!");
+          }else if(response.status === "fail"){
+            toast.error(response.message[0]);
+            return
           }else{
             toast.success(response.message);
             if (response.rememberme == true) {
@@ -73,6 +76,7 @@ const SignIn = () => {
         })
         .catch((e) => {
           toast.error(e.response.data.message);
+          setIsLoading(false);
           setEnabled(false);
         })
         .then(() => {

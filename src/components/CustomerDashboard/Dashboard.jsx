@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import OngoingOrders from '../PurchaseHistory/OngoingOrders'
 const Dashboard = () => {
+useEffect(() => {
+}, []);
   return (
    <>
    <section id='dashboard-panel'>

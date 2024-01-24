@@ -8,6 +8,7 @@ import SellerAllTabs from './SellerSetup/SellerAllTabs';
 const AccountInfo = () => {
 
   const [selectedLink, setSelectedLink] = useState(null);
+  const [trustedseller, setTrustedSeller] = useState(false);
 
   const handleLinkClick = (link) => {
     setSelectedLink(link);
@@ -80,7 +81,12 @@ const handleGeneralNotifications = () => {
               <h4>Selling</h4>
               <hr style={{ width: '50%' }} />
               <ul>
+              {trustedseller ? (
+                <li onClick={() => handleLinkClick('Selling')}>My Seller Account</li>
+              ):(
                 <li onClick={() => handleLinkClick('Selling')}>Set Up Seller Account</li>
+              )}
+                
                 <li onClick={() => handleLinkClick('Selling')}>List an Item</li>
               </ul>
             </div>
@@ -112,7 +118,15 @@ const handleGeneralNotifications = () => {
         );
     }
   };
-
+  useEffect(() => {
+    let loggedInUser = localStorage.getItem("user_details");
+    if (loggedInUser) {
+        const loggedInUsers = JSON.parse(loggedInUser);
+        if(loggedInUsers.isTrustedSeller == true){
+          setTrustedSeller(true)
+        }
+    }
+  }, []);
   return (
     <>
       <div className='account-dashboard'>
