@@ -42,9 +42,9 @@ function upload(data) {
 
 function update(data) {
   return request({
-    url: `${baseUrl}`,
+    url: `${baseUrl}update`,
     data,
-    method: 'PATCH',
+    method: 'POST',
   })
 }
 
@@ -77,6 +77,13 @@ function setBank(data) {
       method: 'POST',
     })
   }
+
+  function getShopDetails(data) {
+    return request({
+      url: `${baseUrl}getshopdetails/${data}`,
+      method: 'GET',
+    })
+  }
 const SellerServices = {
   all,
   detail,
@@ -87,7 +94,8 @@ const SellerServices = {
   cancelDelete,
   save,
   getBanks,
-  setBank
+  setBank,
+  getShopDetails
 }
 
 export default SellerServices

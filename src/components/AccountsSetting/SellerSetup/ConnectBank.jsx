@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Checkpay from '../../../assets/Images/check-pay.png';
 import SellingDetailsDashBoard from './SellingDetailsDashBoard';
 import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
+import UserServices from "../../../services/API/UserServices"; //~/services/API/AuthService
 import { toast } from "react-toastify";
+import { setUserDetails, isLoggedin, getUserDetails } from "../../../services/Auth"; // ~/services/Auth
 
 const ConnectBank = () => {
   // State variables to hold form data and control component rendering
@@ -14,6 +16,9 @@ const ConnectBank = () => {
   const [showNewComponent, setShowNewComponent] = useState(false); // State to render new component
   const [banks, setBanks] = useState({}); // State to render new component
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+
   // Function to handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -32,6 +37,8 @@ const ConnectBank = () => {
     }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
+      setIsLoading(true);
+      setEnabled(true);
       console.log('Form submitted:', { selectedBank, accountName, accountNumber, bicSwift });
       const formData ={
         'bank_id' : selectedBank,
@@ -41,11 +48,26 @@ const ConnectBank = () => {
       }
       SellerServices.setBank(formData)
       .then((response) => {
-        toast.success(response);
-        setShowSuccessPopup(true);
+        UserServices.detail()
+        .then((responce) => {
+          console.log('user response', responce)
+          toast.success(responce);
+          setShowSuccessPopup(true);
+          setUserDetails(responce);
+          setShowNewComponent(true);
+        })
+        .catch((e) => {
+          toast.error(e.message);
+        });
       })
       .catch((e) => {
         toast.error(e.message);
+        setIsLoading(false);
+        setEnabled(false);
+      })
+      .then(() => {
+        setIsLoading(false);
+        setEnabled(false);
       });
     }
     // Show success popup
@@ -68,13 +90,7 @@ const ConnectBank = () => {
   };
   useEffect(() => {
     getBanks();
-    let loggedInUser = localStorage.getItem("user_details");
-    if (loggedInUser) {
-      const loggedInUsers = JSON.parse(loggedInUser);
-      if(loggedInUsers.isTrustedSeller){
-        setShowNewComponent(true);
-      }
-    }
+    //setShowNewComponent(true);
   }, []);
   return (
     <>
@@ -130,15 +146,18 @@ const ConnectBank = () => {
             />
             {errors.bicSwift && <p className="error">{errors.bicSwift}</p>}
           </div>
-            <button type="submit">Finish Setup</button>
+          <button type="submit" disabled={enabled}>
+            {isLoading ? "loading.." : "Finish Setup"}
+          </button>
           </form>
         </section>
-      ) : (
-        <SellingDetailsDashBoard /> // Render the new component when showNewComponent is true
+       ) : (
+         <SellingDetailsDashBoard /> // Render the new component when showNewComponent is true
       )}
 
       {/* Success Popup */}
       {showSuccessPopup && !showNewComponent && (
+      // {showSuccessPopup && (
         <div className="success-popupbank">
           <div className="success-popup-inner">
             <img src={Checkpay} alt="Check Pay" />

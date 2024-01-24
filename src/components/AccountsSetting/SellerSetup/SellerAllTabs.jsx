@@ -11,12 +11,13 @@ import CompleteOrderManagement from '../../OrderManagement/CompleteOrderManageme
 import RefundManagement from '../../OrderManagement/RefundManagement';
 import EditBankDetails from './EditBankDetails';
 import EditProfileSetup from './EditProfileSetup';
-
+import SetupSellerAccount from './SetupSellerAccount';
 const SellerAllTabs = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('selling1');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isOrderManagementOpen, setIsOrderManagementOpen] = useState(false);
   const [isOrderManagementOpens, setIsOrderManagementOpens] = useState(false);
+  const [trustedseller, setTrustedseller]= useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -70,6 +71,8 @@ const SellerAllTabs = () => {
         return null; // You can add the component for Transactions here
         case 'sellingss1':
         return <EditProfileSetup />;
+        case 'sellingss1b':
+        return <SetupSellerAccount />;
       case 'sellingss2':
         return <EditBankDetails />;
         case 'sellingss3':
@@ -79,7 +82,15 @@ const SellerAllTabs = () => {
     }
   };
 
-
+  useEffect(() => {
+    let loggedInUser = localStorage.getItem("user_details");
+    if (loggedInUser) {
+        const loggedInUsers = JSON.parse(loggedInUser);
+        if(loggedInUsers.isTrustedSeller == 1){
+          setTrustedseller(true)
+        }
+    }
+  }, []);
   return (
     <>
       <section id='activity-main-dashboard'>
@@ -134,9 +145,19 @@ const SellerAllTabs = () => {
                   {isOrderManagementOpens && (
                     <div className='dropp'>
                       <ul>
-                        <li className={selectedMenuItem === 'sellingss1' ? 'active' : ''} onClick={() => handleMenuItemClick('sellingss1')}>
-                        Business Profile Setting
-                        </li>
+                        {trustedseller ? (
+                          <>
+                          <li className={selectedMenuItem === 'sellingss1' ? 'active' : ''} onClick={() => handleMenuItemClick('sellingss1')}>
+                            Business Profile Setting
+                          </li>
+                          </>
+                        ):(
+                          <>
+                          <li className={selectedMenuItem === 'sellingss1b' ? 'active' : ''} onClick={() => handleMenuItemClick('sellingss1b')}>
+                            Business Profile Setting
+                          </li>
+                          </>
+                        )}
                         <li className={selectedMenuItem === 'sellingss2' ? 'active' : ''} onClick={() => handleMenuItemClick('sellingss2')}>
                         Bank account
                         </li>

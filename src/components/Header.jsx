@@ -19,6 +19,7 @@ const Header = () => {
   };
   const handleDropdownItemClick = (componentName) => {
     window.location.href = `/customerdashboard?component=${componentName}`;
+    // window.location.href = `/sellerdashboard?component=${componentName}`;
   };
   const getUser = () => {
     UserServices.detail()

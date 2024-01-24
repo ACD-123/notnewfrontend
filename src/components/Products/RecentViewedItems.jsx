@@ -32,47 +32,49 @@ const RecentViewedItems = () => {
         <section id='productcard' style={{ padding: "15px 0px" }}>
         <div className='container'>
           <div className='row'>
-             {productData.map((product) => (
-              <div className='col col-lg-2' key={product.products.guid}>
+            {productData.length > 0 ?(
+              <>
+              {productData.map((product) => (
+              <div className='col col-lg-2' key={product.products?.guid}>
                 <div className='productlist'>
-                  {product.auctioned ? (
+                  {product?.auctioned ? (
                     // <Link to={`/auctionproduct/${product.id}`}>
-                    <Link to={`/auctionproduct/${product.products.guid}`}>
+                    <Link to={`/auctionproduct/${product.products?.guid}`}>
                       <img src={ProductImage1} alt={ProductImage1} />
                       {/* <img src={product.cover_image} alt={product.name} /> */}
                     </Link>
                   ) : (
                     // <Link to={`/singleproduct/${product.id}`}>
-                    <Link to={`/singleproduct/${product.products.guid}`}>
+                    <Link to={`/singleproduct/${product.products?.guid}`}>
                       <img src={ProductImage1} alt={ProductImage1} />
                       {/* <img src={product.cover_image} alt={product.name} /> */}
                     </Link>
                   )}
-                  {product.auctioned ?(<span className='auction-badge'>Auction</span>) : ('')}
+                  {product?.auctioned ?(<span className='auction-badge'>Auction</span>) : ('')}
                   <div className='px-2'>
-                    {product.auctioned ? (
-                      <Link to={`/auctionproduct/${product.products.guid}`}>
-                        <h4>{product.products.description}</h4>
+                    {product?.auctioned ? (
+                      <Link to={`/auctionproduct/${product.products?.guid}`}>
+                        <h4>{product.products?.description}</h4>
                       </Link>
                     ) : (
                       <Link to={`/singleproduct/${product.guid}`}>
-                      <h4>{product.products.description}</h4>
+                      <h4>{product.products?.description}</h4>
                       </Link>
                     )}
                     <p>
                       <p>
                         <ul>
-                          {product.sale_price !== null && (
-                            <li className='price'>${product.products.sale_price}</li>
+                          {product?.sale_price !== null && (
+                            <li className='price'>${product.products?.sale_price}</li>
                           )}
-                          {product.price !== null && product.products.sale_price !== null && (
+                          {product.products?.price !== null && product.products?.sale_price !== null && (
                             <li className='sale'>
-                              <del>${product.products.price}</del>
+                              <del>${product.products?.price}</del>
                             </li>
                           )}
-                          {product.products.price !== null && product.products.sale_price !== null && (
+                          {product.products?.price !== null && product.products?.sale_price !== null && (
                             <li className='discount'>
-                              {((product.products.price - product.products.sale_price) / product.products.price * 100).toFixed(2)}% OFF
+                              {((product.products?.price - product.products?.sale_price) / product.products?.price * 100).toFixed(2)}% OFF
                             </li>
                           )}
                         </ul>
@@ -82,6 +84,8 @@ const RecentViewedItems = () => {
                 </div>
               </div>
             ))}
+              </>
+            ):('')}
           </div>
         </div>
       </section>
