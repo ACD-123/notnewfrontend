@@ -11,7 +11,7 @@ function all(params = {}) {
 
 function save(data) {
   return request({
-    url: baseUrl,
+    url: `${baseUrl}/add`,
     data,
     method: 'POST',
   })

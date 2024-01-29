@@ -93,7 +93,7 @@ const SetupSellerAccount = () => {
       .then(() => {
         setIsLoading(false);
         setEnabled(false);
-      });;
+      });
       // Set the formSubmitted state to true after form submission
       // setFormSubmitted(true);
     }

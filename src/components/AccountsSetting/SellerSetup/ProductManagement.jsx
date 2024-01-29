@@ -17,7 +17,8 @@ const ProductManagement = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Selected option:", selectedOption);
+    // console.log("Selected option:", selectedOption);
+    localStorage.setItem('product_condition', selectedOption);
     setSubmitted(true);
     setShowPopup(false);
   };

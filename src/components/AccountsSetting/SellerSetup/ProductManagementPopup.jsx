@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Chat from '../../CustomerDashboard/Chat';
-
+import { setCondition } from "../services/Auth"; // ~/services/Auth
 const ProductManagementPopup = () => {
     const [selectedOption, setSelectedOption] = useState('BrandNew');
   const [submitted, setSubmitted] = useState(false);
@@ -12,7 +12,9 @@ const ProductManagementPopup = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log("Selected option:", selectedOption);
-    setSubmitted(true);
+    setCondition(selectedOption);
+    // setSubmitted(true);
+    
   };
 
   // Function to render the selected component based on the option
@@ -33,7 +35,7 @@ const ProductManagementPopup = () => {
   return (
 
     <div className='seller-productmngement-popup'>
-         <h1>Select condition of your item</h1>
+         <h1>Select condition of your itemee</h1>
                   <p>This book is a treatise on the theory of ethics, very popular during the Renaissance. </p>
                   <form onSubmit={handleSubmit}>
       <label>

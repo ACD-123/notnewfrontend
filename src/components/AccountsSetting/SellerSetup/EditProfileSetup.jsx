@@ -30,6 +30,24 @@ const EditProfileSetup = () => {
         toast.error(e.message);
       });
   };
+  const getStates = () => {
+    State.all()
+      .then((response) => {
+        setState(response);
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  };
+  const getCities = () => {
+    City.all()
+      .then((response) => {
+        setCity(response);
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  };
   const handleCountryChange = (e) => {
     shopData.country_id = e.target.value;
     State.get(e.target.value)
@@ -126,6 +144,8 @@ const EditProfileSetup = () => {
       }
     }
     getCountry();
+    getStates();
+    getCities();
   }, []);
   return (
     <>

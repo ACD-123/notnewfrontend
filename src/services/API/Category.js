@@ -10,6 +10,12 @@ function all(params = {}) {
   })
 }
 
+function overAll(params = {}) {
+  return request({
+    url: `${baseUrl}/overAll`,
+    params,
+  })
+}
 function save(data) {
   return request({
     url: baseUrl,
@@ -44,6 +50,7 @@ const Category = {
   productAttributes,
   tabs,
   get,
+  overAll,
 }
 
 export default Category
