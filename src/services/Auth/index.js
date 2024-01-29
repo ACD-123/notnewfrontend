@@ -26,3 +26,5 @@ export const isLoggedin = () => {
   // }
   // return false
 }
+export const setCondition = (condition) =>
+    localStorage.setItem('condition', JSON.stringify(condition))
