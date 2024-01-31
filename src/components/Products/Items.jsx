@@ -8,8 +8,9 @@ const RecentViewedItems = () => {
     const [productData, setProductData] = useState([]);
     const fetchProductData = async () => {
       try {
-        ProductServices.recent()
+        ProductServices.all()
         .then((response) => {
+          console.log('response new', response)
         setProductData(response.slice(0, 6)); // Limit to the first 5 products
       })
       } catch (error) {
@@ -25,7 +26,7 @@ const RecentViewedItems = () => {
         <div className='container'>
             <div className='row'>
                 <div className='headings'>
-                <h3>New Recent Viewed Items <span><Link to="/singlecategory">View More</Link></span></h3>
+                <h3>New Items <span><Link to="/singlecategory">View More</Link></span></h3>
                 </div>
             </div>
         </div>
@@ -35,17 +36,17 @@ const RecentViewedItems = () => {
             {productData.length > 0 ?(
               <>
               {productData.map((product) => (
-              <div className='col col-lg-2' key={product.products?.guid}>
+              <div className='col col-lg-2' key={product?.guid}>
                 <div className='productlist'>
                   {product?.auctioned ? (
                     // <Link to={`/auctionproduct/${product.id}`}>
-                    <Link to={`/auctionproduct/${product.products?.guid}`}>
+                    <Link to={`/auctionproduct/${product?.guid}`}>
                       <img src={ProductImage1} alt={ProductImage1} />
                       {/* <img src={product.cover_image} alt={product.name} /> */}
                     </Link>
                   ) : (
                     // <Link to={`/singleproduct/${product.id}`}>
-                    <Link to={`/singleproduct/${product.products?.guid}`}>
+                    <Link to={`/singleproduct/${product?.guid}`}>
                       <img src={ProductImage1} alt={ProductImage1} />
                       {/* <img src={product.cover_image} alt={product.name} /> */}
                     </Link>
@@ -53,32 +54,32 @@ const RecentViewedItems = () => {
                   {product?.auctioned ?(<span className='auction-badge'>Auction</span>) : ('')}
                   <div className='px-2'>
                     {product?.auctioned ? (
-                      <Link to={`/auctionproduct/${product.products?.guid}`}>
-                        <h4>{product.products?.description.substring(0, 40)}...</h4>
+                      <Link to={`/auctionproduct/${product?.guid}`}>
+                        $ {product.price}
+                        <h4>{product?.description.substring(0, 40)}...</h4>
                       </Link>
                     ) : (
                       <Link to={`/singleproduct/${product.guid}`}>
-                      <h4>{product.products?.description.substring(0, 40)}...</h4>
+                      $ {product.price}
+                      <h4>{product?.description.substring(0, 40)}...</h4>
                       </Link>
                     )}
                     <p>
-                      <p>
                         <ul>
-                          {product?.products.price !== null && (
-                            <li className='price'>${product.products?.price}</li>
+                          {product?.sale_price !== null && (
+                            <li className='price'>${product?.sale_price ? product?.sale_price : 0}</li>
                           )}
-                          {product.products.products?.price !== null && product.products?.sale_price !== null && (
+                          {product?.price !== null && product?.sale_price !== null && (
                             <li className='sale'>
-                              <del>${product.products?.price}</del>
+                              <del>${product?.price ? product?.price : 0}</del>
                             </li>
                           )}
-                          {product.products?.price !== null && product.products?.sale_price !== null && (
+                          {product?.price !== null && product?.sale_price !== null && (
                             <li className='discount'>
-                              {((product.products?.price - product.products?.sale_price) / product.products?.price * 100).toFixed(2)}% OFF
+                              {((product?.price - product?.sale_price) / product?.price * 100).toFixed(2)}% OFF
                             </li>
                           )}
                         </ul>
-                      </p>
                     </p>
                   </div>
                 </div>

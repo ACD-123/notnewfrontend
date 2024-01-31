@@ -7,6 +7,7 @@ import SingleProductSidebar from './SingleProductElements/SingleProductSidebar'
 import RecentViewedItems from "../RecentViewedItems"
 import ProductTabs from "./SingleProductElements/ProductTabs"
 import SellerDetails from '../../Seller/SellerDetails'
+
 const SingleProduct = () => {
   return (
     <>
@@ -16,12 +17,9 @@ const SingleProduct = () => {
     <section id='single-product' style={{padding: "40px 0px"}}>
       <div className='container'>
         <div className='row'>
-
           <div className='col-lg-5'>
             <ProductGallery />
-
-          </div>
-
+        </div>
           <div className='col-lg-5'>
             <ProductInformation />
           </div>

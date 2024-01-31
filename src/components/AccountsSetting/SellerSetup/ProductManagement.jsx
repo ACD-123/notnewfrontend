@@ -22,17 +22,20 @@ const ProductManagement = () => {
     setSubmitted(true);
     setShowPopup(false);
   };
-
+  const  handleCallback = (childData) => {
+    setSelectedOption(childData)
+    console.log('childData',childData)
+  }
   const renderSelectedComponent = () => {
     switch (selectedOption) {
       case 'BrandNew':
-        return submitted ? <ListingForm /> : null;
+        return submitted ? <ListingForm parentCallback={handleCallback} /> : null;
       case 'Used':
-        return submitted ? <ListingForm /> : null;
+        return submitted ? <ListingForm parentCallback={handleCallback} /> : null;
       case 'Refurbished':
-        return submitted ? <ListingForm /> : null;
+        return submitted ? <ListingForm parentCallback={handleCallback} /> : null;
       case 'Vintage':
-        return submitted ? <ListingForm /> : null;
+        return submitted ? <ListingForm parentCallback={handleCallback} /> : null;
       default:
         return null;
     }
@@ -121,9 +124,9 @@ const ProductManagement = () => {
           </div>
           <div className='row'>
             {/* Render different content based on activeTab */}
-            {activeTab === 'active' && !submitted && <ProductCard />}
-            {activeTab === 'inactive' && !submitted && <ProductCard />}
-            {activeTab === 'scheduled' && !submitted && <ProductCard />}
+            {activeTab === 'active' && !submitted && <ProductCard status='active' />}
+            {activeTab === 'inactive' && !submitted && <ProductCard status='inactive' />}
+            {activeTab === 'scheduled' && !submitted && <ProductCard status='scheduled' />}
           </div>
         </section>
       )}
