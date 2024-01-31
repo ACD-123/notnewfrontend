@@ -4,7 +4,7 @@ import { BASE_API } from '../Constant'
 const baseUrl = `${BASE_API}products`
 function all(params = {}) {
   return request({
-    url: baseUrl,
+    url: `${baseUrl}/`,
     params,
   })
 }
@@ -96,8 +96,14 @@ function removeImage(mediaId) {
 
 function self(params = {}) {
   return request({
-    url: `${baseUrl}/self`,
+    url: `${baseUrl}/self/`,
     params,
+  })
+}
+
+function selfValue(value) {
+  return request({
+    url: `${baseUrl}/self/${value}`
   })
 }
 
@@ -216,6 +222,13 @@ function recent(params = {}) {
     params,
   })
 }
+function createRecent(data) {
+  return request({
+    url: `${baseUrl}/createRecent`,
+    data,
+    method: 'POST',
+  })
+}
 const ProductServices = {
   all,
   save,
@@ -246,7 +259,9 @@ const ProductServices = {
   checkUserProductOffer,
   flexefee,
   getSavedAddress,
-  recent
+  recent,
+  selfValue,
+  createRecent,
 }
 
 export default ProductServices

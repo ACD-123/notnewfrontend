@@ -15,16 +15,17 @@ import {
   getUserDetails,
 } from "../../../services/Auth"; // ~/services/Auth
 
-const ListingForm = () => {
+const ListingForm = (props) => {
   // Popup
   const [showPopup, setShowPopup] = useState(false); // State for showing the popup
   // Shipping duration
   const [shippingStart, setShippingStart] = useState("");
   const [shippingEnd, setShippingEnd] = useState("");
-  const [isToggled, setIsToggled] = useState(true);
+  const [isToggled, setIsToggled] = useState(false);
   const [isToggled1, setIsToggled1] = useState(isToggled);
   const [buyNow, setBuyNow] = useState(false);
   const [listing, setListing] = useState(false);
+  const [scheduled, setScheduled] = useState(false);
   const [domestic, setDomestic] = useState(false);
   const [international, setInternational] = useState("");
   const [deliverCompany, setDeliverCompany] = useState("");
@@ -47,8 +48,10 @@ const ListingForm = () => {
   const [enabled, setEnabled] = useState(false);
   const [categories, setCategories] = useState({});
   const [category, setCategory] = useState({});
+  const [auctions, setAuctions] = useState(false);
   const [product, setProduct] = useState({
     images: [],
+    scheduled:false,
     title: "",
     model: "",
     category: "",
@@ -103,38 +106,56 @@ const ListingForm = () => {
     // setShowPopup(true);
   };
   const handleShippingStartChange = (e) => {
+    product.shippingstart = e.target.value;
+    // product.shippingend 
     setShippingStart(e.target.value);
   };
   const handleShippingEndChange = (e) => {
+    product.shippingend = e.target.value;
     setShippingEnd(e.target.value);
   };
-  const handleDomestic = () => {
+  const handleDomestic = (e) => {
+    console.log("handle domestic", e.target.value);
+    product.deliverddomestic = e.target.value;
     setDomestic(!domestic);
   };
-  const handleInternational = () => {
+  const handleInternational = (e) => {
+    console.log("international", e.target.value);
+    product.deliverdinternational = e.target.value;
     setInternational(!international);
   };
   const handleDeliverCompany = (e) => {
+    product.deliverycompany = e.target.value;
     setDeliverCompany(e.target.value);
   };
-  // const handleCountry = (e) =>{
-  //   setCountry(e.target.value)
-  // };
-  const handleToggle = () => {
+  const handleToggle = (e) => {
+    product.sellingNow = e.target.value;
     setIsToggled(!isToggled);
+  };
+  const handleAuctions = (e) => {
+    product.auctions = e.target.value;
+    setAuctions(!auctions);
   };
   const handleToggle1 = () => {
     setIsToggled1(!isToggled1);
   };
-  const handleBuynow = () => {
+  const handleBuynow = (e) => {
+    product.buyitnow = e.target.value;
     setBuyNow(!buyNow);
   };
-  const handleLisitng = () => {
+  const handleScheduled = (e) =>{
+    product.scheduled = e.target.value;
+    setScheduled(!scheduled)
+    
+  }
+  const handleLisitng = (e) => {
+    product.listing = e.target.value;
     setListing(!listing);
   };
 
   const handleCategory = (e) => {
     const cat = e.target.value;
+    product.category = e.target.value;
     setCategory(cat);
   };
   const handleInputChange = (e, index) => {
@@ -186,41 +207,82 @@ const ListingForm = () => {
     if (!product.model) {
       newErrors.model = "Model is required";
     }
-    if (!category) {
+    if (!product.category) {
       newErrors.category = "Category is required";
     }
     if (!product.brand) {
       newErrors.brand = "Brand is required";
     }
-    if(!product.stockCapacity || product.stockCapacity === 0){
+    if (!product.stockCapacity || product.stockCapacity === 0) {
       newErrors.stockCapacity = "Stock Capacity is required";
     }
-    if(!product.description){
+    if (!product.description) {
       newErrors.description = "Description is required";
     }
+    // if (!product.sellingNow || !product.auctions) {
+    //   newErrors.sellingNow = "Buy it Now is required";
+    // }
+    if (!product.price) {
+      newErrors.price = "Price is required";
+    }
+    if (!product.listing) {
+      newErrors.listing = "Listing is required";
+    }
+    if (!product.buyitnow) {
+      newErrors.buyitnow = "Buy it Now is required";
+    }
+    if (!product.deliverycompany) {
+      newErrors.deliverycompany = "Deliver Company is required";
+    }
+    // if(!product.deliverddomestic || !product.deliverdinternational){
+    //   newErrors.deliverdomestically = "Deliver is required";
+    // }
+    if(!product.country){
+      newErrors.country = "Country is required";
+    }
+    if(!product.states){
+      newErrors.states = "States is required";
+    }
+    if(!product.city){
+      newErrors.city = "City is required";
+    }
+    if(!product.shippingprice){
+      newErrors.shippingprice = "Shipping Price is required";
+    }
+   
+    if(!product.shippingstart && !product.shippingstart){
+      newErrors.shippingstartend = "Shipping Start and End is required";
+    }
+    if(!product.returnshippingpaidby){
+      newErrors.returnshippingpaidby = "Shipping Paid By is required";
+    }
+    if(!product.returnshippinglocation){
+      newErrors.returnshippinglocation = "Shipping Locations is required";
+    }
+    if(!product.returndurationlimit){
+      newErrors.returndurationlimit = "Shipping Duration Limit is required";
+    }
+    if(!product.returnshippingprice){
+      newErrors.returnshippingprice = "Shipping Price is required";
+    }
+    console.log('newErrors', newErrors)
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-
-        product.sellingNow = buyNow;
-        product.auctions = isToggled1;
-        product.price = price;
-        product.listing = listing;
-        product.buyitnow = isToggled;
-        product.deliverddomestic = domestic;
-        product.deliverdinternational = international;
-        product.deliverycompany = deliverCompany;
-        product.shippingprice = prices;
-        product.shippingstart = shippingStart;
-        product.shippingend = shippingEnd;
-        product.category = category;
-        product.condition = localStorage.getItem("product_condition");
+      product.condition = localStorage.getItem("product_condition");
+      product.scheduled = scheduled;
       setIsLoading(true);
       setEnabled(true);
+      // console.log('product', product)
       ProductServices.save(product)
         .then((response) => {
-          toast.success(response);
+          // toast.success(response.message);
+          setShowPopup(true);
           setIsLoading(false);
           setEnabled(false);
+          localStorage.removeItem('product_condition');
+          setTimeout(() => {
+            props.parentCallback(null)  
+          }, 4000);
         })
         .then(() => {
           setIsLoading(false);
@@ -231,22 +293,29 @@ const ListingForm = () => {
   };
 
   const handlePriceChange = (e) => {
+    product.price = e.target.value;
     setPrice(e.target.value);
   };
   const handlePriceChanges = (e) => {
+    product.shippingprice = e.target.value;
     setPrices(e.target.value);
   };
   const handleRefundprice = (e) => {
+    product.returnshippingprice = e.target.value;
     setRefund(e.target.value);
   };
   const handleReturnLimit = (e) => {
+    product.returndurationlimit = e.target.value;
     setreturnLimit(e.target.value);
   };
-  const handleReturnPaidBy = (e) =>{
+  const handleReturnPaidBy = (e) => {
     product.returnshippingpaidby = e.target.value;
     setReturnPaidBy(e.target.value);
-  }
-
+  };
+  const handleShippingLocation = (e) => {
+    product.returnshippinglocation = e.target.value;
+  };
+  // 
   // Static simulation of states and cities data
   const statesData = [
     { id: "state1", name: "State 1" },
@@ -275,6 +344,7 @@ const ListingForm = () => {
     setState(val);
   };
   const handleCity = (val) => {
+    product.city = val
     setCity(val);
   };
   // Function to update states based on the selected country (simulated for demonstration)
@@ -369,6 +439,20 @@ const ListingForm = () => {
           of the item that describe it well.
         </p>
         <h4>ITEM SPECIFICS</h4>
+        <div className="listschedule1">
+          <div>Scheduled</div>
+          <div>
+            <label className="switch3">
+              <input
+                type="checkbox"
+                value={product.scheduled}
+                checked={product.scheduled}
+                onChange={handleScheduled}
+              />
+              <span className="slider3 round3"></span>
+            </label>
+          </div>
+        </div>
         <input
           type="text"
           placeholder="Product Title"
@@ -428,7 +512,9 @@ const ListingForm = () => {
               onChange={handleInputChange}
             />
           </label>
-          {errors.stockCapacity && <p className="error">{errors.stockCapacity}</p>}
+          {errors.stockCapacity && (
+            <p className="error">{errors.stockCapacity}</p>
+          )}
         </div>
         {product.sizes.map((size, index) => (
           <div className="sizequntycolr" key={index}>
@@ -476,8 +562,9 @@ const ListingForm = () => {
                   <label className="switch1">
                     <input
                       type="checkbox"
-                      checked={buyNow}
-                      value={buyNow}
+                      checked={isToggled}
+                      value={isToggled}
+                      name={product.sellingNow}
                       onChange={handleToggle}
                     />
                     <span className="slider1 round1"></span>
@@ -490,8 +577,8 @@ const ListingForm = () => {
                   <label className="switch1">
                     <input
                       type="checkbox"
-                      checked={isToggled1}
-                      onChange={handleToggle1}
+                      checked={auctions}
+                      onChange={handleAuctions}
                     />
                     <span className="slider1 round1"></span>
                   </label>
@@ -499,6 +586,7 @@ const ListingForm = () => {
               </div>
             </div>
           )}
+          {errors.buyitnow && <p className="error">{errors.buyitnow}</p>}
         </div>
         <div className="set-price">
           <div>Set Price</div>
@@ -506,39 +594,42 @@ const ListingForm = () => {
             <input
               type="text"
               placeholder="$"
-              value={price}
+              name={product.price}
+              value={product.price}
               onChange={handlePriceChange}
             />
           </div>
         </div>
+        {errors.price && <p className="error">{errors.price}</p>}
         <div className="listschedule">
           <div>Schedule your Listing</div>
           <div>
             <label className="switch2">
               <input
                 type="checkbox"
-                checked={listing}
+                checked={product.listing}
                 onChange={handleLisitng}
               />
               <span className="slider2 round2"></span>
             </label>
           </div>
         </div>
+        {errors.listing && <p className="error">{errors.listing}</p>}
         <div className="listschedule1">
           <div>Buy it now</div>
           <div>
             <label className="switch3">
               <input
                 type="checkbox"
-                value={buyNow}
-                checked={buyNow}
+                value={product.buyitnow}
+                checked={product.buyitnow}
                 onChange={handleBuynow}
               />
               <span className="slider3 round3"></span>
             </label>
           </div>
         </div>
-
+        {errors.buyitnow && <p className="error">{errors.buyitnow}</p>}
         <div className="pricing">
           <h4>SHIPPING</h4>
           <li onClick={() => setShowContents(!showContents)}>
@@ -552,7 +643,8 @@ const ListingForm = () => {
                   <label className="switch1">
                     <input
                       type="checkbox"
-                      checked={domestic}
+                      value={product.deliverddomestic}
+                      checked={product.deliverddomestic}
                       onChange={handleDomestic}
                     />
                     <span className="slider1 round1"></span>
@@ -565,7 +657,8 @@ const ListingForm = () => {
                   <label className="switch1">
                     <input
                       type="checkbox"
-                      checked={international}
+                      checked={product.deliverdinternational}
+                      value={product.deliverdinternational}
                       onChange={handleInternational}
                     />
                     <span className="slider1 round1"></span>
@@ -575,6 +668,9 @@ const ListingForm = () => {
             </div>
           )}
         </div>
+        {errors.deliverdomestically && (
+          <p className="error">{errors.deliverdomestically}</p>
+        )}
         <div className="delivery-company">
           <div>Select Delivery Company</div>
           <div>
@@ -590,6 +686,9 @@ const ListingForm = () => {
             </select>
           </div>
         </div>
+        {errors.deliverycompany && (
+          <p className="error">{errors.deliverycompany}</p>
+        )}
         <div className="delivery-company">
           <div>Select Country</div>
           <div>
@@ -613,13 +712,14 @@ const ListingForm = () => {
             </select>
           </div>
         </div>
+        {errors.country && <p className="error">{errors.country}</p>}
         {locations.map((location, index) => (
           <div className="row" key={index}>
             <div className="col-lg-6">
               <div className="delivery-company">
                 <div>Select States</div>
                 <div>
-                  <select onChange={(e) => handleStateChange(e)}>
+                  <select value={product.states} onChange={(e) => handleStateChange(e)}>
                     <option>Select a States</option>
                     {state.length > 0 ? (
                       <>
@@ -638,6 +738,7 @@ const ListingForm = () => {
                   </select>
                 </div>
               </div>
+              {errors.states && <p className="error">{errors.states}</p>}
             </div>
             <div className="col-lg-6">
               <div className="delivery-company">
@@ -653,6 +754,7 @@ const ListingForm = () => {
                   </select>
                 </div>
               </div>
+              {errors.city && <p className="error">{errors.city}</p>}
             </div>
           </div>
         ))}
@@ -671,11 +773,12 @@ const ListingForm = () => {
             <input
               type="text"
               placeholder="$"
-              value={prices}
+              value={product.shippingprice}
               onChange={handlePriceChanges}
             />
           </div>
         </div>
+        {errors.shippingprice && <p className="error">{errors.shippingprice}</p>}
         {/* Add the Shipping Duration inputs */}
         <div className="shipping-duration">
           <div>Shipping Duration</div>
@@ -695,7 +798,7 @@ const ListingForm = () => {
               <input
                 type="text"
                 placeholder="To"
-                value={shippingEnd}
+                value={product.shippingend}
                 onChange={handleShippingEndChange}
               />
             </div>
@@ -704,28 +807,31 @@ const ListingForm = () => {
             </div>
           </div>
         </div>
+        {errors.shippingstartend && <p className="error">{errors.shippingstartend}</p>}
         <div className="set-price">
           <div>Return Shipping Price</div>
           <div>
             <input
               type="text"
               placeholder="$"
-              value={refund}
+              value={product.returnshippingprice}
               onChange={handleRefundprice}
             />
           </div>
         </div>
+        {errors.returnshippingprice && <p className="error">{errors.returnshippingprice}</p>}
         <div className="set-price">
           <div>Return Duration limit</div>
           <div>
             <input
               type="text"
               placeholder="0 Days"
-              value={returnLimit}
+              value={product.returndurationlimit}
               onChange={handleReturnLimit}
             />
           </div>
         </div>
+        {errors.returndurationlimit && <p className="error">{errors.returndurationlimit}</p>}
         <div className="delivery-company">
           <div>Return shipping price paid by</div>
           <div>
@@ -742,11 +848,15 @@ const ListingForm = () => {
             </select>
           </div>
         </div>
+        {errors.returnshippingpaidby && <p className="error">{errors.returnshippingpaidby}</p>}
         <div className="delivery-company">
           <div>Return Shipping Location</div>
           <div>
-            <select>
-              <option>All Countries</option>
+            <select
+             value={product.returnshippinglocation}
+             onChange={handleShippingLocation}
+            >
+              <option value="">All Countries</option>
               {country.length > 0 ? (
                 <>
                   {country.map((country) => (
@@ -759,6 +869,7 @@ const ListingForm = () => {
             </select>
           </div>
         </div>
+        {errors.returnshippinglocation && <p className="error">{errors.returnshippinglocation}</p>}
         <div className="row actvtebuttns">
           <div className="col-lg-6">
             <Link to="/singleproduct" style={{ textDecoration: "none" }}>
@@ -775,20 +886,23 @@ const ListingForm = () => {
             {/* <button className="btn2" onClick={handleActivateProduct} type="submit" style={{ marginTop: "10px" }}>
          Activate Product
           </button> */}
-            <button
+            {/* <button
               type="submit"
               className="btn2"
               style={{ marginTop: "10px" }}
             >
               Activate Product
-            </button>
+            </button> */}
+            <button className="btn2" style={{ marginTop: "10px" }} disabled={enabled} type="submit">
+              {isLoading ? "loading.." : "Activate Product"}
+              </button>
           </div>
         </div>
         <div className="popup">
           {/* Popup for successful product activation */}
           {showPopup && (
             <div className="listing-activated">
-              <div className="innerlisting-activated">
+            <div className="innerlisting-activated">
                 <img src={Checkimg} />
                 <h2>Product Listed Successfully</h2>
                 <p>We hope you enjoy selling on our platform</p>

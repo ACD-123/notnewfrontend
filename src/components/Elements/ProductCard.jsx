@@ -56,14 +56,42 @@ import { toast } from "react-toastify";
   
 //   // Add more products as needed
 // ];
-const ProductCard = () => {
+const ProductCard = (props) => {
+  // console.log('props', props.status)
+  let status = props.status
   const [productData, setProductData] = useState([]);
   const fetchProductData = async () => {
+    // console.log('status',status)
     try {
-      ProductServices.all()
-      .then((response) => {
-      setProductData(response.slice(0, 6)); // Limit to the first 5 products
-    })
+      if(status == 'active'){
+        ProductServices.selfValue(status)
+        .then((response) => {
+          if(response.data.length > 0){
+            setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+          }
+        }) 
+      }else if(status == 'inactive'){
+        ProductServices.selfValue(status)
+        .then((response) => {
+          if(response.data.length > 0){
+            setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+          }
+        }) 
+      }else if(status == 'scheduled'){
+        ProductServices.selfValue(status)
+        .then((response) => {
+          if(response.data.length > 0){
+            setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+          }
+        }) 
+      }else{
+        ProductServices.all()
+        .then((response) => {
+          if(response.data){
+            setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+          }
+        })        
+      }
     } catch (error) {
       toast.error(error);
     }
@@ -76,56 +104,60 @@ const ProductCard = () => {
       <section id='productcard' style={{ padding: "15px 0px" }}>
         <div className='container'>
           <div className='row'>
-             {productData.map((product) => (
+            {productData.length > 0 ?(
+              <>
+              {productData.map((product) => (
               <div className='col col-lg-2' key={product.guid}>
                 <div className='productlist'>
-                  {product.auctioned ? (
-                    // <Link to={`/auctionproduct/${product.id}`}>
-                    <Link to={`/auctionproduct/${product.guid}`}>
-                      <img src={ProductImage1} alt={ProductImage1} />
-                      {/* <img src={product.cover_image} alt={product.name} /> */}
-                    </Link>
-                  ) : (
-                    // <Link to={`/singleproduct/${product.id}`}>
-                    <Link to={`/singleproduct/${product.guid}`}>
-                      <img src={ProductImage1} alt={ProductImage1} />
-                      {/* <img src={product.cover_image} alt={product.name} /> */}
-                    </Link>
-                  )}
-                  {product.auctioned ?(<span className='auction-badge'>Auction</span>) : ('')}
-                  <div className='px-2'>
                     {product.auctioned ? (
+                      // <Link to={`/auctionproduct/${product.id}`}>
                       <Link to={`/auctionproduct/${product.guid}`}>
-                        <h4>{product.description}</h4>
+                        <img src={ProductImage1} alt={ProductImage1} />
+                        {/* <img src={product.cover_image} alt={product.name} /> */}
                       </Link>
                     ) : (
+                      // <Link to={`/singleproduct/${product.id}`}>
                       <Link to={`/singleproduct/${product.guid}`}>
-                      <h4>{product.description}</h4>
+                        <img src={ProductImage1} alt={ProductImage1} />
+                        {/* <img src={product.cover_image} alt={product.name} /> */}
                       </Link>
                     )}
-                    <p>
+                    {product.auctioned ?(<span className='auction-badge'>Auction</span>) : ('')}
+                    <div className='px-2'>
+                      {product.auctioned ? (
+                        <Link to={`/auctionproduct/${product.guid}`}>
+                          <h4>{product.description}</h4>
+                        </Link>
+                      ) : (
+                        <Link to={`/singleproduct/${product.guid}`}>
+                        <h4>{product.description}</h4>
+                        </Link>
+                      )}
                       <p>
-                        <ul>
-                          {product.sale_price !== null && (
-                            <li className='price'>${product.sale_price}</li>
-                          )}
-                          {product.price !== null && product.sale_price !== null && (
-                            <li className='sale'>
-                              <del>${product.price}</del>
-                            </li>
-                          )}
-                          {product.price !== null && product.sale_price !== null && (
-                            <li className='discount'>
-                              {((product.price - product.sale_price) / product.price * 100).toFixed(2)}% OFF
-                            </li>
-                          )}
-                        </ul>
+                        <p>
+                          <ul>
+                            {product.sale_price !== null && (
+                              <li className='price'>${product.sale_price}</li>
+                            )}
+                            {product.price !== null && product.sale_price !== null && (
+                              <li className='sale'>
+                                <del>${product.price}</del>
+                              </li>
+                            )}
+                            {product.price !== null && product.sale_price !== null && (
+                              <li className='discount'>
+                                {((product.price - product.sale_price) / product.price * 100).toFixed(2)}% OFF
+                              </li>
+                            )}
+                          </ul>
+                        </p>
                       </p>
-                    </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+              </>
+            ):('No Product Exists')}
           </div>
         </div>
       </section>
