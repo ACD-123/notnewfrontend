@@ -22,7 +22,7 @@ const SellerDetails = () => {
                         <div className='profile-record'>
                             <h4>NotNew_Official Store</h4>
                             <ul>
-                                <li>90% Positive feedback</li>
+                                <li>90% Positive feedbackss</li>
                                 <li>125k Followers</li>
                                 <li>6.7M Items Sold</li>
                             </ul>

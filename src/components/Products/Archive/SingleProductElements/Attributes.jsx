@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import ProductServices from '../../../../services/API/ProductServices'; //~/services/API/ProductServices
+import React, { useState, useEffect } from "react";
+import ProductServices from "../../../../services/API/ProductServices"; //~/services/API/ProductServices
 
 const Attribute = () => {
   const [productData, setProductData] = useState([]);
   const [attributes, setProductAttributes] = useState([]);
+  const [colors, setColors]=useState([]);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
 
-  const getProduct =() =>{
-    ProductServices.get(id)
-      .then((response) => {
-        setProductAttributes(JSON.parse(response.attributes))
-        setProductData(response)
-      }) 
-  }
+  const getProduct = () => {
+    ProductServices.get(id).then((response) => {
+      setProductAttributes(JSON.parse(response.attributes));
+      setColors(JSON.parse(response.available_colors));
+      setProductData(response);
+    });
+  };
   useEffect(() => {
     getProduct();
   }, []);
@@ -21,103 +22,122 @@ const Attribute = () => {
   const products = [
     {
       id: 1,
-      name: 'Product 1',
+      name: "Product 1",
       quantity: 12,
-      colors: ['Red', 'Blue', 'Green'],
-      sizes: ['Small', 'Medium', 'Large'],
+      colors: ["Red", "Blue", "Green"],
+      sizes: ["Small", "Medium", "Large"],
     },
     {
       id: 2,
-      name: 'Product 2',
+      name: "Product 2",
       quantity: 8,
-      colors: ['Black', 'White', 'Yellow'],
-      sizes: ['Medium', 'Large', 'Extra Large'],
+      colors: ["Black", "White", "Yellow"],
+      sizes: ["Medium", "Large", "Extra Large"],
     },
     {
       id: 3,
-      name: 'Product 3',
+      name: "Product 3",
       quantity: 15,
-      colors: ['Pink', 'Purple', 'Orange'],
-      sizes: ['Small', 'Large', 'Extra Large'],
+      colors: ["Pink", "Purple", "Orange"],
+      sizes: ["Small", "Large", "Extra Large"],
     },
     // Add more products as needed
   ];
+      
 
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [selectedColor, setSelectedColor] = useState(products[0].colors[0]);
   const [selectedSize, setSelectedSize] = useState(products[0].sizes[0]);
+  let quantityList = [];
+  let sizeList = [];
   let quantity = 0;
+  let sizes = 0;
   return (
     <div className="product-attributes">
-      {attributes.length > 0?(
+      {attributes.length > 0 ? (
         <>
           <div className="inner-attributes">
             {attributes.map((item) => {
               quantity = item.quantity;
-            return(
-              <>
-              <label htmlFor="quantity">Quantity Available:</label>
-              {item.quantity}
-              </>
-            ) 
+              for (let i = 0; i < quantity; i++) {
+                quantityList.push(
+                  <option key={i + 1} value={i + 1}>
+                    {i + 1}
+                  </option>
+                );
+              }
+              return (
+                <>
+                  <label htmlFor="quantity">Quantity Available:</label>
+                  {item.quantity}
+                </>
+              );
             })}
           </div>
           <div className="inner-attributes">
-          <label htmlFor="quantity">Quantity:</label>
-          <select
-            id="quantity"
-            value={selectedQuantity}
-            onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
-          >
-            <option value="0">Select Qauntity</option>
-            {
-              quantity?.map((val) => {
-                return(
-                  <option key={val + 1} value={val + 1}>
-                    {val + 1}
-                  </option>
-                )
-              })
-            }
-            {/* {[...Array(quantity).keys()].map((val) => {
-              return(
-                <option key={val + 1} value={val + 1}>
-                  {val + 1}
+            <label htmlFor="quantity">Quantity:</label>
+            <select
+              id="quantity"
+              value={selectedQuantity}
+              onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
+            >
+              <option value="0">Select Qauntity</option>
+              {quantityList.length > 0 ? <>{quantityList}</> : ""}
+            </select>
+          </div>
+          <div className="inner-attributes">
+            <label htmlFor="color">Color:</label>
+            <a href="#" onClick={(e) =>  setSelectedColor(colors)} style={{ width: '50%',  backgroundColor : colors, color: colors}}>available colors</a>
+            {/* {colors} */}
+            {/* <select
+              id="color"
+              value={selectedColor}
+              onChange={(e) => setSelectedColor(e.target.value)}
+            >
+              <option value="0">Select Select</option>
+              {colors.length > 0 ?(
+                  <>
+                  {colors.map((color) => (
+                    <option key={color} value={color}>
+                      <span style={{ backgroundColor: colors}}>color</span> 
+                    </option>
+                  ))}
+                  </>
+                ):('')
+
+              } */}
+              {/* {products[0].colors.map((color) => (
+                <option key={color} value={color}>
+                  {color}
                 </option>
+              ))} */}
+            {/* </select> */}
+          </div>
+          <div className="inner-attributes">
+            <label htmlFor="size">Size:</label>
+            <select
+              id="size"
+              value={selectedSize}
+              onChange={(e) => setSelectedSize(e.target.value)}
+            >
+              <option value="0">Select Sizes</option>
+              {attributes.map((item) => {
+              sizes = item.size;
+              for (let i = 0; i < sizes; i++) {
+                sizeList.push(
+                  <option key={i + 1} value={i + 1}>
+                    {i + 1}
+                  </option>
+                );
+              }
+              return(
+                sizeList
               )
-            })} */}
-          </select>
-        </div>
-        <div className="inner-attributes">
-          <label htmlFor="color">Color:</label>
-          <select
-            id="color"
-            value={selectedColor}
-            onChange={(e) => setSelectedColor(e.target.value)}
-          >
-            {products[0].colors.map((color) => (
-              <option key={color} value={color}>
-                {color}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="inner-attributes">
-          <label htmlFor="size">Size:</label>
-          <select
-            id="size"
-            value={selectedSize}
-            onChange={(e) => setSelectedSize(e.target.value)}
-          >
-            {products[0].sizes.map((size) => (
-              <option key={size} value={size}>
-                {size}
-              </option>
-            ))}
-          </select>
-        </div>
+            })}
+            </select>
+          </div>
         </>
-      ):(
+      ) : (
         ""
       )}
     </div>

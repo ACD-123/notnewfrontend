@@ -785,7 +785,7 @@ const ListingForm = (props) => {
           <div className="dyss">
             <div>
               <input
-                type="text"
+                type="date"
                 placeholder="From"
                 value={shippingStart}
                 onChange={handleShippingStartChange}
@@ -796,7 +796,7 @@ const ListingForm = (props) => {
             </div>
             <div>
               <input
-                type="text"
+                type="date"
                 placeholder="To"
                 value={product.shippingend}
                 onChange={handleShippingEndChange}

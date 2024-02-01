@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import ProductServices from "../../../../services/API/ProductServices"; //~/services/API/ProductServices
+
 import ShippingPolicyData from './ShippingPolicyData';
 const ProductTabs = () => {
   const [selectedTab, setSelectedTab] = useState('aboutProduct');
+  const [productData, setProductData] = useState([]);
+  const { pathname } = window.location;
+  const id = pathname.split("/").pop();
 
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
   };
-
+  const getProduct = () => {
+    ProductServices.get(id).then((response) => {
+      setProductData(response);
+    });
+  };  
+  useEffect(() => {
+    getProduct();
+  }, []);
   return (
     <div className="product-details">
       <div className="tabs">
@@ -33,31 +45,27 @@ const ProductTabs = () => {
                 <tbody>
                     <tr>
                         <th>Product Name</th>
-                        <td>Sketch Stripe Yellow Joggs</td>
+                        <td>{productData.name}</td>
                     </tr>
                     <tr>
                         <th>Brand</th>
-                        <td>Nike, Nike Z</td>
+                        <td>{productData.brand}</td>
                     </tr>
                     <tr>
-                        <th>Product Name</th>
-                        <td>Sketch Stripe Yellow Joggs</td>
+                        <th>Model</th>
+                        <td>{productData.model}</td>
                     </tr>
                     <tr>
-                        <th>Brand</th>
-                        <td>No</td>
+                        <th>Condition</th>
+                        <td>{productData.condition}</td>
                     </tr>
                     <tr>
-                        <th>Product Name</th>
-                        <td>Sketch Stripe Yellow Joggs</td>
+                        <th>Deliver Company</th>
+                        <td>{productData.company}</td>
                     </tr>
                     <tr>
-                        <th>Brand</th>
-                        <td>Yes</td>
-                    </tr>
-                    <tr>
-                        <th>Product Name</th>
-                        <td>Sketch Stripe Yellow Joggs</td>
+                        <th>Shipping Price</th>
+                        <td>$ {productData.shipping_price}</td>
                     </tr>
                 </tbody>
             </table>
