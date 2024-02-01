@@ -64,10 +64,10 @@ const RecentViewedItems = () => {
                     <p>
                       <p>
                         <ul>
-                          {product?.products.price !== null && (
+                          {product.products?.price !== null && (
                             <li className='price'>${product.products?.price}</li>
                           )}
-                          {product.products.products?.price !== null && product.products?.sale_price !== null && (
+                          {product.products?.price !== null && product.products?.sale_price !== null && (
                             <li className='sale'>
                               <del>${product.products?.price}</del>
                             </li>
