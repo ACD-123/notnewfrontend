@@ -10,6 +10,12 @@ import GetSurprisedBanner from "../components/Elements/GetSurprisedBanner"
 import FeaturedProducts from "../components/Products/Archive/FeaturedProducts"
 
 const Home = () => {
+	// window.onunload = function (e) {
+	// 	const newTabCount = localStorage.getItem('tabsOpen')
+	// 	if (newTabCount !== null) {
+	// 	  localStorage.setItem('tabsOpen', newTabCount - 1)
+	// 	}
+	//   }
 	return (
 		<>
 			{/* Header Include */}

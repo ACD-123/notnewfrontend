@@ -8,6 +8,7 @@ import Category from "../../../services/API/Category"; //~/services/API/Category
 import CountryServices from "../../../services/API/CountryServices"; //~/services/API/CountryServices
 import State from "../../../services/API/State"; //~/services/API/State
 import City from "../../../services/API/City"; //~/services/API/City
+import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
 import { toast } from "react-toastify";
 import {
   setUserDetails,
@@ -49,7 +50,9 @@ const ListingForm = (props) => {
   const [categories, setCategories] = useState({});
   const [category, setCategory] = useState({});
   const [auctions, setAuctions] = useState(false);
+  const [shops, setShops] = useState({});
   const [product, setProduct] = useState({
+    shopid : "",
     images: [],
     scheduled:false,
     title: "",
@@ -80,7 +83,8 @@ const ListingForm = (props) => {
     returnshippingpaidby: "",
     returnshippinglocation: "",
   });
-
+  let loggedInUser = localStorage.getItem("user_details");
+  const loggedInUsers = JSON.parse(loggedInUser);
   // Function to handle the activation of the product
   const handleActivateProduct = (e) => {
     e.preventDefault();
@@ -402,9 +406,20 @@ const ListingForm = (props) => {
         toast.error(e.message);
       });
   };
+  const fetchAllStores = () => {
+    ProductServices.getAllStores(loggedInUsers?.id)
+      .then((response) => {
+        console.log('all shops', response)
+        setShops(response);
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  };
   useEffect(() => {
     fetchCategory();
     fetchCountries();
+    fetchAllStores();
   }, []);
   return (
     <section id="listing-creating-form">
@@ -453,6 +468,28 @@ const ListingForm = (props) => {
             </label>
           </div>
         </div>
+        <div className="delivery-company">
+          <div>Select Store</div>
+          <div>
+            <select value={category} onChange={handleCategory}>
+              <option value="">All Store</option>
+              {categories.length > 0 ? (
+                <>
+                  {categories?.map((cat) => {
+                    return (
+                      <>
+                        <option value={cat.id}>{cat.name}</option>
+                      </>
+                    );
+                  })}
+                </>
+              ) : (
+                ""
+              )}
+            </select>
+          </div>
+        </div>
+        <br />
         <input
           type="text"
           placeholder="Product Title"

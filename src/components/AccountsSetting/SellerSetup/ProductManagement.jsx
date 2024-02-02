@@ -124,9 +124,9 @@ const ProductManagement = () => {
           </div>
           <div className='row'>
             {/* Render different content based on activeTab */}
-            {activeTab === 'active' && !submitted && <ProductCard status='active' />}
-            {activeTab === 'inactive' && !submitted && <ProductCard status='inactive' />}
-            {activeTab === 'scheduled' && !submitted && <ProductCard status='scheduled' />}
+            {activeTab === 'active' && !submitted && <ProductCard edit="edit" status='active' />}
+            {activeTab === 'inactive' && !submitted && <ProductCard edit="edit" status='inactive' />}
+            {activeTab === 'scheduled' && !submitted && <ProductCard edit="edit" status='scheduled' />}
           </div>
         </section>
       )}

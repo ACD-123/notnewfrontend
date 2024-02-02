@@ -4,6 +4,7 @@ import ProductImage2 from "../../assets/Images/Productcard/2.png";
 import ProductImage3 from "../../assets/Images/Productcard/3.png";
 import ProductImage4 from "../../assets/Images/Productcard/4.png";
 import ProductImage5 from "../../assets/Images/Productcard/5.png";
+import closeImg from "../../assets/Images/close.png";
 import { Link } from 'react-router-dom';
 import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
 import { toast } from "react-toastify";
@@ -57,9 +58,10 @@ import { toast } from "react-toastify";
 //   // Add more products as needed
 // ];
 const ProductCard = (props) => {
-  // console.log('props', props.status)
-  let status = props.status
+  let status = props.status;
+  let edit = props.edit;
   const [productData, setProductData] = useState([]);
+  const [showPopup, setShowPopup] = useState(false); // State for showing the popup
   const fetchProductData = async () => {
     // console.log('status',status)
     try {
@@ -96,6 +98,21 @@ const ProductCard = (props) => {
       toast.error(error);
     }
   };
+  const confirmDelete = (e, val) =>{
+    setShowPopup(true);
+  }
+  const deleteProduct = (e, val) =>{
+    e.preventDefault();
+    try {
+    ProductServices.destroy(val)
+        .then((response) => {
+          toast.error(response.message);
+          setShowPopup(false);    
+        }) 
+    } catch (error) {
+      toast.error(error);
+    }
+  }
   useEffect(() => {
     fetchProductData();
   }, []);
@@ -106,8 +123,10 @@ const ProductCard = (props) => {
           <div className='row'>
             {productData.length > 0 ?(
               <>
-              {productData.map((product) => (
-              <div className='col col-lg-2' key={product.guid}>
+              {productData.map((product) => {
+                return(
+                  <>
+                    <div className='col col-lg-2' key={product.guid}>
                 <div className='productlist'>
                     {product.auctioned ? (
                       // <Link to={`/auctionproduct/${product.id}`}>
@@ -149,13 +168,51 @@ const ProductCard = (props) => {
                                 {((product.price - product.sale_price) / product.price * 100).toFixed(2)}% OFF
                               </li>
                             )}
+                              {(() => {
+                                  if (edit == 'edit') {
+                                    return (
+                                      <li>
+                                        <nav>
+                                          <a href="#">Edit</a> | <a href="#" onClick={(e) => confirmDelete(e)}>Delete</a>
+                                        </nav>
+                                      </li>
+                                    )
+                                  } else {
+                                    return (
+                                      <div>&nbsp;</div>
+                                    )
+                                  }
+                                })()}
                           </ul>
                         </p>
                       </p>
                     </div>
                   </div>
                 </div>
-              ))}
+                <div className="popup">
+                {/* Popup for successful product activation */}
+                {showPopup && (
+                  <div className="listing-activated">
+                  <div className="innerlisting-activated">
+                      <img src={closeImg} style={{ width:"100px", height:"100px" }}/>
+                      <h2>Are you sure you want to Delete?</h2>
+                        <table style={{ width: "30%", margin: "0px auto"}}>
+                          <tr>
+                            <td>
+                              <input type="submit"  value="Delete" onClick={(e) => deleteProduct(e, product.guid)}/>
+                            </td>
+                            <td>
+                              <input type="button"  value="Cancel" onClick={() => setShowPopup(false)} />
+                            </td>
+                          </tr>
+                        </table>
+                      <button onClick={() => setShowPopup(false)}>Close</button>
+                    </div>
+                  </div>
+                )}
+              </div>
+                  </>
+                )})}
               </>
             ):('No Product Exists')}
           </div>
