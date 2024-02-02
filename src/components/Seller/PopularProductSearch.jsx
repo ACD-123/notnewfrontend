@@ -1,17 +1,44 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
+import { toast } from "react-toastify";
+import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
 
-const PopularProductSearch = () => {
+// storeProduct
+const PopularProductSearch = (props) => {
+  const [categoryList, setCategoryList] = useState([]);
+  
+  let categoryLists = [];
+  const getPopular =()=>{
+    try {
+      ProductServices.storeProduct(props.shopId)
+          .then((response) => {
+            for (let i = 0; i < response.length; i++) {
+              categoryLists.push({ val: i, text: response[i].category }); 
+            }
+            setCategoryList(categoryLists);
+          }) 
+      } catch (error) {
+        toast.error(error);
+      }
+  }
+  useEffect(() => {
+    getPopular();
+  }, []);
   return (
     <>
     <div className='popular-search'>
         <h4>Popular Products on this Shop</h4>
         <ul>
-            <li>Boots</li>
-            <li>Basketball Shoes</li>
-            <li>Gym & Training Shoes</li>
-            <li>Outdoor Slippers</li>
-            <li>Shoes</li>
-            <li>Running Shoes</li>
+          {categoryList.length > 0 ?(
+            <>
+              {categoryList.map((category) => {
+                  return(
+                    <>
+                    <li>{category.text}</li>
+                    </>
+                  )
+                })}
+            </>
+          ):('')}
         </ul>
     </div>
     </>

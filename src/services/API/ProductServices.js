@@ -34,7 +34,7 @@ function get(id, params = {}) {
 
 function destroy(id) {
   return request({
-    url: `${baseUrl}/${id}`,
+    url: `${baseUrl}/destory/${id}`,
     method: 'DELETE',
   })
 }
@@ -229,6 +229,13 @@ function createRecent(data) {
     method: 'POST',
   })
 }
+function storeProduct(data) {
+  return request({
+    url: `${baseUrl}/storeproduct/${data}`,
+    method: 'GET',
+  })
+}
+
 const ProductServices = {
   all,
   save,
@@ -262,6 +269,7 @@ const ProductServices = {
   recent,
   selfValue,
   createRecent,
+  storeProduct,
 }
 
 export default ProductServices
