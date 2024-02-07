@@ -407,14 +407,14 @@ const ListingForm = (props) => {
       });
   };
   const fetchAllStores = () => {
-    ProductServices.getAllStores(loggedInUsers?.id)
-      .then((response) => {
-        console.log('all shops', response)
-        setShops(response);
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      });
+    // ProductServices.getAllStores(loggedInUsers?.id)
+    //   .then((response) => {
+    //     console.log('all shops', response)
+    //     setShops(response);
+    //   })
+    //   .catch((e) => {
+    //     toast.error(e.message);
+    //   });
   };
   useEffect(() => {
     fetchCategory();
