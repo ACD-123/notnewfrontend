@@ -86,7 +86,7 @@ function setBank(data) {
   }
   function getAllStores(data) {
     return request({
-      url: `${baseUrl}/getallshops/${data}`,
+      url: `${baseUrl}getallshops/${data}`,
       data,
       method: 'GET',
     })

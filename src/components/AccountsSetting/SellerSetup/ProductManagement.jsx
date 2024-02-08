@@ -24,7 +24,7 @@ const ProductManagement = () => {
   };
   const  handleCallback = (childData) => {
     setSelectedOption(childData)
-    console.log('childData',childData)
+    setSubmitted(false);
   }
   const renderSelectedComponent = () => {
     switch (selectedOption) {
