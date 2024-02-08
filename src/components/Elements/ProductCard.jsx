@@ -68,11 +68,13 @@ const ProductCard = (props) => {
       if(status == 'active'){
         ProductServices.selfValue(status)
         .then((response) => {
+          console.log('active');
           if(response.data.length > 0){
             setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
           }
         }) 
       }else if(status == 'inactive'){
+        console.log('inactive');
         ProductServices.selfValue(status)
         .then((response) => {
           if(response.data.length > 0){
@@ -80,6 +82,7 @@ const ProductCard = (props) => {
           }
         }) 
       }else if(status == 'scheduled'){
+        console.log('scheduled');
         ProductServices.selfValue(status)
         .then((response) => {
           if(response.data.length > 0){

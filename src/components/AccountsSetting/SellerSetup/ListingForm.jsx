@@ -51,7 +51,9 @@ const ListingForm = (props) => {
   const [category, setCategory] = useState({});
   const [auctions, setAuctions] = useState(false);
   const [shops, setShops] = useState({});
+  const [shop, setShop] = useState({});
   const [product, setProduct] = useState({
+    store:"",
     shopid : "",
     images: [],
     scheduled:false,
@@ -148,9 +150,8 @@ const ListingForm = (props) => {
     setBuyNow(!buyNow);
   };
   const handleScheduled = (e) =>{
-    product.scheduled = e.target.value;
     setScheduled(!scheduled)
-    
+    product.scheduled = e.target.value;
   }
   const handleLisitng = (e) => {
     product.listing = e.target.value;
@@ -161,6 +162,10 @@ const ListingForm = (props) => {
     const cat = e.target.value;
     product.category = e.target.value;
     setCategory(cat);
+  };
+  const handleShop = (e) => {
+    product.store = e.target.value;
+    setShop(e.target.value);
   };
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
@@ -205,6 +210,9 @@ const ListingForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
+    if (!product.store) {
+      newErrors.store = "You Must need to select Store";
+    }
     if (!product.title) {
       newErrors.title = "Title is required";
     }
@@ -407,9 +415,8 @@ const ListingForm = (props) => {
       });
   };
   const fetchAllStores = () => {
-    ProductServices.getAllStores(loggedInUsers?.id)
+    SellerServices.getAllStores(loggedInUsers?.id)
       .then((response) => {
-        console.log('all shops', response)
         setShops(response);
       })
       .catch((e) => {
@@ -471,14 +478,14 @@ const ListingForm = (props) => {
         <div className="delivery-company">
           <div>Select Store</div>
           <div>
-            <select value={category} onChange={handleCategory}>
+            <select value={product.store} name={product.store} onChange={handleShop}>
               <option value="">All Store</option>
-              {categories.length > 0 ? (
+              {shops.length > 0 ? (
                 <>
-                  {categories?.map((cat) => {
+                  {shops?.map((shop) => {
                     return (
                       <>
-                        <option value={cat.id}>{cat.name}</option>
+                        <option value={shop.guid}>{shop.fullname}</option>
                       </>
                     );
                   })}
@@ -489,7 +496,7 @@ const ListingForm = (props) => {
             </select>
           </div>
         </div>
-        <br />
+        {errors.store && <p className="error">{errors.store}</p>}
         <input
           type="text"
           placeholder="Product Title"
@@ -598,10 +605,9 @@ const ListingForm = (props) => {
                 <div>
                   <label className="switch1">
                     <input
-                      type="checkbox"
-                      checked={isToggled}
+                      type="radio"
                       value={isToggled}
-                      name={product.sellingNow}
+                      name="sellingAution"
                       onChange={handleToggle}
                     />
                     <span className="slider1 round1"></span>
@@ -613,8 +619,9 @@ const ListingForm = (props) => {
                 <div>
                   <label className="switch1">
                     <input
-                      type="checkbox"
-                      checked={auctions}
+                      type="radio"
+                      name="sellingAution"
+                      value={auctions}
                       onChange={handleAuctions}
                     />
                     <span className="slider1 round1"></span>
@@ -679,9 +686,9 @@ const ListingForm = (props) => {
                 <div>
                   <label className="switch1">
                     <input
-                      type="checkbox"
+                      type="radio"
+                      name="deliver"
                       value={product.deliverddomestic}
-                      checked={product.deliverddomestic}
                       onChange={handleDomestic}
                     />
                     <span className="slider1 round1"></span>
@@ -693,8 +700,8 @@ const ListingForm = (props) => {
                 <div>
                   <label className="switch1">
                     <input
-                      type="checkbox"
-                      checked={product.deliverdinternational}
+                      type="radio"
+                      name="deliver"
                       value={product.deliverdinternational}
                       onChange={handleInternational}
                     />
