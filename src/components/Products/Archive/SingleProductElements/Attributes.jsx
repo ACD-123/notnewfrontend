@@ -7,14 +7,34 @@ const Attribute = () => {
   const [colors, setColors]=useState([]);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
-
+  const curentAttribute = {};
   const getProduct = () => {
     ProductServices.get(id).then((response) => {
       setProductAttributes(JSON.parse(response.attributes));
       setColors(JSON.parse(response.available_colors));
+      
       setProductData(response);
     });
   };
+  const addAttribute = (e, opt, col) => {
+    e.preventDefault();
+    if(col === 'color'){
+      setSelectedColor(colors)
+    }
+    if(col === 'quantity'){
+      // setSelectedQuantity(parseInt(e.target.value))
+      setSelectedQuantity(e.target.value)
+    }
+    if(col === 'size'){
+      setSelectedSize(e.target.value)
+    }
+    let arributes = localStorage.getItem("arributes");
+    if(opt !== '0'){
+      curentAttribute[col] = opt;    
+      localStorage.setItem('arributes', JSON.stringify(curentAttribute))
+    }
+  }
+  
   useEffect(() => {
     getProduct();
   }, []);
@@ -59,35 +79,42 @@ const Attribute = () => {
           <div className="inner-attributes">
             {attributes.map((item) => {
               quantity = item.quantity;
-              for (let i = 0; i < quantity; i++) {
-                quantityList.push(
-                  <option key={i + 1} value={i + 1}>
-                    {i + 1}
-                  </option>
-                );
-              }
+              // for (let i = 0; i < quantity; i++) {
+                // quantityList.push(
+                //   <option key={i + 1} value={i + 1}>
+                //     {i + 1}
+                //   </option>
+                // );
+              // }
+              quantityList.push(
+                <option key={quantity} value={quantity}>
+                     {quantity}
+                </option>
+              );
               return (
                 <>
-                  <label htmlFor="quantity">Quantity Available:</label>
-                  {item.quantity}
+                  {/* <label htmlFor="quantity">Quantity Available:</label>
+                  {item.quantity} */}
                 </>
               );
             })}
           </div>
-          <div className="inner-attributes">
-            <label htmlFor="quantity">Quantity:</label>
-            <select
-              id="quantity"
-              value={selectedQuantity}
-              onChange={(e) => setSelectedQuantity(parseInt(e.target.value))}
-            >
-              <option value="0">Select Qauntity</option>
-              {quantityList.length > 0 ? <>{quantityList}</> : ""}
-            </select>
-          </div>
-          <div className="inner-attributes">
-            <label htmlFor="color">Color:</label>
-            <a href="#" onClick={(e) =>  setSelectedColor(colors)} style={{ width: '50%',  backgroundColor : colors, color: colors}}>available colors</a>
+            {colors.length > 0 ?(
+              <>
+                            <div className="inner-attributes">
+            <label htmlFor="color">Available Color:</label>
+            {colors.map((color) => {
+              return(
+                <>
+                <a href="#"  onClick={(e) => addAttribute(
+                            e,
+                            color,
+                            "color"
+                          )} style={{ width: '30px',  backgroundColor : color, color: color, }}>&nbsp;</a>
+                </>
+              )
+            })}
+            
             {/* {colors} */}
             {/* <select
               id="color"
@@ -113,23 +140,51 @@ const Attribute = () => {
               ))} */}
             {/* </select> */}
           </div>
+              </>
+            ):('')}
+          <div className="inner-attributes">
+            <label htmlFor="quantity">Quantity:</label>
+            <select
+              id="quantity"
+              value={selectedQuantity}
+              onChange={(e) => addAttribute(
+                            e,
+                            selectedQuantity,
+                            "quantity"
+                        )}
+              >
+              <option value="0">Select Qauntity</option>
+              {/* {quantityList.length > 0 ? <> */}
+              {quantityList}
+              {/* </> : ""} */}
+            </select>
+          </div>
           <div className="inner-attributes">
             <label htmlFor="size">Size:</label>
             <select
               id="size"
               value={selectedSize}
-              onChange={(e) => setSelectedSize(e.target.value)}
+              onChange={(e) => addAttribute(
+                e,
+                selectedSize,
+                "size"
+              )}
             >
-              <option value="0">Select Sizes</option>
+              <option value="0" selected>Select Sizes</option>
               {attributes.map((item) => {
               sizes = item.size;
-              for (let i = 0; i < sizes; i++) {
+              // for (let i = 0; i < sizes; i++) {
+                // sizeList.push(
+                //   <option key={i + 1} value={i + 1}>
+                //     {i + 1}
+                //   </option>
+                // );
                 sizeList.push(
-                  <option key={i + 1} value={i + 1}>
-                    {i + 1}
-                  </option>
-                );
-              }
+                  <option key={sizes} value={sizes}>
+                     {sizes}
+                   </option>
+                )
+              // }
               return(
                 sizeList
               )

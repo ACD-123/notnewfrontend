@@ -23,6 +23,13 @@ function detailById(id, params = {}) {
     params,
   })
 }
+function self(params = {}) {
+  return request({
+    url: `${baseUrl}self`,
+    params,
+    method: "GET"
+  })
+}
 
 function upload(data) {
   return request({
@@ -114,6 +121,7 @@ const UserService = {
   deleteAccount,
   cancelDelete,
   fcmToken,
+  self,
   // depositfund,
 }
 

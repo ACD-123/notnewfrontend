@@ -20,15 +20,15 @@ const SearchwithCategories = () => {
   return (
     <>
     <form id="searchForm">
-    <div class="input-group se">
+    <div className="input-group se">
     <input type="submit" value="Search" 
     style={Searchbg}
     />
   </div>
-  <div class="input-group">
+  <div className="input-group">
     <input type="text" id="search" name="search" placeholder='Search Here Anything.....' />
   </div>
-  <div class="input-group categoruu">
+  <div className="input-group categoruu">
     <select id="category" name="category">
       <option value="all">Categories</option>
       {categories.length > 0 ? (

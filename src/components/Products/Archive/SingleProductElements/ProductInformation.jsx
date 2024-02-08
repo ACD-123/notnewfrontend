@@ -3,9 +3,14 @@ import Attribute from './Attributes'
 import ShippingPolicyData from "./ShippingPolicyData"
 import { Link } from 'react-router-dom'
 import ProductServices from '../../../../services/API/ProductServices'; //~/services/API/ProductServices
+import CartServices from '../../../../services/API/CartServices'; //~/services/API/CartServices
+import { toast } from "react-toastify";
 
 const ProductInformation = () => {
   const [productData, setProductData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
   const saveRecentView = () => {
@@ -23,7 +28,41 @@ const ProductInformation = () => {
         setProductData(response)
       }) 
   }
-  
+  const addToCart = (e) =>{
+      e.preventDefault();
+      setIsLoading(true);
+      setEnabled(true);
+        let arributes = localStorage.getItem('arributes');
+        arributes =JSON.parse(arributes);
+        let quanity = "";
+        if(arributes.quantity){
+          quanity = arributes.quantity;
+        }
+        let inputData ={
+          "price": productData.price,
+          "quantity":  quanity ? quanity: 1,
+          "product_id": productData.id,
+          "attributes": arributes,
+          "shop_id": productData.shop?.id,
+        }
+        CartServices.save(inputData)
+        .then((response) => {
+          if(response.success){
+            toast.success(response.message);
+          }else{
+            toast.error(response.message);
+          }
+        })
+        .catch((e) => {
+          toast.error(e.message);
+          setIsLoading(false);
+          setEnabled(false);
+        })
+        .then(() => {
+          setIsLoading(false);
+          setEnabled(false);
+        });
+  }
   const handleDropdownItemClick = (componentName) => {
     // Here, you can navigate to the 'Activity' component and pass the selected component name as a query parameter or state
     // For example, using query parameter
@@ -57,7 +96,10 @@ const ProductInformation = () => {
           </div>
           <div className='pay-buttons'>
               <Link to="/checkout"><button>Buy It Now</button></Link>
-              <Link to="/shoppingcart"><button>Add to Cart</button></Link>
+              <button onClick={addToCart}  disabled={enabled}>
+                {isLoading ? "loading.." : "Add to Cart"}
+              </button>
+              {/* <Link to="/shoppingcart"><button>Add to Cart</button></Link> */}
               <Link onClick={() => handleDropdownItemClick('componentC')}><button>Add to Watchlist</button></Link>
           </div>
           <ShippingPolicyData />
