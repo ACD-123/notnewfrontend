@@ -79,6 +79,7 @@ function setBank(data) {
   }
 
   function getShopDetails(data) {
+    console.log('data', data)
     return request({
       url: `${baseUrl}getshopdetails/${data}`,
       method: 'GET',
