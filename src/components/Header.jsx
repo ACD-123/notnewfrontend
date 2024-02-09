@@ -9,10 +9,12 @@ import UserServices from "../services/API/UserServices"; //~/services/API/AuthSe
 import { toast } from "react-toastify";
 import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth"; // ~/services/Auth
 import AuthServices from "../services/API/AuthService"; //~/services/API/AuthService
+import CartServices from "../services/API/CartServices"; //~/services/API/CartServices
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [user, setUser] = useState({});
+  const [cartitems, setCartItems] = useState(0);
   let token = localStorage.getItem("access_token");
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -31,6 +33,15 @@ const Header = () => {
         toast.error(e.message);
       });
   };
+  const getItems =() =>{
+    CartServices.count()
+    .then((response) => {
+      setCartItems(response);
+    })
+    .catch((e) => {
+      toast.error(e.message);
+    });
+  }
   const signOut = (e) => {
     e.preventDefault();
     const user_details = getUserDetails();
@@ -40,6 +51,7 @@ const Header = () => {
   useEffect(() => {
     if (isLoggedin()) {
       getUser();
+      getItems();
     }
   }, []);
   return (
@@ -62,6 +74,7 @@ const Header = () => {
                 {isLoggedin() ? (
                   <div className="cart-user">
                     <div className="cart">
+                      {cartitems}
                       <Link to="/shoppingcart">
                         <img src={Cart} />
                       </Link>

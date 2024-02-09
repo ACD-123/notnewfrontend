@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Productimage from '../../assets/Images/Categorylisting/1.png';
@@ -6,13 +6,84 @@ import { Modal, Button } from 'react-bootstrap';
 import Payment from "../../assets/Images/Shoppingcart/payment.png"
 import Checkpay from "../../assets/Images/check-pay.png"
 import { Link } from 'react-router-dom';
+import ShippingServices from "../../services/API/ShippingServices"; //~/services/API/ShippingServices
+import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
+import CartServices from "../../services/API/CartServices"; //~/services/API/CartServices
+import PriceServices from "../../services/API/PriceServices"; //~/services/API/PriceServices
+
 const Checkout = () => {
-
     const [showModal, setShowModal] = useState(false);
-
+    const [user, setUser] = useState({});
+    const [userdetails, setUserDetails] = useState({});
+    const [discountcode, setdiscountCode] = useState("");
+    const [cart, setCart] = useState({});
+    const [cartitem, setCartItems] = useState(0);
+    const [prices, setPrices] = useState({});
+    const [subTotal, setsubTotal] = useState(0);
+    const [shippingprice, setShippingPrice] = useState(0);
+    const [amountaddingprices, setAmountAddingPrices] = useState(0);
+    const [discountPrices, setDiscountPrices] = useState(0);
+    const [adminprices, setAdminPrices] = useState(0);
+  
     const handleClose = () => setShowModal(false);
     const handleShow = () => setShowModal(true);
+    const getSelf =()=>{
+      ShippingServices.self().then((response) => {
+        setUserDetails(response);
+      });
+    }
+    const getUser =() =>{
+      UserServices.self().then((response) => {
+        setUser(response);
+      });
+    }
+    const getCart = () => {
+      CartServices.self().then((response) => {
+        console.log('cart response', response)
+        setCart(response);
+      });
+    };
+    const getPrices = () => {
+      PriceServices.all().then((response) => {
+        setPrices(response);
+      });
+    };
   
+    const handlePrices = () => {
+      var cartPrice = [];
+      var shippingPrice = [];
+      var allPrices = [];
+      if(cart.length > 0){
+        cart.map((cat) => {
+          cartPrice.push(cat.price)
+          shippingPrice.push(cat.products.shipping_price);
+        })
+      }
+      if(prices.length > 0){
+        prices.map((price) => {
+          if(price.name !== 'Discount'){
+            allPrices.push(price.value)
+          }else if(price.name === 'Discount'){
+            setDiscountPrices(price.value)
+          }
+        })
+      }
+      setsubTotal(cartPrice.reduce((a,v) =>  a = a + v , 0 ));
+      setShippingPrice(shippingPrice.reduce((a,v) =>  a = a + v , 0 ));
+      setAdminPrices(allPrices.reduce((a,v) => a = a + v , 0 ))
+      var amountAfterDiscount = subTotal - discountPrices;
+      var amountbyaddingprices = amountAfterDiscount + adminprices;
+      setAmountAddingPrices(amountbyaddingprices);
+    };
+    
+    useEffect(() => {
+      setdiscountCode(localStorage.getItem('discountCode'));
+      getSelf();
+      getUser();
+      getCart();
+      getPrices();
+      handlePrices();
+    }, []);
   return (
     <>
     <Header />
@@ -41,7 +112,7 @@ const Checkout = () => {
                             <p>&nbsp; Remember this card for the future</p>
                         </div>
                         <p>Billing Address</p>
-                        <span class="tabstop">John Doe, 13101 SOUTHAMPTON ST DETROIT MI 48213-3700 USA</span>
+                        <span class="tabstop">{userdetails?.street_address}</span>
                         <div class="tabs-check">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
@@ -72,87 +143,184 @@ const Checkout = () => {
                         <table style={{width: "100%"}}>
                             <tr>
                               <th class="boldthtotallight">Full Name :</th>
-                              <td class="boldthtotallight">Sallu Roy</td>
+                              <td class="boldthtotallight">{user.name}</td>
                             </tr>
                             <tr>
                               <th class="boldthtotallight">Phone :</th>
-                              <td>02184548845</td>
+                              <td>{user.phone}</td>
                             </tr>
                             <tr>
                               <th class="boldthtotallight">Address :</th>
-                              <td>13101 SOUTHAMPTON ST DETROIT MI 48213-3700 USA</td>
+                              <td>{userdetails?.street_address}</td>
+                            </tr>
+                            <tr>
+                              <th>Discount Code</th>
+                              <td>{discountcode}</td>
                             </tr>
                           </table>
                           <p class="gradienttextcolor">Change Address</p>
                         </div>
                     </div>
                     <div class="order-details">
-                        <h3 id="storetitle">Seller: NOT NEW_Official store</h3>
-                        <div class="row">
+                      {cart.length > 0 ? (
+                                <>
+                          {cart.map((cat, index) => {
+                          let attributes = JSON.parse(cat.attributes);
+                          return (
+                            <>
+                            <h3 id="storetitle">Seller: {cat.shop?.fullname}</h3>
+                                <div class="row">
                             <div class="col-lg-9">
                                 <div class="product-detail">
-                                   
                                     <div class="product-image">
                                         <img src={Productimage} />
                                     </div>
                                     <div class="product-order-details">
-                                        <h5>adidas Adizero SL Running Shoes Men's</h5>
-                                        <span>Size : 9.5 , Color: Red</span>
-                                        <div class="quantitypadding"><p><b><span>QTY: 01</span></b></p></div>
-                                        <span class="unter">International<br /> Shipping from<br /> United Kingdom</span>
+                                        <h5>{cat.products?.name}</h5>
+                                        {/* <span>Size : 9.5 , Color: Red</span> */}
+                                        {attributes.length > 0 ? (
+                                    <>
+                                      {attributes.map((attribute, index) => {
+                                        return (
+                                          <>
+                                            {attribute.color}
+                                            <span>
+                                              {attribute.size ? (
+                                                <>Size : {attribute.size}</>
+                                              ) : (
+                                                ""
+                                              )}{" "}
+                                              {attribute.color ? (
+                                                <>
+                                                  Color:{" "}
+                                                  <div
+                                                    style={{
+                                                      background:
+                                                        attribute.color,
+                                                    }}
+                                                  >
+                                                    &nbsp;
+                                                  </div>
+                                                </>
+                                              ) : (
+                                                ""
+                                              )}
+                                            </span>
+                                          </>
+                                        );
+                                      })}
+                                    </>
+                                  ) : (
+                                    ""
+                                  )}
+                                        <div class="quantitypadding"><p><b><span>QTY: {cat.quantity}</span></b></p></div>
+                                        <span class="unter">International<br /> Shipping from<br />{cat.products?.location}</span>
                                     </div>
                                       
                                 </div>
                             </div>
                             <div class="col-lg-3">
                                 <div class="prices-order-details">
-                                    <h4>US $ 38.99</h4>
-                                    <span>+US $29.99</span>
+                                <h4>US $ {cat.products?.price}</h4>
+                                <span>
+                                  +US $
+                                  {cat.products?.price + cat.products?.shipping_price}
+                                </span>
                                 </div>
                             </div>
                         </div>
-                        <hr class="dashed" />
-                    <div class="buttonright">
+                        {/* <hr class="dashed" /> */}
+                    {/* <div class="buttonright">
                     <button class="btn btn-info btn-lg transparent" type="button"  >Save for later</button>   
                     <button class="btn btn-info btn-lg danger" type="button"  >Save for later</button>  
-                    </div>
-                     
+                    </div> */}
+                            </>
+                          )})}
+                        
+                                </>):('')}
                         
                 </div>
 
                 </div>
                 <div class="col-lg-4">
-                <div class="order-details" id="totalordervalue">
-                <h3>Order Total</h3>
-                    <table style={{width: "100%"}}>
-                        <tr>
-                          <th class="boldthtotal">Subtotal ( 1 item )</th>
-                          <td class="boldthtotal">$58.88</td>
-                        </tr>
-                        <tr>
-                          <th>Shipping</th>
-                          <td>$56.00</td>
-                        </tr>
-                        <tr>
-                          <th>Discount </th>
-                          <td>-$5.00</td>
-                        </tr>
-                        <tr>
-                            <th>Import Tax</th>
-                            <td>$5.00</td>
-                          </tr>
-                        <tr>
-                            <th class="totalthtextbold">Order Total</th>
-                            <td class="totalthtextbold">$ 103.00</td>
-                        </tr>
-                      </table>
-                      <div class="imgtoop">
-          <img src={Payment} alt="" />
-          <button class="btn btn-info btn-lg gradientbtncolor" onClick={handleShow} type="button">
+                {cart.length > 0 ? (
+                <>
+                  <div className="order-details" id="totalordervalue">
+                    <h3>Order Total</h3>
+                    <table style={{ width: "100%" }}>
+                      <tr>
+                        <th className="boldthtotal">
+                          Subtotal ( {cartitem} items )
+                        </th>
+                        <td className="boldthtotal">$ {subTotal}</td>
+                      </tr>
+                      <tr>
+                        <th>Shipping</th>
+                        <td>$ {shippingprice}</td>
+                      </tr>
+                      {/* <tr>
+                            <th>Income Tax</th>
+                            <td>$ 4.0</td>
+                          </tr> */}
+
+                      {prices.length > 0 ? (
+                        <>
+                          {prices.map((price, index) => {
+                            return (
+                              <>
+                                <tr>
+                                  <th>{price.name}</th>
+                                  <td>$ {(price.name == 'Discount') ? (<>
+                                    - {price.value}
+                                  </>):(price.value)}</td>
+                                </tr>
+                              </>
+                            );
+                          })}
+                        </>
+                      ) : (
+                        ""
+                      )}
+                      <tr>
+                        <th className="totalthtextbold">Order Total</th>
+                        <td className="totalthtextbold">
+                          $ {amountaddingprices}
+                        </td>
+                      </tr>
+                    </table>
+                    <div className="imgtoop">
+                      <img src={Payment} alt="" />
+                      <Link to="/checkout">
+                      <button class="btn btn-info btn-lg gradientbtncolor" onClick={handleShow} type="button">
+                        Confirm & Pay
+                      </button>
+                      </Link>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="order-details" id="totalordervalue">
+                    <h3>Order Total</h3>
+                    <table style={{ width: "100%" }}>
+                      <tr>
+                        <th className="boldthtotal">Subtotal</th>
+                        <td className="boldthtotal">$00.00</td>
+                      </tr>
+                      <tr>
+                        <th className="totalthtextbold">Order Total</th>
+                        <td className="totalthtextbold">$ 00.00</td>
+                      </tr>
+                    </table>
+                    <div className="imgtoop">
+                      <img src={Payment} alt="" />
+                    </div>
+                  </div>
+                </>
+              )}
+          {/* <button class="btn btn-info btn-lg gradientbtncolor" onClick={handleShow} type="button">
             Confirm & Pay
-          </button>
-        </div>
-                </div>
+          </button> */}
 
             </div> 
          
