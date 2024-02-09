@@ -155,7 +155,7 @@ const SetupSellerAccount = () => {
         <section id="selleraccountsetup">
           <div className="container">
             <div className="row align-items-center">
-              <h3>Setup Your Seller Account</h3>
+              <h3>Setup Your Seller Shop</h3>
               <div className="signup-form-fields register">
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">

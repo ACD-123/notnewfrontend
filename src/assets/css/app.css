@@ -595,7 +595,7 @@ form#searchForm ::placeholder {
   gap: 13px;
 }
 .cart-user .cart:before {
-  content: '0';
+  content: '';
   background: #4F4F4F;
   border: 1.36px solid #8B2CA0;
   color: #fff;
