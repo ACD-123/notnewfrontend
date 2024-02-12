@@ -28,6 +28,7 @@ const Header = () => {
       .then((response) => {
         setUserDetails(response);
         setUser(response);
+        localStorage.setItem('user_details', JSON.parse(response));
       })
       .catch((e) => {
         toast.error(e.message);
