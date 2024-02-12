@@ -2,9 +2,11 @@ import request from '../request'
 import { BASE_API } from '../Constant'
 const baseUrl = `${BASE_API}stripe`
 
-function generatePaymentIntent(guid,totalPrice) {
+function generatePaymentIntent(data) {
   return request({
-    url: baseUrl + `/generate/${guid}/${totalPrice}`,
+    url: baseUrl + `/generate`,
+    data,
+    method: 'POST',
   })
 }
 

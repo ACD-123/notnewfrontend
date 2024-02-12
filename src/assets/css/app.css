@@ -1156,6 +1156,7 @@ border: 2px solid transparent;
 }
 div#totalordervalue {
   padding-bottom: 70px;
+  position: fixed;
   padding-top: 31px;
 }
 .order-details {
