@@ -19,6 +19,7 @@ import {
 const ListingForm = (props) => {
   // Popup
   const [showPopup, setShowPopup] = useState(false); // State for showing the popup
+  const [showEditPopup, setShowEditPopup] = useState(false); // State for showing the popup
   // Shipping duration
   const [shippingStart, setShippingStart] = useState("");
   const [shippingEnd, setShippingEnd] = useState("");
@@ -52,6 +53,7 @@ const ListingForm = (props) => {
   const [auctions, setAuctions] = useState(false);
   const [shops, setShops] = useState({});
   const [shop, setShop] = useState({});
+  const [editproduct, setEditProduct] = useState(false);
   const [product, setProduct] = useState({
     store:"",
     shopid : "",
@@ -62,7 +64,7 @@ const ListingForm = (props) => {
     category: "",
     brand: "",
     stockCapacity: 0,
-    sizes: [{ size: 0, quantity: 0 }],
+    sizes: [{ size: 0, quantity: 0, color: "" }],
     availableColors: [],
     description: "",
     sellingNow: false,
@@ -84,6 +86,7 @@ const ListingForm = (props) => {
     returndurationlimit: 0,
     returnshippingpaidby: "",
     returnshippinglocation: "",
+    action:""
   });
   let loggedInUser = localStorage.getItem("user_details");
   const loggedInUsers = JSON.parse(loggedInUser);
@@ -170,12 +173,17 @@ const ListingForm = (props) => {
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
 
-    if (name === "size" || name === "quantity") {
+    if (name === "size" || name === "quantity" || name === "color") {
       const updatedSizes = [...product.sizes];
       updatedSizes[index][name] = value;
-      setProduct({ ...product, sizes: updatedSizes });
+      setProduct({ ...product, sizes: JSON.stringify(updatedSizes) });
     } else {
       setProduct({ ...product, [name]: value });
+    }
+    if (name === "color") {
+      // const color = e.target.value;
+      const updatedColors = [value];
+      setProduct({ ...product, availableColors: updatedColors });
     }
   };
 
@@ -194,8 +202,11 @@ const ListingForm = (props) => {
   const handleAddSize = () => {
     setProduct({
       ...product,
-      sizes: [...product.sizes, { size: 0, quantity: 0 }],
+      sizes: [...product.sizes, { size: 0, quantity: 0}],
     });
+    console.log('add sizes', product.sizes);
+    return
+
   };
   const handleCountryChange = (e) => {
     product.country = e.target.value;
@@ -277,15 +288,15 @@ const ListingForm = (props) => {
     if(!product.returnshippingprice){
       newErrors.returnshippingprice = "Shipping Price is required";
     }
-    console.log('newErrors', newErrors)
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
+
       product.condition = localStorage.getItem("product_condition");
       product.scheduled = scheduled;
       setIsLoading(true);
       setEnabled(true);
-      // console.log('product', product)
-      ProductServices.save(product)
+      if(product.action === "add"){
+        ProductServices.save(product)
         .then((response) => {
           // toast.success(response.message);
           setShowPopup(true);
@@ -300,6 +311,24 @@ const ListingForm = (props) => {
           setIsLoading(false);
           setEnabled(false);
         });
+      }else if(product.action === "edit"){
+        product.category = product.category? product.category: category;
+        ProductServices.update(props.guid, product)
+        .then((response) => {
+          // toast.success(response.message);
+          // setShowEditPopup(true);
+          // setIsLoading(false);
+          // setEnabled(false);
+          // localStorage.removeItem('product_condition');
+          // setTimeout(() => {
+          //   props.parentCallback(null)  
+          // }, 4000);
+        })
+        .then(() => {
+          setIsLoading(false);
+          setEnabled(false);
+        });
+      }
     }
     // console.log("Submitted product:", product);
   };
@@ -423,10 +452,56 @@ const ListingForm = (props) => {
         toast.error(e.message);
       });
   };
+  const getProduct = () =>{
+    setEditProduct(true)
+    ProductServices.get(props.guid).then((response) => {
+      setCategory(response.category_id);
+      let productData ={
+        "store": response.shop_id,
+        "shopid" : response.shop_id,
+        "images": [],
+        "scheduled":false,
+        "title": response.name,
+        "model": response.model,
+        "category": category,
+        "brand": response.brand,
+        "stockCapacity": response.stockcapacity? response.stockcapacity: 0,
+        "sizes": JSON.parse(response.attributes),
+        "availableColors": [],
+        "description": response.description,
+        "sellingNow": response.selling_now,
+        "auctions": response.auctioned,
+        "price": response.price,
+        "listing": response.listing,
+        // "sale": false,
+        "buyitnow": response.buyitnow,
+        "deliverddomestic":  response.deliverddomestic,
+        "deliverdinternational": response.deliverdinternational,
+        "deliverycompany": response.deliverycompany,
+        "country": response.country,
+        "locations": response.locations,
+        "shippingprice": response.shippingprice,
+        "shippingstart": response.shippingstart,
+        "shippingend": response.shippingend,
+        "returnshippingprice": response.returnshippingprice,
+        "returndurationlimit": response.returndurationlimit,
+        "returnshippingpaidby": response.returnshippingpaidby,
+        "returnshippinglocation": response.returnshippinglocation,
+        "action": "edit"
+      }
+      setProduct(productData)
+      // setProductAttributes(JSON.parse(response.attributes));
+      // setColors(JSON.parse(response.available_colors));
+      // setProductData(response);
+    });
+  }
   useEffect(() => {
     fetchCategory();
     fetchCountries();
     fetchAllStores();
+    if(props.guid){
+      getProduct();
+    }
   }, []);
   return (
     <section id="listing-creating-form">
@@ -434,7 +509,11 @@ const ListingForm = (props) => {
         onSubmit={handleSubmit}
         style={{ maxWidth: "90%", margin: "0 auto", overflow: "hidden" }}
       >
-        <h3 style={{ color: "#000" }}>Describe Your Product</h3>
+        {editproduct ? (
+          <><h3 style={{ color: "#000" }}>Edit Your Product</h3></>
+        ):(
+          <><h3 style={{ color: "#000" }}>Describe Your Product</h3></>
+        )}
         <input
           type="file"
           accept="image/*"
@@ -442,7 +521,9 @@ const ListingForm = (props) => {
           onChange={handleImageUpload}
         />
         <div className="imgegallry">
-          {product.images.map((imageUrl, index) => (
+          {product.media ? (
+            <>
+            {product.media.map((imageUrl, index) => (
             <img
               key={index}
               src={imageUrl}
@@ -455,6 +536,8 @@ const ListingForm = (props) => {
               }}
             />
           ))}
+            </>
+          ):(<></>)}
         </div>
         <p className="notify-images">
           <img src={Objection} /> Add a minimum of 5 images covering all angles
@@ -485,7 +568,7 @@ const ListingForm = (props) => {
                   {shops?.map((shop) => {
                     return (
                       <>
-                        <option value={shop.guid}>{shop.fullname}</option>
+                        <option value={shop.id}>{shop.fullname}</option>
                       </>
                     );
                   })}
@@ -560,6 +643,43 @@ const ListingForm = (props) => {
             <p className="error">{errors.stockCapacity}</p>
           )}
         </div>
+        <table style={{ width: "100%"}}>
+          <thead>
+            <tr>
+              <th>
+                Size
+              </th>
+              <th>
+                Quanity
+              </th>
+              <th>
+                Color
+              </th>
+              <th>
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {product.sizes ? (
+              <>
+              {product.sizes?.map((attr) => {
+                return(
+                  <>
+                   <tr>
+                  <td>{attr.size} meter</td>
+                  <td>{attr.quantity} pcs</td>
+                  <td>< div style={{ background: attr.color}}>&nbsp;</div></td>
+                  <td><a href="#">Delete</a></td>
+                </tr>
+                  </>
+                )
+              })}
+              </>
+            ):(<></>)}
+           
+          </tbody>
+        </table>
         {product.sizes.map((size, index) => (
           <div className="sizequntycolr" key={index}>
             <label>Size</label>
@@ -578,7 +698,8 @@ const ListingForm = (props) => {
               onChange={(e) => handleInputChange(e, index)}
             />
             <label>Color</label>
-            <input className="colr" type="color" onChange={handleColorChange} />
+            <input className="colr" value={size.color} type="color" name="color" onChange={(e) => handleInputChange(e, index)} />
+            {/* <input className="colr" value={size.color} type="color" onChange={handleColorChange} /> */}
           </div>
         ))}
         <div className="sizeaddmre">
@@ -916,15 +1037,19 @@ const ListingForm = (props) => {
         {errors.returnshippinglocation && <p className="error">{errors.returnshippinglocation}</p>}
         <div className="row actvtebuttns">
           <div className="col-lg-6">
-            <Link to="/singleproduct" style={{ textDecoration: "none" }}>
-              <button
-                className="btn1"
-                type="button"
-                style={{ marginTop: "10px" }}
-              >
-                Preview Product
-              </button>
-            </Link>
+            {props.guid ? (
+              <>
+                <Link to={`/singleproduct/${props.guid}`} style={{ textDecoration: "none" }}>
+                  <button
+                    className="btn1"
+                    type="button"
+                    style={{ marginTop: "10px" }}
+                  >
+                    Preview Product
+                  </button>
+                </Link>
+              </>
+            ):('')}
           </div>
           <div className="col-lg-6">
             {/* <button className="btn2" onClick={handleActivateProduct} type="submit" style={{ marginTop: "10px" }}>
@@ -937,9 +1062,24 @@ const ListingForm = (props) => {
             >
               Activate Product
             </button> */}
-            <button className="btn2" style={{ marginTop: "10px" }} disabled={enabled} type="submit">
+            {props.guid? (
+              <>
+                <input type="hidden" name={product.action} id="action" value="edit" />
+                <button className="btn2" style={{ marginTop: "10px" }}  type="submit">
+                  Update Product
+                </button>
+              </>
+            ):(
+              <>
+                <input type="text" name={product.action} id="action" value="add" />
+                <button className="btn2" style={{ marginTop: "10px" }}  type="submit">
+                  Activate Product
+                </button>
+              </>
+            )}
+            {/* <button className="btn2" style={{ marginTop: "10px" }} disabled={enabled} type="submit">
               {isLoading ? "loading.." : "Activate Product"}
-              </button>
+              </button> */}
           </div>
         </div>
         <div className="popup">
@@ -949,6 +1089,19 @@ const ListingForm = (props) => {
             <div className="innerlisting-activated">
                 <img src={Checkimg} />
                 <h2>Product Listed Successfully</h2>
+                <p>We hope you enjoy selling on our platform</p>
+                <button onClick={() => setShowPopup(false)}>Close</button>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="popup">
+          {/* Popup for successful product activation */}
+          {showEditPopup && (
+            <div className="listing-activated">
+            <div className="innerlisting-activated">
+                <img src={Checkimg} />
+                <h2>Product Updated Successfully</h2>
                 <p>We hope you enjoy selling on our platform</p>
                 <button onClick={() => setShowPopup(false)}>Close</button>
               </div>

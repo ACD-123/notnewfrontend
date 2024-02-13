@@ -20,11 +20,15 @@ const Stripe = (props) => {
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [enabled, setEnabled] = useState(false);
 
   const stripes = useStripe();
   let elements = useElements();
 
   const handleStripeSubmit = async (event) => {
+    setIsLoading(true);
+    setEnabled(true);
     event.preventDefault();
     // if(!props.changeAdds){
     //     props.parentCallback(false) 
@@ -63,14 +67,19 @@ const Stripe = (props) => {
         "Curency": "$",
         'secondaddress': props.secondAddress,
         "other_address":props.changeaddress,
-        "zip": props.zip ? props.zip : ""
+        "zip": props.zip ? props.zip : "",
+        "order_type": props.ordertype
     }
     OrderServices.save(data)
     .then(res => {
-        console.log('order responce', res)
+        setIsLoading(false);
+        setEnabled(false);
+        handleShow(true);
     })
     .catch(error => {
         console.log("ERROR:: ", error);
+        setIsLoading(false);
+        setEnabled(false);
     });
 
     // console.log('stripe responbce', client_secret)
@@ -87,14 +96,17 @@ const Stripe = (props) => {
             <div className="imgtoop">
                 <img src={Payment} alt="" />
                 {/* <Link to="/checkout"> */}
-                <button
+                {/* <button
                     disabled={!stripes || !elements}
                     type="submit"
                     class="btn btn-info btn-lg gradientbtncolor"
                     // onClick={handleShow}
                 >
                     Confirm & Pay
-                </button>
+                </button> */}
+                <button type="submit" class="btn btn-info btn-lg gradientbtncolor"  disabled={enabled || !stripes || !elements}>
+                {isLoading ? "loading.." : "Confirm & Pay"}
+              </button>
                 {/* </Link> */}
             </div>
         </div>

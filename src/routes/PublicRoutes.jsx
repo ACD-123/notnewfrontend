@@ -39,6 +39,7 @@ const PublicRoutes = () => {
 					<Route path="/shoppingcart" element={<ShoppingCart />} />
 					<Route path="/categorykeyword/:guid" element={<CategoryKeyword />} />
 					<Route path="/checkout" element={<Checkout />} />
+					<Route path="/checkouts/:guid" element={<Checkout />} />
 					<Route path="/singleproduct/:guid" element={<SingleProduct />} />
 					<Route path="/customerdashboard" element={<MainDashboard />} />
 					<Route path="/bidView" element={<BidView />} />

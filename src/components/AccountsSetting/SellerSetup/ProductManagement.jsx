@@ -8,6 +8,7 @@ const ProductManagement = () => {
   const [submitted, setSubmitted] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [activeTab, setActiveTab] = useState('active');
+  const [productguid, setProductGuid] = useState("");
 
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
@@ -26,8 +27,18 @@ const ProductManagement = () => {
     setSelectedOption(childData)
     setSubmitted(false);
   }
+  const  handleParentCallback = (childData, guid) => {
+    setSelectedOption(childData);
+    setSubmitted(true); 
+    setActiveTab('active');
+    setProductGuid(guid);
+  }
+  
   const renderSelectedComponent = () => {
+    console.log('selectedOption', selectedOption)
     switch (selectedOption) {
+      case 'Edit':
+        return submitted ? <ListingForm edit="edit" guid={productguid} parentCallback={handleCallback} /> : null;
       case 'BrandNew':
         return submitted ? <ListingForm parentCallback={handleCallback} /> : null;
       case 'Used':
@@ -125,7 +136,7 @@ const ProductManagement = () => {
           <div className='row'>
             {/* Render different content based on activeTab */}
             {activeTab === 'active' && !submitted && <ProductCard edit="edit" status='active' />}
-            {activeTab === 'inactive' && !submitted && <ProductCard edit="edit" status='inactive' />}
+            {activeTab === 'inactive' && !submitted && <ProductCard edit="edit" parentCallback={handleParentCallback} status='inactive' />}
             {activeTab === 'scheduled' && !submitted && <ProductCard edit="edit" status='scheduled' />}
           </div>
         </section>

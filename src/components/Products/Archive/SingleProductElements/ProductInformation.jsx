@@ -28,6 +28,41 @@ const ProductInformation = () => {
         setProductData(response)
       }) 
   }
+  const addByNow =(e)=>{
+    e.preventDefault();
+    setIsLoading(true);
+    setEnabled(true);
+      let arributes = localStorage.getItem('arributes');
+      arributes =JSON.parse(arributes);
+      let quanity = "";
+      if(arributes.quantity){
+        quanity = arributes.quantity;
+      }
+      let inputData ={
+        "price": productData.price,
+        "quantity":  quanity ? quanity: 1,
+        "product_id": productData.id,
+        "attributes": arributes,
+        "shop_id": productData.shop?.id,
+      }
+      CartServices.save(inputData)
+      .then((response) => {
+        if(response.success){
+          window.location.href=`/checkouts/${productData.guid}`;
+        }else{
+          toast.error(response.message);
+        }
+      })
+      .catch((e) => {
+        toast.error(e.message);
+        setIsLoading(false);
+        setEnabled(false);
+      })
+      .then(() => {
+        setIsLoading(false);
+        setEnabled(false);
+      });
+  }
   const addToCart = (e) =>{
       e.preventDefault();
       setIsLoading(true);
@@ -95,7 +130,9 @@ const ProductInformation = () => {
               <h5>Price: <span>$ {productData.price}</span></h5>
           </div>
           <div className='pay-buttons'>
-              <Link to="/checkout"><button>Buy It Now</button></Link>
+              {/* <Link to={`/checkouts/${productData.guid}`}> */}
+                <button onClick={addByNow}>Buy It Now</button>
+                {/* </Link> */}
               <button onClick={addToCart}  disabled={enabled}>
                 {isLoading ? "loading.." : "Add to Cart"}
               </button>
