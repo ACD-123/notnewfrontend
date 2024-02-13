@@ -121,21 +121,15 @@ const ProductCard = (props) => {
     }
   }
   const editProduct =(e, val)=>{
-    setEditForm(true);
-    setSubmitted(true);
+    e.preventDefault();
+    props.parentCallback('Edit', val);
   }
-  const renderSelectedComponent = () => {
-    if(editform) {
-        return submitted ? <ListingForm  /> : null;
-    }
-  };
 
   useEffect(() => {
     fetchProductData();
   }, []);
   return (
     <>
-    {renderSelectedComponent() ||
     <section id='productcard' style={{ padding: "15px 0px" }}>
     <div className='container'>
       <div className='row'>
@@ -224,7 +218,7 @@ const ProductCard = (props) => {
                               </div>
                             </div>
                           )}
-          </div>
+                      </div>
                     </p>
                   </p>
                 </div>
@@ -237,7 +231,6 @@ const ProductCard = (props) => {
       </div>
     </div>
   </section>
-    }
     </>
   );
 };
