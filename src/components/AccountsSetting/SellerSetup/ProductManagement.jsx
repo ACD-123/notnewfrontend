@@ -35,7 +35,6 @@ const ProductManagement = () => {
   }
   
   const renderSelectedComponent = () => {
-    console.log('selectedOption', selectedOption)
     switch (selectedOption) {
       case 'Edit':
         return submitted ? <ListingForm edit="edit" guid={productguid} parentCallback={handleCallback} /> : null;
@@ -135,9 +134,9 @@ const ProductManagement = () => {
           </div>
           <div className='row'>
             {/* Render different content based on activeTab */}
-            {activeTab === 'active' && !submitted && <ProductCard edit="edit" status='active' />}
+            {activeTab === 'active' && !submitted && <ProductCard edit="edit" parentCallback={handleParentCallback} status='active' />}
             {activeTab === 'inactive' && !submitted && <ProductCard edit="edit" parentCallback={handleParentCallback} status='inactive' />}
-            {activeTab === 'scheduled' && !submitted && <ProductCard edit="edit" status='scheduled' />}
+            {activeTab === 'scheduled' && !submitted && <ProductCard edit="edit" parentCallback={handleParentCallback} status='scheduled' />}
           </div>
         </section>
       )}

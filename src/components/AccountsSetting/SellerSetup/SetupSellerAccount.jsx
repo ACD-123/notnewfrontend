@@ -337,7 +337,7 @@ const SetupSellerAccount = () => {
                     />
                   </div>
                   {errors.zip && <p className="error">{errors.zip}</p>}
-                  <div class="mb-3">
+                  {/* <div class="mb-3">
                     <input
                       type="password"
                       className="form-control"
@@ -364,7 +364,7 @@ const SetupSellerAccount = () => {
                   </div>
                   {errors.password_confirmation && (
                     <p className="error">{errors.password_confirmation}</p>
-                  )}
+                  )} */}
                   <button
                     className="btn btn-primary"
                     disabled={enabled}

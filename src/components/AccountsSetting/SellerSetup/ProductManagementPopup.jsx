@@ -11,7 +11,6 @@ const ProductManagementPopup = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Selected option:", selectedOption);
     setCondition(selectedOption);
     // setSubmitted(true);
     
