@@ -167,9 +167,9 @@ const ProductCard = (props) => {
                   <p>
                     <p>
                       <ul>
-                        {product.sale_price !== null && (
+                        {/* {product.sale_price !== null && (
                           <li className='price'>${product.sale_price}</li>
-                        )}
+                        )} */}
                         {product.price !== null && product.sale_price !== null && (
                           <li className='sale'>
                             <del>${product.price}</del>
