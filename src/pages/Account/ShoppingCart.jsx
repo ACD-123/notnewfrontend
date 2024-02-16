@@ -167,7 +167,8 @@ const ShoppingCart = () => {
               {cart.length > 0 ? (
                 <>
                   {cart.map((cat, index) => {
-                    let attributes = JSON.parse(cat.attributes);
+  let attributes = JSON.parse(cat.attributes);
+  const isSaved = cartids.includes(cat.id);
                     return (
                       <>
                         <div className="order-details" id="sectionToRemove">
@@ -243,59 +244,26 @@ const ShoppingCart = () => {
                           </div>
                           <hr className="dashed" />
                           <div className="buttonright">
-                              {cartids.length > 0 ?(
-                                <>
-                                {cartids.filter(id => {
-                                    if (id != cat.id) {
-                                      return(
-                                        <>
-                                          <button
-                                          className="btn btn-info btn-lg transparent"
-                                            type="button"
-                                            onClick={(e) => handleSaveLater(e, cat.id)}
-                                          >
-                                            Save for later
-                                          </button>
-                                      </>
-                                      )
-                                    }else{
-                                      return(
-                                        <>
-                                        <button
-                                        className="btn btn-info btn-lg transparent"
-                                          type="button"
-                                        >
-                                          Saved for later
-                                        </button>
-                                        </>
-                                      )
-                                    }
-                                  })}
-                                  {cartids.filter(id => id == cat.id).map(ids => (
-                                      <button
-                                      className="btn btn-info btn-lg transparent"
-                                        type="button"
-                                      >
-                                        Saved for later
-                                      </button>
-                                    ))}
-                                    </>
-                                ):(<>
-                                      <button
-                                      className="btn btn-info btn-lg transparent"
-                                        type="button"
-                                        onClick={(e) => handleSaveLater(e, cat.id)}
-                                      >
-                                        Save for later
-                                      </button>
-                                </>)}
-                            <button
-                              className="btn btn-info btn-lg danger"
-                              type="button"
-                              onClick={(e) => handleRemoveSection(e, cat.id)}
-                            >
-                              Remove
-                            </button>
+                               {isSaved ? (
+          <button className="btn btn-info btn-lg transparent" type="button">
+            Saved for later
+          </button>
+        ) : (
+          <button
+            className="btn btn-info btn-lg transparent"
+            type="button"
+            onClick={(e) => handleSaveLater(e, cat.id)}
+          >
+            Save for later
+          </button>
+        )}
+        <button
+          className="btn btn-info btn-lg danger"
+          type="button"
+          onClick={(e) => handleRemoveSection(e, cat.id)}
+        >
+          Remove
+        </button>
                           </div>
                         </div>
                       </>

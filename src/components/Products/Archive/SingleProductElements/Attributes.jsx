@@ -10,10 +10,15 @@ const Attribute = () => {
   const curentAttribute = {};
   const getProduct = () => {
     ProductServices.get(id).then((response) => {
-      setProductAttributes(JSON.parse(response.attributes));
-      setColors(JSON.parse(response.available_colors));
+      if(response.attributes){
+        setProductAttributes(JSON.parse(response.attributes));
+        setColors(JSON.parse(response.available_colors));
+        setProductData(response);
+      }
+      // setProductAttributes(JSON.parse(response.attributes));
+      // setColors(JSON.parse(response.available_colors));
       
-      setProductData(response);
+      // setProductData(response);
     });
   };
   const addAttribute = (e, opt, col) => {
