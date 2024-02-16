@@ -5,9 +5,16 @@ import SellerProductImage3 from '../../../assets/Images/Categorylisting/3.png'
 import SellerProductImage4 from '../../../assets/Images/Categorylisting/4.png'
 import SellerProductImage5 from '../../../assets/Images/Categorylisting/5.png'
 import UserServices from "../../../services/API/UserServices"; //~/services/API/AuthService
+import OrderServices from "../../../services/API/OrderServices"; //~/services/API/OrderServices
+import TransactionServices from "../../../services/API/TransactionServices"; //~/services/API/TransactionServices
 import { toast } from "react-toastify";
 import { setUserDetails, isLoggedin, getUserDetails } from "../../../services/Auth"; // ~/services/Auth
-
+import { Link } from 'react-router-dom';
+import icon1 from "../../../assets/Images/icons/1.png";
+import icon2 from "../../../assets/Images/icons/2.png";
+import icon3 from "../../../assets/Images/icons/3.png";
+import StarRating from "../../OrderManagement/StarRating";
+import Location from "../../../assets/Images/map.png";
 const products = [
   {
     id: 1,
@@ -45,9 +52,144 @@ const products = [
     orderId: 'ORDER#12242',
   },
 ];
+const DetailedProductInfo = ({ order }) => {
+  console.log('order', order)
+  // Modify this component to display detailed product information as per your needs
+  return (
+    <>
+    {order.order?(
+      <>
+      {/* {order?.map((ord) => { */}
+        {/* return( */}
+          {/* <> */}
+          <div className="detailed-product-info">
+      <h3 className="details">Order Details</h3>
+      <h4>Order #: {order.order.orderid}
+        {/* {product.orderNumber} */}
+        </h4>
+      <div className="row">
+        <div className="col-lg-8">
+          <div className="location">
+            <img style={{ width: "100%" }} src={Location} />
+          </div>
+        </div>
+        <div
+          className="col-lg-4"
+          style={{ border: "2.15px solid #E9E9E9", background: "#FCFCFC" }}
+        >
+          <div className="order-seller-details">
+            <p>
+              <img src={icon1} /> 
+              {order.order.billing_address}
+            </p>
+            <p>
+              <img src={icon2} /> 
+              {order.order.phone}
+            </p>
+            <br/>
+            {order.buyer?(
+              <>
+              <p>
+                <img src={icon3} /> 
+                {order.buyer.name}
+              </p>
+              </>
+            ):('')}
+          </div>
+        </div>
+      </div>
+      {/* <div className="row align-items-center deliverystatus"> */}
+      <div className="row align-items-center delivery">
+        <div className="col-lg-6">
+          <div className="deliverystatustime">
+            <h3>Delivery Status</h3>
+            <p>
+              <b>Est Delivery:</b> <span>
+                  Tue, Dec 23 -Wed, Dec 16
+                {/* {product.deliveryStatus} */}
+                </span>
+            </p>
+          </div>
+        </div>
+        <div className="col-lg-6">
+          <select>
+            <option>Delivered</option>
+            <option>Pending</option>
+            <option>Refund</option>
+          </select>
+        </div>
+      </div>
+      <div className="row align-items-center" style={{ padding: "30px 0px" }}>
+        <h3>Order Items</h3>
+        {order.product ? (
+          <>
+            <div className="col-lg-9">
+            <div className="product-image">
+              <div className="image">
+                <img src={SellerProductImage4} />
+              </div>
+              <div className="prd-details">
+                {/* <h5>{product.productName}</h5>
+                <p>${product.price}</p>
+                <p className="size-color">
+                  <span>Size:</span> {product.size} <span>Color:</span>{" "}
+                  {product.color}
+                </p> */}
+              </div>
+            </div>
+          </div>
+          </>
+        ):('')}
 
-const SellingDetailsDashBoard = () => {
-  const [user, setUser] = useState({});
+        <div className="col-lg-3">
+          <h5 className="qunty">
+            {/* Quantity :<span>{product.quantity}</span> */}
+          </h5>
+        </div>
+      </div>
+      <div className="order-price-detail">
+        <p className="order-price-detail-list">
+          {/* <div>Subtotal ( {product.item} item )</div>
+          <div>{product.subTotal}$</div> */}
+        </p>
+        <p className="order-price-detail-list">
+          <div>Shipping</div>
+          {/* <div>{product.shipping}$</div> */}
+        </p>
+        <p className="order-price-detail-list">
+          <div>Discount</div>
+          {/* <div>{product.discount}$</div> */}
+        </p>
+        <p className="order-price-detail-list ordertotal">
+          <div>Order Total</div>
+          {/* <div>{product.orderTotal}$</div> */}
+        </p>
+      </div>
+      <div className="not-order-detail">
+        <h3>Note</h3>
+        <div className="ord-note">
+          {/* <p>{product.note}</p> */}
+        </div>
+      </div>
+      <Link style={{ textDecoration: "unset" }}>
+        <button className="updteordr">Updated Order</button>
+      </Link>
+    </div>
+          {/* </> */}
+        {/* ) */}
+      {/* // })} */}
+      </>
+    ):('')}
+    </>
+  );
+};
+const SellingDetailsDashBoard = (props) => {
+const [user, setUser] = useState({});
+const [ordersummary, setOrderSummary] = useState({});
+const [selectedProduct, setSelectedProduct] = useState(null);
+const [selectedOrder, setSelectedOrder] = useState({});
+const [ordercount, setOrderCount] = useState(0);
+const [transaction, setTransaction] = useState(0.00);
 
 const getUser = () => {
   UserServices.detail()
@@ -60,14 +202,82 @@ const getUser = () => {
     });
 };
 
+const getUserCompletedCount = () => {
+  OrderServices.getusercompletedcount()
+    .then((response) => {
+      setOrderCount(response);
+    })
+    .catch((e) => {
+      toast.error(e.message);
+    });
+};
+const getOrderSummary = () =>{
+  OrderServices.ordersummary()
+  .then((response) => {
+    setOrderSummary(response);
+  })
+  .catch((e) => {
+    toast.error(e.message);
+  });
+}
+const orderDetails = (index, id) =>{
+  //props.parentCallback('sellings1')
+  OrderServices.getSingleOrderSummary(id)
+  .then((response) => {
+    setSelectedOrder(response);
+  }).catch((e) => {
+    toast.error(e.message);
+  });
+  setSelectedProduct(index)
+}
+const getTransactions = () =>{
+  TransactionServices.usertransaction()
+  .then((response) => {
+    setTransaction(response);
+  }).catch((e) => {
+    toast.error(e.message);
+  });
+} 
+
 useEffect(() => {
     getUser();
+    getUserCompletedCount();
+    getOrderSummary();
+    getTransactions();
 }, []);
 
   return (
     <>
+    {selectedProduct ? (
+      <>
+      <div className="reviews-view-ordrmngment">
+        <h3>Order Reviews</h3>
+        <DetailedProductInfo order={selectedOrder} />
+        <h3>Ratingss</h3>
+        {/* Render reviews for the selected product */}
+        <div className="review-section">
+          {/* Map through selectedOrder.reviews */}
+          {/* {selectedOrder.reviews.map((review, index) => ( */}
+            <div  className="review">
+              {/* Display star rating based on review.rating */}
+              <div className="stars-values">
+                <StarRating value="2" />
+                <div>{`${2}`}</div>
+              </div>
+              <div className="customer-reviews">
+                <h3>Customer Review</h3>
+                <p>Comment</p>
+              </div>
+            </div>
+          {/* ))} */}
+        </div>
+        <button className="bckkkkk">
+          Back
+        </button>
+      </div>
+      </>
+    ):(<>
     <section id='selleng-dashbaord'>
-      
       <h3>Hi {user ? (<>
         {
           user.name
@@ -77,7 +287,7 @@ useEffect(() => {
             <div className='col-lg-4 col'>
               <div className='dabb'>
                 <h4>Completed Orders</h4>
-                <h1>20</h1>
+                <h1>{ordercount}</h1>
                 <select style={{ width: "100%"}}>
                     <option value="">Select Year</option>
                     <option value="2024">2024</option>
@@ -135,7 +345,7 @@ useEffect(() => {
             <div className='col-lg-4 col'>
             <div className='dabb'>
                 <h4>Earnings</h4>
-                <h1>$ 680.00</h1>
+                <h1>$ {transaction}</h1>
                <button>Withdraw</button>
                 </div>
             </div>
@@ -143,7 +353,44 @@ useEffect(() => {
         <div className='order-feeds'>
           <h3>Orders Feed</h3>
         {/* Secondrow */}
-        {products.map((product) => (
+        {ordersummary.length > 0 ?(
+          <>
+          {ordersummary.map((summary) => {
+          return(
+            <>
+              <div className='row' key={summary.id}>
+                <div className='product-item'>
+                  <div className='detaildashbritemdetail'>
+                    <div className='img-title'>
+                  <div><img src={SellerProductImage1} alt={summary?.product.name} /></div>
+                  <div>
+                  <p>ORDER#{summary.order.orderid}</p>
+                  <h4>{summary?.product.name}</h4>
+                  <p>{summary.order.status}</p>
+                  </div>
+                  </div>
+                  </div>
+                  <div className='dropdown'>
+                  <a href="#" onClick={(e) => orderDetails(e,summary?.order.id)}o>
+                  {/* <Link to={`/completedorder/${summary.order.orderid}`}> */}
+                    <button>
+                        View Detail
+                    </button>
+                  </a>
+                  {/* </Link> */}
+                  </div>
+                </div>
+                {/* <hr /> */}
+              </div>
+              </>
+            )
+          })}
+          </>
+        ):(
+          'No Order Exists'
+        )}
+        
+        {/* {products.map((product) => (
         <div className='row' key={product.id}>
               <div className='product-item'>
                 <div className='detaildashbritemdetail'>
@@ -157,7 +404,6 @@ useEffect(() => {
                 </div>
                 </div>
                 <div className='dropdown'>
-                  {/* Placeholder for the dropdown button */}
                   <button>
                     View Detail
                   </button>
@@ -165,9 +411,10 @@ useEffect(() => {
               </div>
               <hr />
             </div>
-        ))}
+        ))} */}
         </div>
     </section>
+    </>)}
     </>
   )
 }

@@ -33,22 +33,22 @@ const SellerAllTabs = () => {
     setSelectedMenuItem(menu);
     setIsOrderManagementOpen(false); // Close order management dropdown on menu change
   };
-
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
-
   const toggleOrderManagement = () => {
     setIsOrderManagementOpen(!isOrderManagementOpen);
   };
   const toggleOrderManagements = () => {
     setIsOrderManagementOpens(!isOrderManagementOpens);
   };
-
+  const handleCallbacks = (value) =>{
+    setSelectedMenuItem(value);
+  }
   const renderComponent = () => {
     switch (selectedMenuItem) {
       case 'selling1':
-        return <Selling />;
+        return <Selling parentCallback={handleCallbacks} />;
       case 'selling2':
         return <ProductManagement />;
       case 'selling3':
