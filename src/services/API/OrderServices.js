@@ -2,6 +2,8 @@ import request from '../request'
 import { BASE_API } from '../Constant'
 // @todo this file name should be product service
 const baseUrl = `${BASE_API}order`
+const baseApi = `${BASE_API}`
+const ordersApi = `${BASE_API}orders`
 
 function index(id) {
   return request({
@@ -93,9 +95,39 @@ function vendorNotDelivered(id, data) {
     method: 'POST',
   })
 }
+function ordersummary(params = {}) {
+  return request({
+    url: `${baseApi}ordersummary/`,
+    params,
+    method: 'GET',
+  })
+}
+function getSingleOrderSummary(id) {
+  return request({
+    url: `${baseApi}ordersummary/${id}`,
+    method: 'GET',
+  })
+}
+function getusercompletedcount(params = {}) {
+  return request({
+    url: `${baseUrl}/counts`,
+    params,
+    method: 'GET',
+  })
+}
+function getbyid(id) {
+  return request({
+    url: `${baseUrl}/getById/${id}`,
+    method: 'GET',
+  })
+}
 
 const OrderServices = {
   save,
+  getbyid,
+  ordersummary,
+  getSingleOrderSummary,
+  getusercompletedcount,
   refund,
   update,
   index,

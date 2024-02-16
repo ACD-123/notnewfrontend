@@ -4672,3 +4672,9 @@ section#getsurpriseprice .text-button {
 .error{
   color: red !important;
 }
+.delivery select {
+  border: 1px solid #219fbf;
+  padding: 8px 20px;
+  border-radius: 20px;
+  float: right;
+}
