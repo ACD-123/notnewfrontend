@@ -40,7 +40,7 @@ const PasswordRecovery = () => {
       setEnabled(true);
       AuthServices.forgetPassword(formData)
         .then((response) => {
-          if (response.message == "User Found") {
+          if (response.success) {
             window.location.href = "/forgotverification/" + formData.email;
           }
         })
