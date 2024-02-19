@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import ProductCard from '../Elements/ProductCard';
 
 const RecentlyViewed = () => {
-  const [products, setProducts] = useState([
-    // Initial list of products (you can add your products here)
-    { id: 1, name: 'Product 1' },
-    { id: 2, name: 'Product 2' },
-    // Add more products as needed
-  ]);
+  // const [products, setProducts] = useState([
+  //   // Initial list of products (you can add your products here)
+  //   { id: 1, name: 'Product 1' },
+  //   { id: 2, name: 'Product 2' },
+  //   // Add more products as needed
+  // ]);
+  const [products, setProducts] = useState([]);
 
   // Function to clear all products
   const clearAllProducts = () => {
@@ -25,6 +26,7 @@ const RecentlyViewed = () => {
         </div>
         {/* Render the list of products */}
         {products.map((product) => (
+          // <ProductCard key={product.id} {...product} />
           <ProductCard key={product.id} {...product} />
         ))}
 

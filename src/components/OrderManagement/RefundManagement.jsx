@@ -267,7 +267,7 @@ const RefundManagement = () => {
 
   return (
     <div className="ongoing ordmangemnt">
-      <h3>Ongoing Orders</h3>
+      <h3>Refund Orders</h3>
       {ordersData.map((order, index) => (
         <div className="row align-items-center" key={order.orderNumber}>
           <div className="col-lg-10">

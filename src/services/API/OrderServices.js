@@ -121,10 +121,45 @@ function getbyid(id) {
     method: 'GET',
   })
 }
+function updateSeller(id, data) {
+  return request({
+    url: `${baseUrl}/updateSeller/${id}`,
+    data,
+    method: 'PATCH',
+  })
+}
+function customerCompCount() {
+  return request({
+    url: `${baseUrl}/customer/comp/count`,
+    method: 'GET',
+  })
+}
+function customerPendCount() {
+  return request({
+    url: `${baseUrl}/customer/pend/count`,
+    method: 'GET',
+  })
+}
+function customerRefundCount() {
+  return request({
+    url: `${baseUrl}/customer/refund/count`,
+    method: 'GET',
+  })
+}
+function customerOrders() {
+  return request({
+    url: `${baseUrl}/customer/orders`,
+    method: 'GET',
+  })
+}
 
 const OrderServices = {
   save,
+  customerOrders,
   getbyid,
+  customerCompCount,
+  customerPendCount,
+  customerRefundCount,
   ordersummary,
   getSingleOrderSummary,
   getusercompletedcount,
@@ -140,6 +175,7 @@ const OrderServices = {
   getTrsutedUserData,
   vendorDelivered,
   vendorNotDelivered,
+  updateSeller
 }
 
 export default OrderServices

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Prdimage from '../../assets/Images/Singleproduct/prdimage.png';
 import Prdimage1 from '../../assets/Images/Singleproduct/Product1.png';
 import Prdimage2 from '../../assets/Images/Singleproduct/Product2.png';
@@ -9,14 +9,66 @@ import icon1 from '../../assets/Images/icons/1.png'
 import icon2 from '../../assets/Images/icons/2.png'
 import icon3 from '../../assets/Images/icons/3.png'
 import { Link } from 'react-router-dom';
+import OrderServices from "../../services/API/OrderServices"; //~/services/API/OrderServices
+import { toast } from "react-toastify";
 
-// DetailedProductInfo component to display details of a single product
-const DetailedProductInfo = ({ product }) => {
-  // Modify this component to display detailed product information as per your needs
+// DetailedProductInfo component to display details of a single order
+const DetailedProductInfo = ({ order }) => {
+  const [singleOrder, setOrder] = useState({});
+  const [singleOrderItems, setOrderItems] = useState({});
+  const [formData, setFormData] = useState({
+    estimateDelivery: "",
+    shipping_cost: "0",
+    discountcode: "",
+    status: "",
+    orderid: ""
+  });
+
+  let orderId = order;
+  const getOrder =(orderId) =>{
+    OrderServices.getbyid(order)
+      .then((response) => {
+        let orderItems = JSON.parse(JSON.parse(response.orderItems))
+        console.log('oredrs', response)
+        setOrder(response);
+        setOrderItems(orderItems);
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  }
+  const handleSubmit =(e) =>{
+    e.preventDefault();
+    let id = document.getElementById('orderid').value;
+    OrderServices.updateSeller(id, formData)
+      .then((response) => {
+        if(response.success){
+          toast.success(response.message)
+        }else{
+          toast.error(response)
+        }
+      }).catch((e) => {
+        toast.error(e.message);
+      });
+  }
+  const handleInputChange =(e)=>{
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  }
+  useEffect(() => {
+    getOrder();
+  }, []);
+  // Modify this component to display detailed order information as per your needs
   return (
-    <div className="detailed-product-info">
+    <>
+    {singleOrder ? (<>
+      <div className="detailed-product-info">
+        <form onSubmit={handleSubmit}>
         <h3>Order Details</h3>
-        <h4>Order #: {product.orderNumber}</h4>
+        <h4>Order #: {singleOrder.orderid}</h4>
         <div className='row'>
             <div className='col-lg-8'>
                 <div className='location'>
@@ -27,9 +79,11 @@ const DetailedProductInfo = ({ product }) => {
              style={{border: "2.15px solid #E9E9E9", background: "#FCFCFC"}}
             >
                 <div className='order-seller-details'>
-                    <p><img src={icon1} /> {product.address}</p>
-                    <p><img src={icon2} /> {product.phone}</p>
-                    <p><img src={icon3} /> {product.name}</p>
+                    <p><img src={icon1} /> {singleOrder.billing_address}</p>
+                    {singleOrder.buyer ? (<>
+                      <p><img src={icon2} /> {singleOrder.buyer.phone}</p>
+                    <p><img src={icon3} /> {singleOrder.buyer.name}</p>
+                    </>):('')}
                 </div>
             </div>
         </div>
@@ -37,18 +91,19 @@ const DetailedProductInfo = ({ product }) => {
             <div className='col-lg-6'>
                 <div className='deliverystatustime'>
                     <h3>Delivery Status</h3>
-                    <p>Est Delivery: <span>{product.deliveryStatus}</span></p>
+                    <p>Est Delivery: <span><input type="text" onChange={handleInputChange} value={formData.estimateDelivery} name="estimateDelivery" id="estimateDelivery" /></span></p>
+                    {/* <p>Est Delivery: <span></span></p> */}
                 </div>
             </div>
             <div className='col-lg-6'>
-                <select>
-                    <option>
+                <select name="status" onChange={handleInputChange} value={formData.status}>
+                    <option value="pending">
                     Pending
                     </option>
-                    <option>
+                    <option value="delivered">
                     Delivered
                     </option>
-                    <option>
+                    <option value="refund">
                     Refund
                     </option>
                 </select>
@@ -56,58 +111,110 @@ const DetailedProductInfo = ({ product }) => {
         </div>
         <div className='row align-items-center'>
             <h3>Order Items</h3>
-            <div className='col-lg-9'>
+            {singleOrderItems.length > 0 ?(
+              <>  
+                {singleOrderItems.map((item) => {
+                  const attruibutes = JSON.parse(item.attributes);
+                  return(
+                    <>
+                    <div className='col-lg-9'>
+                      <div className='product-image'>
+                        <div className='image'>
+                            <img  src={Prdimage2}  />
+                            {/* singleOrderItems */}
+                        </div>
+                      </div>
+                      <div className='prd-details'>
+                      <h5>{item.name}</h5>
+                      <p>$ {item.price}</p>
+                      <p className='size-color'>
+                        {attruibutes.length > 0 ?(
+                          <>
+                          {attruibutes.map((attruibute) => {
+                            // console.log('attruibutes', attruibute)
+                            return(
+                              <>
+                                <span>Size:</span> {attruibute.size} <span>Color:</span> <div style={{ background: attruibute.color, width: "30px" }}>&nbsp;</div>
+                              </>
+                            )
+                          })}
+                          </>
+                        ):('')}
+                        {/* <span>Size:</span> {product.size} <span>Color:</span> {product.color} */}
+                      </p>
+                      
+                      {/* <p className='size-color'><span>Size:</span> {product.size} <span>Color:</span> {product.color}</p> */}
+                      </div>
+                    </div>
+                    </>
+                  )
+                })}
+              </>
+            ):('')}
+            {/* <div className='col-lg-9'>
             <div className='product-image'>
-              <div className='image'>
-                  <img  src={product.images}  />
-              </div>
-              <div className='prd-details'>
-                <h5>{product.productName}</h5>
+              <div className='image'> */}
+                  {/* <img  src={order.images}  /> */}
+                  {/* <img  src={Prdimage2}  /> */}
+                  {/* singleOrderItems */}
+              {/* </div>
+              <div className='prd-details'> */}
+                {/* <h5>{product.productName}</h5>
                 <p>${product.price}</p>
-                <p className='size-color'><span>Size:</span> {product.size} <span>Color:</span> {product.color}</p>
-              </div>
+                <p className='size-color'><span>Size:</span> {product.size} <span>Color:</span> {product.color}</p> */}
+              {/* </div>
             </div>
-            </div>
-            <div className='col-lg-3'>
-                <h5 className='qunty'>Quantity :<span>{product.quantity}</span></h5>
-            </div>
+            </div> */}
+            {/* <div className='col-lg-3'> */}
+                {/* <h5 className='qunty'>Quantity :<span>{product.quantity}</span></h5> */}
+            {/* </div> */}
         </div>
         <div className='order-price-detail'>
             <p className='order-price-detail-list'>
-                <div>Subtotal ( {product.item} item )</div>
-                <div>{product.subTotal}$</div>
+                <div>Subtotal ( {singleOrderItems.length} item )</div>
+                <div>$ {singleOrder.subtotal_cost}</div>
+                {/* <div>Subtotal ( {product.item} item )</div>
+                <div>{product.subTotal}$</div> */}
             </p>
             <p className='order-price-detail-list'>
                 <div>Shipping</div>
-                <div>{product.shipping}$</div>
+                <div>$ <input type='text'  value={formData.shipping_cost} onChange={handleInputChange} name="shipping_cost" /></div>
             </p>
             <p className='order-price-detail-list'>
-                <div>Discount</div>
-                <div>{product.discount}$</div>
+                 <div>Discount Code</div>
+                 <div><input type='text' value={formData.discountcode} name="discountcode" onChange={handleInputChange} /></div>
+                {/* <div>{product.discount}$</div> */}
             </p>
             <p className='order-price-detail-list ordertotal'>
                 <div>Order Total</div>
-                <div>{product.orderTotal}$</div>
+                <div>${singleOrder.order_total}</div>
             </p>
         </div>
         <div className='not-order-detail'>
             <h3>Note</h3>
-            <div className='ord-note'>
-                <p>{product.note}</p>
+            <div className='col-lg-9'>
+              <textarea className='ord-note col-lg-12' name="admin_notes" onChange={handleInputChange}>{singleOrder.admin_notes}</textarea>
+                {/* <p>{product.note}</p> */}
             </div>
         </div>
-        <Link style={{textDecoration: "unset"}}><button className='updteordr'>Updated Order</button></Link>
+        <button type="submit" className='updteordr'>Updated Order</button>
+        <input type="hidden" value={singleOrder.id} name="orderid" id="orderid" />
+          {/* <Link style={{textDecoration: "unset"}}><button type="submit" className='updteordr'>Updated Order</button></Link> */}
+        </form>
     </div>
+    </>):('')}
+    </>
   );
 };
 
 const OngoingOrderManagement = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [ordersummary, setOrderSummary] = useState({});
 
-  const handleViewDetails = (index) => {
-    setSelectedProduct(index);
+  const handleViewDetails = (orderId) => {
+    // console.log('order id', orderid)
+    setSelectedProduct(orderId);
   };
-
   const ordersData = [
     {
       orderNumber: '312323',
@@ -200,22 +307,68 @@ const OngoingOrderManagement = () => {
     
 
   ];
+  const getOrderSummary = () => {
+    OrderServices.ordersummary()
+      .then((response) => {
+        setOrderSummary(response);
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  };
 
-  if (selectedProduct !== null && ordersData[selectedProduct]) {
-    const selectedOrder = ordersData[selectedProduct];
+  useEffect(() => {
+    getOrderSummary();
+  }, []);
 
+  // if (selectedProduct !== null && ordersData[selectedProduct]) {
+    if (selectedProduct !== null) {
+    const selectedOrder = selectedProduct//ordersData[selectedProduct];
+    // const selectedOrder = ordersData[selectedProduct];
     return (
       <div className='detailed-view'>
-        <DetailedProductInfo product={selectedOrder} />
+        <DetailedProductInfo order={selectedOrder} />
         <button className='bckkkkk' onClick={() => setSelectedProduct(null)}>Go Back</button>
       </div>
     );
   }
-
+  
   return (
     <div className='ongoing ordmangemnt'>
       <h3>Ongoing Orders</h3>
-      {ordersData.map((order, index) => (
+      {ordersummary.length > 0 ? (
+        <>
+        {ordersummary.map((ordersumm, index) => {
+          return(
+            <>
+             <div className='row align-items-center' key={ordersumm.order.orderid}>
+              <div className='col-lg-8'>
+                <div className='product-image'>
+                  <div className='image'>
+                      <img  src={Prdimage3} alt="Product" />
+                  </div>
+                  <div className='prd-details'>
+                    <h5>Order # : <b>{ordersumm.order.orderid}</b></h5>
+                    <h3>{ordersumm.product.name}</h3>
+                    <h6 style={{ color: "#0688FF" }}>{ordersumm.order.status}</h6>
+                  </div>
+                </div>
+              </div>
+              <div className='col-lg-4'>
+                <div className='rightarrow viedeails'>
+                  <button onClick={() => handleViewDetails(ordersumm.order.id)}>
+                    View Details
+                  </button>
+                </div>
+              </div>
+              <hr />
+             </div>
+            </>
+          )
+        })}
+        </>
+      ):('No Order Exists')}
+      {/* {ordersData.map((order, index) => (
         <div className='row align-items-center' key={order.orderNumber}>
           <div className='col-lg-8'>
             <div className='product-image'>
@@ -243,7 +396,7 @@ const OngoingOrderManagement = () => {
           <hr />
         </div>
         
-      ))}
+      ))} */}
     </div>
   );
 };

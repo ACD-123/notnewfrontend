@@ -75,9 +75,6 @@ const DetailedProductInfo = ({ order }) => {
       setOrderItems(JSON.parse(JSON.parse(order.order.orderItems)));
     }
   };
-  useEffect(() => {
-    getOrderItems();
-  }, []);
   // Modify this component to display detailed product information as per your needs
   return (
     <>
@@ -120,7 +117,7 @@ const DetailedProductInfo = ({ order }) => {
                     <input
                       type="text"
                       placeholder="Enter Estimated Delivery..."
-                      value={order.estimated_delivery }
+                      value={order.order.estimateDelivery }
                       onChange={handleEstDelivery}
                       style={{
                         border: "1px solid",
@@ -217,11 +214,11 @@ const DetailedProductInfo = ({ order }) => {
               </p>
               <p className="order-price-detail-list">
                 <div>Shipping</div>
-                <div>$ <input type="number" min="0" style={{ border: '1px solid', padding: '0 5px', borderRadius: '7px', marginLeft: '10px'}} placeholder="Enter Shipping Price.." /></div>
+                <div>$ <input type="text"  value={order.order.shipping_cost} style={{ border: '1px solid', padding: '0 5px', borderRadius: '7px', marginLeft: '10px'}} placeholder="Enter Shipping Price.." /></div>
               </p>
               <p className="order-price-detail-list">
                 <div>Discount</div>
-                <div>$ <input type="number" min="0" style={{ border: '1px solid', padding: '0 5px', borderRadius: '7px', marginLeft: '10px'}} placeholder="Enter Discount.." /></div>
+                <div>$ <input type="text"  value={order.order.discountcode}  style={{ border: '1px solid', padding: '0 5px', borderRadius: '7px', marginLeft: '10px'}} placeholder="Enter Discount.." /></div>
               </p>
               <p className="order-price-detail-list ordertotal">
                 <div>Order Total</div>
@@ -420,7 +417,6 @@ const SellingDetailsDashBoard = (props) => {
                                 onClick={(e) =>
                                   orderDetails(e, summary?.order.id)
                                 }
-                                o
                               >
                                 {/* <Link to={`/completedorder/${summary.order.orderid}`}> */}
                                 <button>View Detail</button>
