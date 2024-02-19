@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'react-toastify/dist/ReactToastify.css';
+import { Provider } from 'react-redux'
+import store from './store'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 // check if window is close or not:
 // window.addEventListener('beforeunload', function (e) {
@@ -12,7 +14,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 // });
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 

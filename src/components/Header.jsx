@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from 'react-redux';
 import Logo from "../assets/Images/logo.png";
 import SearchwithCategories from "./Elements/SearchwithCategories";
 import Avatar from "../assets/Images/Elements/avatar.png";
@@ -12,6 +13,8 @@ import AuthServices from "../services/API/AuthService"; //~/services/API/AuthSer
 import CartServices from "../services/API/CartServices"; //~/services/API/CartServices
 
 const Header = () => {
+  const items = useSelector(state => state.cupon.cupon);
+  const cart_items = items ? items : 0;
   const [showDropdown, setShowDropdown] = useState(false);
   const [user, setUser] = useState({});
   const [cartitems, setCartItems] = useState(0);
@@ -31,10 +34,15 @@ const Header = () => {
         localStorage.setItem('user_details', JSON.parse(response));
       })
       .catch((e) => {
-        toast.error(e.message);
+        console.log('error', e)
+        // toast.error(e.message);
       });
   };
   const getItems =() =>{
+    /**
+     * In case of calling api
+     * use following code
+     */
     CartServices.count()
     .then((response) => {
       setCartItems(response);
@@ -52,6 +60,7 @@ const Header = () => {
   useEffect(() => {
     if (isLoggedin()) {
       getUser();
+      // let cartItems = localStorage.getItem('cupon');
       getItems();
     }
   }, []);
@@ -75,7 +84,7 @@ const Header = () => {
                 {isLoggedin() ? (
                   <div className="cart-user">
                     <div className="cart">
-                      {cartitems}
+                      {cart_items}
                       <Link to="/shoppingcart">
                         <img src={Cart} />
                       </Link>

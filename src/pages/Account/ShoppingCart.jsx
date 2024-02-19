@@ -17,7 +17,11 @@ import {
   isLoggedin,
   getUserDetails,
 } from "../../services/Auth"; // ~/services/Auth
+import {useDispatch, useSelector} from 'react-redux'
+import {saveCupon, deleteCupon} from '../../store/slices/cupon'
+
 const ShoppingCart = () => {
+  const dispatch = useDispatch()
   const [showDiscountField, setShowDiscountField] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
   const [cart, setCart] = useState({});
@@ -32,6 +36,7 @@ const ShoppingCart = () => {
   const [adminprices, setAdminPrices] = useState(0);
   const [amountaddingprices, setAmountAddingPrices] = useState(0);
   const [cartids, setCartIds] = useState([]);
+  
   let cart_ids = [];
   const toggleDiscountField = () => {
     setShowDiscountField(!showDiscountField);
@@ -39,29 +44,29 @@ const ShoppingCart = () => {
 
   const getCart = () => {
     CartServices.self().then((response) => {
-      console.log('response', response)
+      console.log("response", response);
       setCart(response);
     });
   };
-  const handleCheckOut =(e)=>{
+  const handleCheckOut = (e) => {
     e.preventDefault();
     let data = {
-        "dicount_code":localStorage.getItem('discountCode'),
-        "items_number": cartitem,
-        "sub_total": amountaddingprices,
-        "shipping_total":shippingprice,
-        "admin_prices":JSON.stringify(availableprices),
-        "order_total":amountaddingprices
-    }
+      dicount_code: localStorage.getItem("discountCode"),
+      items_number: cartitem,
+      sub_total: amountaddingprices,
+      shipping_total: shippingprice,
+      admin_prices: JSON.stringify(availableprices),
+      order_total: amountaddingprices,
+    };
     CheckoutServices.save(data).then((response) => {
-      if(response.success){
-        window.location.href = '/checkout';
+      if (response.success) {
+        window.location.href = "/checkout";
       }
     });
-  }
+  };
   const handleDiscountSubmit = () => {
     // Logic to handle applying the discount code
-    localStorage.setItem('discountCode', discountCode);
+    localStorage.setItem("discountCode", discountCode);
     // console.log("Discount code applied:", discountCode);
     // You can implement further logic like API calls or validation here
   };
@@ -71,7 +76,12 @@ const ShoppingCart = () => {
     CartServices.remove(id).then((response) => {
       if (response.success) {
         toast.success(response.message);
+        CartServices.count()
+        .then((response) => {
+          dispatch(saveCupon(response));
+        })
         getCart();
+
       } else {
         toast.error(response.message);
       }
@@ -88,7 +98,7 @@ const ShoppingCart = () => {
       response.map((crt) => {
         cart_ids.push(crt.cart_id);
       });
-      setCartIds(cart_ids)
+      setCartIds(cart_ids);
     });
   };
   const handleSaveLater = (e, cartId) => {
@@ -114,8 +124,8 @@ const ShoppingCart = () => {
     PriceServices.all().then((response) => {
       var availablePrices = [];
       response.map((price) => {
-        availablePrices[price.name]=price.value;
-      })
+        availablePrices[price.name] = price.value;
+      });
       setPrices(response);
       setAvailablePrices(availablePrices);
     });
@@ -124,24 +134,24 @@ const ShoppingCart = () => {
     var cartPrice = [];
     var shippingPrice = [];
     var allPrices = [];
-    if(cart.length > 0){
+    if (cart.length > 0) {
       cart.map((cat) => {
-        cartPrice.push(cat.price)
+        cartPrice.push(cat.price);
         shippingPrice.push(cat.products.shipping_price);
-      })
+      });
     }
-    if(prices.length > 0){
+    if (prices.length > 0) {
       prices.map((price) => {
-        if(price.name !== 'Discount'){
-          allPrices.push(price.value)
-        }else if(price.name === 'Discount'){
-          setDiscountPrices(price.value)
+        if (price.name !== "Discount") {
+          allPrices.push(price.value);
+        } else if (price.name === "Discount") {
+          setDiscountPrices(price.value);
         }
-      })
+      });
     }
-    setsubTotal(cartPrice.reduce((a,v) =>  a = a + v , 0 ));
-    setShippingPrice(shippingPrice.reduce((a,v) =>  a = a + v , 0 ));
-    setAdminPrices(allPrices.reduce((a,v) => a = a + v , 0 ))
+    setsubTotal(cartPrice.reduce((a, v) => (a = a + v), 0));
+    setShippingPrice(shippingPrice.reduce((a, v) => (a = a + v), 0));
+    setAdminPrices(allPrices.reduce((a, v) => (a = a + v), 0));
     var amountAfterDiscount = subTotal - discountPrices;
     var amountbyaddingprices = amountAfterDiscount + adminprices;
     setAmountAddingPrices(amountbyaddingprices);
@@ -167,8 +177,8 @@ const ShoppingCart = () => {
               {cart.length > 0 ? (
                 <>
                   {cart.map((cat, index) => {
-  let attributes = JSON.parse(cat.attributes);
-  const isSaved = cartids.includes(cat.id);
+                    let attributes = JSON.parse(cat.attributes);
+                    const isSaved = cartids.includes(cat.id);
                     return (
                       <>
                         <div className="order-details" id="sectionToRemove">
@@ -237,33 +247,37 @@ const ShoppingCart = () => {
                                 <h4>US $ {cat.products?.price}</h4>
                                 <span>
                                   +US $
-                                  {cat.products?.price + cat.products?.shipping_price}
+                                  {cat.products?.price +
+                                    cat.products?.shipping_price}
                                 </span>
                               </div>
                             </div>
                           </div>
                           <hr className="dashed" />
                           <div className="buttonright">
-                               {isSaved ? (
-          <button className="btn btn-info btn-lg transparent" type="button">
-            Saved for later
-          </button>
-        ) : (
-          <button
-            className="btn btn-info btn-lg transparent"
-            type="button"
-            onClick={(e) => handleSaveLater(e, cat.id)}
-          >
-            Save for later
-          </button>
-        )}
-        <button
-          className="btn btn-info btn-lg danger"
-          type="button"
-          onClick={(e) => handleRemoveSection(e, cat.id)}
-        >
-          Remove
-        </button>
+                            {isSaved ? (
+                              <button
+                                className="btn btn-info btn-lg transparent"
+                                type="button"
+                              >
+                                Saved for later
+                              </button>
+                            ) : (
+                              <button
+                                className="btn btn-info btn-lg transparent"
+                                type="button"
+                                onClick={(e) => handleSaveLater(e, cat.id)}
+                              >
+                                Save for later
+                              </button>
+                            )}
+                            <button
+                              className="btn btn-info btn-lg danger"
+                              type="button"
+                              onClick={(e) => handleRemoveSection(e, cat.id)}
+                            >
+                              Remove
+                            </button>
                           </div>
                         </div>
                       </>
@@ -348,9 +362,14 @@ const ShoppingCart = () => {
                               <>
                                 <tr>
                                   <th>{price.name}</th>
-                                  <td>$ {(price.name == 'Discount') ? (<>
-                                    - {price.value}
-                                  </>):(price.value)}</td>
+                                  <td>
+                                    ${" "}
+                                    {price.name == "Discount" ? (
+                                      <>- {price.value}</>
+                                    ) : (
+                                      price.value
+                                    )}
+                                  </td>
                                 </tr>
                               </>
                             );
@@ -368,14 +387,14 @@ const ShoppingCart = () => {
                     </table>
                     <div className="imgtoop">
                       <img src={Payment} alt="" />
-                        <button
-                          className="btn btn-info btn-lg gradientbtncolor"
-                          type="button"
-                          onClick={handleCheckOut}
-                        >
-                          Proceed to Checkout
-                        </button>
-                        {/* <Link to="/checkout">
+                      <button
+                        className="btn btn-info btn-lg gradientbtncolor"
+                        type="button"
+                        onClick={handleCheckOut}
+                      >
+                        Proceed to Checkout
+                      </button>
+                      {/* <Link to="/checkout">
 
                       </Link> */}
                     </div>
