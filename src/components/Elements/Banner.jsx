@@ -27,7 +27,7 @@ const Banner = () => {
       <div className='banner-text-button'>
         <h1>Best Deals <br></br>In Town</h1>
         <p>There are many variations of passages of Lorem Ipsum available</p>
-        <Link to="/singlecategory"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
+        <Link to="/singlecategory/:abc"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
       </div>
     </div>
     <div class="carousel-item"
@@ -36,7 +36,7 @@ const Banner = () => {
       <div className='banner-text-button'>
         <h1>Best Deals <br></br>In Town</h1>
         <p>There are many variations of passages of Lorem Ipsum available</p>
-        <Link to="/singlecategory"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
+        <Link to="/singlecategory/:abc"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
       </div>
     </div>
     <div class="carousel-item"
@@ -45,7 +45,7 @@ const Banner = () => {
       <div className='banner-text-button'>
         <h1>Best Deals <br></br>In Town</h1>
         <p>There are many variations of passages of Lorem Ipsum available</p>
-        <Link to="/singlecategory"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
+        <Link to="/singlecategory/:abc"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
       </div>
     </div>
   </div>

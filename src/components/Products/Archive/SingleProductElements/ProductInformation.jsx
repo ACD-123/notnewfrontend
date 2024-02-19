@@ -5,8 +5,11 @@ import { Link } from 'react-router-dom'
 import ProductServices from '../../../../services/API/ProductServices'; //~/services/API/ProductServices
 import CartServices from '../../../../services/API/CartServices'; //~/services/API/CartServices
 import { toast } from "react-toastify";
+import {useDispatch, useSelector} from 'react-redux'
+import {saveCupon, deleteCupon} from '../../../../store/slices/cupon'
 
 const ProductInformation = () => {
+  const dispatch = useDispatch()
   const [productData, setProductData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
@@ -48,7 +51,8 @@ const ProductInformation = () => {
       CartServices.save(inputData)
       .then((response) => {
         if(response.success){
-          window.location.href=`/checkouts/${productData.guid}`;
+          dispatch(saveCupon(response));
+          // window.location.href=`/checkouts/${productData.guid}`;
         }else{
           toast.error(response.message);
         }
@@ -83,6 +87,10 @@ const ProductInformation = () => {
         CartServices.save(inputData)
         .then((response) => {
           if(response.success){
+            CartServices.count()
+            .then((response) => {
+              dispatch(saveCupon(response));
+            })
             toast.success(response.message);
           }else{
             toast.error(response.message);

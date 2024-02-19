@@ -68,6 +68,14 @@ function update(data) {
   })
 }
 
+function updateProfile(data) {
+  return request({
+    url: `${baseUrl}profileupdate`,
+    data,
+    method: 'PATCH',
+  })
+}
+
 function refreshOnboadingUrl(id) {
   return request({
     url: `${baseUrl}refresh/${id}`,
@@ -121,6 +129,7 @@ const UserService = {
   deleteAccount,
   cancelDelete,
   fcmToken,
+  updateProfile,
   self,
   // depositfund,
 }

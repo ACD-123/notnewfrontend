@@ -1,36 +1,72 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Profile from "../../../assets/Images/PersonalInfo/profile.png";
+import UserServices from "../../../services/API/UserServices"; //~/services/API/UserServices
+import { setUserDetails, isLoggedin, getUserDetails } from "../../../services/Auth"; // ~/services/Auth
+import { toast } from "react-toastify";
+
 const PersonalInfo = () => {
+  const [user, setUser] = useState({});
+  const [phone, setPhone] = useState("");
+  const [addresses, setAddress] = useState("");
+  const [emails, setEmail] = useState("");
+  const [site, setSite] = useState("");
   const [formData, setFormData] = useState({
     phone: "",
     address: "",
     email: "",
     site: "",
   });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
+  const getUser = () =>{
+    UserServices.self().then((response) => {
+      setEmail(response.email);
+      setPhone(response.phone);
+      setAddress(response.address);
+      setSite(response.site);
+      setUser(response);
     });
-  };
+  }
+  const handlePhone =(e) =>{
+    setPhone(e.target.value);
+  }
+  const handleAddress =(e) =>{
+    setAddress(e.target.vaue);
+  }
+  const handleEmail =(e) =>{
+    setEmail(e.target.vaue);
+  }
+  const handleSite = (e) =>{
+    setSite(e.target.value);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Do something with the form data, for example, submit it to an API
-    console.log(formData);
+    let data ={
+      phone: phone,
+      address: addresses,
+      email: emails,
+      site: site,
+    }
     // Reset form fields
-    setFormData({
-      phone: "",
-      address: "",
-      email: "",
-      site: "",
+    // setFormData({
+    //   phone: phone,
+    //   address: addresses,
+    //   email: email,
+    //   site: site,
+    // });
+    UserServices.updateProfile(data)
+    .then((response) => {
+      if(response.success){
+        setUserDetails(response)
+        toast.success(response.message)
+      }
     });
   };
-
+  useEffect(() => {
+    getUser();
+  }, []);
   return (
     <>
+    {user? (<>
       <section id="prsnlinfo">
         <div className="row">
           <div className="col-lg-3">
@@ -42,7 +78,7 @@ const PersonalInfo = () => {
             <div className="peronsinfo-form">
               <h2>Micheal Kroll </h2>
               <h6>
-                <a href="mailto:Customer@mail.com">customer@mail.com</a>
+                <a href={`mailto:${user.email}`}>{user.email}</a>
               </h6>
               <h5>Profile Information</h5>
               <div className="prnform">
@@ -50,8 +86,8 @@ const PersonalInfo = () => {
                   <input
                     type="text"
                     name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
+                    value={phone}
+                    onChange={handlePhone}
                     required
                     placeholder="Phone:"
                   />
@@ -60,8 +96,8 @@ const PersonalInfo = () => {
                   <input
                     type="text"
                     name="address"
-                    value={formData.address}
-                    onChange={handleChange}
+                    value={addresses}
+                    onChange={handleAddress}
                     placeholder="Address:"
                     required
                   />
@@ -71,8 +107,8 @@ const PersonalInfo = () => {
                   <input
                     type="email"
                     name="email"
-                    value={formData.email}
-                    onChange={handleChange}
+                    value={emails}
+                    onChange={handleEmail}
                     placeholder="Email:"
                     required
                   />
@@ -82,8 +118,8 @@ const PersonalInfo = () => {
                   <input
                     type="text"
                     name="site"
-                    value={formData.site}
-                    onChange={handleChange}
+                    value={site}
+                    onChange={handleSite}
                     placeholder="Site:"
                     required
                   />
@@ -96,6 +132,7 @@ const PersonalInfo = () => {
           </div>
         </div>
       </section>
+    </>):('')}
     </>
   );
 };

@@ -28,3 +28,7 @@ export const isLoggedin = () => {
 }
 export const setCondition = (condition) =>
     localStorage.setItem('condition', JSON.stringify(condition))
+
+export const setCartItems = (details) =>
+    localStorage.setItem('cart_items', JSON.stringify(details))
+  

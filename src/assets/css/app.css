@@ -3660,12 +3660,12 @@ button.rviews {
   color: #0E0E0E;
   font-weight: bold;
 }
-.reviews-view-ordrmngment .detailed-product-info h3.details
+/* .reviews-view-ordrmngment .detailed-product-info h3.details
 ,.reviews-view-ordrmngment .order-price-detail,.reviews-view-ordrmngment .detailed-product-info .deliverystatus,
 .reviews-view-ordrmngment .not-order-detail, .reviews-view-ordrmngment .detailed-product-info button.updteordr
 {
   display: none;
-}
+} */
  
 .detailed-product-info .product-image img {
   width: 130px;

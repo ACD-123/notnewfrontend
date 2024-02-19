@@ -4,9 +4,9 @@ import ProfileInformationTabs from './PersonalInfoAllPages/ProfileInformationTab
 import Backimage from '../../assets/Images/back-icon.png'
 import NotificationPreferencesTabs from './NotificationPreferences/NotificationPreferencesTabs';
 import SellerAllTabs from './SellerSetup/SellerAllTabs';
+import MyProducts from './SellerSetup/MyProducts'
 
 const AccountInfo = () => {
-
   const [selectedLink, setSelectedLink] = useState(null);
   const [trustedseller, setTrustedSeller] = useState(false);
 
@@ -39,6 +39,12 @@ const handleGeneralNotifications = () => {
             <h3>Selling Hub</h3>
             <SellerAllTabs />
             <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button>
+          </div>
+        );
+      case 'items':
+        return (
+          <div>
+            <MyProducts />
           </div>
         );
       case 'PaymentInformation':
@@ -87,7 +93,7 @@ const handleGeneralNotifications = () => {
                 <li onClick={() => handleLinkClick('Selling')}>Set Up Seller Account</li>
               )}
                 
-                <li onClick={() => handleLinkClick('Selling')}>List an Item</li>
+                <li onClick={() => handleLinkClick('items')}>List an Item</li>
               </ul>
             </div>
             
