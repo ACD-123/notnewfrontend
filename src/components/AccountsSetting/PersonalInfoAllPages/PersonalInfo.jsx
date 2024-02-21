@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 const PersonalInfo = () => {
   const [user, setUser] = useState({});
   const [phone, setPhone] = useState("");
-  const [addresses, setAddress] = useState("");
+  const [address, setAd] = useState("");
   const [emails, setEmail] = useState("");
   const [site, setSite] = useState("");
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const PersonalInfo = () => {
     UserServices.self().then((response) => {
       setEmail(response.email);
       setPhone(response.phone);
-      setAddress(response.address);
+      setAd(response.address);
       setSite(response.site);
       setUser(response);
     });
@@ -28,8 +28,8 @@ const PersonalInfo = () => {
   const handlePhone =(e) =>{
     setPhone(e.target.value);
   }
-  const handleAddress =(e) =>{
-    setAddress(e.target.vaue);
+  const handleAdd =(e) =>{
+    setAd(e.target.value);
   }
   const handleEmail =(e) =>{
     setEmail(e.target.vaue);
@@ -40,9 +40,10 @@ const PersonalInfo = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log('addresses',address)
     let data ={
       phone: phone,
-      address: addresses,
+      address: address,
       email: emails,
       site: site,
     }
@@ -92,14 +93,13 @@ const PersonalInfo = () => {
                     placeholder="Phone:"
                   />
                   <br />
-
                   <input
                     type="text"
                     name="address"
-                    value={addresses}
-                    onChange={handleAddress}
-                    placeholder="Address:"
+                    value={address}
+                    onChange={handleAdd}
                     required
+                    placeholder="Phone:"
                   />
 
                   <br />

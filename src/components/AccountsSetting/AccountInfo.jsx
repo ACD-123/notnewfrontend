@@ -5,6 +5,7 @@ import Backimage from '../../assets/Images/back-icon.png'
 import NotificationPreferencesTabs from './NotificationPreferences/NotificationPreferencesTabs';
 import SellerAllTabs from './SellerSetup/SellerAllTabs';
 import MyProducts from './SellerSetup/MyProducts'
+import MyTransactions from './SellerSetup/MyTransactions';
 
 const AccountInfo = () => {
   const [selectedLink, setSelectedLink] = useState(null);
@@ -51,7 +52,7 @@ const handleGeneralNotifications = () => {
         return (
           <div>
             {/* Content for Payment Information */}
-            <h3>Payment Information</h3>
+            <h3>Payment Informationss</h3>
             {/* Add your Payment Information content here */}
             <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button>
           </div>
@@ -65,6 +66,12 @@ const handleGeneralNotifications = () => {
             <button className='backbutton-account' onClick={() => setSelectedLink(null)}>
             <img src={Backimage} alt="Back" /> Back
           </button>
+          </div>
+        );
+        case 'transactions':
+        return (
+          <div>
+            <MyTransactions />
           </div>
         );
       default:
@@ -104,7 +111,7 @@ const handleGeneralNotifications = () => {
               <h4>Payment Information</h4>
               <hr style={{ width: '50%' }} />
               <ul>
-                <li onClick={() => handleLinkClick('PersonalInfo')}>Payments</li>
+                <li onClick={() => handleLinkClick('transactions')}>Payments</li>
                 <li onClick={() => handleLinkClick('PersonalInfo')}>PayPal Account</li>
               </ul>
             </div>
