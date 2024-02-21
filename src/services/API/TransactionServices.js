@@ -9,9 +9,15 @@ function usertransaction() {
     method: 'GET',
   })
 }
-
+function gettransactions(){
+  return request({
+    url: baseUrl + `/gettransactions`,
+    method: 'GET',
+  })
+}
 const TransactionServices = {
     usertransaction,
+    gettransactions,
 }
 
 export default TransactionServices

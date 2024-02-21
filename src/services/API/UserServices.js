@@ -109,17 +109,64 @@ function fcmToken(token){
   })
 }
 
+function secretQuestion(data){
+  return request({
+    url: `${baseUrl}secretquestion/`,
+    data,
+    method: 'PATCH',
+  })
+}
+
+function changePassword(data){
+  console.log('ss', `${baseUrl}change-password`)
+  return request({
+    url: `${baseUrl}change-password`,
+    data,
+    method: 'POST',
+  })
+}
+
+function twoSteps(data){
+  return request({
+    url: `${baseUrl}two-steps`,
+    data,
+    method: 'POST',
+  })
+}
+
+function thirdParty(data){
+  return request({
+    url: `${baseUrl}third-party`,
+    data,
+    method: 'POST',
+  })
+}
+
+function fbAccount(data){
+  return request({
+    url: `${baseUrl}fb-account`,
+    data,
+    method: 'POST',
+  })
+}
 // function depositfund(){
 //   return request({
 //     url: baseUrl + 'depositfund'
 //   })
 // }
-
+function updateAddress(data) {
+  return request({
+    url: `${baseUrl}updateaddress`,
+    data,
+    method: "POST"
+  })
+}
 const UserService = {
   all,
   detail,
   upload,
   messages,
+  secretQuestion,
   conversations,
   sendMessage,
   update,
@@ -131,6 +178,11 @@ const UserService = {
   fcmToken,
   updateProfile,
   self,
+  changePassword,
+  twoSteps,
+  thirdParty,
+  fbAccount,
+  updateAddress
   // depositfund,
 }
 

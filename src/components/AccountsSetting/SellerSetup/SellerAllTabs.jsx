@@ -12,7 +12,7 @@ import RefundManagement from '../../OrderManagement/RefundManagement';
 import EditBankDetails from './EditBankDetails';
 import EditProfileSetup from './EditProfileSetup';
 import SetupSellerAccount from './SetupSellerAccount';
-const SellerAllTabs = () => {
+const SellerAllTabs = (props) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('selling1');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isOrderManagementOpen, setIsOrderManagementOpen] = useState(false);
@@ -48,7 +48,7 @@ const SellerAllTabs = () => {
   const renderComponent = () => {
     switch (selectedMenuItem) {
       case 'selling1':
-        return <Selling parentCallback={handleCallbacks} />;
+        return <Selling orderid={props.orderid} parentCallback={handleCallbacks} />;
       case 'selling2':
         return <ProductManagement />;
       case 'selling3':

@@ -23,6 +23,7 @@ import BidWin from "../components/Auction/BidWin"
 import SearchHistory from "../components/AccountsSetting/PersonalInfoAllPages/SearchHistory"
 import OngoingOrderManagement from "../components/OrderManagement/OngoingOrderManagement"
 import CompleteOrderManagement from "../components/OrderManagement/CompleteOrderManagement"
+import MyTransactions from "../components/AccountsSetting/SellerSetup/MyTransactions"
 
 const PublicRoutes = () => {
 	return (
@@ -52,6 +53,7 @@ const PublicRoutes = () => {
 					<Route path="/searchhistory" element={<SearchHistory />} />
 					<Route path="/ongoingorder/:guid" element={<OngoingOrderManagement/>} />
 					<Route path="/completedorder/:guid" element={<CompleteOrderManagement/>} />
+					<Route path="/transactions" element={<MyTransactions/>} />
 				</Routes>
 			</BrowserRouter>
 		</>
