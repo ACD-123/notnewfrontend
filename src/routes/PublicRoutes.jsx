@@ -24,6 +24,9 @@ import SearchHistory from "../components/AccountsSetting/PersonalInfoAllPages/Se
 import OngoingOrderManagement from "../components/OrderManagement/OngoingOrderManagement"
 import CompleteOrderManagement from "../components/OrderManagement/CompleteOrderManagement"
 import MyTransactions from "../components/AccountsSetting/SellerSetup/MyTransactions"
+import InStock from "../components/AccountsSetting/SellerSetup/InStock"
+import OutStock from "../components/AccountsSetting/SellerSetup/InStock"
+
 
 const PublicRoutes = () => {
 	return (
@@ -54,6 +57,8 @@ const PublicRoutes = () => {
 					<Route path="/ongoingorder/:guid" element={<OngoingOrderManagement/>} />
 					<Route path="/completedorder/:guid" element={<CompleteOrderManagement/>} />
 					<Route path="/transactions" element={<MyTransactions/>} />
+					<Route path="/instock" element={<InStock/>} />
+					<Route path="/outstock" element={<OutStock/>} />
 				</Routes>
 			</BrowserRouter>
 		</>

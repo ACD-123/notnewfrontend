@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Leftmenuimage from '../../../assets/Images/leftmenu.png'
-
 import { useLocation } from 'react-router-dom';
 import PersonalInfo from './PersonalInfo';
 import SignSecurity from './SignSecurity';
@@ -8,16 +7,18 @@ import Addresses from './Addresses';
 import SavedImages from './SavedImages';
 import SearchHistory from './SearchHistory';
 
-const ProfileInformationTabs = () => {
+const ProfileInformationTabs = (props) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('component1'); // Initial menu selection
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
   const location = useLocation();
-
+  
   useEffect(() => {
+    if(props.selectedMenuItem){
+      setSelectedMenuItem(props.selectedMenuItem)
+    }
     // Extract the component name from the query parameter or state passed from the Header component
     const searchParams = new URLSearchParams(location.search);
     const componentName = searchParams.get('component1');
-
     if (componentName) {
       setSelectedMenuItem(componentName);
     }

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect }  from 'react';
+import NotificationSettingsServices from "../../../services/API/NotificationSettingsServices"; //~/services/API/NotificationSettingsServices
 
 
 const SellingNotificationSettings = ({ title, description, checked, onChange }) => {
@@ -29,10 +30,66 @@ const SellingNotifications = () => {
   const [personalizedRecomendations, setPersonalizedRecomendations] = useState(false);
   const [rewardsOffers, setRewardsOffers] = useState(false);
   const [generalPromotions, setGeneralPromotions] = useState(false);
-
+  
+  const  handlePersonalizedRecomendations =() =>{
+    setPersonalizedRecomendations(!personalizedRecomendations)
+    let data ={
+      "selling_presonalized_recomendations": personalizedRecomendations,
+      "selling_rewards_offers": rewardsOffers,
+      "selling_general_promotions": generalPromotions,
+    }
+    NotificationSettingsServices.notificationSaveSettings(data)
+    .then((response) => {
+      console.log('response', response)
+    })
+  }
+  const handleRewardOffer =() =>{
+    setRewardsOffers(!rewardsOffers) 
+    let data ={
+      "selling_presonalized_recomendations": personalizedRecomendations,
+      "selling_rewards_offers": rewardsOffers,
+      "selling_general_promotions": generalPromotions,
+    }
+    NotificationSettingsServices.notificationSaveSettings(data)
+    .then((response) => {
+      console.log('response', response)
+    })
+  }
+  const handleGeneralPromotions =() =>{
+    setGeneralPromotions(!generalPromotions)
+    let data ={
+      "selling_presonalized_recomendations": personalizedRecomendations,
+      "selling_rewards_offers": rewardsOffers,
+      "selling_general_promotions": generalPromotions,
+    }
+    NotificationSettingsServices.notificationSaveSettings(data)
+    .then((response) => {
+      console.log('response', response)
+    })
+  }
+  useEffect(() => {
+    NotificationSettingsServices.show()
+    .then((response) => {
+      if(response.selling_presonalized_recomendations === "0"){
+        setPersonalizedRecomendations(false);
+      }else{
+        setPersonalizedRecomendations(true);
+      }
+      if(response.selling_rewards_offers === "0"){
+        setRewardsOffers(false);
+      }else{
+        setRewardsOffers(true);
+      }
+      if(response.selling_general_promotions === "0"){
+        setGeneralPromotions(false);
+      }else{
+        setGeneralPromotions(true);
+      }
+    })
+  }, []);
   return (
     <>
-      <h3>Selling Notification</h3>
+      <h3>Selling Notifications</h3>
       <section id='general-notifications'>
 
         <hr />
@@ -40,21 +97,21 @@ const SellingNotifications = () => {
           title="Presonalized Recomendations"
           description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
           checked={personalizedRecomendations}
-          onChange={() => setPersonalizedRecomendations(!personalizedRecomendations)}
+          onChange={() => handlePersonalizedRecomendations()}
         />
         <hr />
         <SellingNotificationSettings
           title="Rewards and offers"
           description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
           checked={rewardsOffers}
-          onChange={() => setRewardsOffers(!rewardsOffers)}
+          onChange={() => handleRewardOffer()}
         />
         <hr />
         <SellingNotificationSettings
           title="General Promotions"
           description="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout"
           checked={generalPromotions}
-          onChange={() => setGeneralPromotions(!generalPromotions)}
+          onChange={() => handleGeneralPromotions()}
         />
       </section>
     </>

@@ -25,7 +25,8 @@ import { toast } from "react-toastify";
 import { Link } from 'react-router-dom';
 import Prdimage1 from '../../../assets/Images/Singleproduct/Product1.png';
 import moment from "moment";
-import SellerAllTabs from '../SellerSetup/SellerAllTabs';
+import SellerAllTabs from './SellerAllTabs';
+
 const DetailedProductInfo = ({ order }) => {
   console.log('order', order)
   const [orderitems, setOrderItems] = useState({});
@@ -212,14 +213,14 @@ const DetailedProductInfo = ({ order }) => {
     </>
   );
 };
-const MyTransactions = () => {
+const StripeTransactions = () => {
   const [selectedLink, setSelectedLink] = useState(null);
   const [transactions, setTransactions] = useState({});
   const [trans, setTrans] = useState(false);
   const [orderid, setOrderID] = useState("");
   const [order, setOrder] = useState("");
-  const getTransactions =() =>{
-    TransactionServices.gettransactions()
+  const getStripeTransactions = () =>{
+    TransactionServices.getStripeTransactions()
     .then((response) => {
       setTransactions(response);
     });
@@ -233,7 +234,7 @@ const MyTransactions = () => {
     setOrderID(trans.payment_resource_id);
   }
   useEffect(() => {
-    getTransactions();
+    getStripeTransactions();
   }, []);
   return (
     <>
@@ -358,4 +359,4 @@ const MyTransactions = () => {
   );
 };
 
-export default MyTransactions;
+export default StripeTransactions;
