@@ -15,9 +15,16 @@ function gettransactions(){
     method: 'GET',
   })
 }
+function getStripeTransactions(){
+  return request({
+    url: baseUrl + `/getstripetransactions`,
+    method: 'GET',
+  })
+}
 const TransactionServices = {
     usertransaction,
     gettransactions,
+    getStripeTransactions,
 }
 
 export default TransactionServices

@@ -12,6 +12,8 @@ import RefundManagement from '../../OrderManagement/RefundManagement';
 import EditBankDetails from './EditBankDetails';
 import EditProfileSetup from './EditProfileSetup';
 import SetupSellerAccount from './SetupSellerAccount';
+import MyTransactions from '../SellerSetup/MyTransactions';
+
 const SellerAllTabs = (props) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('selling1');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -68,7 +70,7 @@ const SellerAllTabs = (props) => {
       case 'selling7':
         return null; // You can add the component for Discounts & coupons here
       case 'selling8':
-        return null; // You can add the component for Transactions here
+        return <MyTransactions/>; // You can add the component for Transactions here
         case 'sellingss1':
         return <EditProfileSetup />;
         case 'sellingss1b':

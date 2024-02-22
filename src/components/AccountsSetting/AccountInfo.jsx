@@ -6,21 +6,24 @@ import NotificationPreferencesTabs from './NotificationPreferences/NotificationP
 import SellerAllTabs from './SellerSetup/SellerAllTabs';
 import MyProducts from './SellerSetup/MyProducts'
 import MyTransactions from './SellerSetup/MyTransactions';
+import StripeTransactions from './SellerSetup/StripeTransactions';
+import InStock from './SellerSetup/InStock';
+import OutStock from './SellerSetup/OutStock';
 
 const AccountInfo = () => {
   const [selectedLink, setSelectedLink] = useState(null);
   const [trustedseller, setTrustedSeller] = useState(false);
+  const [value, setValue] = useState("");
 
-  const handleLinkClick = (link) => {
+  const handleLinkClick = (link, val) => {
     setSelectedLink(link);
+    setValue(val);
   };
  
-// Function to handle selection of General Notifications
-const handleGeneralNotifications = () => {
-  setSelectedLink('NotificationPreferences'); // Set the selected link to NotificationPreferences
-};
-
-
+  // Function to handle selection of General Notifications
+  const handleGeneralNotifications = () => {
+    setSelectedLink('NotificationPreferences'); // Set the selected link to NotificationPreferences
+  };
   const renderContent = () => {
     // Based on the selectedLink value, render the corresponding content
     switch (selectedLink) {
@@ -29,7 +32,7 @@ const handleGeneralNotifications = () => {
           <div>
             {/* Content for Personal Information */}
             <h3>Personal Info</h3>
-            <ProfileInformationTabs />
+            <ProfileInformationTabs selectedMenuItem={value} />
             <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button>
           </div>
         );
@@ -48,6 +51,24 @@ const handleGeneralNotifications = () => {
             <MyProducts />
           </div>
         );
+      case 'stripe':
+        return (
+          <div>
+            <StripeTransactions />
+          </div>
+        );
+        case 'instock':
+          return (
+            <div>
+              <InStock />
+            </div>
+          );
+          case 'outstock':
+            return (
+              <div>
+                <OutStock />
+              </div>
+            );
       case 'PaymentInformation':
         return (
           <div>
@@ -82,11 +103,11 @@ const handleGeneralNotifications = () => {
               <h4>Personal Info</h4>
               <hr style={{ width: '50%' }} />
               <ul>
-                <li onClick={() => handleLinkClick('PersonalInfo')}>Personal information</li>
-                <li onClick={() => handleLinkClick('PersonalInfo')}>Sign in and security</li>
-                <li onClick={() => handleLinkClick('PersonalInfo')}>Addresses</li>
-                <li onClick={() => handleLinkClick('PersonalInfo')}>Save images</li>
-                <li onClick={() => handleLinkClick('PersonalInfo')}>Search History</li>
+                <li onClick={() => handleLinkClick('PersonalInfo','component1')}>Personal information</li>
+                <li onClick={() => handleLinkClick('PersonalInfo','component2')}>Sign in and security</li>
+                <li onClick={() => handleLinkClick('PersonalInfo','component3')}>Addresses</li>
+                <li onClick={() => handleLinkClick('PersonalInfo','component4')}>Save images</li>
+                <li onClick={() => handleLinkClick('PersonalInfo','component5')}>Search History</li>
               </ul>
             </div>
             {/* Add other sections with their respective links */}
@@ -99,11 +120,17 @@ const handleGeneralNotifications = () => {
               ):(
                 <li onClick={() => handleLinkClick('Selling')}>Set Up Seller Account</li>
               )}
-                
                 <li onClick={() => handleLinkClick('items')}>List an Item</li>
               </ul>
             </div>
-            
+            <div className='personal-info-links'>
+              <h4>Watching</h4>
+              <hr style={{ width: '50%' }} />
+              <ul>
+                <li onClick={() => handleLinkClick('instock')}>In Stock</li>
+                <li onClick={() => handleLinkClick('outstock')}>Out Stock</li>
+              </ul>
+            </div>
           </div>
           <div className='col-lg-4'>
             {/* Add other sections with their respective links */}
@@ -112,7 +139,7 @@ const handleGeneralNotifications = () => {
               <hr style={{ width: '50%' }} />
               <ul>
                 <li onClick={() => handleLinkClick('transactions')}>Payments</li>
-                <li onClick={() => handleLinkClick('PersonalInfo')}>PayPal Account</li>
+                <li onClick={() => handleLinkClick('stripe')}>Stripe Account</li>
               </ul>
             </div>
             {/* Add other sections with their respective links */}
@@ -121,9 +148,8 @@ const handleGeneralNotifications = () => {
               <hr style={{ width: '50%' }} />
               <ul>
                 <li onClick={() => handleLinkClick('NotificationPreferences')}>Notification Settings</li>
-                <li onClick={() => handleLinkClick('NotificationPreferences')}>General Notifications</li>
-                <li onClick={() => handleLinkClick('NotificationPreferences')}>Seller account Notification settings</li>
-                
+                {/* <li onClick={() => handleLinkClick('NotificationPreferences')}>General Notifications</li>
+                <li onClick={() => handleLinkClick('NotificationPreferences')}>Seller account Notification settings</li> */}
               </ul>
             </div>
           </div>

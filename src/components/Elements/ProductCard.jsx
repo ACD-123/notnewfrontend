@@ -91,6 +91,18 @@ const ProductCard = (props) => {
             setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
           }
         }) 
+      }else if(props.products){
+        if(props.products?.length > 0){
+          setProductData(props.products.slice(0, 6));
+        }
+        // ProductServices.get(props.id)
+        // .then((response) => {
+        //   console.log('get pro', response)
+        //   setProductData(
+        //   // if(response.data.length > 0){
+        //   //   setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+        //   // }
+        // }) 
       }else{
         ProductServices.all()
         .then((response) => {

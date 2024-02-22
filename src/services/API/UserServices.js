@@ -161,6 +161,14 @@ function updateAddress(data) {
     method: "POST"
   })
 }
+
+function recentUserView() {
+  return request({
+    url: `${baseUrl}recentuserview`,
+    method: "GET"
+  })
+}
+
 const UserService = {
   all,
   detail,
@@ -182,6 +190,7 @@ const UserService = {
   twoSteps,
   thirdParty,
   fbAccount,
+  recentUserView,
   updateAddress
   // depositfund,
 }

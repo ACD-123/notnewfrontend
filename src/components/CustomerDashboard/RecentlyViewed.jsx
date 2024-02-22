@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductCard from '../Elements/ProductCard';
+import UserService from "../../services/API/UserServices"; //~/services/API/UserService
+import { toast } from "react-toastify";
 
 const RecentlyViewed = () => {
   // const [products, setProducts] = useState([
@@ -9,12 +11,24 @@ const RecentlyViewed = () => {
   //   // Add more products as needed
   // ]);
   const [products, setProducts] = useState([]);
-
+  const getRecent = () =>{
+    UserService.recentUserView()
+    .then((response) => {
+      if(response.status){
+        setProducts(response.data)
+      }
+    })
+    .catch((e) => {
+      toast.error(e.message);
+    });
+  }
   // Function to clear all products
   const clearAllProducts = () => {
     setProducts([]); // Set the products array to an empty array
   };
-
+  useEffect(() => {
+    getRecent();
+  }, []);
   return (
     <>
       <section id='recentviewed'>
@@ -25,10 +39,21 @@ const RecentlyViewed = () => {
         </div>
         </div>
         {/* Render the list of products */}
-        {products.map((product) => (
-          // <ProductCard key={product.id} {...product} />
-          <ProductCard key={product.id} {...product} />
-        ))}
+        {products.length > 0 ?(<>
+          <ProductCard products={products} />
+          {/* {products.map((product) => {
+          return(
+                <>
+                  <ProductCard products={product.guid} />
+                </>
+              )
+            }
+              // <ProductCard key={product.id} {...product} />
+              // <ProductCard key={product.id} {...product} />
+            
+          )} */}
+        </>):('')}
+        
 
         {/* Button to clear all products */}
       </section>
