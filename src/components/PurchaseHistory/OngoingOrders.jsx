@@ -183,9 +183,8 @@ const OngoingOrders = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState({});
   const getCustomerOrder = () =>{
-    OrderServices.customerOrders()
+    OrderServices.customerOngoingOrders()
       .then((response) => {
-        console.log('customer Orders', response)
         setCustomerOrders(response);
     })
   }
@@ -299,7 +298,9 @@ const OngoingOrders = () => {
         </div>
       </div>
         </>
-      ):('No Orders')}
+      ):(          
+        'No Orders Exits'
+      )}
         </>
       )}
       
@@ -330,8 +331,6 @@ const OngoingOrders = () => {
           // Add more image URLs for the first order as needed
         ],
     },
-    
-
   ];
   useEffect(() => {
     getCustomerOrder();

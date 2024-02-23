@@ -111,6 +111,17 @@ const ProductInformation = () => {
     // For example, using query parameter
     window.location.href = `/customerdashboard?component=${componentName}`;
   };
+  const hanldeWishList = (guid) =>{
+    ProductServices.saved(guid,productData)
+    .then((response) => {
+      if(response.status){
+        toast.success(response.message);
+      }
+    })
+    .catch((e) => {
+      console.log(e)
+    });
+  }
   useEffect(() => {
     saveRecentView();
     getProduct();
@@ -145,7 +156,8 @@ const ProductInformation = () => {
                 {isLoading ? "loading.." : "Add to Cart"}
               </button>
               {/* <Link to="/shoppingcart"><button>Add to Cart</button></Link> */}
-              <Link onClick={() => handleDropdownItemClick('componentC')}><button>Add to Watchlist</button></Link>
+              {/* <Link onClick={() => handleDropdownItemClick('componentC')}><button>Add to Wishlist</button></Link> */}
+              <Link onClick={() => hanldeWishList(productData.guid)}><button>Add to Wishlist</button></Link>
           </div>
           <ShippingPolicyData />
         {/* </>

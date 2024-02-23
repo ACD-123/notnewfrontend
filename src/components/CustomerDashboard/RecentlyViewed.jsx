@@ -16,15 +16,26 @@ const RecentlyViewed = () => {
     .then((response) => {
       if(response.status){
         setProducts(response.data)
+      }else{
+        setProducts([]);
       }
     })
     .catch((e) => {
-      toast.error(e.message);
+      console.log(e.message);
+      setProducts([]);
     });
   }
   // Function to clear all products
   const clearAllProducts = () => {
-    setProducts([]); // Set the products array to an empty array
+    UserService.deleteRecentUser()
+    .then((response) => {
+      console.log('clear', response)
+      getRecent();
+    })
+    .catch((e) => {
+      toast.error(e.message);
+    });
+    // setProducts([]); // Set the products array to an empty array
   };
   useEffect(() => {
     getRecent();

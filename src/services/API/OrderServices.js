@@ -146,16 +146,36 @@ function customerRefundCount() {
     method: 'GET',
   })
 }
-function customerOrders() {
+function customerOngoingOrders() {
   return request({
-    url: `${baseUrl}/customer/orders`,
+    url: `${baseUrl}/customer/ongoing`,
     method: 'GET',
   })
 }
-
+function customerCompletedOrders() {
+  return request({
+    url: `${baseUrl}/customer/completed`,
+    method: 'GET',
+  })
+}
+function customerRefundOrders() {
+  return request({
+    url: `${baseUrl}/customer/refund`,
+    method: 'GET',
+  })
+}
+function customerBuyAgainOrders() {
+  return request({
+    url: `${baseUrl}/customer/buyagainorders`,
+    method: 'GET',
+  })
+}
 const OrderServices = {
   save,
-  customerOrders,
+  customerOngoingOrders,
+  customerCompletedOrders,
+  customerRefundOrders,
+  customerBuyAgainOrders,
   getbyid,
   customerCompCount,
   customerPendCount,

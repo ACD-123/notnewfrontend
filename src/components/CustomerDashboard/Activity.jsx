@@ -7,6 +7,7 @@ import MainPurchase from '../PurchaseHistory/MainPurchase'
 import SavedSearches from './SavedSearches'
 import { useLocation } from 'react-router-dom';
 import Wishlist from './Wishlist';
+import Watchlist from './Watchlist';
 import Dashboard from './Dashboard'
 import BuyAgain from './BuyAgain';
 import BidsOffer from './BidsOffer';
@@ -60,6 +61,8 @@ const Activity = () => {
         return <SavedSellers />;
       case 'componentI':
         return <Chat />;
+      case 'componentJ':
+        return <Watchlist/>
       default:
         return ; // Default to Test component if no matching menu item is found
     }
@@ -88,6 +91,9 @@ const Activity = () => {
             </li>
             <li className={selectedMenuItem === 'componentC' ? 'active' : ''} onClick={() => handleMenuItemClick('componentC')}>
             Wishlist
+            </li>
+            <li className={selectedMenuItem === 'componentJ' ? 'active' : ''} onClick={() => handleMenuItemClick('componentJ')}>
+            Watchlist
             </li>
             <li className={selectedMenuItem === 'componentD' ? 'active' : ''} onClick={() => handleMenuItemClick('componentD')}>
             purchase history

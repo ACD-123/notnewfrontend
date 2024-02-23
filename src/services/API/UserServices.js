@@ -169,8 +169,16 @@ function recentUserView() {
   })
 }
 
+function deleteRecentUser() {
+  return request({
+    url: `${baseUrl}deleteRecent`,
+    method: "DELETE"
+  })
+}
+
 const UserService = {
   all,
+  deleteRecentUser,
   detail,
   upload,
   messages,
