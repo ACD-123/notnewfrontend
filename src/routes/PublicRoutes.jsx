@@ -26,6 +26,7 @@ import CompleteOrderManagement from "../components/OrderManagement/CompleteOrder
 import MyTransactions from "../components/AccountsSetting/SellerSetup/MyTransactions"
 import InStock from "../components/AccountsSetting/SellerSetup/InStock"
 import OutStock from "../components/AccountsSetting/SellerSetup/InStock"
+import Watchlist from "../components/CustomerDashboard/Watchlist"
 
 
 const PublicRoutes = () => {
@@ -59,6 +60,7 @@ const PublicRoutes = () => {
 					<Route path="/transactions" element={<MyTransactions/>} />
 					<Route path="/instock" element={<InStock/>} />
 					<Route path="/outstock" element={<OutStock/>} />
+					<Route path="/watchlist" element={<Watchlist/>}/>
 				</Routes>
 			</BrowserRouter>
 		</>

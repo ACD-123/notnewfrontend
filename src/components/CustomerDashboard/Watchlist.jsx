@@ -1,24 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Wishlistimage1 from "../../assets/Images/Categorylisting/1.png";
 import Wishlistimage2 from "../../assets/Images/Categorylisting/2.png";
 import Wishlistimage3 from "../../assets/Images/Categorylisting/3.png";
 import Wishlistimage4 from "../../assets/Images/Categorylisting/4.png";
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
 import { Link } from "react-router-dom";
 
-const Wishlist = () => {
-  const [products, setProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("All Categories");
-  const getWishlist = () =>{
-    ProductServices.getSaved()
-    .then((response) => {
-      setProducts(response.data);
-    })
-    .catch((e) => {
-      console.log('error', e)
-    });
-
-  }  
+const Watchlist = () => {
   const initialProducts = [
     {
       id: 1,
@@ -86,6 +73,22 @@ const Wishlist = () => {
     },
   ];
 
+  const [products, setProducts] = useState(initialProducts);
+  const [showNote, setShowNote] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+
+  const toggleNote = () => {
+    setShowNote(!showNote);
+  };
+
+  const toggleProductSelection = (productId) => {
+    const updatedProducts = products.map((product) =>
+      product.id === productId
+        ? { ...product, selected: !product.selected }
+        : product
+    );
+    setProducts(updatedProducts);
+  };
 
   const deleteSelectedProducts = () => {
     const updatedProducts = products.filter((product) => !product.selected);
@@ -121,82 +124,139 @@ const Wishlist = () => {
     }
     setProducts(filteredProducts);
   };
-  useEffect(() => {
-    getWishlist();
-  }, []);
+
   return (
     <section id="wishlist-dashboard">
-      <h3>Wishlist</h3>
+      <h3>Watchlist</h3>
       <div className="row wishlist align-items-center">
+        <div className="col-lg-6">
+          <div className="deleted-button">
+            <button onClick={deleteSelectedProducts}>Delete Selected</button>
+          </div>
+        </div>
+        <div className="col-lg-6">
+          <div className="sort-wishlist">
+            <div className="status">
+              <h4>
+                Status:{" "}
+                <select>
+                  <option>All</option>
+                  <option>All 1</option>
+                  <option>All 2</option>
+                </select>
+              </h4>
+            </div>
+            <div className="timeleft">
+              <h4>
+                Time Left:{" "}
+                <select>
+                  <option>Ending soonest</option>
+                  <option>Recent Added</option>
+                </select>
+              </h4>
+            </div>
+          </div>
+        </div>
         <hr style={{ marginTop: "20px" }} />
       </div>
-      {products.saved_products?.length > 0 ?(
-        <>
-        <h3>Store: {products.shop.fullname}</h3>
-        <div className="wishlist">
-        {products.saved_products?.map((product) => {
-          let attributes = JSON.parse(product.attributes);
-          return(
+      <div className="wishlist-categories-list">
+        <ul>
+          <li className="allcategory">
+            <button onClick={() => filterProductsByCategory("All Categories")}>
+              All Categories
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => filterProductsByCategory("Laptops & Netbooks")}
+            >
+              Laptops & Netbooks (1)
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() =>
+                filterProductsByCategory("Fitness, Running & Yoga")
+              }
+            >
+              Fitness, Running & Yoga (1)
+            </button>
+          </li>
+          {/* Add more categories here */}
+        </ul>
+      </div>
+      <div className="wishlist">
+        {products.map((product) => (
           <div key={product.id} className="product">
             {/* START ROW */}
             <div className="row">
               <div className="col-lg-7">
                 <div className="wishlistproduct-detail">
                   <div>
-                    {/* <img src={product.image} alt={product.title} /> */}
-                    <img src={Wishlistimage2} alt={product.title} />
+                    <input
+                      type="checkbox"
+                      checked={product.selected}
+                      onChange={() => toggleProductSelection(product.id)}
+                    />
                   </div>
                   <div>
-                    <h3>{product.name}</h3>
-                    {attributes.length > 0 ? (
-                      <>
-                      {attributes.map((attribute) => {
-                        let color = attribute.color;
-                        return(
-                          <>
-                             <p>
-                              Size: {attribute.size}, Color: <div style={{ background: color, width: "20px"}}>&nbsp;</div>
-                            </p>
-                            <p>Quantity: {attribute.quantity}</p>
-                          </>
-                        )
-                      })}
-                      </>
-                    ):("")}
+                    <img src={product.image} alt={product.title} />
+                  </div>
+                  <div>
+                    <h3>{product.title}</h3>
+                    <p>
+                      Size: {product.size}, Color: {product.color}{" "}
+                    </p>
+
+                    <p>Quantity: {product.quantity}</p>
+                    <p>Shipping: {product.shipping}</p>
+                    <p className="shipingname">{product.shippingname}</p>
                   </div>
                 </div>
-                <br />
               </div>
+
               <div className="col-lg-2">
                 <div className="wishlistprice-detials">
                   <h3>US ${product.price}</h3>
+                  <p>+US ${product.saleprice}</p>
                   <p>Shipping cost 10% off {product.shippingprice}</p>
                 </div>
-                <br />
-                <p>Shipping: $ {product.shipping_price}</p>
-                     
-                <p>Shipping Company: <span  className="shipingname">{product.company}</span></p>
               </div>
+
               <div className="col-lg-3 wishlist-buttonss">
                 <Link to="/checkout">
                   <button
                     className="buynow-wishlist"
-                    onClick={() => buyNow(product.guid)}
+                    onClick={() => buyNow(product.id)}
                   >
                     Buy It Now
                   </button>
                 </Link>
+                <button className="offer" onClick={() => makeOffer(product.id)}>
+                  Make Best Offer
+                </button>
+                <select className="offer">
+                  <option>More actions</option>
+                  <option>View Similar Items</option>
+                  <option>Contact Seller</option>
+                </select>
+                <button className="addntee" onClick={toggleNote}>
+                  Add Note
+                </button>
+                {showNote && (
+                  <div className="note">
+                    <textarea placeholder="Write your note here..." />
+                  </div>
+                )}
               </div>
               <hr />
             </div>
             {/* END ROW */}
           </div>
-        )})}
+        ))}
       </div>
-        </>
-      ):("")}
     </section>
   );
 };
 
-export default Wishlist;
+export default Watchlist;
