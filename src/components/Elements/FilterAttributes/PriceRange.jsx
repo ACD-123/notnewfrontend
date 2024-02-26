@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
+import { max } from "moment";
 
 
 const PriceRange = () => {
@@ -7,8 +9,7 @@ const PriceRange = () => {
   const [draggingMin, setDraggingMin] = useState(false);
   const [draggingMax, setDraggingMax] = useState(false);
 
-  const range = maxValue - minValue;
-
+  const range  = maxValue - minValue;
   const handleTouchStart = (dot) => {
     if (dot === 'min') {
       setDraggingMin(true);
@@ -17,6 +18,28 @@ const PriceRange = () => {
     }
   };
 
+  const getMin =() =>{
+    ProductServices.min()
+    .then((response) => {
+      setMinValue(response.data);
+    })
+    .catch((e) => {
+      console.log('Error:',e)
+    });
+  }
+  const getMax =() =>{
+    ProductServices.max()
+    .then((response) => {
+      setMaxValue(response.data);
+    })
+    .catch((e) => {
+      console.log('Error:',e)
+    });
+  }
+  const handlePriceChange  = (e) =>{
+    e.preventDefault();
+    console.log('range', e.target.value)
+  }
   const handleTouchMove = (e) => {
     if (draggingMin) {
       const newValue = calculateNewValue(e.touches[0].clientX, 'min');
@@ -67,17 +90,22 @@ const PriceRange = () => {
         break;
     }
   };
-
+  useEffect(() => {
+    getMin();
+    getMax();
+  }, []);
   return (
     <div className="range-filter-container" onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
       <h4>Price</h4>
       
       <div className='progress-dots'>
         <div id="progress-bar" className="progress-bar" onTouchStart={() => handleTouchStart('min')}>
+        <input type="range" onChange={handlePriceChange} min={minValue} max={maxValue} />
+        {/* 
           <div className="progress-value" style={{ width: `${(range / 100) * 100}%` }}>
             <div className="range-dot min-dot" style={{ left: `${(minValue / 100) * 100}%` }} onTouchStart={() => handleTouchStart('min')}></div>
             <div className="range-dot max-dot" style={{ left: `${(maxValue / 100) * 100}%` }} onTouchStart={() => handleTouchStart('max')}></div>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className='radio-buttons'>

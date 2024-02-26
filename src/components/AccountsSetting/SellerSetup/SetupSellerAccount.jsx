@@ -11,13 +11,14 @@ const SetupSellerAccount = () => {
   const [profilePic, setProfilePic] = useState(null);
   const [formSubmitted, setFormSubmitted] = useState(false); // State to track form submission
   const [formData, setFormData] = useState({
-    name: "",
+    guid:"",
+    fullname: "",
     email: "",
     address: "",
     phone: "",
-    country: "",
-    state: "",
-    city: "",
+    country_id: 0,
+    state_id: 0,
+    city_id: 0,
     zip: "",
     password: "",
     password_confirmation: "",
@@ -29,18 +30,40 @@ const SetupSellerAccount = () => {
   const [cities, setCity] = useState({});
   const [states, setState] = useState({});
   const [countries, setCountry] = useState({});
+  const [shopData, setShopData] = useState([]);
   let token = localStorage.getItem("access_token");
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     // Perform validations or modifications if needed
     setProfilePic(selectedFile);
   };
-
+  const getUserStoreInfo =() =>{
+    let loggedInUser = localStorage.getItem("user_details");
+    if (loggedInUser) {
+    const loggedInUsers = JSON.parse(loggedInUser);
+    SellerServices.getShopDetails(loggedInUsers?.id)
+    .then((response) => {
+      if(response){
+        setFormData(response);
+        State.get(response.country_id)
+        .then((states) => {
+          setState(states);
+        })
+        City.get(response.state_id)
+        .then((cities) => {
+          setCity(cities);
+        })
+      }
+    })
+    .catch((e) => {
+      toast.error(e.message);
+    });
+    }
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Perform validation here (e.g., check for empty fields)
     const newErrors = {};
-    if (!formData.name) {
+    if (!formData.fullname) {
       newErrors.name = "User Full Name is required";
     }
     if (!formData.email) {
@@ -52,50 +75,52 @@ const SetupSellerAccount = () => {
     if (!formData.phone) {
       newErrors.phone = "Phone is required";
     }
-    if (!formData.country) {
+    if (!formData.country_id) {
       newErrors.country = "Country is required";
     }
-    
-    if (!formData.state) {
+    if (!formData.state_id) {
       newErrors.state = "State is required";
     }
-    if (!formData.city) {
+    if (!formData.city_id) {
       newErrors.city = "City is required";
     }
     if (!formData.zip) {
       newErrors.zip = "Zip is required";
     }
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    }
-    if (!formData.password_confirmation) {
-      newErrors.password_confirmation = "Confirm Password is required";
-    }
-    if (formData.password !== formData.password_confirmation) {
-      newErrors.password_confirmation = "Password is mismatch";
-    }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
       setEnabled(true);
-      SellerServices.save(formData)
-      .then((response) => {
-        console.log('response', response)
-        // setTimeout(() => {
+      if(formData.guid === ""){
+        SellerServices.save(formData)
+        .then((response) => {
+            setFormSubmitted(true);
+        })
+        .catch((e) => {
+          toast.error(e.message);
+          setIsLoading(false);
+          setEnabled(false);
+        })
+        .then(() => {
+          setIsLoading(false);
+          setEnabled(false);
+        });
+      }else{
+        SellerServices.update(formData)
+        .then((response) => {
+          toast.success(response);
           setFormSubmitted(true);
-        // }, 6000);
-      })
-      .catch((e) => {
-        toast.error(e.message);
-        setIsLoading(false);
-        setEnabled(false);
-      })
-      .then(() => {
-        setIsLoading(false);
-        setEnabled(false);
-      });
-      // Set the formSubmitted state to true after form submission
-      // setFormSubmitted(true);
+        })
+        .catch((e) => {
+          toast.error(e.message);
+          setIsLoading(false);
+          setEnabled(false);
+        })
+        .then(() => {
+          setIsLoading(false);
+          setEnabled(false);
+        });
+      }
     }
   };
   const getCountry = () => {
@@ -109,7 +134,8 @@ const SetupSellerAccount = () => {
   };
 
   const handleCountryChange = (e) => {
-    formData.country = e.target.value;
+    // console.log('country_id', e.target.value)
+    // formData.country_id = e.target.value;
     State.get(e.target.value)
       .then((response) => {
         setState(response);
@@ -120,7 +146,7 @@ const SetupSellerAccount = () => {
   };
 
   const handleStateChange = (e) => {
-    formData.state = e.target.value;
+    // formData.state_id = e.target.value;
     City.get(e.target.value)
       .then((response) => {
         setCity(response);
@@ -132,6 +158,18 @@ const SetupSellerAccount = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if(name == "country_id"){
+      State.get(e.target.value)
+      .then((response) => {
+        setState(response);
+      })
+    }
+    if(name == "state_id"){
+      City.get(e.target.value)
+      .then((response) => {
+        setCity(response);
+      })
+    }
     setFormData({
       ...formData,
       [name]: value,
@@ -143,6 +181,7 @@ const SetupSellerAccount = () => {
     if (loggedInUser) {
       const loggedInUsers = JSON.parse(loggedInUser);
       setUser(loggedInUsers);
+      getUserStoreInfo();
     }
   }, []);
   // Conditionally render the form or the new component based on formSubmitted state
@@ -151,7 +190,7 @@ const SetupSellerAccount = () => {
   } else {
     return (
       <>
-        {/* Your existing form */}
+      {shopData}
         <section id="selleraccountsetup">
           <div className="container">
             <div className="row align-items-center">
@@ -199,8 +238,8 @@ const SetupSellerAccount = () => {
                       type="text"
                       className="form-control"
                       id="fullname"
-                      name="name"
-                      value={formData.name}
+                      name="fullname"
+                      value={formData.fullname}
                       onChange={handleChange}
                       placeholder="Enter your full name"
                     />
@@ -246,9 +285,9 @@ const SetupSellerAccount = () => {
                     <div className="fieldss">
                       <select
                         class="form-select"
-                        name="country"
-                        value={formData.country}
-                        onChange={handleCountryChange}
+                        name="country_id"
+                        value={formData.country_id}
+                        onChange={handleChange}
                         id="country"
                       >
                         <option value="">Select Country</option>
@@ -273,10 +312,10 @@ const SetupSellerAccount = () => {
                     <div className="fieldss">
                       <select
                         class="form-select"
-                        name="state"
-                        value={formData.state}
-                        onChange={handleStateChange}
-                        id="state"
+                        name="state_id"
+                        value={formData.state_id}
+                        onChange={handleChange}
+                        id="state_id"
                       >
                         <option value="">Select States</option>
                         {states.length > 0 ? (
@@ -299,9 +338,9 @@ const SetupSellerAccount = () => {
                     <div className="fieldss">
                       <select
                         className="form-select"
-                        id="city"
-                        name="city"
-                        value={formData.city}
+                        id="city_id"
+                        name="city_id"
+                        value={formData.city_id}
                         onChange={handleChange}
                       >
                         {/* <!-- Populate options for cities based on the selected state --> */}
@@ -365,6 +404,12 @@ const SetupSellerAccount = () => {
                   {errors.password_confirmation && (
                     <p className="error">{errors.password_confirmation}</p>
                   )} */}
+                  <input
+                      type="hidden"
+                      id="guid"
+                      name="guid"
+                      value={formData.guid}
+                    />
                   <button
                     className="btn btn-primary"
                     disabled={enabled}

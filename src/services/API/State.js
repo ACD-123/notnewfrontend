@@ -11,6 +11,7 @@ function all(params = {}) {
 }
 
 function get(id) {
+  console.log('id', id)
   return request({
     url: `${baseUrl}/country/${id}`,
   })
