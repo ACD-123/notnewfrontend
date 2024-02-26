@@ -236,9 +236,32 @@ function storeProduct(data) {
   })
 }
 
+function min() {
+  return request({
+    url: `${baseUrl}/min`,
+    method: 'GET',
+  })
+}
+
+function max() {
+  return request({
+    url: `${baseUrl}/max`,
+    method: 'GET',
+  })
+}
+
+function getSizes() {
+  return request({
+    url: `${baseUrl}/size`,
+    method: 'GET',
+  })
+}
+
 const ProductServices = {
   all,
   save,
+  min,
+  max,
   update,
   get,
   state,
@@ -265,6 +288,7 @@ const ProductServices = {
   checkEmailReview,
   checkUserProductOffer,
   flexefee,
+  getSizes,
   getSavedAddress,
   recent,
   selfValue,

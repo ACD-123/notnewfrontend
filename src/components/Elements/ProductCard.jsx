@@ -80,6 +80,7 @@ const ProductCard = (props) => {
       }else if(status == 'inactive'){
         ProductServices.selfValue(status)
         .then((response) => {
+          console.log('inactive', response)
           if(response.data.length > 0){
             setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
           }
@@ -169,25 +170,30 @@ const ProductCard = (props) => {
                 <div className='px-2'>
                   {product.auctioned ? (
                     <Link to={`/auctionproduct/${product.guid}`}>
+                      <h3>{product.name}</h3>
                       <h4>{product.description}</h4>
                     </Link>
                   ) : (
                     <Link to={`/singleproduct/${product.guid}`}>
+                    <h3>{product.name}</h3>
                     <h4>{product.description}</h4>
                     </Link>
                   )}
-                  <p>
+                  <p><b>Condition:</b> {product.condition}</p>
                     <p>
                       <ul>
+                        <li className='sale'>
+                          <p>${product.price}</p>
+                        </li>
                         {/* {product.sale_price !== null && (
                           <li className='price'>${product.sale_price}</li>
                         )} */}
-                        {product.price !== null && product.sale_price !== null && (
+                        {product.price !== null && product.sale_price !== null || product.sale_price !== 0 && (
                           <li className='sale'>
                             <del>${product.price}</del>
                           </li>
                         )}
-                        {product.price !== null && product.sale_price !== null && (
+                        {product.price !== null && product.sale_price !== null || product.sale_price !== 0 && (
                           <li className='discount'>
                             {((product.price - product.sale_price) / product.price * 100).toFixed(2)}% OFF
                           </li>
@@ -231,7 +237,6 @@ const ProductCard = (props) => {
                             </div>
                           )}
                       </div>
-                    </p>
                   </p>
                 </div>
               </div>

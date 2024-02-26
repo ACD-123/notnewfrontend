@@ -263,9 +263,9 @@ const ListingForm = (props) => {
     if (!product.price) {
       newErrors.price = "Price is required";
     }
-    if (!product.listing) {
-      newErrors.listing = "Listing is required";
-    }
+    // if (!product.listing) {
+    //   newErrors.listing = "Listing is required";
+    // }
     // if (!isToggled) {
     //   newErrors.buyitnow = "Buy it Now is required";
     // }
@@ -545,6 +545,14 @@ const handlePriceChange = (e) => {
       setShippingEnd(endDate);
       console.log('response.condition', response.condition)
       setCondition(response.condition);
+      State.get(response.country_id)
+      .then((response) => {
+        setState(response);
+      })
+      City.get(response.state_id)
+      .then((response) => {
+        setCity(response);
+      })
     });
   }
   const productCondition = [
@@ -1031,15 +1039,17 @@ const handlePriceChange = (e) => {
             </div>
           </div>
         ))}
-        <div className="row">
-          <button
-            className="addmrelcati"
-            type="button"
-            onClick={addMoreLocation}
-          >
-            Add More Location
-          </button>
-        </div>
+        {/* <div className="set-price">
+          <div>Shipping Price</div>
+          <div>
+            <input
+              type="text"
+              placeholder="$"
+              value={product.weight}
+              onChange={handlePriceChanges}
+            />
+          </div>
+        </div> */}
         <div className="set-price">
           <div>Shipping Price</div>
           <div>

@@ -23,18 +23,18 @@ const RecentViewedItems = () => {
   return (
     <>
     <section id='product-recents-viewed'>
+    {productData.length > 0 ?(
+              <>
         <div className='container'>
             <div className='row'>
                 <div className='headings'>
-                <h3>New Items <span><Link to="/singlecategory">View More</Link></span></h3>
+                <h3>New Items <span><Link to="/AllProducts">View More</Link></span></h3>
                 </div>
             </div>
         </div>
         <section id='productcard' style={{ padding: "15px 0px" }}>
         <div className='container'>
           <div className='row'>
-            {productData.length > 0 ?(
-              <>
               {productData.map((product) => (
               <div className='col col-lg-2' key={product?.guid}>
                 <div className='productlist'>
@@ -56,25 +56,27 @@ const RecentViewedItems = () => {
                     {product?.auctioned ? (
                       <Link to={`/auctionproduct/${product?.guid}`}>
                         $ {product.price}
+                        <h3>{product?.name}</h3>
                         <h4>{product?.description.substring(0, 40)}...</h4>
                       </Link>
                     ) : (
                       <Link to={`/singleproduct/${product.guid}`}>
                       $ {product.price}
+                      <h3>{product?.name}</h3>
                       <h4>{product?.description.substring(0, 40)}...</h4>
                       </Link>
                     )}
                     <p>
                         <ul>
-                          {product?.sale_price !== null && (
+                          {product?.sale_price !== null || product?.sale_price !== 0 && (
                             <li className='price'>${product?.sale_price ? product?.sale_price : 0}</li>
                           )}
-                          {product?.price !== null && product?.sale_price !== null && (
+                          {product?.price !== null && product?.sale_price !== null || product?.sale_price !== 0 && (
                             <li className='sale'>
                               <del>${product?.price ? product?.price : 0}</del>
                             </li>
                           )}
-                          {product?.price !== null && product?.sale_price !== null && (
+                          {product?.price !== null && product?.sale_price !== null || product?.sale_price !== 0 && (
                             <li className='discount'>
                               {((product?.price - product?.sale_price) / product?.price * 100).toFixed(2)}% OFF
                             </li>
@@ -85,11 +87,12 @@ const RecentViewedItems = () => {
                 </div>
               </div>
             ))}
-              </>
-            ):('')}
+             
           </div>
         </div>
       </section>
+      </>
+      ):('')}
     </section>
     </>
   )

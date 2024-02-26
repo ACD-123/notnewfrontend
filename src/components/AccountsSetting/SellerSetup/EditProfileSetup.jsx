@@ -71,7 +71,7 @@ const EditProfileSetup = () => {
   };
 
   const handleCityChange = (e) => {
-    shopData.city_id = e.target.value;
+    // shopData.city_id = e.target.value;
   };
   const handleSubmit = (e) =>{
     e.preventDefault();
@@ -133,10 +133,18 @@ const EditProfileSetup = () => {
     let loggedInUser = localStorage.getItem("user_details");
     if (loggedInUser) {
       const loggedInUsers = JSON.parse(loggedInUser);
-      if (loggedInUsers.isTrustedSeller == 1) {
+      if (loggedInUsers.isTrustedSeller === 1) {
         SellerServices.getShopDetails(loggedInUsers?.id)
           .then((response) => {
             setShopData(response);
+            State.get(response.country_id)
+            .then((states) => {
+              setState(states);
+            })
+            City.get(response.state_id)
+            .then((cities) => {
+              setCity(cities);
+            })
           })
           .catch((e) => {
             toast.error(e.message);
@@ -144,8 +152,6 @@ const EditProfileSetup = () => {
       }
     }
     getCountry();
-    getStates();
-    getCities();
   }, []);
   return (
     <>

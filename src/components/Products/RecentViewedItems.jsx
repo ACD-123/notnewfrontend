@@ -22,18 +22,18 @@ const RecentViewedItems = () => {
   return (
     <>
     <section id='product-recents-viewed'>
+    {productData.length > 0 ?(
+              <>
         <div className='container'>
             <div className='row'>
                 <div className='headings'>
-                <h3>New Recent Viewed Items <span><Link to="/singlecategory">View More</Link></span></h3>
+                <h3>New Recent Viewed Items <span><Link to="/AllProducts">View More</Link></span></h3>
                 </div>
             </div>
         </div>
         <section id='productcard' style={{ padding: "15px 0px" }}>
         <div className='container'>
           <div className='row'>
-            {productData.length > 0 ?(
-              <>
               {productData.map((product) => (
               <div className='col col-lg-2' key={product.products?.guid}>
                 <div className='productlist'>
@@ -84,11 +84,12 @@ const RecentViewedItems = () => {
                 </div>
               </div>
             ))}
-              </>
-            ):('')}
+             
           </div>
         </div>
       </section>
+      </>
+      ):('')}
     </section>
     </>
   )

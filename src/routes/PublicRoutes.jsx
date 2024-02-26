@@ -6,6 +6,7 @@ import EmailVerification from "../pages/Account/EmailVerification"
 import SignIn from "../pages/Account/SignIn"
 import TopCategory from "../pages/TopCategory"
 import SingleCategory from "../components/Products/Archive/SingleCategory"
+import AllProducts from "../components/Products/Archive/AllProducts"
 import PasswordRecovery from "../pages/Account/PasswordRecovery"
 import ResetPassword from "../pages/Account/ResetPassword"
 import ForgotVerification from "../pages/Account/ForgotVerification"
@@ -40,6 +41,7 @@ const PublicRoutes = () => {
 					<Route path="/signin" element={<SignIn />} />
 					<Route path="/topcategory" element={<TopCategory />} />
 					<Route path="/singlecategory/:guid" element={<SingleCategory />} />
+					<Route path="/AllProducts" element={<AllProducts />} />
 					<Route path="/passwordrecovery" element={<PasswordRecovery />} />
 					<Route path="/forgotverification/:email" element={<ForgotVerification />} />
 					<Route path="/resetpassword/:email" element={<ResetPassword />} />
