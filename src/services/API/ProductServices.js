@@ -107,10 +107,12 @@ function selfValue(value) {
   })
 }
 
-function search(params = {}) {
+// function search(params = {}) {
+  function search(data) {
   return request({
     url: `${baseUrl}/search`,
-    params: this.$route.query,
+    data, //this.$route.query,
+    method: 'POST',
   })
 }
 
@@ -201,14 +203,25 @@ function checkUserProductOffer(id, guid) {
   })
 }
 
+function getProductByPrice(val) {
+  return request({
+    url: `${baseUrl}/getbyprice/${val}`,
+    method: 'GET',
+  })
+}
+
 function getSavedAddress(guId) {
-  console.log('guId',guId)
   return request({
     url: `${baseUrl}/getSavedAddress/${guId}`,
     method: 'GET',
   })
 }
-
+function getByPriceRange(min,max){
+  return request({
+    url: `${baseUrl}/getbypricerange/${min}/${max}`,
+    method: 'GET',
+  })
+}
 function flexefee() {
   return request({
     url: `${baseUrl}/flexefee`,
@@ -257,8 +270,33 @@ function getSizes() {
   })
 }
 
+function getbycategory(id){
+  return request({
+    url: `${baseUrl}/getbycategory/${id}`,
+    method: 'GET',
+  })
+}
+
+function getCategories(id){
+  return request({
+    url: `${baseUrl}/categories`,
+    method: 'GET',
+  })
+}
+
+function getProductbySize(size){
+  return request({
+    url: `${baseUrl}/getproductbysize/${size}`,
+    method: 'GET',
+  })
+}
 const ProductServices = {
   all,
+  getProductByPrice,
+  getProductbySize,
+  getCategories,
+  getbycategory,
+  getByPriceRange,
   save,
   min,
   max,

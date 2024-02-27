@@ -1,29 +1,43 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react'
 import { Link } from 'react-router-dom';
+import ProductServices from '../../../services/API/ProductServices'; //~/services/API/ProductServices
 
 const SubcategoriesList = (props) => {
-  const products = props.product;
+  const [categories, setCategoryData] = useState([]);
+  const handleAllCategory  = (e) =>{
+    e.preventDefault();
+    props.parentCallback('all');
+  }
   const handleCategory  = (e, catId) =>{
     e.preventDefault();
-    console.log(catId)
+    props.parentCallback(catId);
   }
+  useEffect(() => {
+    setCategoryData(props.categories)
+  }, []);
   return (
     <>
       <div className='subcategory-list'>
         {/* <h4>Antiques</h4> */}
-        {products.length > 0 ? (<>
+
+        {categories > 0 ? (<>
           <ul>
-          {products.map((product, index) => {
+          {categories.map((category, index) => {
             return(
               <>
                 <li key={index}>
                   <a href="#" onClick={(e) =>
-                  handleCategory(e,product.category_id)
-                  }>{product.category}</a>
+                  handleCategory(e,category.id)
+                  }>{category.name}</a>
                 </li>
               </>
             )
           })}
+          <li>
+            <a href="#" onClick={(e) =>
+            handleAllCategory(e)
+            }>All</a>
+          </li>
           </ul>
         </>):('')}
 

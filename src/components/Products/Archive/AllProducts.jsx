@@ -13,6 +13,7 @@ const AllProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(6); // Change this value to adjust items per page
   const [products, setProductData] = useState([]);
+  const [categories, setCategoryData] = useState([]);
 
   // Logic to paginate product cards
   const indexOfLastCard = currentPage * cardsPerPage;
@@ -22,6 +23,14 @@ const AllProducts = () => {
     ProductServices.all()
       .then((response) => {
         setProductData(response)
+      }) 
+  }
+  const getCategories= () =>{
+    ProductServices.getCategories()
+      .then((response) => {
+        if(response.status){
+          setCategoryData(response.data)
+        }
       }) 
   }
   const renderProductCards = () => {
@@ -38,12 +47,67 @@ const AllProducts = () => {
   // Logic to handle page changes
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  const  handleCetegoryCallback = (childData) => {
+    if(childData == 'all'){
+      getProduct();
+    }else{
+      ProductServices.getbycategory(childData)
+      .then((response) => {
+        if(response.status){
+          setProductData(response.data);
+        }
+      })
+    }
+  }
+  const  handlePriceCallback = (childData) => {
+    ProductServices.getByPriceRange(childData[0], childData[1])
+    .then((response) => {
+      if(response.status){
+          if(response.data.length > 0){
+            setProductData(response.data);
+          }else{
+            setProductData([]);
+          }
+      }
+    })
+  }
+  const handleSizeCallback =(childData) => {
+    ProductServices.getProductbySize(childData)
+    .then((response) => {
+      console.log('response',response)
+      // if(response.status){
+      //     if(response.data.length > 0){
+      //       setProductData(response.data);
+      //     }else{
+      //       setProductData([]);
+      //     }
+      // }
+    })
+  }
+  const handleSearchCallback = (childData) => {
+    if(childData === ""){
+      ProductServices.all()
+      .then((response) => {
+        setProductData(response);
+      })
+    }else{
+      let data ={
+        'query': childData
+      }
+      ProductServices.search(data)
+      .then((response) => {
+        if(response.status){
+          setProductData(response.data);
+        }
+      })
+    }
+  }
   // Calculate total number of pages
   const totalPages = Math.ceil(products.length / cardsPerPage);
   useEffect(() => {
     getProduct();
+    getCategories();
   }, []);
-
   return (
     <>
       {/* Header */}
@@ -60,12 +124,12 @@ const AllProducts = () => {
             
             <div className='col-lg-3'>
                 <div id='all-filters'>
-                    <Search />
+                    <Search parentCallback={handleSearchCallback} />
                     <br />
                     <h3 style={{color: "#000"}}>Filters</h3>
-                    <SubcategoriesList product={products} />
-                    <PriceRange />
-                    <SizeToggle />
+                    <SubcategoriesList categories={categories} parentCallback={handleCetegoryCallback} />
+                    <PriceRange parentCallback={handlePriceCallback} />
+                    <SizeToggle parentCallback={handleSizeCallback} />
                 </div>
             </div>
             <div className='col-lg-9'>

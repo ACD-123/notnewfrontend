@@ -28,7 +28,7 @@ import MyTransactions from "../components/AccountsSetting/SellerSetup/MyTransact
 import InStock from "../components/AccountsSetting/SellerSetup/InStock"
 import OutStock from "../components/AccountsSetting/SellerSetup/InStock"
 import Watchlist from "../components/CustomerDashboard/Watchlist"
-
+import Auctions from "../components/Products/Archive/Auctions"
 
 const PublicRoutes = () => {
 	return (
@@ -41,6 +41,7 @@ const PublicRoutes = () => {
 					<Route path="/signin" element={<SignIn />} />
 					<Route path="/topcategory" element={<TopCategory />} />
 					<Route path="/singlecategory/:guid" element={<SingleCategory />} />
+					<Route path="/auctions" element={<Auctions />} />
 					<Route path="/AllProducts" element={<AllProducts />} />
 					<Route path="/passwordrecovery" element={<PasswordRecovery />} />
 					<Route path="/forgotverification/:email" element={<ForgotVerification />} />

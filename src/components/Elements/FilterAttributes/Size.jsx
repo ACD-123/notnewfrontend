@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
 
-const SizeToggle = () => {
+const SizeToggle = (props) => {
   const [showSizes, setShowSizes] = useState(false);
   const [selectedSize, setSelectedSize] = useState('');
   const [sizes, setSizes] = useState([]);
@@ -18,6 +18,7 @@ const SizeToggle = () => {
   }
   const handleSizeSelect = (size) => {
     setSelectedSize(size);
+    props.parentCallback(size)
   };
   useEffect(() => {
     getSizes();
