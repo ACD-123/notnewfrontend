@@ -20,7 +20,7 @@ const NavBar = () => {
           >
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/topcategory">Top Categories</Nav.Link>
-            <Nav.Link href="/singlecategory">Auctions</Nav.Link>
+            <Nav.Link href="/auctions">Auctions</Nav.Link>
             <Nav.Link href="/categorykeyword">Hot Deals</Nav.Link>
             <Nav.Link href="/categorykeyword">Top Sellers</Nav.Link>
             <Nav.Link href="/categorykeyword">Electronics</Nav.Link>

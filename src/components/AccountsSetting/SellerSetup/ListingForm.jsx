@@ -219,9 +219,7 @@ const ListingForm = (props) => {
       ...product,
       sizes: [...product.sizes, { size: 0, quantity: 0}],
     });
-    console.log('add sizes', product.sizes);
     return
-
   };
   const handleCountryChange = (e) => {
     product.country = e.target.value;
@@ -778,7 +776,7 @@ const handlePriceChange = (e) => {
           <div className="sizequntycolr" key={index}>
             <label>Size</label>
             <input
-              type="number"
+              type="text"
               name="size"
               value={size.size}
               onChange={(e) => handleInputChange(e, index)}

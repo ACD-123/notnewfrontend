@@ -7,10 +7,8 @@ import SubcategoriesList from "../../Elements/FilterAttributes/SubcategoriesList
 import Search from "../../Elements/FilterAttributes/Search"
 import PriceRange from "../../Elements/FilterAttributes/PriceRange"
 import SizeToggle from "../../Elements/FilterAttributes/Size"
-import context from 'react-bootstrap/esm/AccordionContext';
-import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
 
-const SellerCategoryShop = () => {
+const Auctions = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(6); // Change this value to adjust items per page
 
@@ -38,9 +36,7 @@ const SellerCategoryShop = () => {
       <ProductCard key={product.id} product={product} />
     ));
   };
-  const  handleCatgeoryCallback = (childData) => {
-    console.log('childData',childData)
-  }
+
   // Logic to handle page changes
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -49,20 +45,23 @@ const SellerCategoryShop = () => {
 
   return (
     <>
-   
-      <section id='singlecategory'
+      {/* Header */}
+      <Header />
+      {/* Header */}
+
+      <section id='Auctions'
       style={{
         padding:"30px 0px"
       }}
       >
         <div className='container'>
-          <h2>Men Running Shoes</h2>
+          <h2>Auctions Items</h2>
           <div className='row'>
             
             <div className='col-lg-3'>
                 <div id='all-filters'>
                     <h3 style={{color: "#000"}}>Filters</h3>
-                    <SubcategoriesList parentCallback={handleCatgeoryCallback} />
+                    <SubcategoriesList />
                     <Search />
                     <PriceRange />
                     <SizeToggle />
@@ -85,9 +84,14 @@ const SellerCategoryShop = () => {
           </div>
         </div>
       </section>
-
+      {/* GetSurprisedBanner */}
+      <GetSurprisedBanner />
+      {/* GetSurprisedBanner */}
+      {/* Footer */}
+      <Footer />
+      {/* Footer */}
     </>
   );
 };
 
-export default SellerCategoryShop;
+export default Auctions;

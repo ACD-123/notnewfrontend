@@ -6,7 +6,11 @@ var Searchbg = {
     backgroundSize: "100% 100%"
   };
 
-const Search = () => {
+const Search = (props) => {
+  const handleSearch = (e) =>{
+    e.preventDefault();
+    props.parentCallback(e.target.value);
+  }
   return (
     <>
     <form id="searchForm">
@@ -16,7 +20,7 @@ const Search = () => {
     />
   </div>
   <div class="input-group">
-    <input type="text" id="search" name="search" placeholder='Search All 2,656 items' />
+    <input type="text" onChange={handleSearch} id="search" name="search" placeholder='Search All 2,656 items' />
   </div>
 </form>
     </>
