@@ -3,6 +3,7 @@ import Objection from "../../../assets/Images/objection.png";
 import Down from "../../../assets/Images/down.png";
 import Checkimg from "../../../assets/Images/Auction/check.png";
 import { Link } from "react-router-dom";
+import DatePicker from "react-datepicker";
 import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
 import Category from "../../../services/API/Category"; //~/services/API/Category
 import CountryServices from "../../../services/API/CountryServices"; //~/services/API/CountryServices
@@ -11,12 +12,12 @@ import City from "../../../services/API/City"; //~/services/API/City
 import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
 import { toast } from "react-toastify";
 import moment from "moment";
+import "react-datepicker/dist/react-datepicker.css";
 
 const ListingForm = (props) => {
   // Popup
   const [showPopup, setShowPopup] = useState(false); // State for showing the popup
   const [showEditPopup, setShowEditPopup] = useState(false); // State for showing the popup
-  // Shipping duration
   const [shippingStart, setShippingStart] = useState("");
   const [shippingEnd, setShippingEnd] = useState("");
   const [isToggled, setIsToggled] = useState(false);
@@ -27,8 +28,12 @@ const ListingForm = (props) => {
   const [domestic, setDomestic] = useState(false);
   const [international, setInternational] = useState("");
   const [deliverCompany, setDeliverCompany] = useState("");
-  const [price, setPrice] = useState("");
-  const [prices, setPrices] = useState("");
+  const [price, setPrice] = useState(0);
+  const [salesprice, setSalesPrice] = useState(0);
+  const [bids, setBids] = useState(0);
+  const [duration, setDuration] = useState("");
+  const [auctionstartDate, setAuctionStartDate] = useState(new Date());
+  const [shippingprices, setShippingPrices] = useState("");
   const [refund, setRefund] = useState("");
   const [returnLimit, setreturnLimit] = useState("");
   const [returnpaidby, setReturnPaidBy] = useState("");
@@ -52,11 +57,12 @@ const ListingForm = (props) => {
   const [editproduct, setEditProduct] = useState(false);
   const [shippingLocation, setShippingLocation] = useState("");
   const [conditions, setCondition]=useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [blobURL, setBlobURL] = useState(null);
+  const [files, setFiles] = useState([]);
   const [product, setProduct] = useState({
-    store:"",
-    shopid : "",
     images: [],
-    scheduled:false,
+    condition: "",
     title: "",
     model: "",
     category: "",
@@ -66,16 +72,19 @@ const ListingForm = (props) => {
     availableColors: [],
     description: "",
     sellingNow: false,
-    auctions: false,
     price: 0,
-    listing: false,
-    sale: false,
-    buyitnow: false,
-    listing: false,
+    saleprice:0,
+    listing: "",
+    auctions: false,
+    bids: 0,
+    durations:0,
+    auctionListing: "",
     deliverddomestic: false,
     deliverdinternational: false,
     deliverycompany: "",
     country: "",
+    state:"",
+    city:"",
     locations: [],
     shippingprice: 0,
     shippingstart: "",
@@ -84,11 +93,14 @@ const ListingForm = (props) => {
     returndurationlimit: 0,
     returnshippingpaidby: "",
     returnshippinglocation: "",
-    condition: "",
     action:"add"
   });
+  let imagesFiles = [];
   let loggedInUser = localStorage.getItem("user_details");
   const loggedInUsers = JSON.parse(loggedInUser);
+  
+  let product_condition = localStorage.getItem('product_condition');
+
   // Function to handle the activation of the product
   const handleActivateProduct = (e) => {
     e.preventDefault();
@@ -102,7 +114,7 @@ const ListingForm = (props) => {
     product.deliverycompany = deliverCompany;
     product.city = city;
     product.states = state;
-    product.shippingprice = prices;
+    // product.shippingprice = prices;
     product.shippingstart = shippingStart;
     product.shippingend = shippingEnd;
     product.shippingdurations = shippingEnd;
@@ -123,11 +135,11 @@ const ListingForm = (props) => {
     setShippingEnd(e.target.value);
   };
   const handleDomestic = (e) => {
-    product.deliverddomestic = e.target.value;
+    product.deliverddomestic = true;
     setDomestic(!domestic);
   };
   const handleInternational = (e) => {
-    product.deliverdinternational = e.target.value;
+    product.deliverdinternational = true;
     setInternational(!international);
   };
   const handleDeliverCompany = (e) => {
@@ -139,20 +151,31 @@ const ListingForm = (props) => {
     setIsToggled(!isToggled);
   };
   const handleAuctions = (e) => {
-    product.auctions = e.target.value;
+    product.auctions = true;
     setAuctions(!auctions);
+    setBuyNow(false);
   };
+  const handleBitChange=(e)=>{
+    product.bids = e.target.value;
+    setBids(e.target.value)
+  }
+  const handleDurationChange = (e) => {
+    product.durations = e.target.value;
+    setDuration(e.target.value);
+  };
+  const handleAuctionStartDate =(date)=>{
+    product.auctionListing = moment(date).format("DD-MM-YYYY");
+    setAuctionStartDate(date);
+  }
+  
   const handleToggle1 = () => {
     setIsToggled1(!isToggled1);
   };
   const handleBuynow = (e) => {
-    product.buyitnow = e.target.value;
+    product.sellingNow = true;
+    setAuctions(false);
     setBuyNow(!buyNow);
   };
-  const handleScheduled = (e) =>{
-    setScheduled(!scheduled)
-    product.scheduled = e.target.value;
-  }
   const handleLisitng = (e) => {
     product.listing = e.target.value;
     setListing(!listing);
@@ -209,9 +232,11 @@ const ListingForm = (props) => {
     setCondition(e.target.value);
   }
   const handleImageUpload = (e) => {
+    // setFiles({ ...files, ...e.target.files })
     const files = Array.from(e.target.files).slice(0, 5);
     const imageUrls = files.map((file) => URL.createObjectURL(file));
     setProduct({ ...product, images: imageUrls });
+    // console.log('files', files)
   };
 
   const handleAddSize = () => {
@@ -234,81 +259,79 @@ const ListingForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
-    if (!product.store) {
-      newErrors.store = "You Must need to select Store";
-    }
+
     if (!product.title) {
       newErrors.title = "Title is required";
     }
-    if (!product.model) {
-      newErrors.model = "Model is required";
-    }
-    if (!product.category) {
-      newErrors.category = "Category is required";
-    }
-    if (!product.brand) {
-      newErrors.brand = "Brand is required";
-    }
-    if (!product.stockCapacity || product.stockCapacity === 0) {
-      newErrors.stockCapacity = "Stock Capacity is required";
-    }
-    if (!product.description) {
-      newErrors.description = "Description is required";
-    }
+    // if (!product.model) {
+    //   newErrors.model = "Model is required";
+    // }
+    // if (!product.category) {
+    //   newErrors.category = "Category is required";
+    // }
+    // if (!product.brand) {
+    //   newErrors.brand = "Brand is required";
+    // }
+    // if (!product.stockCapacity || product.stockCapacity === 0) {
+    //   newErrors.stockCapacity = "Stock Capacity is required";
+    // }
+    // if (!product.description) {
+    //   newErrors.description = "Description is required";
+    // }
     // if (!product.sellingNow || !product.auctions) {
     //   newErrors.sellingNow = "Buy it Now is required";
     // }
-    if (!product.price) {
-      newErrors.price = "Price is required";
-    }
+    // if (!product.price) {
+    //   newErrors.price = "Price is required";
+    // }
     // if (!product.listing) {
     //   newErrors.listing = "Listing is required";
     // }
     // if (!isToggled) {
     //   newErrors.buyitnow = "Buy it Now is required";
     // }
-    if (!product.deliverycompany) {
-      newErrors.deliverycompany = "Deliver Company is required";
-    }
+    // if (!product.deliverycompany) {
+    //   newErrors.deliverycompany = "Deliver Company is required";
+    // }
     // if(!product.deliverddomestic || !product.deliverdinternational){
     //   newErrors.deliverdomestically = "Deliver is required";
     // }
-    if(!product.country){
-      newErrors.country = "Country is required";
-    }
-    if(!product.states){
-      newErrors.states = "States is required";
-    }
-    if(!product.city){
-      newErrors.city = "City is required";
-    }
-    if(!product.shippingprice){
-      newErrors.shippingprice = "Shipping Price is required";
-    }
+    // if(!product.country){
+    //   newErrors.country = "Country is required";
+    // }
+    // if(!product.states){
+    //   newErrors.states = "States is required";
+    // }
+    // if(!product.city){
+    //   newErrors.city = "City is required";
+    // }
+    // if(!product.shippingprice){
+    //   newErrors.shippingprice = "Shipping Price is required";
+    // }
    
-    if(!product.shippingstart && !product.shippingstart){
-      newErrors.shippingstartend = "Shipping Start and End is required";
-    }
-    if(!product.returnshippingpaidby){
-      newErrors.returnshippingpaidby = "Shipping Paid By is required";
-    }
-    if(!shippingLocation){
-      newErrors.returnshippinglocation = "Shipping Locations is required";
-    }
-    if(!product.returndurationlimit){
-      newErrors.returndurationlimit = "Shipping Duration Limit is required";
-    }
+    // if(!product.shippingstart && !product.shippingstart){
+    //   newErrors.shippingstartend = "Shipping Start and End is required";
+    // }
+    // if(!product.returnshippingpaidby){
+    //   newErrors.returnshippingpaidby = "Shipping Paid By is required";
+    // }
+    // if(!shippingLocation){
+    //   newErrors.returnshippinglocation = "Shipping Locations is required";
+    // }
+    // if(!product.returndurationlimit){
+    //   newErrors.returndurationlimit = "Shipping Duration Limit is required";
+    // }
     // if(!product.shippingLocation){
     //   newErrors.returnshippingprice = "Shipping Price is required";
     // }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-      product.scheduled = scheduled;
-      product.returnshippinglocation=shippingLocation;
-      product.deliverddomestic = domestic 
-      product.listing = listing
-      product.buyitnow = buyNow
-      product.condition = conditions
+      // product.scheduled = scheduled;
+      // product.returnshippinglocation=shippingLocation;
+      // product.deliverddomestic = domestic 
+      // product.listing = listing
+      // product.buyitnow = buyNow
+      // product.condition = conditions
       setIsLoading(true);
       setEnabled(true);
       if(props.guid){
@@ -334,7 +357,16 @@ const ListingForm = (props) => {
         });
       }else{
         product.condition = localStorage.getItem("product_condition");
-        ProductServices.save(product)
+
+        let fd = new FormData();
+        let data ={
+          'product' : product,
+          'image' : fd
+        }
+        // data.append('images', JSON.stringify(files))
+        // data.append('images', JSON.stringify(files))
+        
+        ProductServices.save(data)
         .then((response) => {
           // toast.success(response.message);
           setShowPopup(true);
@@ -358,9 +390,17 @@ const handlePriceChange = (e) => {
     product.price = e.target.value;
     setPrice(e.target.value);
   };
-  const handlePriceChanges = (e) => {
+  const handleSalePriceChange = (e) => {
+    setSalesPrice(e.target.value);
+    product.saleprice = e.target.value;
+  };
+  const handleStartDate =(date)=>{
+    product.listing = moment(date).format("DD-MM-YYYY");
+    setStartDate(date);
+  }
+  const handleShippingPriceChanges = (e) => {
     product.shippingprice = e.target.value;
-    setPrices(e.target.value);
+    setShippingPrices(e.target.value);
   };
   const handleRefundprice = (e) => {
     product.returnshippingprice = e.target.value;
@@ -456,7 +496,7 @@ const handlePriceChange = (e) => {
       });
   };
   const handleStateChange = (e) => {
-    product.states = e.target.value;
+    product.state = e.target.value;
     City.get(e.target.value)
       .then((response) => {
         setCities(response);
@@ -465,10 +505,12 @@ const handlePriceChange = (e) => {
         toast.error(e.message);
       });
   };
-  const fetchAllStores = () => {
-    SellerServices.getAllStores(loggedInUsers?.id)
+  const fetchStores = () => {
+    SellerServices.getStore(loggedInUsers?.id)
       .then((response) => {
-        setShops(response);
+        if(response.status){
+          setShops(response.data);
+        }
       })
       .catch((e) => {
         toast.error(e.message);
@@ -563,7 +605,7 @@ const handlePriceChange = (e) => {
   useEffect(() => {
     fetchCategory();
     fetchCountries();
-    fetchAllStores();
+    fetchStores();
     if(props.guid){
       getProduct();
     }
@@ -571,6 +613,7 @@ const handlePriceChange = (e) => {
   return (
     <section id="listing-creating-form">
       <form
+        encType="multipart/form-data"
         onSubmit={handleSubmit}
         style={{ maxWidth: "90%", margin: "0 auto", overflow: "hidden" }}
       >
@@ -586,7 +629,7 @@ const handlePriceChange = (e) => {
           onChange={handleImageUpload}
         />
         <div className="imgegallry">
-          {product.media ? (
+          {/* {product.media ? (
             <>
             {product.media.map((imageUrl, index) => (
             <img
@@ -601,6 +644,28 @@ const handlePriceChange = (e) => {
               }}
             />
           ))}
+            </>
+          ):(<></>)} */}
+          {product.images.length> 0 ? (
+            <>
+            {product.images.map((imageUrl, index) => {
+              return(
+                <>
+                  <img
+                    key={index}
+                    src={imageUrl}
+                    alt={`Product ${index + 1}`}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      objectFit: "cover",
+                      margin: "5px",
+                    }}
+                  />
+
+                </>
+              )
+            })}
             </>
           ):(<></>)}
         </div>
@@ -631,8 +696,15 @@ const handlePriceChange = (e) => {
           })}
           </ul>
           </>
-        ):('')}
-        <div className="listschedule1">
+        ):(
+          <>
+           <h5>Product Condition</h5>
+           <div className="productCondition">
+            {product_condition}            
+           </div>
+          </>
+        )}
+        {/* <div className="listschedule1">
           <div>Scheduled</div>
           <div>
             <label className="switch3">
@@ -645,29 +717,22 @@ const handlePriceChange = (e) => {
               <span className="slider3 round3"></span>
             </label>
           </div>
-        </div>
-        <div className="delivery-company">
-          <div>Select Store</div>
+        </div> */}
+        {/* <div className="delivery-company">
+          <div>Store</div>
           <div>
-            <select value={product.store} name={product.store} onChange={handleShop}>
-              <option value="">All Store</option>
-              {shops.length > 0 ? (
-                <>
-                  {shops?.map((shop) => {
-                    return (
-                      <>
-                        <option value={shop.id}>{shop.fullname}</option>
-                      </>
-                    );
-                  })}
-                </>
+            <select style={{ width: "150px" }} value={product.store} name={product.store} onChange={handleShop}>
+              {shops ? (
+                  <>
+                    <option value={shops.id} selected="true">{shops.fullname}</option>
+                  </>
               ) : (
                 ""
               )}
             </select>
           </div>
-        </div>
-        {errors.store && <p className="error">{errors.store}</p>}
+        </div> */}
+        {/* {errors.store && <p className="error">{errors.store}</p>} */}
         <input
           type="text"
           placeholder="Product Title"
@@ -811,7 +876,7 @@ const handlePriceChange = (e) => {
           onChange={handleInputChange}
         />
         {errors.description && <p className="error">{errors.description}</p>}
-        <div className="pricing">
+        {/* <div className="pricing">
           <h4>Pricings</h4>
           <li onClick={() => setShowContent(!showContent)}>
             Buy it now <img src={Down} />
@@ -850,7 +915,85 @@ const handlePriceChange = (e) => {
             </div>
           )}
           {errors.buyitnow && <p className="error">{errors.buyitnow}</p>}
+        </div> */}
+         <div className="listschedule1">
+          <div>Sell it Now</div>
+          <div>
+            <label className="switch3">
+              <input
+                type="radio"
+                value={product.sellingNow}
+                checked={buyNow}
+                name="sellingAution"
+                onChange={handleBuynow}
+              />
+              <span className="slider3 round3"></span>
+            </label>
+          </div>
         </div>
+        
+        <div className="listschedule1">
+          <div>Auction</div>
+          <div>
+            <label className="switch3">
+              <input
+                type="radio"
+                name="sellingAution"
+                value={auctions}
+                onChange={handleAuctions}              />
+              <span className="slider3 round3"></span>
+            </label>
+          </div>
+        </div>
+        {auctions? (
+          <>  
+          <div className="set-price">
+          <div>Starting Bit</div>
+          <div>
+            <input
+              type="number"
+              placeholder="$"
+              name={bids}
+              value={product.bids}
+              onChange={handleBitChange}
+            />
+          </div>
+        </div>
+        {errors.price && <p className="error">{errors.price}</p>}
+        <div className="set-price">
+          <div>Duration</div>
+          <div>
+            <input
+              type="number"
+              placeholder="$"
+              name={product.duration}
+              value={product.duration}
+              onChange={handleDurationChange}
+            />
+          </div>
+        </div>
+        {errors.saleprice && <p className="error">{errors.saleprice}</p>}
+        <div className="listschedule">
+          <div>Schedule your Listing Start Time</div>
+          <div>
+          <DatePicker selected={auctionstartDate}  minDate={new Date()}  onChange={(date) => handleAuctionStartDate(date)} />
+            {/* <label className="switch2">
+              <input
+                type="checkbox"
+                checked={listing}
+                value={listing}
+                onChange={handleLisitng}
+              />
+              <span className="slider2 round2"></span>
+            </label> */}
+          </div>
+        </div>
+        {errors.listing && <p className="error">{errors.listing}</p>}
+
+          </>
+        ):('')}
+        {buyNow ? (
+          <>
         <div className="set-price">
           <div>Set Price</div>
           <div>
@@ -870,9 +1013,9 @@ const handlePriceChange = (e) => {
             <input
               type="text"
               placeholder="$"
-              name={product.saleprice}
+              name={salesprice}
               value={product.saleprice}
-              onChange={handlePriceChange}
+              onChange={handleSalePriceChange}
             />
           </div>
         </div>
@@ -880,72 +1023,52 @@ const handlePriceChange = (e) => {
         <div className="listschedule">
           <div>Schedule your Listing</div>
           <div>
-            <label className="switch2">
-              <input
-                type="checkbox"
-                checked={listing}
-                value={listing}
-                onChange={handleLisitng}
-              />
-              <span className="slider2 round2"></span>
-            </label>
+          <DatePicker selected={startDate}  minDate={new Date()}  onChange={(date) => handleStartDate(date)} />
+          {/* <label className="switch2">
+                <input
+                  type="checkbox"
+                  checked={listing}
+                  value={listing}
+                  onChange={handleLisitng}
+                />
+                <span className="slider2 round2"></span>
+              </label> */}
           </div>
         </div>
         {errors.listing && <p className="error">{errors.listing}</p>}
-        <div className="listschedule1">
-          <div>Buy it now</div>
+          </>
+        ):('')}
+        {/* {errors.buyitnow && <p className="error">{errors.buyitnow}</p>} */}
+        <div className="pricing">
+          <h4>SHIPPING</h4>
+          <div className="listschedule1">
+          <div>Deliver Domestically</div>
           <div>
             <label className="switch3">
               <input
-                type="checkbox"
-                value={product.buyitnow}
-                checked={buyNow}
-                onChange={handleBuynow}
+                type="radio"
+                value={product.deliverddomestic}
+                checked={domestic}
+                name="deliver"
+                onChange={handleDomestic}
               />
               <span className="slider3 round3"></span>
             </label>
           </div>
         </div>
-        {/* {errors.buyitnow && <p className="error">{errors.buyitnow}</p>} */}
-        <div className="pricing">
-          <h4>SHIPPING</h4>
-          <li onClick={() => setShowContents(!showContents)}>
-            Deliver Domestically <img src={Down} />
-          </li>
-          {showContents && (
-            <div className="main-pricng-switcher">
-              <div className="firstswitcher">
-                <div>Deliver Domestically</div>
-                <div>
-                  <label className="switch1">
-                    <input
-                      type="radio"
-                      name="deliver"
-                      checked={product.deliverddomestic}
-                      value={product.deliverddomestic}
-                      onChange={handleDomestic}
-                    />
-                    <span className="slider1 round1"></span>
-                  </label>
-                </div>
-              </div>
-              <div className="firstswitcher">
-                <div>Deliver Internationally</div>
-                <div>
-                  <label className="switch1">
-                    <input
-                      type="radio"
-                      name="deliver"
-                      checked={product.deliverdinternational}
-                      value={product.deliverdinternational}
-                      onChange={handleInternational}
-                    />
-                    <span className="slider1 round1"></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          )}
+        <div className="listschedule1">
+          <div>Deliver Internationally</div>
+            <label className="switch3">
+              <input
+                type="radio"
+                name="deliver"
+                value={product.deliverdinternational}
+                checked={international}
+                onChange={handleInternational}
+                />
+              <span className="slider3 round3"></span>
+            </label>
+          </div>
         </div>
         {errors.deliverdomestically && (
           <p className="error">{errors.deliverdomestically}</p>
@@ -954,8 +1077,9 @@ const handlePriceChange = (e) => {
           <div>Select Delivery Company</div>
           <div>
             <select
+              name={deliverCompany}
               checked={deliverCompany}
-              value={deliverCompany}
+              value={product.deliverycompany}
               onChange={handleDeliverCompany}
             >
               <option value="">Select Delivery Company</option>
@@ -971,7 +1095,7 @@ const handlePriceChange = (e) => {
         <div className="delivery-company">
           <div>Select Country</div>
           <div>
-            <select value={product.country} onChange={handleCountryChange}>
+            <select value={product.country} name={product.country} onChange={handleCountryChange}>
               <option>All Countries</option>
               {country.length > 0 ? (
                 <>
@@ -998,7 +1122,7 @@ const handlePriceChange = (e) => {
               <div className="delivery-company">
                 <div>Select States</div>
                 <div>
-                  <select value={product.states} onChange={(e) => handleStateChange(e)}>
+                  <select value={product.state} name={product.state} onChange={(e) => handleStateChange(e)}>
                     <option>Select a States</option>
                     {state.length > 0 ? (
                       <>
@@ -1023,7 +1147,7 @@ const handlePriceChange = (e) => {
               <div className="delivery-company">
                 <div>Select City</div>
                 <div>
-                  <select onChange={(e) => handleCity(e.target.value)}>
+                  <select value={product.city} name={product.city} onChange={(e) => handleCity(e.target.value)}>
                     <option>Select a City</option>
                     {cities.map((city) => (
                       <option key={city.id} value={city.id}>
@@ -1054,8 +1178,9 @@ const handlePriceChange = (e) => {
             <input
               type="text"
               placeholder="$"
+              name={shippingprices}
               value={product.shippingprice}
-              onChange={handlePriceChanges}
+              onChange={handleShippingPriceChanges}
             />
           </div>
         </div>

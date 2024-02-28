@@ -13,6 +13,7 @@ import ProductServices from "../../../services/API/ProductServices"; //~/service
 const SellerCategoryShop = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(6); // Change this value to adjust items per page
+  const [productData, setProductData] = useState([]);
 
   // Mock data for products (replace this with your actual data)
   const products = [
@@ -39,7 +40,29 @@ const SellerCategoryShop = () => {
     ));
   };
   const  handleCatgeoryCallback = (childData) => {
-    console.log('childData',childData)
+    ProductServices.getbycategory(childData)
+      .then((response) => {
+      
+      })
+        // console.log('childData',childData)
+  }
+  const handleSearchCallback = (childData) => {
+    if(childData === ""){
+      ProductServices.all()
+      .then((response) => {
+        setProductData(response);
+      })
+    }else{
+      let data ={
+        'query': childData
+      }
+      ProductServices.search(data)
+      .then((response) => {
+        if(response.status){
+          setProductData(response.data);
+        }
+      })
+    }
   }
   // Logic to handle page changes
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -63,7 +86,7 @@ const SellerCategoryShop = () => {
                 <div id='all-filters'>
                     <h3 style={{color: "#000"}}>Filters</h3>
                     <SubcategoriesList parentCallback={handleCatgeoryCallback} />
-                    <Search />
+                    <Search parentCallback={handleSearchCallback} />
                     <PriceRange />
                     <SizeToggle />
                 </div>
