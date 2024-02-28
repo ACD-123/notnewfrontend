@@ -4678,3 +4678,11 @@ section#getsurpriseprice .text-button {
   border-radius: 20px;
   float: right;
 }
+.productCondition{
+  width: 100%;
+  margin-bottom: 10px;
+  background: #F0F0F0;
+  border: 0;
+  padding: 16px 10px;
+  border-radius: 10px;
+}

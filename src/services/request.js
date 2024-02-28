@@ -21,6 +21,7 @@ const request = function (options) {
   const headers = {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      'Content-Type': 'multipart/form-data'
     },
   }
 

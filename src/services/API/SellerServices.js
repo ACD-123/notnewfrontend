@@ -85,9 +85,9 @@ function setBank(data) {
       method: 'GET',
     })
   }
-  function getAllStores(data) {
+  function getStore(data) {
     return request({
-      url: `${baseUrl}getallshops/${data}`,
+      url: `${baseUrl}getshops/${data}`,
       data,
       method: 'GET',
     })
@@ -124,7 +124,7 @@ const SellerServices = {
   getBanks,
   setBank,
   getShopDetails,
-  getAllStores,
+  getStore,
   saveSeller,
   updateBank,
   getBankDetails
