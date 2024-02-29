@@ -242,6 +242,13 @@ function createRecent(data) {
     method: 'POST',
   })
 }
+function Imgupload(data){
+  return request({
+    url: `${baseUrl}/upload`,
+    data,
+    method: 'POST',
+  })
+}
 function storeProduct(data) {
   return request({
     url: `${baseUrl}/storeproduct/${data}`,
@@ -304,6 +311,7 @@ const ProductServices = {
   get,
   state,
   destroy,
+  Imgupload,
   uploadImages,
   images,
   userRating,

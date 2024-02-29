@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Objection from "../../../assets/Images/objection.png";
 import Down from "../../../assets/Images/down.png";
 import Checkimg from "../../../assets/Images/Auction/check.png";
-import { Link } from "react-router-dom";
+import { Link, useAsyncError } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
 import Category from "../../../services/API/Category"; //~/services/API/Category
@@ -13,7 +13,7 @@ import SellerServices from "../../../services/API/SellerServices"; //~/services/
 import { toast } from "react-toastify";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
-
+import axios from 'axios'
 const ListingForm = (props) => {
   // Popup
   const [showPopup, setShowPopup] = useState(false); // State for showing the popup
@@ -26,10 +26,12 @@ const ListingForm = (props) => {
   const [listing, setListing] = useState(false);
   const [scheduled, setScheduled] = useState(false);
   const [domestic, setDomestic] = useState(false);
+  const [tags, setTags] = useState([]);
   const [international, setInternational] = useState("");
   const [deliverCompany, setDeliverCompany] = useState("");
   const [price, setPrice] = useState(0);
   const [salesprice, setSalesPrice] = useState(0);
+  const [miniumpurchase, setMiniumPurchase] = useState(0);
   const [bids, setBids] = useState(0);
   const [duration, setDuration] = useState("");
   const [auctionstartDate, setAuctionStartDate] = useState(new Date());
@@ -60,6 +62,7 @@ const ListingForm = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const [blobURL, setBlobURL] = useState(null);
   const [files, setFiles] = useState([]);
+  const [blobs, setBolbs] = useState([]);
   const [product, setProduct] = useState({
     images: [],
     condition: "",
@@ -68,12 +71,13 @@ const ListingForm = (props) => {
     category: "",
     brand: "",
     stockCapacity: 0,
-    sizes: [{ size: 0, quantity: 0, color: "" }],
+    sizes: [{ size: "Small", quantity: 0, color: "" }],
     availableColors: [],
     description: "",
     sellingNow: false,
     price: 0,
     saleprice:0,
+    minpurchase: 1,
     listing: "",
     auctions: false,
     bids: 0,
@@ -82,6 +86,7 @@ const ListingForm = (props) => {
     deliverddomestic: false,
     deliverdinternational: false,
     deliverycompany: "",
+    tags: [],
     country: "",
     state:"",
     city:"",
@@ -203,6 +208,15 @@ const ListingForm = (props) => {
       console.log('product.sizes', product.sizes)
     })
   }
+  const removeTags =(e, tags) =>{
+    e.preventDefault();
+    product.tags?.map((tag, index) => {
+        product.tags.splice(index, 1);
+        const updatedSizes = [...product.tags];
+        setProduct({ ...product, tags: updatedSizes });
+    })
+  }
+  
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     if (name === "size" || name === "quantity" || name === "color") {
@@ -219,6 +233,10 @@ const ListingForm = (props) => {
       const updatedColors = [value];
       setProduct({ ...product, availableColors: updatedColors });
     }
+    if (name === "tags") {
+        const updatedTags = [value];
+        setProduct({ ...product, tags: updatedTags });
+    }
   };
 
   const handleColorChange = (e) => {
@@ -232,20 +250,67 @@ const ListingForm = (props) => {
     setCondition(e.target.value);
   }
   const handleImageUpload = (e) => {
-    // setFiles({ ...files, ...e.target.files })
-    const files = Array.from(e.target.files).slice(0, 5);
-    const imageUrls = files.map((file) => URL.createObjectURL(file));
-    setProduct({ ...product, images: imageUrls });
-    // console.log('files', files)
-  };
+    
+    if(blobs.length > 4){
+      const newErrors = {};
+      newErrors.images = "You can not upload more then 5 images";
+      setErrors(newErrors);
+    }else{
+      setBolbs([...blobs, URL.createObjectURL(e.target.files[0])])
+    }
+    if(files.length > 4){
+      //
+    }else{
+      setFiles([...files, e.target.files[0]]);   
+    }
+    
+    /**
+     * Old Logic Start
+     */
+    // const files = Array.from(e.target.files).slice(0, 5);
+    // imgArray.push(files);
+    // console.log('files', imgArray)
+    // const imageUrls = files.map((file) => URL.createObjectURL(file));
+    // setProduct({ ...product, images: files });
+    /**
+     * Old Logic Ends
+     */
+
+    // { files: [...this.state.files, ...e.target.files] }
+    // const formData = new FormData();
+    // formData.append('images', e.target.files[0]);
+    // const config = {     
+    //     headers: { 
+    //       'content-type': 'multipart/form-data',
+    //       'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+    //      }
+    // }
+    // axios.post('http://localhost:8000/api/products/upload', formData, config)
+    //   .then(response => {
+    //     localStorage.setItem('product_guid',response.data.product)
+    //   })
+    //   .catch(error => {
+    //       console.log(error);
+    //   });
+
+};
 
   const handleAddSize = () => {
     setProduct({
       ...product,
-      sizes: [...product.sizes, { size: 0, quantity: 0}],
+      sizes: [...product.sizes, { size: '', quantity: 0}],
     });
     return
   };
+  
+  const handleAddTags = (e) => {
+    setProduct({
+      ...product,
+      tags: [...product.tags, ''],
+    });
+    return
+  };
+
   const handleCountryChange = (e) => {
     product.country = e.target.value;
     State.get(e.target.value)
@@ -356,17 +421,30 @@ const ListingForm = (props) => {
           setEnabled(false);
         });
       }else{
-        product.condition = localStorage.getItem("product_condition");
+        // const formData = new FormData();
+        // product.condition = localStorage.getItem("product_condition");
+        // console.log('product', product)
+        // return;
+        // if (product.images) {
+        //     for (const file of product.images) {
+        //       formData.append("image", file);
+        //     }
+        //   }
+        // const config = {     
+        //       headers: { 
+        //         'content-type': 'multipart/form-data',
+        //         'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+        //       }
+        //   }
+        //   axios.post('http://localhost:8000/api/products/add', formData, config)
+        //     .then(response => {
+        //       localStorage.setItem('product_guid',response.data.product)
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     });
 
-        let fd = new FormData();
-        let data ={
-          'product' : product,
-          'image' : fd
-        }
-        // data.append('images', JSON.stringify(files))
-        // data.append('images', JSON.stringify(files))
-        
-        ProductServices.save(data)
+        ProductServices.save(product)
         .then((response) => {
           // toast.success(response.message);
           setShowPopup(true);
@@ -391,9 +469,13 @@ const handlePriceChange = (e) => {
     setPrice(e.target.value);
   };
   const handleSalePriceChange = (e) => {
-    setSalesPrice(e.target.value);
     product.saleprice = e.target.value;
+    setSalesPrice(e.target.value);
   };
+  const handleMinPurchaseChange=(e)=>{
+    product.minpurchase = e.target.value;
+    setMiniumPurchase(e.target.value);
+  } 
   const handleStartDate =(date)=>{
     product.listing = moment(date).format("DD-MM-YYYY");
     setStartDate(date);
@@ -629,6 +711,29 @@ const handlePriceChange = (e) => {
           onChange={handleImageUpload}
         />
         <div className="imgegallry">
+          {blobs.length >0 ?(
+            <>
+            {blobs.map((blob, index) => {
+              return(
+                <>
+                <img
+                key={index}
+                src={blob}
+                alt={`Product ${index + 1}`}
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  objectFit: "cover",
+                  margin: "5px",
+                }}
+              />
+                </>
+              )
+            })}
+            </>
+          ):('')}
+          {errors.images && <p className="error">{errors.images}</p>}
+
           {/* {product.media ? (
             <>
             {product.media.map((imageUrl, index) => (
@@ -1020,6 +1125,19 @@ const handlePriceChange = (e) => {
           </div>
         </div>
         {errors.saleprice && <p className="error">{errors.saleprice}</p>}
+        <div className="set-price">
+          <div>Minimum Purchase</div>
+          <div>
+            <input
+              type="text"
+              placeholder="$"
+              name={product.minpurchase}
+              value={product.minpurchase}
+              onChange={handleMinPurchaseChange}
+            />
+          </div>
+        </div>
+        {errors.saleprice && <p className="error">{errors.saleprice}</p>}
         <div className="listschedule">
           <div>Schedule your Listing</div>
           <div>
@@ -1038,6 +1156,48 @@ const handlePriceChange = (e) => {
         {errors.listing && <p className="error">{errors.listing}</p>}
           </>
         ):('')}
+        {product?.tags.length > 0 ?(
+          <>
+            {product?.tags.map((tag, index) => {
+              return(
+                <>
+                <div className="sizequntycolr" key={index}>
+                  <input
+                    type="text"
+                    name="tags"
+                    placeholder="Tags"
+                    onChange={(e) => handleInputChange(e, index)}
+                  />
+                    <>
+                      <a href="#" onClick={(e)=>removeTags(e,tag)}>Delete</a>
+                    </>
+                </div>
+                </>
+              )})}
+          </>
+        ):('')}
+        
+        <div className="sizeaddmre">
+          <button type="button" onClick={handleAddTags}>
+            Add Tags
+          </button>
+        </div>
+        {/* <div className="stockcapa">
+          <label>
+            <input
+              type="text"
+              placeholder="Tags"
+              name={product.tags}
+              value={product.tags}
+              onChange={handleTagChange}
+            />
+          </label>
+          <div className="sizeaddmre">
+              <button type="button" onClick={handleAddSize}>
+                Add tags
+              </button>
+            </div>
+        </div> */}
         {/* {errors.buyitnow && <p className="error">{errors.buyitnow}</p>} */}
         <div className="pricing">
           <h4>SHIPPING</h4>
