@@ -255,7 +255,12 @@ function storeProduct(data) {
     method: 'GET',
   })
 }
-
+function storeCategories(storeId) {
+  return request({
+    url: `${baseUrl}/storecategories/${storeId}`,
+    method: 'GET',
+  })
+}
 function min() {
   return request({
     url: `${baseUrl}/min`,
@@ -297,17 +302,33 @@ function getProductbySize(size){
     method: 'GET',
   })
 }
+function getTrendingProduct(id){
+  return request({
+    url: `${baseUrl}/trendingProduct/${id}`,
+    method: 'GET',
+  })
+}
+function getSavedSellerDetails(id) {
+  return request({
+    url: `${baseUrl}/getsaveseller/${id}`,
+    method: 'GET',
+  })
+}
+
 const ProductServices = {
   all,
   getProductByPrice,
   getProductbySize,
+  getSavedSellerDetails,
   getCategories,
   getbycategory,
   getByPriceRange,
   save,
+  getTrendingProduct,
   min,
   max,
   update,
+  storeCategories,
   get,
   state,
   destroy,

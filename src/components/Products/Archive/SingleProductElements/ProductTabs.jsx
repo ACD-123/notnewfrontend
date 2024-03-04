@@ -51,17 +51,21 @@ const ProductTabs = () => {
                         <th>Brand</th>
                         <td>{productData.brand}</td>
                     </tr>
-                    <tr>
-                        <th>Model</th>
-                        <td>{productData.model}</td>
-                    </tr>
+                    {productData.model ? (
+                      <>
+                        <tr>
+                            <th>Model</th>
+                            <td>{productData.model}</td>
+                        </tr>
+                      </>
+                    ):('')}
                     <tr>
                         <th>Condition</th>
                         <td>{productData.condition}</td>
                     </tr>
                     <tr>
                         <th>Deliver Company</th>
-                        <td>{productData.company}</td>
+                        <td>{productData.delivery_company}</td>
                     </tr>
                     <tr>
                         <th>Shipping Price</th>
