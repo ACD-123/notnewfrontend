@@ -25,14 +25,6 @@ const AllProducts = () => {
         setProductData(response)
       }) 
   }
-  const getCategories= () =>{
-    ProductServices.getCategories()
-      .then((response) => {
-        if(response.status){
-          setCategoryData(response.data)
-        }
-      }) 
-  }
   const renderProductCards = () => {
     return currentCards.map((product) => {
       return(
@@ -106,7 +98,6 @@ const AllProducts = () => {
   const totalPages = Math.ceil(products.length / cardsPerPage);
   useEffect(() => {
     getProduct();
-    getCategories();
   }, []);
   return (
     <>
@@ -127,9 +118,9 @@ const AllProducts = () => {
                     <Search parentCallback={handleSearchCallback} />
                     <br />
                     <h3 style={{color: "#000"}}>Filters</h3>
-                    <SubcategoriesList categories={categories} parentCallback={handleCetegoryCallback} />
-                    <PriceRange parentCallback={handlePriceCallback} />
+                    <SubcategoriesList parentCallback={handleCetegoryCallback} />
                     <SizeToggle parentCallback={handleSizeCallback} />
+                    <PriceRange parentCallback={handlePriceCallback} />
                 </div>
             </div>
             <div className='col-lg-9'>

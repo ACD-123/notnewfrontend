@@ -61,7 +61,7 @@ const ProductTabs = () => {
                     </tr>
                     <tr>
                         <th>Deliver Company</th>
-                        <td>{productData.company}</td>
+                        <td>{productData.delivery_company}</td>
                     </tr>
                     <tr>
                         <th>Shipping Price</th>

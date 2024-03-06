@@ -13,15 +13,23 @@ import { toast } from "react-toastify";
 const SingleProductSidebar = () => {
     const [productData, setProductData] = useState([]);
     const [shopData, setShopData] = useState([]);
+    const [trendingProduct, setTrendingProduct] = useState(0);
+    const [savedseller, setSavedSeller] = useState("");
 
     const { pathname } = window.location;
     const id = pathname.split("/").pop();
     const getProduct = () => {
         ProductServices.get(id).then((response) => {
-          setProductData(response);
+            setShopData(response.shop)
+            setProductData(response);
+            getSellerSavedData(response?.shop.id);
         });
-      };
-
+    };
+    const getTrending = () => {
+        ProductServices.getTrendingProduct(id).then((response) => {
+            setTrendingProduct(response)
+        });
+    };
       
      const handleDropdownItemClick = (componentName) => {
         // Here, you can navigate to the 'Activity' component and pass the selected component name as a query parameter or state
@@ -33,28 +41,25 @@ const SingleProductSidebar = () => {
         let data ={
             shop_id: productData.shop_id
         }
-        SellerServices.saveSeller(id).then((data)
+        SellerServices.saveSeller(data)
         .then((response) => {
-            toast.sucess(response);
+            toast.success(response);
+            getSellerSavedData(productData.shop.id);
         }).catch((e) => {
             toast.error(e.message);
-        })); 
+        }); 
+      }
+      const getSellerSavedData = (shop_id) =>{
+        ProductServices.getSavedSellerDetails(shop_id)
+        .then((response) => {
+            setSavedSeller(response.shop_id)
+        }).catch((e) => {
+            console.log(e)
+        }); 
       }
       useEffect(() => {
         getProduct();
-        let loggedInUser = localStorage.getItem("user_details");
-        if (loggedInUser) {
-            const loggedInUsers = JSON.parse(loggedInUser);
-            if (loggedInUsers.isTrustedSeller === 1) {
-                SellerServices.getShopDetails(productData?.shop_id)
-                .then((response) => {
-                    setShopData(response);
-                })
-                .catch((e) => {
-                    toast.error(e.message);
-                });
-            }
-        }
+        getTrending();
       }, []);
   return (
    <>
@@ -64,10 +69,14 @@ const SingleProductSidebar = () => {
         <div className='image'>
             <img src={Secureimage1} />
         </div>
-        <div className='text-secure'>
-            <h4>Trending Product</h4>
-            <p>591 Products has been Sold.</p>
-        </div>
+        {trendingProduct ? (
+            <>
+                <div className='text-secure'>
+                    <h4>Trending Product</h4>
+                    <p>{trendingProduct} Products has been Sold.</p>
+                </div>
+            </>
+        ):('')}
     </div>
 
     <div className='secure'>
@@ -107,7 +116,14 @@ const SingleProductSidebar = () => {
     <div className='storecontactdetails'>
         <ul>
             {/* <li onClick={() => handleDropdownItemClick('componentH')}><Link><img src={Heart} /> Save this Seller</Link></li> */}
-            <li onClick={(e) => handleSellerServices(e)}><Link><img src={Heart} /> Save this Seller</Link></li>
+            {savedseller ? (
+                <>
+                <li ><Link><img src={Heart} /> Seller has been Saved!</Link></li>
+                </>
+            ) :(<>
+                <li onClick={(e) => handleSellerServices(e)}><Link><img src={Heart} /> Save this Seller</Link></li>
+            </>)}
+            
             <li><a href={`tel:${shopData.phone}`} >{shopData.phone}</a></li>
             <li><Link to={`/sellershop/${shopData.guid}`}>Visit Seller Shop</Link></li>
             <li><Link to="#">View Other Products</Link></li>

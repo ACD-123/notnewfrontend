@@ -43,20 +43,20 @@ const SetupSellerAccount = () => {
     const loggedInUsers = JSON.parse(loggedInUser);
     SellerServices.getShopDetails(loggedInUsers?.id)
     .then((response) => {
-      if(response){
-        setFormData(response);
-        State.get(response.country_id)
+      if(response.status){
+        setFormData(response.data);
+        State.get(response.data.country_id)
         .then((states) => {
           setState(states);
         })
-        City.get(response.state_id)
+        City.get(response.data.state_id)
         .then((cities) => {
           setCity(cities);
         })
       }
     })
     .catch((e) => {
-      toast.error(e.message);
+      console.log(e.message);
     });
     }
   }

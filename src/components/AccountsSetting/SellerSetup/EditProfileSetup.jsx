@@ -147,7 +147,7 @@ const EditProfileSetup = () => {
             })
           })
           .catch((e) => {
-            toast.error(e.message);
+            console.log(e.message);
           });
       }
     }

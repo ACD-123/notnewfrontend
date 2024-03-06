@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 const SellerDetails = () => {
     const [shopData, setShopData] = useState([]);
     const [productData, setProductData] = useState([]);
+    const [trendingProduct, setTrendingProduct] = useState(0);
     const { pathname } = window.location;
     const id = pathname.split("/").pop();
     const handleDropdownItemClick = (componentName) => {
@@ -22,23 +23,17 @@ const SellerDetails = () => {
       const getProduct = () => {
         ProductServices.get(id).then((response) => {
           setProductData(response);
+          setShopData(response.shop);
         });
       };
+    const getItemSold = () => {
+        ProductServices.getTrendingProduct(id).then((response) => {
+            setTrendingProduct(response)
+        });
+    };
 useEffect(() => {
     getProduct();
-    let loggedInUser = localStorage.getItem("user_details");
-    if (loggedInUser) {
-        const loggedInUsers = JSON.parse(loggedInUser);
-        if (loggedInUsers.isTrustedSeller === 1) {
-            SellerServices.getShopDetails(productData.shop_id)
-            .then((response) => {
-                setShopData(response);
-            })
-            .catch((e) => {
-                toast.error(e.message);
-            });
-        }
-    }
+    getItemSold();
 }, []);
   return (
     <div className='sellerdetails' style={{padding: "50px 0px"}}>
@@ -54,7 +49,7 @@ useEffect(() => {
                                         <ul>
                                             <li>90% Positive feedbackss</li>
                                             <li>125k Followers</li>
-                                            <li>6.7M Items Sold</li>
+                                            <li>{trendingProduct} Items Sold</li>
                                         </ul>
                                     </div>
                                 </div>
