@@ -63,6 +63,7 @@ const ListingForm = (props) => {
   const [blobURL, setBlobURL] = useState(null);
   const [files, setFiles] = useState([]);
   const [blobs, setBolbs] = useState([]);
+  const [editBlobs, setEditBolbs] = useState([]);
   const [product, setProduct] = useState({
     images: [],
     condition: "",
@@ -132,7 +133,7 @@ const ListingForm = (props) => {
   };
   const handleShippingStartChange = (e) => {
     product.shippingstart = e.target.value;
-    // product.shippingend 
+    // product.shippingend
     setShippingStart(e.target.value);
   };
   const handleShippingEndChange = (e) => {
@@ -709,6 +710,7 @@ const ListingForm = (props) => {
     }
     setEditProduct(true);
     ProductServices.get(props.guid).then((response) => {
+      console.log('response', response)
       setCategory(response.category_id);
       let productData = {
         store: response.shop_id,
@@ -835,13 +837,102 @@ const ListingForm = (props) => {
             <h3 style={{ color: "#000" }}>Describe Your Product</h3>
           </>
         )}
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleImageUpload}
-        />
-        <div className="imgegallry">
+        {props.edit ? (
+          <>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleEditImageUpload}
+            />
+             <div className="imgegallry">
+          {blobs.length > 0 ? (
+            <>
+              {blobs.map((blob, index) => {
+                return (
+                  <>
+                    <img
+                      key={index}
+                      src={`http://localhost:8000/image/product/${blob.name}`}
+                      alt={`Product ${index + 1}`}
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "cover",
+                        margin: "5px",
+                      }}
+                    />
+                    <a href="#" 
+                      onClick={(e) =>
+                        removeThumbnail(e,blob)
+                      }>X</a>
+                    </>
+                );
+              })}
+            </>
+          ) : (
+            ""
+          )}
+          {editBlobs.length > 0 ?(
+            <>
+            {editBlobs.map((blob, index) => {
+              return (
+                <>
+                  <img
+                    key={index}
+                    src={blob}
+                    alt={`Product ${index + 1}`}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      objectFit: "cover",
+                      margin: "5px",
+                    }}
+                  />
+                  <a href="#" 
+                    onClick={(e) =>
+                      removeThumbnail(e,blob)
+                    }>X</a>
+                  </>
+              );
+            })}
+          </>
+          ):('')}
+          {errors.editimages && <p className="error">{errors.editimages}</p>}
+          {product.images.length > 0 ? (
+            <>
+              {product.images.map((imageUrl, index) => {
+                return (
+                  <>
+                    <img
+                      key={index}
+                      src={imageUrl}
+                      alt={`Product ${index + 1}`}
+                      style={{
+                        width: "100px",
+                        height: "100px",
+                        objectFit: "cover",
+                        margin: "5px",
+                      }}
+                    />
+                  </>
+                );
+              })}
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
+          </>
+        ):(
+          <>
+                      <input
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageUpload}
+            />
+             <div className="imgegallry">
           {blobs.length > 0 ? (
             <>
               {blobs.map((blob, index) => {
@@ -873,23 +964,6 @@ const ListingForm = (props) => {
           )}
           {errors.images && <p className="error">{errors.images}</p>}
 
-          {/* {product.media ? (
-            <>
-            {product.media.map((imageUrl, index) => (
-            <img
-              key={index}
-              src={imageUrl}
-              alt={`Product ${index + 1}`}
-              style={{
-                width: "100px",
-                height: "100px",
-                objectFit: "cover",
-                margin: "5px",
-              }}
-            />
-          ))}
-            </>
-          ):(<></>)} */}
           {product.images.length > 0 ? (
             <>
               {product.images.map((imageUrl, index) => {
@@ -914,6 +988,10 @@ const ListingForm = (props) => {
             <></>
           )}
         </div>
+          </>
+        )}
+        
+       
         <p className="notify-images">
           <img src={Objection} /> Add a minimum of 5 images covering all angles
           of the item that describe it well.

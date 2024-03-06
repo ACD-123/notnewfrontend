@@ -9,10 +9,11 @@ const PopularProductSearch = (props) => {
   let categoryLists = [];
   const getPopular =()=>{
     try {
-      ProductServices.storeProduct(props.shopId)
+      console.log('props.shopId', props.shopId)
+      ProductServices.storeCategories(props.shopId)
           .then((response) => {
             for (let i = 0; i < response.length; i++) {
-              categoryLists.push({ val: i, text: response[i].category }); 
+              categoryLists.push({ val: i, text: response[i].category.name }); 
             }
             setCategoryList(categoryLists);
           }) 

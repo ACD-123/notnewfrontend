@@ -96,7 +96,7 @@ function setBank(data) {
     return request({
       url: `${baseUrl}saveSeller`,
       data,
-      method: 'GET',
+      method: 'POST',
     })
   }
   function updateBank(data) {
@@ -112,6 +112,7 @@ function setBank(data) {
       params
     })
   }
+
 const SellerServices = {
   all,
   detail,

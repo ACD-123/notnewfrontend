@@ -80,6 +80,10 @@ const ProductCard = (props) => {
         });
       } else if (status == "inactive") {
         ProductServices.selfValue(status).then((response) => {
+<<<<<<< HEAD
+=======
+          console.log("inactive", response);
+>>>>>>> 4e7a539b817195792e3ffe1ce186e967219f900e
           if (response.data.length > 0) {
             setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
           }
@@ -226,23 +230,39 @@ const ProductCard = (props) => {
                           <div className="px-2">
                             {product.auctioned ? (
                               <Link to={`/auctionproduct/${product.guid}`}>
+<<<<<<< HEAD
                                 <h3>{product.name.substring(0, 6)}...</h3>
                                 <h4>
                                   {product.description.substring(0, 8)}...
+=======
+                                <h3>{product.name.substring(0, 20)}...</h3>
+                                <h4>
+                                  {product.description.substring(0, 30)}...
+>>>>>>> 4e7a539b817195792e3ffe1ce186e967219f900e
                                 </h4>
                               </Link>
                             ) : (
                               <Link to={`/singleproduct/${product.guid}`}>
+<<<<<<< HEAD
                                 <h3>{product.name.substring(0, 6)}...</h3>
                                 <h4>
                                   {product.description.substring(0, 8)}...
+=======
+                                <h3>{product.name.substring(0, 20)}...</h3>
+                                <h4>
+                                  {product.description.substring(0, 30)}...
+>>>>>>> 4e7a539b817195792e3ffe1ce186e967219f900e
                                 </h4>
                               </Link>
                             )}
                             <p>
+<<<<<<< HEAD
                               <b>Condition:</b> 
                               <br />
                               {product.condition}
+=======
+                              <b>Condition:</b> {product.condition}
+>>>>>>> 4e7a539b817195792e3ffe1ce186e967219f900e
                             </p>
                             <p>
                               {product.auctioned ? (

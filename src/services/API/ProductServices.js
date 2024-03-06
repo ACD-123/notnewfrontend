@@ -256,7 +256,12 @@ function storeProduct(data) {
     method: 'GET',
   })
 }
-
+function storeCategories(storeId) {
+  return request({
+    url: `${baseUrl}/storecategories/${storeId}`,
+    method: 'GET',
+  })
+}
 function min() {
   return request({
     url: `${baseUrl}/min`,
@@ -316,13 +321,16 @@ const ProductServices = {
   getSavedSellerDetails,
   getTrendingProduct,
   getProductbySize,
+  getSavedSellerDetails,
   getCategories,
   getbycategory,
   getByPriceRange,
   save,
+  getTrendingProduct,
   min,
   max,
   update,
+  storeCategories,
   get,
   state,
   destroy,

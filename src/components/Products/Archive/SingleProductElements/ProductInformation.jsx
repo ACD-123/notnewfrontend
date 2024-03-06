@@ -133,13 +133,15 @@ const ProductInformation = () => {
         <> */}
           <h3>{productData.name}</h3>
           {(() => {
-            if (productData.shipping_price !== 0) {
+            if (productData.shipping_price === 0) {
               return (
                 <p>Free Shipping and Returns</p>
               )
             } else {
               return (
-                <div>&nbsp;</div>
+                <div>
+                  <p>Shipment Cost : $ {productData.shipping_price}</p>
+                </div>
               )
             }
           })()}
