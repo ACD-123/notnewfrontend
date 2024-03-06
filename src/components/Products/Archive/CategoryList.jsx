@@ -44,37 +44,41 @@ const CategoryList = () => {
         </div>
         <section id='productcard' style={{ padding: "30px 0px" }}>
           <div className='container'>
+          <div className='row'>
             {loading ? (
               <p>Loading...</p>
             ) : error ? (
               <p>{error}</p>
             ) : (
-              <div className='row'>
-                {categoryData.map((product) => (
-                  <div className='col col-lg-2' key={product.id}>
-                    <div className='productlist ctrrr'>
-                      <div style={{height: '140px',width: '100%'}}>
-                        {product.media.length > 0 ?(
-                          <>
-                          {product.media?.map((media) => {
-                            return(
-                              <>
-                                <img src={`${BASE_URL}/image/category/${media.name}`} alt={media.name} />
-                              </>
-                            )
-                          })}
-                          </>
-                        ):(
-                          <img src={Categoryimage1} alt={Categoryimage1} />
-                        )
-                        }
+              <>
+                {categoryData.map((product) => {
+                  return (
+                    <div className='col col-lg-2' key={product.id}>
+                      <div className='productlist ctrrr'>
+                        <div style={{height: '140px',width: '100%'}}>
+                          {product.media.length > 0 ?(
+                            <>
+                            {product.media?.map((media) => {
+                              return(
+                                <>
+                                  <img src={`${BASE_URL}/image/category/${media.name}`} alt={media.name} />
+                                </>
+                              )
+                            })}
+                            </>
+                          ):(
+                            <img src={Categoryimage1} alt={Categoryimage1} />
+                          )
+                          }
+                        </div>
+                        <Link to="/singlecategory"><h5 style={{ textAlign: "center", padding: "20px 0px" }}>{product.name}</h5></Link>
                       </div>
-                      <Link to="/singlecategory"><h5 style={{ textAlign: "center", padding: "20px 0px" }}>{product.name}</h5></Link>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  )
+                })}
+             </>
             )}
+            </div>
           </div>
         </section>
       </>

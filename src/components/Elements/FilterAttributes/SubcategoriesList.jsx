@@ -8,19 +8,27 @@ const SubcategoriesList = (props) => {
     e.preventDefault();
     props.parentCallback('all');
   }
+  const getCategories= () =>{
+    ProductServices.getCategories()
+      .then((response) => {
+        if(response.status){
+          setCategoryData(response.data);
+        }
+      }) 
+  }
   const handleCategory  = (e, catId) =>{
     e.preventDefault();
     props.parentCallback(catId);
   }
   useEffect(() => {
-    setCategoryData(props.categories)
+    getCategories();
   }, []);
   return (
     <>
       <div className='subcategory-list'>
         {/* <h4>Antiques</h4> */}
 
-        {categories > 0 ? (<>
+        {categories.length > 0 ? (<>
           <ul>
           {categories.map((category, index) => {
             return(

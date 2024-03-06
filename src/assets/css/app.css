@@ -2345,7 +2345,7 @@ section#placeyourbid h5 {
   font-size: 18px;
   line-height: 28px;
 }
-.yourmax-bid input[type="text"], .innreditpopup input[type="text"] {
+.yourmax-bid input[type="number"], .yourmax-bid input[type="text"], .innreditpopup input[type="text"] {
   width: 100%;
   color: #000 !important;
   font-size: 26px;

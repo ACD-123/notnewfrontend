@@ -27,7 +27,7 @@ const PopularProductSearch = (props) => {
   return (
     <>
     <div className='popular-search'>
-        <h4>Popular Products on this Shop</h4>
+        <h4>Popular Categories on this Shop</h4>
         <ul>
           {categoryList.length > 0 ?(
             <>

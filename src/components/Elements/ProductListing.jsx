@@ -7,6 +7,7 @@ import ProductImage5 from "../../assets/Images/Categorylisting/5.png";
 import {Link} from 'react-router-dom'
 import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../services/Constant";
 
 const ProductListing = (props) => {
   const [loading, setLoading] = useState(true);
@@ -50,27 +51,35 @@ const ProductListing = (props) => {
               <div className='col col-lg-3' key={products.id}>
                 <div className='productlist'>
                 {products.auction ? (
-                      <Link to={`/auctionproduct`}>
-                        <img src={ProductImage1} alt={ProductImage1} />
-                      </Link>
+                    <Link to={`/auctionproduct/${products?.guid}`}>
+                      {product.media.length > 0 ? (
+                        <>
+                          <img src={`${BASE_URL}/image/product/${product.media[0].name}`} alt={ProductImage1} />
+                        </>
+                      ):("")}
+                    </Link>
                   ) : (
                     <Link to={`/singleproduct/${products.guid}`}>
-                      <img src={ProductImage1} alt={ProductImage1} />
+                    {product.media.length > 0 ? (
+                        <>
+                          <img src={`${BASE_URL}/image/product/${product.media[0].name}`} alt={ProductImage1} />
+                        </>
+                      ):("")}
                     </Link>
                 )}
                 {products.auction && <span className='auction-badge'>Auction</span>}
                 <div className='px-2'>
                       {products.auction ? (
                           <Link to={`/auctionproduct`}>
-                            <h3>{products.name}</h3>
-                            <h4>{products.description}</h4>
-                            <h4>{products.condition}</h4>
+                            <h3>{product.name.substring(0, 10)}...</h3>
+                            <h4>{products.description.substring(0, 30)}...</h4>
+                            <h4>Condition: {products.condition}</h4>
                           </Link>
                         ) : (
                           <Link to={`/singleproduct/${products.guid}`}>
-                            <h3>{products.name}</h3>
-                            <h4>{products.description}</h4>
-                            <h4>{products.condition}</h4>
+                            <h3>{product.name.substring(0, 10)}...</h3>
+                            <h4>{products.description.substring(0, 30)}...</h4>
+                            <h4>Condition: {products.condition}</h4>
                           </Link>
                         )}
                         <p> 

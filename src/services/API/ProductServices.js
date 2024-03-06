@@ -21,7 +21,7 @@ function update(id, data) {
   return request({
     url: `${baseUrl}/${id}`,
     data,
-    method: 'PATCH',
+    method: 'POST',
   })
 }
 
@@ -34,7 +34,7 @@ function get(id, params = {}) {
 
 function destroy(id) {
   return request({
-    url: `${baseUrl}/destory/${id}`,
+    url: `${baseUrl}/${id}`,
     method: 'DELETE',
   })
 }
@@ -109,6 +109,7 @@ function selfValue(value) {
 
 // function search(params = {}) {
   function search(data) {
+    console.log('data', data)
   return request({
     url: `${baseUrl}/search`,
     data, //this.$route.query,
@@ -237,7 +238,7 @@ function recent(params = {}) {
 }
 function createRecent(data) {
   return request({
-    url: `${baseUrl}/createRecent`,
+    url: `${baseUrl}/createRecents`,
     data,
     method: 'POST',
   })
@@ -314,10 +315,11 @@ function getSavedSellerDetails(id) {
     method: 'GET',
   })
 }
-
 const ProductServices = {
   all,
   getProductByPrice,
+  getSavedSellerDetails,
+  getTrendingProduct,
   getProductbySize,
   getSavedSellerDetails,
   getCategories,

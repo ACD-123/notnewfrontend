@@ -123,7 +123,7 @@ const ProductInformation = () => {
     });
   }
   useEffect(() => {
-    saveRecentView();
+    // saveRecentView();
     getProduct();
   }, []);
   return (

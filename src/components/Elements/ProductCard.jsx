@@ -4,6 +4,7 @@ import ProductImage2 from "../../assets/Images/Productcard/2.png";
 import ProductImage3 from "../../assets/Images/Productcard/3.png";
 import ProductImage4 from "../../assets/Images/Productcard/4.png";
 import ProductImage5 from "../../assets/Images/Productcard/5.png";
+import blank from "../../assets/Images/Productcard/blank.jpg";
 import closeImg from "../../assets/Images/close.png";
 import ListingForm from "../AccountsSetting/SellerSetup/ListingForm";
 import { Link } from "react-router-dom";
@@ -79,7 +80,10 @@ const ProductCard = (props) => {
         });
       } else if (status == "inactive") {
         ProductServices.selfValue(status).then((response) => {
+<<<<<<< HEAD
+=======
           console.log("inactive", response);
+>>>>>>> 4e7a539b817195792e3ffe1ce186e967219f900e
           if (response.data.length > 0) {
             setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
           }
@@ -153,8 +157,17 @@ const ProductCard = (props) => {
                             <>
                               {/* <Link to={`/auctionproduct/${product.id}`}> */}
                               <Link to={`/auctionproduct/${product.guid}`}>
+                              {product.media.length == 0? (
+                                <>
+                                  <img
+                                    src={blank}
+                                    alt="blank"
+                                  />
+                                </>
+                              ):(
+                                <>
                                 {product.media?.map((media, index) => {
-                                  if (index == 1) {
+                                  // if (index == 1) {
                                     return (
                                       <>
                                         <Link
@@ -168,30 +181,44 @@ const ProductCard = (props) => {
                                         </Link>
                                       </>
                                     );
-                                  }
+                                  // }
                                 })}
+                                </>
+                              )}
+                                
                                 {/* <img src={product.cover_image} alt={product.name} /> */}
                               </Link>
                             </>
                           ) : (
                             <>
-                              {product.media?.map((media, index) => {
-                                if (index == 1) {
-                                  return (
-                                    <>
-                                      <Link
-                                        to={`/singleproduct/${product.guid}`}
-                                      >
-                                        <img
-                                          src={`${BASE_URL}/image/product/${media.name}`}
-                                          alt={product.name}
-                                        />
-                                        {/* <img src={product.cover_image} alt={product.name} /> */}
-                                      </Link>
-                                    </>
-                                  );
-                                }
-                              })}
+                            {product.media.length == 0? (
+                                <>
+                                  <img
+                                    src={blank}
+                                    alt="blank"
+                                  />
+                                </>):(
+                                  <>
+                                  {product.media?.map((media, index) => {
+                                      // if (index == 1) {
+                                        return (
+                                          <>
+                                            <Link
+                                              to={`/singleproduct/${product.guid}`}
+                                            >
+                                              <img
+                                                src={`${BASE_URL}/image/product/${media.name}`}
+                                                alt={product.name}
+                                              />
+                                              {/* <img src={product.cover_image} alt={product.name} /> */}
+                                            </Link>
+                                          </>
+                                        );
+                                      // }
+                                    })}
+                                  </>
+                                )}
+                              
                               {/* <Link to={`/singleproduct/${product.id}`}> */}
                             </>
                           )}
@@ -203,21 +230,39 @@ const ProductCard = (props) => {
                           <div className="px-2">
                             {product.auctioned ? (
                               <Link to={`/auctionproduct/${product.guid}`}>
+<<<<<<< HEAD
+                                <h3>{product.name.substring(0, 6)}...</h3>
+                                <h4>
+                                  {product.description.substring(0, 8)}...
+=======
                                 <h3>{product.name.substring(0, 20)}...</h3>
                                 <h4>
                                   {product.description.substring(0, 30)}...
+>>>>>>> 4e7a539b817195792e3ffe1ce186e967219f900e
                                 </h4>
                               </Link>
                             ) : (
                               <Link to={`/singleproduct/${product.guid}`}>
+<<<<<<< HEAD
+                                <h3>{product.name.substring(0, 6)}...</h3>
+                                <h4>
+                                  {product.description.substring(0, 8)}...
+=======
                                 <h3>{product.name.substring(0, 20)}...</h3>
                                 <h4>
                                   {product.description.substring(0, 30)}...
+>>>>>>> 4e7a539b817195792e3ffe1ce186e967219f900e
                                 </h4>
                               </Link>
                             )}
                             <p>
+<<<<<<< HEAD
+                              <b>Condition:</b> 
+                              <br />
+                              {product.condition}
+=======
                               <b>Condition:</b> {product.condition}
+>>>>>>> 4e7a539b817195792e3ffe1ce186e967219f900e
                             </p>
                             <p>
                               {product.auctioned ? (

@@ -1,16 +1,102 @@
-import React, { useState } from "react";
-import { Link } from 'react-router-dom';
-import ShippingPolicyData from '../Products/Archive/SingleProductElements/ShippingPolicyData';
-import ReviewBid from '../Elements/ReviewBid';
-import PlaceYourBid from '../Elements/PlaceYourBid';
-import BidPlacement from '../Elements/BidPlacement';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import ReviewBid from "../Elements/ReviewBid";
+import PlaceYourBid from "../Elements/PlaceYourBid";
+import BidPlacement from "../Elements/BidPlacement";
+import ShippingPolicyData from "../Products/Archive/SingleProductElements/ShippingPolicyData"; //'./components/Products/Archive/SingleProductElements/ShippingPolicyData'
 import Confirmation from "./Confirmation";
+import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
+import BidsServices from "../../services/API/BidsServices"; //~/services/API/BidsServices
+import WatchListServices from "../../services/API/WatchListServices"; //~/services/API/WatchListServices
+import { toast } from "react-toastify";
+import moment from "moment";
+
 const AuctionProductInformation = () => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
   const [requestSentVisible, setRequestSentVisible] = useState({});
   const [editBidVisible, setEditBidVisible] = useState({});
   const [confirmBidVisible, setConfirmBidVisible] = useState(false);
   const [additionalPopupVisible, setAdditionalPopupVisible] = useState(false);
+  const [productData, setProductData] = useState([]);
+  const [totalbids, setTotalBids] = useState(0);
+  const [productbids, setProductBids] = useState(0);
+  const [placedbids, setPlacedBids] = useState(false);
+  const [hour, setHour] = useState("");
+  const [minutes, setMinutes] = useState("");
+  const [bestoffer, setBestOffer] = useState(0);
+  const [currenttime, setCurrentTime] = useState("");
+  const [shippingprice, setShippingPrice] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+  const [totalBid, setTotalBid] = useState(0); // State to hold the total bid value
+  const [errors, setErrors] = useState({});
+  const [bid, setBids] = useState({});
+
+  const { pathname } = window.location;
+  const id = pathname.split("/").pop();
+  var diff;
+  const saveRecentView = () => {
+    let data = {
+      id: id,
+    };
+    ProductServices.createRecent(data).then((response) => {
+      console.log("response", response);
+    });
+  };
+  const getBestOffer = () =>{
+    BidsServices.getMaxBids(id).then((response) => {
+      setBestOffer(response);
+    });
+  }
+  const getTotalBids = () =>{
+    BidsServices.getProductBids(id).then((response) => {
+      setTotalBids(response)
+    });
+  }
+  const  handleCallback = (childData) => {
+    setTotalBids(childData)
+  }
+  const handleMaxBids = (e) =>{
+    setTotalBids(e.target.value);
+  }
+  const addWatchList = () =>{
+    let token = localStorage.getItem('access_token');
+    if(token == "" || token == null){
+        window.location.href = "/signin";
+    }else{
+      let data={
+        "product_id" : id 
+      }
+      WatchListServices.save(data).then((response) => {
+        toast.success(response);
+        // handleDropdownItemClick("componentC")
+      })
+      .catch((e) => {
+        console.log('error', e)
+      });
+    }
+  }
+  const getProduct = () => {
+    ProductServices.get(id).then((response) => {
+      setProductData(response);
+      setShippingPrice(response.shipping_price);
+      setProductBids(response.bids);
+      // {response.shipping_price}
+      var date = new Date();
+      var date1 = moment(date, 'MM/DD/YYYY');
+      var date2 = moment(moment(response.auction_listing).toDate(), 'MM/DD/YYYY'); 
+      var duration = moment.duration(date2.diff(date1));
+      var hours = duration.asHours(); 
+      // var minutes = duration.asMinutes(); 
+      // console.log('minutes', remianing.toString().split(".")[1]) 
+      var minutes = hours.toFixed(2);
+      setHour(hours.toString().split(".")[0]);
+      setMinutes(minutes.toString().split(".")[1]);
+      const currDate = new Date();//.toLocaleTimeString;
+      setCurrentTime(moment(currDate).format('hh:mm A'))
+    });
+  };
+
   const handleRefundClick = (elementId) => {
     setRefundDetailsVisible({
       ...refundDetailsVisible,
@@ -35,14 +121,43 @@ const AuctionProductInformation = () => {
     });
   };
   const handleSubmitDetails = (elementId) => {
-    setRefundDetailsVisible({
-      ...refundDetailsVisible,
-      [elementId]: false,
-    });
-    setRequestSentVisible({
-      ...requestSentVisible,
-      [elementId]: true,
-    });
+    const newErrors = {};
+    if (!totalbids) {
+      newErrors.bids = "Place a higher bid";
+    }
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length === 0) {
+      if(totalbids < productbids){
+        newErrors.bids = "Max Bids must be Greater the Product Bids!";
+      }else{
+        let data ={
+          'max_bids': totalbids,
+          'shipping_charges': shippingprice,
+          'time_bids': currenttime,
+          'estimated_total': parseFloat(totalbids) + parseFloat(shippingprice),
+          'id':id
+        }
+        BidsServices.save(data).then((response) => {
+          if(response.status){
+            setBids(response.data)
+            setPlacedBids(true)
+            setRequestSentVisible({
+              ...requestSentVisible,
+              [elementId]: true,
+            });
+          }
+          // toast.success(response);
+          // handleDropdownItemClick("componentC")
+        })
+        .catch((e) => {
+          console.log('error', e)
+        });
+        // setRefundDetailsVisible({
+        //   ...refundDetailsVisible,
+        //   [elementId]: false,
+        // });
+      }
+    }
   };
 
   const handleCloseRequestSent = (elementId) => {
@@ -51,11 +166,10 @@ const AuctionProductInformation = () => {
       [elementId]: false,
     });
   };
- 
 
   const handleCloseAdditionalPopup = () => {
     setAdditionalPopupVisible(false); // Close additional popup
-    window.location.href = '/bidView'; // Redirect to '/bidView' when the button is clicked
+    window.location.href = "/bidView"; // Redirect to '/bidView' when the button is clicked
   };
   const handleConfirmBidClick = () => {
     setRequestSentVisible({
@@ -69,50 +183,95 @@ const AuctionProductInformation = () => {
     // For example, using query parameter
     window.location.href = `/customerdashboard?component=${componentName}`;
   };
-
+  useEffect(() => {
+    // saveRecentView();
+    getProduct();
+    getTotalBids();
+    getBestOffer();
+  }, []);
   return (
     <>
-    <div className='product-info'>
-        <h3>adidas Adizero SL Running Shoes Men's</h3>
-        <p>Free Shipping and Returns</p>
-        <hr />
-        <div className='auction-time'>
-          <ul>
-            <li><span>Condition</span> <em>New with box</em></li>
-            <li><span>Auction time left</span> <em style={{color: "red"}}>3h 45m | Today 05:43 AM</em></li>
-          </ul>
-        </div>
-        <hr />
-        <div className='row auction-info align-items-center'>
-          <div className='col-lg-7'>
-            <div className='price-detail'>
-              <h5><span>Starting Bid</span><br />$ 38.99</h5>
-              <hr />
-              <h5><span>Best Offer</span><br />$ 38.99 <em>5 bids</em></h5>
+      {productData ? (
+        <>
+          <div className="product-info">
+            <h3>{productData.name}</h3>
+            {productData.shipping_price > 0 ? (
+              <><b>Shipping Price: $ {productData.shipping_price}</b></>
+            ):(<p>Free Shipping</p>)}
+            <br />
+            {productData.return_shipping_price > 0 ? (<>
+              <b>Shiping Return: $ {productData.return_shipping_price}</b>
+            </>):(
+              <p>Free Shipping Returns</p>
+            )}
+            <hr />
+            <div className="auction-time">
+              <ul>
+                <li>
+                  <span>Condition</span> <em>{productData.condition}</em>
+                </li>
+                <li>
+                  <span>Auction time left</span>{" "}
+                  <em style={{ color: "red" }}>{hour}h {minutes}m | Today {currenttime}</em>
+                  {/* 05:43 AM */}
+                  {/* {moment(productData.auction_listing).format("HH:mm")} */}
+                </li>
+              </ul>
             </div>
+            <hr />
+            <div className="row auction-info align-items-center">
+              <div className="col-lg-7">
+                <div className="price-detail">
+                  <h5>
+                    <span>Starting Bid</span>
+                    <br />$ {productData.bids}
+                  </h5>
+                  {bestoffer > 0 ?(
+                    <>
+                      <hr />
+                      <h5>
+                        <span>Best Offer</span>
+                        <br />$ {bestoffer} 
+                        {totalbids > 0?(
+                          <>
+                            <em>{totalbids} bids</em>
+                          </>
+                        ):('')}
+                        
+                      </h5>
+                    </>
+                  ):('')}
+                  
+                </div>
+              </div>
+              <div className="col-lg-5">
+                <div className="pay-buttons">
+                  <Link>
+                    <button onClick={() => handleRefundClick("element1")}>
+                      Place a Bid
+                    </button>
+                  </Link>
+                  <Link onClick={() => addWatchList()}>
+                    <button>Add to Watchlist</button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <ShippingPolicyData />
           </div>
-          <div className='col-lg-5'>
-          <div className='pay-buttons'>
-            <Link><button onClick={() => handleRefundClick("element1")}>Place a Bid</button></Link>
-            <Link onClick={() => handleDropdownItemClick('componentC')}><button>Add to Watchlist</button></Link>
-        </div>
-          </div>
-        </div>
-        <ShippingPolicyData />
-    </div>
 
-    {/* BIDDING POPUP START */}
-    <div className="row">
+          {/* BIDDING POPUP START */}
+          <div className="row">
             <div>
               {refundDetailsVisible["element1"] && (
                 <div className="bidplace">
                   <div className="inngerbidplace">
-                    <BidPlacement />
+                    <BidPlacement bidsPlaced={placedbids} parentCallback={handleCallback} />
                     <div className="yourmax-bid">
                       <h3>Your max bid</h3>
                       <div className="row">
                         <div className="col-lg-9">
-                          <input type="text" placeholder="$ 08.50" />
+                          <input type="number" onChange={handleMaxBids} placeholder="$ 08.50" />
                         </div>
                         <div className="col-lg-3">
                           <button
@@ -122,59 +281,80 @@ const AuctionProductInformation = () => {
                             Place bid
                           </button>
                         </div>
-                        <p style={{ color: "#DE0023" }}>Place a higher bid</p>
+                        {errors.bids && (
+                          <p className="error">{errors.bids}</p>
+                        )}
+                        {/* <p style={{ color: "#DE0023" }}></p> */}
                       </div>
                     </div>
                   </div>
                 </div>
               )}
               {editBidVisible["element1"] && (
-        <div className="edit-bid-popup">
-          <div className="innreditpopup">
-          <PlaceYourBid />
-          <div className="row">
-          <div className="col-lg-9">
-          <input type="text" placeholder="$"/>
-          </div>
-          <div className="col-lg-3">
-          <button onClick={() => handleCloseEditBid("element1")}>Place bid</button>
-          </div>
-          </div>
-          </div>
-        </div>
-      )}
-      {requestSentVisible["element1"] && !editBidVisible["element1"] && (
-        <div className="review-bids-c">
-          <div className="reviewinner">
-            <ReviewBid />
-            <div className="biddnbtns">
-              <button onClick={() => handleEditBidClick("element1")}>Edit bid</button>
-              <button onClick={handleConfirmBidClick}>Confirm Bid</button>
-            </div>
-            <p style={{ color: "#767676", fontSize: "12px", lineHeight: "22px", margin: "20px 0px" }}>
-            When you place your bid, it means you're committing to buy this item if you're the winning bidder. 
-              It also means you've read and agreed to the Global Shipping Program Buyer Terms & Conditions Opens in 
-              new window or tab.. The import charges shown may change based on your winning bid
-            </p>
-          </div>
-        </div>
-      )}
-      {additionalPopupVisible && (
-        <div className="additional-popup">
-          <div className='confirmmm'
-    style={{textAlign: "center"}}
-    >
-          <Confirmation />
-          <button onClick={handleCloseAdditionalPopup}>Close</button>
-        </div>
-        </div>
-      )}
+                <div className="edit-bid-popup">
+                  <div className="innreditpopup">
+                    <PlaceYourBid />
+                    <div className="row">
+                      <div className="col-lg-9">
+                        <input type="text" placeholder="$" />
+                      </div>
+                      <div className="col-lg-3">
+                        <button onClick={() => handleCloseEditBid("element1")}>
+                          Place bid
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {requestSentVisible["element1"] &&
+                !editBidVisible["element1"] && (
+                  <div className="review-bids-c">
+                    <div className="reviewinner">
+                      <ReviewBid bids={bid} />
+                      <div className="biddnbtns">
+                        <button onClick={() => handleEditBidClick("element1")}>
+                          Edit bid
+                        </button>
+                        <button onClick={handleConfirmBidClick}>
+                          Confirm Bid
+                        </button>
+                      </div>
+                      <p
+                        style={{
+                          color: "#767676",
+                          fontSize: "12px",
+                          lineHeight: "22px",
+                          margin: "20px 0px",
+                        }}
+                      >
+                        When you place your bid, it means you're committing to
+                        buy this item if you're the winning bidder. It also
+                        means you've read and agreed to the Global Shipping
+                        Program Buyer Terms & Conditions Opens in new window or
+                        tab.. The import charges shown may change based on your
+                        winning bid
+                      </p>
+                    </div>
+                  </div>
+                )}
+              {additionalPopupVisible && (
+                <div className="additional-popup">
+                  <div className="confirmmm" style={{ textAlign: "center" }}>
+                    <Confirmation />
+                    <button onClick={handleCloseAdditionalPopup}>Close</button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           {/* BIDDING POPUP END */}
+        </>
+      ) : (
+        ""
+      )}
     </>
-  )
-}
+  );
+};
 
-export default AuctionProductInformation
-
+export default AuctionProductInformation;

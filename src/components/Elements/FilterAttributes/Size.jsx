@@ -32,7 +32,8 @@ const SizeToggle = (props) => {
       </select>
       {sizes && (
         <div className='sizes-list'>
-          {sizes.map((size) => (
+          {sizes.map((size) => ( 
+           
             <label key={size}>
               <input
                 type="radio"
@@ -43,7 +44,8 @@ const SizeToggle = (props) => {
               />
               {size}
             </label>
-          ))}
+          )
+          )}
         </div>
       )}
     </div>
