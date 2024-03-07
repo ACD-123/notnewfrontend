@@ -61,9 +61,11 @@ const BidPlacement = (props) => {
             $ {productData.bids} + $ {productData.shipping_price} shipping
           </p>
           <h4>
-            <b>{totalbids} Bids</b>{" "}
+            <b>{totalbids} Bids</b>{" "}: <b>{props.maxbids} Max Bids</b> 
+            <br />
+            <br />
             <span>
-              Time Left :{" "}
+              <b>Time Left :</b>{" "}
               <em>
                 {hour} hrs :{minutes} Minutes :53 Seconds
               </em>

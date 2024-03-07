@@ -18,7 +18,7 @@ function getMaxBids(id) {
 
 function getProductBids(id) {
     return request({
-      url: `${baseUrl}/getProductBids/${id}`,
+      url: `${baseUrl}/gettotalbidsproduct/${id}`,
       method: 'GET',
     })
 }
@@ -29,11 +29,19 @@ function save(data) {
       method: 'POST',
   })
 }
+function confirmBids(data) {
+  return request({
+      url: `${baseUrl}/confirmedBids`,
+      data,
+      method: 'POST',
+  })
+}
 const BidsServices = {
   all,
   getMaxBids,
   getProductBids,
   save,
+  confirmBids,
 }
 
 export default BidsServices

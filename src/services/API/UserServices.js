@@ -169,6 +169,13 @@ function recentUserView() {
   })
 }
 
+function getBid(id){
+  return request({
+    url: `${baseUrl}getbid/${id}`,
+    method: "GET"
+  })
+}
+
 function deleteRecentUser() {
   return request({
     url: `${baseUrl}deleteRecent`,
@@ -199,7 +206,8 @@ const UserService = {
   thirdParty,
   fbAccount,
   recentUserView,
-  updateAddress
+  updateAddress,
+  getBid
   // depositfund,
 }
 
