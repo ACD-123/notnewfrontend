@@ -11,6 +11,7 @@ import WatchListServices from "../../services/API/WatchListServices"; //~/servic
 import { toast } from "react-toastify";
 import moment from "moment";
 
+
 const AuctionProductInformation = () => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
   const [requestSentVisible, setRequestSentVisible] = useState({});
@@ -34,7 +35,6 @@ const AuctionProductInformation = () => {
 
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
-  var diff;
   const saveRecentView = () => {
     let data = {
       id: id,
@@ -98,10 +98,15 @@ const AuctionProductInformation = () => {
   };
 
   const handleRefundClick = (elementId) => {
-    setRefundDetailsVisible({
-      ...refundDetailsVisible,
-      [elementId]: true,
-    });
+    let token = localStorage.getItem('access_token');
+    if(token == "" || token == null){
+        window.location.href = "/signin";
+    }else{
+      setRefundDetailsVisible({
+        ...refundDetailsVisible,
+        [elementId]: true,
+      });
+    }
   };
   const handleEditBidClick = (elementId) => {
     setEditBidVisible({
@@ -127,8 +132,11 @@ const AuctionProductInformation = () => {
     }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
+      console.log('productbids', totalbids)
       if(totalbids < productbids){
         newErrors.bids = "Max Bids must be Greater the Product Bids!";
+      }else if(bestoffer > totalbids){
+        newErrors.bids = "Your Bid is less then Maximun Bid!";
       }else{
         let data ={
           'max_bids': totalbids,
@@ -139,15 +147,18 @@ const AuctionProductInformation = () => {
         }
         BidsServices.save(data).then((response) => {
           if(response.status){
-            setBids(response.data)
-            setPlacedBids(true)
-            setRequestSentVisible({
-              ...requestSentVisible,
-              [elementId]: true,
-            });
+            // if(response.status === "prohibited"){
+            //   newErrors.bids = response.data;
+            // }else{
+              setBids(response.data)
+              setPlacedBids(true)
+              setRequestSentVisible({
+                ...requestSentVisible,
+                [elementId]: true,
+              });
+              // handleDropdownItemClick("componentC")
+            // }
           }
-          // toast.success(response);
-          // handleDropdownItemClick("componentC")
         })
         .catch((e) => {
           console.log('error', e)
@@ -169,14 +180,28 @@ const AuctionProductInformation = () => {
 
   const handleCloseAdditionalPopup = () => {
     setAdditionalPopupVisible(false); // Close additional popup
-    window.location.href = "/bidView"; // Redirect to '/bidView' when the button is clicked
+    window.location.href = `/bidView/${id}`; // Redirect to '/bidView' when the button is clicked
   };
   const handleConfirmBidClick = () => {
-    setRequestSentVisible({
-      ...requestSentVisible,
-      element1: false, // Close the requestSentVisible popup for element1
-    });
-    setAdditionalPopupVisible(true); // Show the additionalPopupVisible popup
+    let data={
+      'product_id': id
+    }
+    BidsServices.confirmBids(data)
+    .then((response) => {
+      if(response.status){
+        // toast.success(response.data);
+          setRequestSentVisible({
+            ...requestSentVisible,
+            element1: false, // Close the requestSentVisible popup for element1
+          });
+          setAdditionalPopupVisible(true); // Show the additionalPopupVisible popup
+          // setTimeout(() => {
+          //   handleDropdownItemClick
+          // }, 4000);
+      }
+      }).catch((e) => {
+        console.log(e);
+      });
   };
   const handleDropdownItemClick = (componentName) => {
     // Here, you can navigate to the 'Activity' component and pass the selected component name as a query parameter or state
@@ -266,7 +291,7 @@ const AuctionProductInformation = () => {
               {refundDetailsVisible["element1"] && (
                 <div className="bidplace">
                   <div className="inngerbidplace">
-                    <BidPlacement bidsPlaced={placedbids} parentCallback={handleCallback} />
+                    <BidPlacement bidsPlaced={placedbids} maxbids={bestoffer} parentCallback={handleCallback} />
                     <div className="yourmax-bid">
                       <h3>Your max bid</h3>
                       <div className="row">
@@ -311,7 +336,7 @@ const AuctionProductInformation = () => {
                 !editBidVisible["element1"] && (
                   <div className="review-bids-c">
                     <div className="reviewinner">
-                      <ReviewBid bids={bid} />
+                      <ReviewBid bids={bid} maxbids={bestoffer} shippingprice={shippingprice}  />
                       <div className="biddnbtns">
                         <button onClick={() => handleEditBidClick("element1")}>
                           Edit bid

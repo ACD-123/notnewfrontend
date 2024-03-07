@@ -19,6 +19,8 @@ import {
 } from "../../services/Auth"; // ~/services/Auth
 import {useDispatch, useSelector} from 'react-redux'
 import {saveCupon, deleteCupon} from '../../store/slices/cupon'
+import blank from "../../assets/Images/Productcard/blank.jpg";
+import { BASE_URL } from "../../services/Constant";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch()
@@ -35,8 +37,9 @@ const ShoppingCart = () => {
   const [discountPrices, setDiscountPrices] = useState(0);
   const [adminprices, setAdminPrices] = useState(0);
   const [amountaddingprices, setAmountAddingPrices] = useState(0);
+  const [coverpicture, setCoverPicture] = useState("");
   const [cartids, setCartIds] = useState([]);
-  
+
   let cart_ids = [];
   const toggleDiscountField = () => {
     setShowDiscountField(!showDiscountField);
@@ -44,8 +47,10 @@ const ShoppingCart = () => {
 
   const getCart = () => {
     CartServices.self().then((response) => {
-      console.log("response", response);
-      setCart(response);
+      if(response.products){
+        setCoverPicture(response.products?.media[0].name)
+        setCart(response);
+      }
     });
   };
   const handleCheckOut = (e) => {
@@ -187,7 +192,25 @@ const ShoppingCart = () => {
                             <div className="col-lg-9">
                               <div className="product-detail">
                                 <div className="product-image">
-                                  <img src={Productimage} />
+                                  {coverpicture ? (
+                                    <>
+                                                                    <img
+                                  src={`${BASE_URL}/image/product/${coverpicture}`}
+                                  alt={cat.name}
+                                />
+
+                                    </>
+                                  ):(
+                                    <>
+                                      <img
+                                        src={blank}
+                                        alt="blank"
+                                        width="150"
+                                        height="170"
+                                      />
+                                    </>
+                                  )}
+                                  {/* <img src={Productimage} /> */}
                                 </div>
                                 <div className="product-order-details">
                                   <h5>{cat.products?.name}</h5>

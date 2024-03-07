@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Objection from "../../../assets/Images/objection.png";
 import Down from "../../../assets/Images/down.png";
 import Checkimg from "../../../assets/Images/Auction/check.png";
-import { Link, json, useAsyncError } from "react-router-dom";
+import { Link, useAsyncError } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
 import Category from "../../../services/API/Category"; //~/services/API/Category
@@ -170,9 +170,9 @@ const ListingForm = (props) => {
     product.durations = e.target.value;
     setDuration(e.target.value);
   };
-  const handleAuctionStartDate = (e) => {
-    product.auctionListing = e.target.value;// moment(date).format("DD-MM-YYYY");
-    setAuctionStartDate(e.target.value);
+  const handleAuctionStartDate = (date) => {
+    product.auctionListing = moment(date).format("DD-MM-YYYY");
+    setAuctionStartDate(date);
   };
 
   const handleToggle1 = () => {
@@ -180,7 +180,7 @@ const ListingForm = (props) => {
   };
   const handleBuynow = (e) => {
     product.sellingNow = true;
-    product.auctions = false;
+    product.auctioned = false;
     setAuctions(false);
     setBuyNow(!buyNow);
   };
@@ -215,8 +215,8 @@ const ListingForm = (props) => {
     e.preventDefault();
     product.tags?.map((tag, index) => {
       product.tags.splice(index, 1);
-      const updatedSizes = [...product.tags];
-      setProduct({ ...product, tags: updatedSizes });
+      const updatedTags = [...product.tags];
+      setProduct({ ...product, tags: updatedTags });
     });
   };
 
@@ -253,6 +253,21 @@ const ListingForm = (props) => {
     setCondition(e.target.value);
     localStorage.setItem("product_condition", e.target.value);
   };
+  const handleEditImageUpload = (e) => {
+    let totalBlobs = blobs.length + editBlobs.length;
+    if (totalBlobs > 4) {
+      const newErrors = {};
+      newErrors.editimages = "You can not upload more then 5 images";
+      setErrors(newErrors);
+    } else {
+      setEditBolbs([...editBlobs, URL.createObjectURL(e.target.files[0])]);
+    }
+    if (files.length > 4) {
+      //
+    } else {
+      setFiles([...files, e.target.files[0]]);
+    }
+  }
   const handleImageUpload = (e) => {
     if (blobs.length > 4) {
       const newErrors = {};
@@ -330,9 +345,6 @@ const ListingForm = (props) => {
     if (!product.title) {
       newErrors.title = "Title is required";
     }
-    // if (!product.model) {
-    //   newErrors.model = "Model is required";
-    // }
     if (!product.category) {
       newErrors.category = "Category is required";
     }
@@ -399,62 +411,12 @@ const ListingForm = (props) => {
       setIsLoading(true);
       setEnabled(true);
       if (props.guid) {
-        if(product.auctions == true || product.auctions == 1){
-          product.price = 0;
-          product.saleprice = 0;
-          product.minpurchase =1;
-        }
-        if(product.sellingNow == true || product.sellingNow == 1){
-          product.price = 0;
-          product.durations = 0;
-        }
-        const formData = new FormData();
-        formData.append("title", product.title);
-        formData.append("condition", localStorage.getItem('product_condition'));
-        formData.append("model", product.model);
-        formData.append("category", product.category);
-        formData.append("brand", product.brand);
-        formData.append("stockCapacity", product.stockCapacity);
-        formData.append("sizes", JSON.stringify(product.sizes));
-        formData.append("availableColors", product.availableColors);
-        formData.append("description", product.description);
-        formData.append("sellingNow", product.sellingNow);
-        formData.append("price", product.price);
-        formData.append("saleprice", product.saleprice);
-        formData.append("minpurchase", product.minpurchase);
-        formData.append("listing", product.listing);
-        formData.append("auctions", product.auctions);
-        formData.append("bids", product.bids);
-        formData.append("durations", product.durations);
-        formData.append("auctionListing", auctionstartDate);
-        formData.append("deliverddomestic", product.deliverddomestic);
-        formData.append("tags", JSON.stringify(product.tags));
-        formData.append("deliverdinternational", product.deliverdinternational);
-        formData.append("deliverycompany", product.deliverycompany);
-        formData.append("country", product.country);
-        formData.append("city", product.city);
-        formData.append("state", product.state);
-        formData.append("shippingprice", product.shippingprice);
-        formData.append("shippingstart", product.shippingstart);
-        formData.append("shippingend", product.shippingend);
-        formData.append("returnshippingprice", product.returnshippingprice);
-        formData.append("returndurationlimit", product.returndurationlimit);
-        formData.append("returnshippingpaidby", product.returnshippingpaidby);
-        formData.append(
-          "returnshippinglocation",
-          product.returnshippinglocation
-        );
-        /**
-         * For Images Uploads Start
-         */
-
-          files.forEach((image_file) => {
-            formData.append("file[]", image_file);
-          });
-          for (let pair of formData.entries()) {
-            console.log(pair[0] + ", " + pair[1]);
-          }
-          ProductServices.update(props.guid, formData)
+        product.category = product.category ? product.category : category;
+        product.sizes = product.sizes;
+        product.sellingNow = isToggled;
+        product.shippingstart = shippingStart;
+        product.shippingend = shippingEnd;
+        ProductServices.update(props.guid, product)
           .then((response) => {
             // toast.success(response.message);
             setShowEditPopup(true);
@@ -470,6 +432,7 @@ const ListingForm = (props) => {
             setEnabled(false);
           });
       } else {
+        console.log('product', product)
         const formData = new FormData();
         product.condition = localStorage.getItem("product_condition");
         formData.append("title", product.title);
@@ -582,9 +545,9 @@ const ListingForm = (props) => {
     product.minpurchase = e.target.value;
     setMiniumPurchase(e.target.value);
   };
-  const handleStartDate = (e) => {
-    product.listing = e.target.value;//moment(date).format("DD-MM-YYYY");
-    setStartDate(e.target.value);
+  const handleStartDate = (date) => {
+    product.listing = moment(date).format("DD-MM-YYYY");
+    setStartDate(date);
   };
   const handleShippingPriceChanges = (e) => {
     product.shippingprice = e.target.value;
@@ -621,9 +584,9 @@ const ListingForm = (props) => {
   ];
 
   const paidBy = [
-    { id: "2", name: "Buyer" },
-    { id: "3", name: "Seller" },
-    { id: "1", name: "Admin" },
+    { id: "buyer", name: "Buyer" },
+    { id: "seller", name: "Seller" },
+    { id: "admin", name: "Admin" },
   ];
 
   const citiesData = [
@@ -717,76 +680,74 @@ const ListingForm = (props) => {
         shopid: response.shop_id,
         images: [],
         scheduled: false,
-        conditions: response.condition,
         title: response.name,
         model: response.model,
-        category: response.category_id,
+        category: category,
         brand: response.brand,
         stockCapacity: response.stockcapacity ? response.stockcapacity : 0,
         sizes: JSON.parse(response.attributes),
         availableColors: [],
         description: response.description,
+        sellingNow: response.selling_now,
+        auctions: response.auctioned,
         price: response.price,
+        listing: response.listing,
         tags: JSON.parse(JSON.parse(response.tags)),
-        saleprice: response.sale_price,
-        minpurchase : response.min_purchase,
+        // "sale": false,
+        buyitnow: response.buyitnow,
+        deliverddomestic: response.deliverd_domestic,
+        deliverdinternational: response.deliverd_international,
+        deliverycompany: response.delivery_company,
         country: response.country,
         locations: response.locations,
-        deliverycompany:response.delivery_company,
-        bids:response.bids,
-        sellingNow:response.selling_now,
-        auctions:response.auctioned,
-        duration:response.durations,
         shippingprice: response.shipping_price,
+        shippingstart: response.shipping_start,
+        shippingend: response.shipping_end,
         returnshippingprice: response.return_shipping_price,
         returndurationlimit: response.return_ship_duration_limt,
         returnshippingpaidby: response.return_ship_paid_by,
         returnshippinglocation: response.return_ship_location,
-        shippingstart: response.shipping_start,
-        shippingend : response.shipping_end,
+        bids:response.bids,
+        duration:response.durations,
         action: "edit",
       };
       setProduct(productData);
-
       if (response.selling_now == "1") {
         setBuyNow(true);
       } else {
         setBuyNow(false);
       }
-      if(response.condition){
-        localStorage.setItem('product_condition',response.condition);
+      setDeliverCompany(response.company);
+      if (response.company == "1") {
+        setListing(true);
+      } else {
+        setListing(false);
+      }
+      if (response.listing == "1") {
+        setListing(true);
+      } else {
+        setListing(false);
       }
       if (response.auctioned == "1") {
         setAuctions(true);
       } else {
         setAuctions(false);
       }
-      if(response.tags){
-        setTags(JSON.parse(JSON.parse(response.tags)))
-      }
       if (response.deliverd_domestic == "1") {
         setDomestic(true);
       } else {
         setDomestic(false);
-      }
-      if (response.deliverd_domestic == "1") {
-        setDomestic(true);
-      } else {
-        setDomestic(false);
-      }
+      }      
       if (response.deliverd_international == "1") {
         setInternational(true);
       } else {
         setInternational(false);
-      }
-      setDeliverCompany(response.delivery_company);
+      }      
+      setDeliverCompany(response.delivery_company)
+      // setAuctionStartDate(moment(response.auction_listing).format("YYYY-MM-DD"))
       setShippingLocation(response.return_ship_location);
       let startDate = moment(response.shipping_start).format("YYYY-MM-DD");
       let endDate = moment(response.shipping_end).format("YYYY-MM-DD");
-      let listing = moment(response.listing).format("YYYY-MM-DD");
-      let auction_listing = response.auction_listing;//moment(response.auction_listing).format("YYYY-MM-DD");
-      setStartDate(listing);
-      setAuctionStartDate(auction_listing);
       setShippingStart(startDate);
       setShippingEnd(endDate);
       setCondition(response.condition);
@@ -796,6 +757,9 @@ const ListingForm = (props) => {
       City.get(response.state_id).then((response) => {
         setCity(response);
       });
+      if(response.media){
+        setBolbs(response.media);
+      }
     });
   };
   const productCondition = [
@@ -1323,7 +1287,7 @@ const ListingForm = (props) => {
               <input
                 type="radio"
                 name="sellingAution"
-                value={product.auctions}
+                value={auctions}
                 checked={auctions}
                 onChange={handleAuctions}
               />
@@ -1350,10 +1314,10 @@ const ListingForm = (props) => {
               <div>Duration</div>
               <div>
                 <input
-                  type="number"
-                  placeholder="$"
-                  name={product.durations}
-                  value={product.durations}
+                  type="datetime-local"
+                  placeholder="date and time"
+                  name={product.duration}
+                  value={product.duration}
                   onChange={handleDurationChange}
                 />
               </div>
@@ -1362,17 +1326,11 @@ const ListingForm = (props) => {
             <div className="listschedule">
               <div>Schedule your Listing Start Time</div>
               <div>
-              <input
-                type="datetime-local"
-                placeholder="From"
-                value={auctionstartDate}
-                onChange={handleAuctionStartDate}
-              />
-                {/* <DatePicker
+                <DatePicker
                   selected={auctionstartDate}
                   minDate={new Date()}
                   onChange={(date) => handleAuctionStartDate(date)}
-                /> */}
+                />
                 {/* <label className="switch2">
               <input
                 type="checkbox"
@@ -1433,17 +1391,11 @@ const ListingForm = (props) => {
             <div className="listschedule">
               <div>Schedule your Listing</div>
               <div>
-                <input
-                  type="date"
-                  placeholder="From"
-                  value={startDate}
-                  onChange={handleStartDate}
-                />
-                {/* <DatePicker
+                <DatePicker
                   selected={startDate}
                   minDate={new Date()}
                   onChange={(date) => handleStartDate(date)}
-                /> */}
+                />
                 {/* <label className="switch2">
                 <input
                   type="checkbox"
@@ -1470,7 +1422,7 @@ const ListingForm = (props) => {
                     <input
                       type="text"
                       name="tags"
-                      value= {tag}
+                      value={tag}
                       placeholder="Tags"
                       onChange={(e) => handleInputChange(e, index)}
                     />
@@ -1486,7 +1438,7 @@ const ListingForm = (props) => {
           </>
         ) : (
           ""
-        )} 
+        )}
         <div className="sizeaddmre">
           <button type="button" onClick={handleAddTags}>
             Add Tags
@@ -1575,30 +1527,11 @@ const ListingForm = (props) => {
               {country.length > 0 ? (
                 <>
                   {country.map((c) => {
-                    if(product.country === c.name){
-                      // console.log('c.name', c.name)
-                    }
                     return (
                       <>
-                      {(() => {
-                          if (product.country === c.name) {
-                            return (
-                              <>
-                                <option key={c.id} value={c.id} selected>
-                                    {c.name}
-                                </option>
-                              </>
-                            )
-                          } else {
-                            return (
-                              <>
-                              <option key={c.id} value={c.id}>
-                                {c.name}
-                              </option>
-                              </>
-                            )
-                          }
-                        })()}
+                        <option key={c.id} value={c.id}>
+                          {c.name}
+                        </option>
                       </>
                     );
                   })}
