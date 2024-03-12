@@ -4686,3 +4686,30 @@ section#getsurpriseprice .text-button {
   padding: 16px 10px;
   border-radius: 10px;
 }
+.login{
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: 92px;
+  text-decoration: none;
+}
+.login:hover{
+  color: #fff;
+}
+.cartitmes{
+  content: '';
+    background: #4F4F4F;
+    border: 1.36px solid #8B2CA0;
+    color: #fff;
+    position: absolute;
+    width: 23px;
+    text-align: center;
+    height: 23px;
+    line-height: 19px;
+    font-size: 13px;
+    border-radius: 30px;
+    right: -3px;
+    top: -5px;
+}
+

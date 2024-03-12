@@ -10,6 +10,7 @@ const Attribute = () => {
   const curentAttribute = {};
   const getProduct = () => {
     ProductServices.get(id).then((response) => {
+      setProductData(response);
       if(response.attributes){
         setProductAttributes(response.attributes);
       //   // setColors(JSON.parse(response.available_colors));
@@ -104,7 +105,7 @@ const Attribute = () => {
             if(item.name === 'color'){
               return(
                 <>
-                <span style={{ width:"40px", float: "right", cursor:"pointer", marginRight: "40px", backgroundColor : item.value, color: item.value, borderRadius: "4px"}}>
+                <span style={{ border: "1px solid #000", width:"40px", float: "right", cursor:"pointer", marginRight: "40px", backgroundColor : item.value, color: item.value, borderRadius: "4px"}}>
                   <a href="#"  onClick={(e) => addAttribute(
                     e,
                     item.value,
@@ -161,6 +162,13 @@ const Attribute = () => {
               <option value="0" selected>Select Sizes</option>
               {sizeList}
             </select>
+            
+          </div>
+          <div className="inner-attributes">
+            <label htmlFor="tags">Tags:</label>
+            <p id="tags">
+            {JSON.parse(JSON.parse(productData.tags))}
+            </p>
           </div>
         </>
       ) : (

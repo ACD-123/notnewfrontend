@@ -57,7 +57,7 @@ const PublicRoutes = () => {
 					<Route path="/allcategories" element={<CategoryPage />} />
 					<Route path="/sellershop/:id" element={<SellerShop />} />
 					<Route path="/auctionproduct/:guid" element={<AuctionSingleProductPage />} />
-					<Route path="/bidwin" element={<BidWin />} />
+					<Route path="/bidwin/:guid" element={<BidWin />} />
 					<Route path="/searchhistory" element={<SearchHistory />} />
 					<Route path="/ongoingorder/:guid" element={<OngoingOrderManagement/>} />
 					<Route path="/completedorder/:guid" element={<CompleteOrderManagement/>} />

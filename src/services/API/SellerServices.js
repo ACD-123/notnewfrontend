@@ -10,6 +10,14 @@ function all(params = {}) {
   })
 }
 
+function getFeatured(params = {}) {
+  return request({
+    url: `${baseUrl}getfeatured`,
+    params,
+    method: 'GET',
+  })
+}
+
 function save(data) {
     return request({
       url: `${baseUrl}add`,
@@ -47,7 +55,6 @@ function update(data) {
     method: 'POST',
   })
 }
-
 
 function deleteAccount(id){
   return request({
@@ -115,6 +122,7 @@ function setBank(data) {
 
 const SellerServices = {
   all,
+  getFeatured,
   detail,
   upload,
   update,

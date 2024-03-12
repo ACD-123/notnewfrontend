@@ -74,10 +74,12 @@ const BidView = () => {
     // });
   };
   const getProductTotalBids = () => {
+
     BidsServices.getProductBids(id).then((response) => {
-      if (response.status) {
-        setTotalBid(response.data);
-      }
+      console.log('response', response)
+      // if (response.status) {
+      //   setTotalBid(response.data);
+      // }
     });
   };
 
@@ -111,7 +113,6 @@ const BidView = () => {
     }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-      console.log("productbids", totalbids);
       if (totalbids < productbids) {
         newErrors.bids = "Max Bids must be Greater the Product Bids!";
       } else if (bestoffer > totalbids) {
@@ -212,6 +213,7 @@ const BidView = () => {
     });
   };
   const handleCallback = (childData) => {
+    console.log('childData', childData)
     setTotalBids(childData);
   };
   const getBestOffer = () => {
@@ -222,7 +224,6 @@ const BidView = () => {
   const handleMaxBids = (e) => {
     setTotalBids(e.target.value);
   };
-
   useEffect(() => {
     getProductTotalBids();
     getUserProductBids();
@@ -306,7 +307,7 @@ const BidView = () => {
               {editBidVisible["element1"] && (
                 <div className="edit-bid-popup">
                   <div className="innreditpopup">
-                    <PlaceYourBid />
+                    <PlaceYourBid parentCallback={handleCallback} />
                     <div className="row">
                       <div className="col-lg-9">
                         <input type="text" placeholder="$" />

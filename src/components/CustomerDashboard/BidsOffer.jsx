@@ -1,17 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Prdimage from "../../assets/Images/Singleproduct/prdimage.png";
 import Prdimage1 from "../../assets/Images/Singleproduct/Product1.png";
 import Prdimage2 from "../../assets/Images/Singleproduct/Product2.png";
 import Checkpay from "../../assets/Images/check-pay.png";
+import blank from "../../assets/Images/Productcard/blank.jpg";
+import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
+import { toast } from "react-toastify";
+import moment from "moment";
+import { BASE_URL } from '../../services/Constant'
 
 const BidsOffer = () => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
   const [requestSentVisible, setRequestSentVisible] = useState({});
-
+  
   const renderOrderBlock = (orderData, index) => {
-    const { orderNumber, productName, images, bid, maxBid, result } = orderData;
+    console.log('custimer bids', orderData)
+    const { orderNumber, productNames, imagess, bid, max_bids, result } = "";
+    const productName = orderData.product.name;
+    const productGuid = orderData.product.guid;
 
+    let images = [];
+    if(orderData.product.media.length > 0){
+      orderData.product.media.forEach((item) => {
+        images.push(item.name)
+      })
+    }
     const handleRefundClick = (orderIndex) => {
       setRefundDetailsVisible({
         ...refundDetailsVisible,
@@ -42,15 +56,29 @@ const BidsOffer = () => {
         <div className="col-lg-6">
           <div className="product-image">
             <div className="image">
-              {images.map((image, index) => (
-                <img key={index} src={image} alt={`Product ${index + 1}`} />
-              ))}
+              {images.length > 0 ? (
+                <>
+                {images.map((image, index) => {
+                      if(index == 0){
+                        return(
+                          <>
+                          <img key={index} src={`http://localhost:8000/image/product/${image}`} alt={image} />
+                          </>
+                        )                  
+                      }
+                  })}
+                </>
+              ):(
+                <>
+                  <img key={index} src={blank} alt="blank" />
+                </>
+              )}
             </div>
             <div className="prd-details">
               <h5>
-                Order # : <b>{orderNumber}</b>
+                {/* Order # : <b>{orderNumber}</b> */}
               </h5>
-              <h3>{productName}</h3>
+              <h3><a href={`/auctionproduct/${productGuid}`} target="_blank">{productName}</a></h3>
             </div>
           </div>
         </div>
@@ -59,13 +87,13 @@ const BidsOffer = () => {
             <div className="your-bid">
                 <h4>
                 <strong> Your Bid</strong> <br />
-                $ {bid}
+                $ {orderData.max_bids}
                 </h4>
             </div>
             <div className="your-bid1">
                 <h4>
                 <strong>Max Bid</strong> <br />
-                $ {maxBid}
+                $ {orderData.product.bids}
                 </h4>
             </div>
             <div className="your-bid2">
@@ -76,20 +104,42 @@ const BidsOffer = () => {
             <div className="your-bid3">
             <h4>
             <strong>Results</strong> <br /> 
-               {result} </h4>
+              {orderData.status}
+            </h4>
             </div>
           </div>
         </div>
         <div className="col-lg-2">
         <div className='refund-reorder'>
-        <Link to='/bidView'>
-            <button className='refund'>
-            Increase Bid
-            </button>
-            </Link>
-            <Link to='/singleproduct'>
-              <button>View</button>
-            </Link>
+        {orderData.status === 'accepted' || orderData.status === 'rejected' ? (
+          <>
+          {orderData.status === 'accepted' ? (
+            <>
+              <Link to={`/bidWin/${orderData.product.guid}`}>
+                <button>View</button>
+              </Link>
+            </>
+          ):(
+            <>
+              <Link to={`/bidView/${orderData.product.guid}`}>
+                <button>View</button>
+              </Link>
+            </>
+          )}
+          </>
+        ):(
+          <> 
+             <Link to='/bidView/'>
+                <button className='refund'>
+                Increase Bid
+                </button>
+              </Link>
+              <Link to={`/bidView/${orderData.product.guid}`}>
+                <button>View</button>
+              </Link>
+          </>
+        )}
+
           </div>
         </div>
       </div>
@@ -127,17 +177,38 @@ const BidsOffer = () => {
     result: "pending",
     },
   ];
+  const [bids, setBids] = useState([]);
+
+  const getBids = () =>{
+    UserServices.getUserBid()
+      .then((response) => {
+        if(response.status){
+          setBids(response.data)
+        }
+    })
+  }
+  useEffect(() => {
+    getBids();
+  }, []);
 
   return (
     <>
       <h3>Bids Offer</h3>
       <div className="ongoing">
-        {ordersData.map((order, index) => (
-          <React.Fragment key={index}>
-            {renderOrderBlock(order, index)}
-            {/* {index !== ordersData.length - 1 && <hr />} */}
-          </React.Fragment>
-        ))}
+        {/* {bids.length} */}
+        {/* {ordersData.map((order, index) => ( */}
+        {bids.length > 0 ?(
+          <>
+            {bids.map((order, index) => (
+                <React.Fragment key={index}>
+                  {renderOrderBlock(order, index)}
+                  {/* {index !== ordersData.length - 1 && <hr />} */}
+                </React.Fragment>
+              ))}
+          </>
+        ):(
+          <>Loading...</>
+        )}
       </div>
     </>
   );

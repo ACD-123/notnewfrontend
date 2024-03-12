@@ -42,7 +42,8 @@ function get(recipientId, productId, params = {}) {
 
 function conversations(productId, params = {}) {
   return request({
-    url: `${baseUrl}/conversations/${productId}`,
+    // url: `${baseUrl}/conversations/${productId}`,
+    url: `${baseUrl}/conversations/`,
     params,
   })
 }

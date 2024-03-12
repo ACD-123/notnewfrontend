@@ -121,7 +121,7 @@ const EmailVerification = () => {
                     </div>
                     <div className="emailresend-recieve">
                       <ul>
-                        <li className="code"><a href="#">Didn’t Receive the code?</a></li>
+                        <li className="code"><a href="#">Didn't Receive the code?</a></li>
                         <li className="resend"><a href="#">Resend</a></li>
                       </ul>
                     </div>
