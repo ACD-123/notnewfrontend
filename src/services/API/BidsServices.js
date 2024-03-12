@@ -36,12 +36,28 @@ function confirmBids(data) {
       method: 'POST',
   })
 }
+function acceptBids(data) {
+  return request({
+    url: `${baseUrl}/acceptbid`,
+    data,
+    method: 'POST',
+  })
+}
+function rejectBids(data) {
+  return request({
+    url: `${baseUrl}/rejectbid`,
+    data,
+    method: 'POST',
+  })
+}
 const BidsServices = {
   all,
   getMaxBids,
   getProductBids,
   save,
   confirmBids,
+  acceptBids,
+  rejectBids
 }
 
 export default BidsServices

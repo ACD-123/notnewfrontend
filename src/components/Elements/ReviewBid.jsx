@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import moment from "moment";
 
 const ReviewBid = (props) => {
+  // console.log('props', props)
   const [currentbid, setCurrentBid] = useState(props.bids);
   const [productDatas, setProductData] = useState([]);
   const [shippingprice, setShippingPrice] = useState(0);
@@ -21,28 +22,59 @@ const ReviewBid = (props) => {
     EstimatedTotal: "$ 00.00",
     note: "*This item may be subject to duties and taxes upon delivery. *Applicable tax and other charges may be added at checkout.",
   });
-
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
   const getProduct = () => {
     ProductServices.get(id).then((response) => {
       setProductData(response);
       setShippingPrice(response.shipping_price);
+      
+      // var date = new Date();
+      // var date1 = moment(date, "MM/DD/YYYY");
+      // var date2 = moment(
+      //   moment(response.auction_listing).toDate(),
+      //   "MM/DD/YYYY"
+      // );
+      // var duration = moment.duration(date2.diff(date1));
+      // var hours = duration.asHours();
+      // // var minutes = duration.asMinutes();
+      // // console.log('minutes', remianing.toString().split(".")[1])
+      // var minutes = hours.toFixed(2);
+      // setHour(hours.toString().split(".")[0]);
+      // setMinutes(minutes.toString().split(".")[1]);
       var date = new Date();
-      var date1 = moment(date, "MM/DD/YYYY");
-      var date2 = moment(
-        moment(response.auction_listing).toDate(),
-        "MM/DD/YYYY"
-      );
-      var duration = moment.duration(date2.diff(date1));
-      var hours = duration.asHours();
-      // var minutes = duration.asMinutes();
-      // console.log('minutes', remianing.toString().split(".")[1])
-      var minutes = hours.toFixed(2);
-      setHour(hours.toString().split(".")[0]);
-      setMinutes(minutes.toString().split(".")[1]);
-      const currDate = hour + " hrs :" + minute + " mins";
-      setCurrentTime(currDate);
+      var date1 = moment(date).format('MM/DD/YYYY');
+      var date2 = moment(response.auction_listing).format('MM/DD/YYYY');//moment(moment(response.auction_listing).toDate(), 'MM/DD/YYYY'); 
+      if(date1 === date2){
+        console.log('auction_listing', response.auction_listing)
+        console.log('auction_End_listing', response.auction_End_listing)
+        //for date difference
+        // console.log('diff', moment(response.auction_listing).diff(response.auction_End_listing, 'days'))
+        // var startTime1 = moment('12:16:59 am', 'HH:mm:ss a');
+        // var endTime1 = moment('06:12:07 pm', 'HH:mm:ss a');
+        var startTime = moment(response.auction_listing).format("hh:mm:ss a");
+        var endTime =  moment(response.auction_End_listing).format("hh:mm:ss a");
+        var startTime1 = moment(startTime, 'HH:mm:ss a');
+        var endTime1 = moment(endTime, 'HH:mm:ss a');
+        // console.log('startTime', startTime)
+        // console.log('endTime', endTime)
+        // console.log('startTime1', startTime1)
+        // console.log('endTime1', endTime1)
+        // calculate total duration
+        var duration = moment.duration(endTime1.diff(startTime1));
+        // duration in hours
+        var hours = parseInt(duration.asHours());
+
+        // duration in minutes
+        var minutes = parseInt(duration.asMinutes()) % 60;
+        setHour(hours);
+        // setMinutes(minutes.toString().split(".")[1]);
+        setMinutes(minutes);
+        console.log(hours + ' hour and ' + minute + ' minutes.');      
+      }
+      // const currDate = hour + " hrs :" + minute + " mins";
+      const currDate = new Date();//.toLocaleTimeString;
+      setCurrentTime(moment(currDate).format('hh:mm A'))
       let user = JSON.parse(localStorage.getItem("user_details"));
       setShippingAddress(user.address);
     });
@@ -51,11 +83,11 @@ const ReviewBid = (props) => {
     if (props.bids) {
       let data = {
         CurrentBid: "$ " + props.bids.max_bids, //'89.00',
-        YourMaxBid: "$ " + props.maxbids,
-        Timeleft: currenttime,
+        YourMaxBid: "$ " + props.bids.max_bids,
+        Timeleft: hour + "h " + minute +" m | Today " +currenttime,
         ShippingPrice: "$ " + props.shippingprice,
         ShippingLocation: shippingaddress ? shippingaddress : "No Address",
-        ImportCharges: "$ 89.00",
+        // ImportCharges: "$ 89.00",
         EstimatedTotal: "$ " + props.bids.estimated_total,
         note: "*This item may be subject to duties and taxes upon delivery. *Applicable tax and other charges may be added at checkout.",
       };

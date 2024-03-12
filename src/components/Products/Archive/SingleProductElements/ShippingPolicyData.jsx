@@ -14,7 +14,7 @@ const ShippingPolicyData = () => {
       now = moment(response.shipping_end); 
       end = moment(response.shipping_start); 
       duration = moment.duration(now.diff(end));
-      setDays(duration.asDays());
+      setDays(Math.round(duration.asDays()));
     });
   };
   useEffect(() => {
@@ -32,7 +32,7 @@ const ShippingPolicyData = () => {
         <h4>Delivery:</h4>
         <p>
         Expedited International Shipping Estimated between {moment(productData.shipping_start).format("ll")} and {moment(productData.shipping_end).format("ll")} to 'zip'{productData.zip}
-        Seller ships within {days?(<>{days}</>):(0)} days after receiving cleared payment.
+        Seller  {days?(<>{days}</>):(0)} days after receiving cleared payment.
         Please allow additional time if international delivery is subject to customs processing.
         </p>
         <h4>

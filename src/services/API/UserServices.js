@@ -175,16 +175,28 @@ function getBid(id){
     method: "GET"
   })
 }
-
+function getUserBid(){
+  return request({
+    url: `${baseUrl}getuserbid`,
+    method: "GET"
+  })
+}
 function deleteRecentUser() {
   return request({
     url: `${baseUrl}deleteRecent`,
     method: "DELETE"
   })
 }
-
+function getSellerActiveBid(){
+  return request({
+    url: `${baseUrl}getselleractivebid`,
+    method: "GET"
+  })
+}
 const UserService = {
   all,
+  getUserBid,
+  getSellerActiveBid,
   deleteRecentUser,
   detail,
   upload,

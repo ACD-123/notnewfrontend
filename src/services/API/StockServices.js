@@ -3,10 +3,11 @@ import { BASE_API } from '../Constant'
 // @todo this file name should be product service
 const baseUrl = `${BASE_API}stock`
 
-function stockIn() {
+function save(data) {
   return request({
-    url: baseUrl + `/instock`,
-    method: 'GET',
+    url: baseUrl + `/add`,
+    data,
+    method: 'POST',
   })
 }
 function stockOut(){
@@ -15,10 +16,16 @@ function stockOut(){
     method: 'GET',
   })
 }
-
+function stockIn(){
+  return request({
+    url: baseUrl + `/instock`,
+    method: 'GET',
+  })
+}
 const StockServices = {
     stockIn,
-    stockOut
+    stockOut,
+    save
 }
 
 export default StockServices

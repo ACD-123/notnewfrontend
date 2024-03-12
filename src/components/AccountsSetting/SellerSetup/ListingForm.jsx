@@ -34,7 +34,8 @@ const ListingForm = (props) => {
   const [miniumpurchase, setMiniumPurchase] = useState(0);
   const [bids, setBids] = useState(0);
   const [duration, setDuration] = useState("");
-  const [auctionstartDate, setAuctionStartDate] = useState(new Date());
+  const [auctionstartDate, setAuctionStartDate] = useState("");
+  const [auctionEndDate, setAuctionEndDate] = useState("");
   const [shippingprices, setShippingPrices] = useState("");
   const [refund, setRefund] = useState("");
   const [returnLimit, setreturnLimit] = useState("");
@@ -84,6 +85,7 @@ const ListingForm = (props) => {
     bids: 0,
     durations: 0,
     auctionListing: "",
+    auctionEndListing: "",
     deliverddomestic: false,
     deliverdinternational: false,
     deliverycompany: "",
@@ -170,10 +172,16 @@ const ListingForm = (props) => {
     product.durations = e.target.value;
     setDuration(e.target.value);
   };
-  const handleAuctionStartDate = (date) => {
-    product.auctionListing = moment(date).format("DD-MM-YYYY");
-    setAuctionStartDate(date);
+  const handleAuctionStartDate = (e) => {
+    product.auctionListing = e.target.value;
+    // product.auctionListing = moment(date).format("DD-MM-YYYY");
+    setAuctionStartDate(e.target.value);
   };
+  const handleAuctionEndDate = (e) =>{
+    product.auctionEndListing = e.target.value;
+    // product.auctionEndListing = moment(date).format("DD-MM-YYYY");
+    setAuctionEndDate(e.target.value);
+  }
 
   const handleToggle1 = () => {
     setIsToggled1(!isToggled1);
@@ -453,6 +461,7 @@ const ListingForm = (props) => {
         formData.append("bids", product.bids);
         formData.append("durations", product.durations);
         formData.append("auctionListing", product.auctionListing);
+        formData.append("auctionEndListing", product.auctionEndListing);
         formData.append("deliverddomestic", product.deliverddomestic);
         formData.append("tags", JSON.stringify(product.tags));
         formData.append("deliverdinternational", product.deliverdinternational);
@@ -589,6 +598,20 @@ const ListingForm = (props) => {
     { id: "admin", name: "Admin" },
   ];
 
+  const durations = [
+    { id: "1", name: "1" },
+    { id: "2", name: "2" },
+    { id: "3", name: "3" },
+    { id: "4", name: "4" },
+    { id: "5", name: "5" },
+    { id: "6", name: "6" },
+    { id: "7", name: "7" },
+    { id: "8", name: "8" },
+    { id: "9", name: "9" },
+    { id: "10", name: "10" },
+    { id: "11", name: "11" },
+    { id: "12", name: "12" },
+  ];
   const citiesData = [
     { id: "city1", name: "City 1" },
     { id: "city2", name: "City 2" },
@@ -685,7 +708,7 @@ const ListingForm = (props) => {
         category: category,
         brand: response.brand,
         stockCapacity: response.stockcapacity ? response.stockcapacity : 0,
-        sizes: JSON.parse(response.attributes),
+        sizes:  JSON.parse(response.attributes),
         availableColors: [],
         description: response.description,
         sellingNow: response.selling_now,
@@ -1310,27 +1333,42 @@ const ListingForm = (props) => {
               </div>
             </div>
             {errors.price && <p className="error">{errors.price}</p>}
-            <div className="set-price">
+            <div className="delivery-company">
               <div>Duration</div>
               <div>
-                <input
-                  type="datetime-local"
-                  placeholder="date and time"
+              <select
                   name={product.duration}
                   value={product.duration}
                   onChange={handleDurationChange}
-                />
+                >
+                  <option value="0">--Select hours--</option>
+                  {durations?.map((duration, index) => {
+                  return (
+                    <>
+                      <option key={index} value={duration.id}>{duration.name}</option>
+                    </>
+                    )
+                  })}
+                </select>
               </div>
             </div>
-            {errors.saleprice && <p className="error">{errors.saleprice}</p>}
-            <div className="listschedule">
+            {errors.duration && <p className="error">{errors.duration}</p>}
+            <div className="set-price">
               <div>Schedule your Listing Start Time</div>
               <div>
-                <DatePicker
+              <input
+                  type="datetime-local"
+                  name={product.auctionListing}
+                  value={auctionstartDate}
+                  onChange={(e) =>
+                    handleAuctionStartDate(e)
+                  }
+                />
+                {/* <DatePicker
                   selected={auctionstartDate}
                   minDate={new Date()}
                   onChange={(date) => handleAuctionStartDate(date)}
-                />
+                /> */}
                 {/* <label className="switch2">
               <input
                 type="checkbox"
@@ -1343,6 +1381,21 @@ const ListingForm = (props) => {
               </div>
             </div>
             {errors.listing && <p className="error">{errors.listing}</p>}
+            <div className="set-price">
+              <div>Schedule your Listing End Time</div>
+              <div>
+                <input
+                  type="datetime-local"
+                  name={product.auctionEndListing}
+                  value={auctionEndDate}
+                  onChange={(e) =>
+                    handleAuctionEndDate(e)
+                  }
+                />
+              </div>
+            </div>
+            {errors.duration && <p className="error">{errors.duration}</p>}
+
           </>
         ) : (
           ""

@@ -30,11 +30,10 @@ const ProductGallery = () => {
   };
   const getProduct = () => {
     ProductServices.get(id).then((response) => {
-      setProductData(response.media);
-      setSelectedImage(response.media[0].name);
-      // if(product.length > 0){
-        // setSelectedImage(product[0].name);
-      // }
+      if(response.media.length > 0){
+        setProductData(response.media);
+        setSelectedImage(response.media[0].name);
+      }
     });
   };
 

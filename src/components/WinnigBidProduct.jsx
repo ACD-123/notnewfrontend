@@ -15,7 +15,7 @@ const WinningBidProduct = (props) => {
 
   const renderOrderBlock = (orderData) => {
     const { orderNumber, productName, images, condition, ended, winningbid, shipping, location, seller } = orderData;
-
+    console.log('orderData', orderData)
     return (
       <div className="row align-items-center" key={orderNumber}
       style={{padding: "40px 0px"}}
@@ -52,7 +52,7 @@ const WinningBidProduct = (props) => {
                <h5><b>Condition:</b> {product?.condition}</h5>
              </>):('')}
              <h5><b>Ended:</b> ended</h5>
-             <h5><b>Winning bid:</b> $ {props?.totalbid}</h5>
+             <h5><b>Winning bid:</b> $ {orderData?.max_bids}</h5>
              {product ? (
               <>
              <h5><b>Shiping Cost:</b> $ {product?.shipping_price}</h5>
@@ -85,15 +85,21 @@ const WinningBidProduct = (props) => {
   const getUserProductBids = () =>{
     UserServices.getBid(id).then((response) => {
       if(response.status){
+        console.log('a', response.data)
         setBidData(response.data);
       }
     });
   }
   const getProduct = () =>{
+    console.log()
     ProductServices.get(id).then((response) => {
       console.log('product', response)
       setProduct(response)
-    });
+    })
+    .catch((e) => {
+      console.log('error', e)
+      // toast.error(e.message);
+    });;
   }
   useEffect(() => {
     getUserProductBids();

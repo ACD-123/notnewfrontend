@@ -46,7 +46,8 @@ const CategoryList = () => {
           <div className='container'>
           <div className='row'>
             {loading ? (
-              <p>Loading...</p>
+              // <p>Loading...</p>
+              <p>&nbsp;</p>
             ) : error ? (
               <p>{error}</p>
             ) : (
@@ -82,7 +83,7 @@ const CategoryList = () => {
           </div>
         </section>
       </>
-     ):('loading...')}
+     ):('')}
       </section>
    </>
   )

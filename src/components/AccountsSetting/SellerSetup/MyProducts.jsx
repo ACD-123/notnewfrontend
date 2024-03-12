@@ -31,7 +31,7 @@ const MyProducts = () => {
     }
     ProductServices.self()
     .then((response) => {
-      setProducts(response.data);
+      setProducts(response);
     });
   }, []);
   return (
@@ -55,7 +55,7 @@ const MyProducts = () => {
                     <>
                       {products.map((item, index) => {
                         const attributes = JSON.parse(item.attributes);
-                        console.log('attr', attributes)
+                        console.log('attr', item.media)
                     return(
                       <>
                       <div className='historylist' key={index}>
@@ -78,7 +78,7 @@ const MyProducts = () => {
                                     <>
                                       <ul>
                                         <li>Size: {attribute.size}</li>
-                                        <li>Color Available: {attribute.color}</li>
+                                        <li>Color Available: <span style={{width:"30px", backgroundColor: attribute.color, color: attribute.color, border: `1px solid #000`}}>Available Colors</span></li>
                                         <li>Quantity Available: {attribute.quantity}</li>
                                       </ul>
                                     </>

@@ -123,7 +123,7 @@ const ProductInformation = () => {
     });
   }
   useEffect(() => {
-    // saveRecentView();
+    saveRecentView();
     getProduct();
   }, []);
   return (
@@ -161,6 +161,9 @@ const ProductInformation = () => {
               {/* <Link onClick={() => handleDropdownItemClick('componentC')}><button>Add to Wishlist</button></Link> */}
               <Link onClick={() => hanldeWishList(productData.guid)}><button>Add to Wishlist</button></Link>
           </div>
+          <br />
+          <h3>Descriptions</h3>
+          {productData.description}
           <ShippingPolicyData />
         {/* </>
       ):('')} */}

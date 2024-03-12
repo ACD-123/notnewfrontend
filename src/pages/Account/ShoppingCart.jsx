@@ -47,10 +47,47 @@ const ShoppingCart = () => {
 
   const getCart = () => {
     CartServices.self().then((response) => {
-      if(response.products){
-        setCoverPicture(response.products?.media[0].name)
+      // if(response.products){
+        // setCoverPicture(response.products?.media[0].name)
         setCart(response);
+        // if(response.length > 0){
+        //   response.forEach((item) => {
+        //     setCoverPicture(item.products.media[0].name)
+        //     // http://localhost:8000/image/product/
+        //     // images.push(item.name)
+        //   })
+        // }s
+      // }
+      var cartPrice = [];
+      var shippingPrice = [];
+      var allPrices = [];
+      if (response.length > 0) {
+        response.map((cat) => {
+          cartPrice.push(cat.price);
+          shippingPrice.push(cat.products.shipping_price);
+        });
       }
+      let discountPrice = 0;
+      if (prices.length > 0) {
+        prices.map((price) => {
+          if (price.name !== "Discount") {
+            allPrices.push(price.value);
+          } else if (price.name === "Discount") {
+            setDiscountPrices(price.value);
+            discountPrice = price.value
+          }
+        });
+      }
+      let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
+      let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
+      setsubTotal(subttal);
+      setShippingPrice(shippingprice);
+      let adminPric = allPrices.reduce((a, v) => (a = a + v), 0)
+      setAdminPrices(adminPric);
+      var amountAfterDiscount = subttal - discountPrice;
+      var amountbyaddingprices = amountAfterDiscount + adminPric + shippingprice;
+      // var amountbyaddingprices = subttal + shippingprice;
+      setAmountAddingPrices(amountbyaddingprices);
     });
   };
   const handleCheckOut = (e) => {
@@ -154,11 +191,14 @@ const ShoppingCart = () => {
         }
       });
     }
-    setsubTotal(cartPrice.reduce((a, v) => (a = a + v), 0));
-    setShippingPrice(shippingPrice.reduce((a, v) => (a = a + v), 0));
+    let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
+    let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
+    setsubTotal(subttal);
+    setShippingPrice(shippingprice);
     setAdminPrices(allPrices.reduce((a, v) => (a = a + v), 0));
     var amountAfterDiscount = subTotal - discountPrices;
-    var amountbyaddingprices = amountAfterDiscount + adminprices;
+    // var amountbyaddingprices = amountAfterDiscount + adminprices;
+    var amountbyaddingprices = subttal + shippingprice;
     setAmountAddingPrices(amountbyaddingprices);
   };
   useEffect(() => {
@@ -166,7 +206,7 @@ const ShoppingCart = () => {
     getShopData();
     cartCount();
     getPrices();
-    handlePrices();
+    // handlePrices();
     getForSavedLater();
   }, []);
   return (
@@ -184,6 +224,10 @@ const ShoppingCart = () => {
                   {cart.map((cat, index) => {
                     let attributes = JSON.parse(cat.attributes);
                     const isSaved = cartids.includes(cat.id);
+                    let coverpic;
+                    if(cat.products.media.length > 0){
+                      coverpic = cat.products.media[0].name;
+                    }
                     return (
                       <>
                         <div className="order-details" id="sectionToRemove">
@@ -192,13 +236,14 @@ const ShoppingCart = () => {
                             <div className="col-lg-9">
                               <div className="product-detail">
                                 <div className="product-image">
-                                  {coverpicture ? (
+                                  {coverpic ? (
                                     <>
-                                                                    <img
-                                  src={`${BASE_URL}/image/product/${coverpicture}`}
+                                  <img
+                                  src={`${BASE_URL}/image/product/${coverpic}`}
                                   alt={cat.name}
-                                />
-
+                                  height="150" 
+                                  width="150"
+                                  />
                                     </>
                                   ):(
                                     <>
@@ -258,9 +303,15 @@ const ShoppingCart = () => {
                                     </p>
                                   </div>
                                   <span className="unter">
-                                    International(have to work)
-                                    <br /> Shipping from
-                                    <br /> {cat.products?.location}
+                                    {/* International(have to work) */}
+                                    {cat.products?.location? (
+                                      <>
+                                        <br /> Shipping from
+                                        <br /> {cat.products?.location}
+                                      </>
+                                    ):(
+                                      <></>
+                                    )}
                                   </span>
                                 </div>
                               </div>

@@ -12,7 +12,7 @@ import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth"; /
 import AuthServices from "../services/API/AuthService"; //~/services/API/AuthService
 import CartServices from "../services/API/CartServices"; //~/services/API/CartServices
 
-const Header = () => {
+const Header_ = () => {
   const items = useSelector(state => state.cupon.cupon);
   const cart_items = items ? items : 0;
   const [showDropdown, setShowDropdown] = useState(false);
@@ -84,17 +84,11 @@ const Header = () => {
                 {isLoggedin() ? (
                   <div className="cart-user">
                     <div className="cart">
-                      <span className="cartitmes">
                       {cart_items}
-                      </span>
                       <Link to="/shoppingcart">
                         <img src={Cart} />
                       </Link>
                     </div>
-                    {/* <div className="cartitmes">
-
-                    <div/> */}
-
                     <div className="user">
                       <div
                         className="avatar-container"
@@ -182,7 +176,7 @@ const Header = () => {
                     </div>
                   </div>
                 ) : (
-                    <a href="/signin" className="login" >Sign In</a>
+                  <Link to="/signin">Sign In</Link>
                 )}
               </div>
             </div>
@@ -315,4 +309,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header_;

@@ -19,7 +19,7 @@ const Stripe = (props) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(false);
+  const handleShow = () => setShowModal(true);
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
 
@@ -50,10 +50,17 @@ const Stripe = (props) => {
         loggedInUsers = JSON.parse(loggedInUser);
     }
     var cartItems = [];
-    let carts = props.cart;
-    carts?.map((cart) => {
-        cartItems.push(cart.products);
-    })
+    let carts;
+    console.log('carts', props.orderType)
+    if(props.orderType === 'bids'){
+      cartItems.push(props.bidcart);
+    }else{
+      carts = props.cart;
+      carts?.map((cart) => {
+          cartItems.push(cart.products);
+      })
+    }
+    
     let data ={
         "buyer_id" : loggedInUsers.id,
         "payment_type": 'Stripe',
@@ -68,13 +75,21 @@ const Stripe = (props) => {
         'secondaddress': props.secondAddress,
         "other_address":props.changeaddress,
         "zip": props.zip ? props.zip : "",
-        "order_type": props.ordertype
+        "order_type": props.orderType,
+        "address": props.address
     }
     OrderServices.save(data)
     .then(res => {
+      if(res.status){
         setIsLoading(false);
         setEnabled(false);
-        handleShow(true);
+        // handleShow(true);
+        toast.success(res.data);
+        localStorage.removeItem('bid_product');
+        localStorage.removeItem('cupon');
+      }else{
+        toast.error(res.data);
+      }
     })
     .catch(error => {
         console.log("ERROR:: ", error);
