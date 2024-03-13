@@ -15,6 +15,9 @@ import { toast } from "react-toastify";
 import StarRating from "../OrderManagement/StarRating";
 import Location from "../../assets/Images/map.png";
 import OrderServices from "../../services/API/OrderServices"; //~/services/API/OrderServices
+import RefundService from "../../services/API/RefundService"; //~/services/API/RefundService
+import moment from "moment";
+import axios from "axios";
 
 const DetailedProductInfo = ({ order }) => {
   const [orderitems, setOrderItems] = useState({});
@@ -183,6 +186,8 @@ const CompleteOrders = () => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
   const [requestSentVisible, setRequestSentVisible] = useState({});
   const [files, setFiles] = useState([]);
+  const [productid, setProductId] = useState(0);
+  const [orderid, setOrderId] = useState(0);
   const [descriptions, setDescriptions] = useState("");
   const orderDetails = (index, id) => {
     OrderServices.getSingleOrderSummary(id)
@@ -198,6 +203,7 @@ const CompleteOrders = () => {
     // const { orderNumber, productName, images } = orderData;
     const orderProducts = JSON.parse(JSON.parse(orderData.orderItems));
     const handleRefundClick = (orderIndex) => {
+
       setRefundDetailsVisible({
         ...refundDetailsVisible,
         [orderIndex]: true,
@@ -205,16 +211,40 @@ const CompleteOrders = () => {
     };
 
     const handleSubmitDetails = (orderIndex) => {
-      setRefundDetailsVisible({
-        ...refundDetailsVisible,
-        [orderIndex]: false,
+
+      const formData = new FormData();
+      // formData.append('files', files);
+      files.forEach((image_file) => {
+        formData.append("file[]", image_file);
       });
-      setRequestSentVisible({
-        ...requestSentVisible,
-        [orderIndex]: true,
-      });
-      console.log("files", files);
-      console.log("descriptions", descriptions);
+      formData.append('reason', descriptions);
+      formData.append('product_id', productid);
+      formData.append('order_id', orderid)
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      };
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+      axios
+        .post("http://localhost:8000/api/refund", formData, config)
+        .then((response) => {
+          setRefundDetailsVisible({
+            ...refundDetailsVisible,
+            [orderIndex]: false,
+          });
+          setRequestSentVisible({
+            ...requestSentVisible,
+            [orderIndex]: true,
+          });
+          getCustomerOrder();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     };
 
     const handleCloseRequestSent = (orderIndex) => {
@@ -226,10 +256,13 @@ const CompleteOrders = () => {
     const handleCallback = (childData) => {
       setFiles(childData);
     };
-    const handleDescriptions = (childData) => {
+    const handleDescriptions = (childData, orderId) => {
       setDescriptions(childData);
+      setOrderId(orderId);
     };
-
+    const handleProductId = (childData)=>{
+      setProductId(childData)
+    };
     return (
       <div className="row align-items-center" key="orderNumber">
         <div className="col-lg-8">
@@ -346,21 +379,21 @@ const CompleteOrders = () => {
             ) : (
               ""
             )}
-            {orderData.status == "DELIVERED" ? (
+            {orderData.status == "delivered" ? (
               <>
                 <span style={{ color: "green" }}>Delivered</span>
               </>
             ) : (
               ""
             )}
-            {orderData.status == "COMPLETED" ? (
+            {orderData.status == "completed" ? (
               <>
                 <span style={{ color: "green" }}>Order Completed</span>
               </>
             ) : (
               ""
             )}
-            {orderData.status == "REFUND" ? (
+            {orderData.status == "refund" ? (
               <>
                 <span>Order Refund</span>
               </>
@@ -388,6 +421,7 @@ const CompleteOrders = () => {
                 <RefundPopup
                   parentCallback={handleCallback}
                   parentDescription={handleDescriptions}
+                  parentProductId={handleProductId}
                   orderid={orderData.id}
                 />
               </div>
@@ -447,7 +481,6 @@ const CompleteOrders = () => {
   const getCustomerOrder = () => {
     OrderServices.customerCompletedOrders().then((response) => {
       setCustomerOrders(response);
-      console.log("complted orders", response);
     });
   };
   useEffect(() => {

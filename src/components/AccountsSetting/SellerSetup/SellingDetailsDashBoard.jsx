@@ -264,7 +264,11 @@ const SellingDetailsDashBoard = (props) => {
   const getUserCompletedCount = () => {
     OrderServices.getusercompletedcount()
       .then((response) => {
-        setOrderCount(response);
+        if(response.length > 0){
+          setOrderCount(response); 
+        }else{
+          setOrderCount(0); 
+        }
       })
       .catch((e) => {
         toast.error(e.message);
@@ -398,12 +402,12 @@ const SellingDetailsDashBoard = (props) => {
                           <div className="product-item">
                             <div className="detaildashbritemdetail">
                               <div className="img-title">
-                                <div>
+                                {/* <div>
                                   <img
                                     src={SellerProductImage1}
                                     alt={summary?.product.name}
                                   />
-                                </div>
+                                </div> */}
                                 <div>
                                   <p>ORDER#{summary.order.orderid}</p>
                                   <h4>{summary?.product.name}</h4>

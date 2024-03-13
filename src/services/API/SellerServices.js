@@ -119,11 +119,28 @@ function setBank(data) {
       params
     })
   }
+  function getUserSaveSeller(params = {}) {
+    return request({
+      url: `${baseUrl}getusersaveseller`,
+      params
+    })
+  }
+
+  function getFeedBack(id) {
+    return request({
+      url: `${baseUrl}feedback/${id}`,
+      method: 'GET'
+    })
+  }
+  
+  
 
 const SellerServices = {
   all,
   getFeatured,
+  getFeedBack,
   detail,
+  getUserSaveSeller,
   upload,
   update,
   detailById,

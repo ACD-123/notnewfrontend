@@ -1,31 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import RightArrow from '../../assets/Images/rightarrow.png';
-import Prdimage from '../../assets/Images/Singleproduct/prdimage.png';
-import Prdimage1 from '../../assets/Images/Singleproduct/Product1.png';
-import Prdimage2 from '../../assets/Images/Singleproduct/Product2.png';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import RightArrow from "../../assets/Images/rightarrow.png";
+import Prdimage from "../../assets/Images/Singleproduct/prdimage.png";
+import Prdimage1 from "../../assets/Images/Singleproduct/Product1.png";
+import Prdimage2 from "../../assets/Images/Singleproduct/Product2.png";
 import icon1 from "../../assets/Images/icons/1.png";
 import icon2 from "../../assets/Images/icons/2.png";
 import icon3 from "../../assets/Images/icons/3.png";
+import blank from "../../assets/Images/Productcard/blank.jpg";
 import SellerProductImage2 from "../../assets/Images/Categorylisting/2.png";
 import OrderServices from "../../services/API/OrderServices"; //~/services/API/OrderServices
 import StarRating from "../OrderManagement/StarRating";
 import Location from "../../assets/Images/map.png";
 import { toast } from "react-toastify";
+import moment from "moment";
+import axios from "axios";
 
 const DetailedProductInfo = ({ order }) => {
   const [orderitems, setOrderItems] = useState({});
-  const [estDelivery, setEstDelivery] = useState('');
-  const [orderstatus, setOrderStatus] = useState('');
+  const [estDelivery, setEstDelivery] = useState("");
+  const [orderstatus, setOrderStatus] = useState("");
   const [shipping, setShipping] = useState(0);
   const [discount, setDiscount] = useState(0);
   const handleEstDelivery = (event) => {
     setEstDelivery(event.target.value);
   };
-  const handleOrderStatus = (e) =>{
+  const handleOrderStatus = (e) => {
     e.preventDefault();
     setOrderStatus(e.target.value);
-  }
+  };
   const getOrderItems = () => {
     if (order.order) {
       setOrderItems(JSON.parse(JSON.parse(order.order.orderItems)));
@@ -69,12 +72,12 @@ const DetailedProductInfo = ({ order }) => {
               <div className="col-lg-6">
                 <div className="deliverystatustime">
                   <h3>Delivery Status</h3>
-                  Est. Delivery 
-                    <span>{order.order.estimateDelivery}</span>
+                  Est. Delivery
+                  <span>{order.order.estimateDelivery}</span>
                 </div>
               </div>
               <div className="col-lg-6">
-                  <span>{order.order.status}</span>
+                <span>{order.order.status}</span>
               </div>
             </div>
             {orderitems.length > 0 ? (
@@ -166,9 +169,7 @@ const DetailedProductInfo = ({ order }) => {
             </div>
             <div className="not-order-detail">
               <h3>Note</h3>
-              <div className="ord-note">
-                {order.order.admin_notes}
-              </div>
+              <div className="ord-note">{order.order.admin_notes}</div>
             </div>
           </div>
         </>
@@ -179,184 +180,294 @@ const DetailedProductInfo = ({ order }) => {
   );
 };
 const Refunds = () => {
-    // ... (existing code)
-    const orderDetails = (index, id) => {
-      OrderServices.getSingleOrderSummary(id)
-        .then((response) => {
-          setSelectedOrder(response);
-        })
-        .catch((e) => {
-          toast.error(e.message);
-        });
-      setSelectedProduct(index);
+  const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
+  const [requestSentVisible, setRequestSentVisible] = useState({});
+  const [files, setFiles] = useState([]);
+  const [productid, setProductId] = useState(0);
+  const [orderid, setOrderId] = useState(0);
+  const [descriptions, setDescriptions] = useState("");
+  // ... (existing code)
+  const orderDetails = (index, id) => {
+    OrderServices.getSingleOrderSummary(id)
+      .then((response) => {
+        setSelectedOrder(response);
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+    setSelectedProduct(index);
+  };
+  const renderOrderBlock = (orderData) => {
+    // const { orderNumber, productName, images } = orderData;
+    const orderProducts = JSON.parse(JSON.parse(orderData.orderItems));
+    const handleRefundClick = (orderIndex) => {
+
+      setRefundDetailsVisible({
+        ...refundDetailsVisible,
+        [orderIndex]: true,
+      });
     };
-    const renderOrderBlock = (orderData) => {
-      // const { orderNumber, productName, images } = orderData;
-      console.log('orderNumber', orderData)
-      return (
-        <>
-        {selectedProduct ? (
-          <>
-            {/* <div className="reviews-view-ordrmngment">
-              <DetailedProductInfo order={selectedOrder} />
-            </div> */}
-            <div className="reviews-view-ordrmngment">
-            <DetailedProductInfo order={selectedOrder} />
-            <h3>Ratingss</h3>
-          {/* Render reviews for the selected product */}
-            <div className="review-section">
-            {/* Map through selectedOrder.reviews */}
-            {/* {selectedOrder.reviews.map((review, index) => ( */}
-            <div  className="review">
-                {/* Display star rating based on review.rating */}
-                <div className="stars-values">
-                  <StarRating value="2" />
-                  <div>{`${2}`}</div>
-                </div>
-                <div className="customer-reviews">
-                  <h3>Customer Review</h3>
-                  <p style={{color: 'black'}}><textarea placeholder="Comment" style={{ width: "100%", background: 'none', border: 'none'}}></textarea></p>
-                </div>
-                <Link style={{ textDecoration: "unset" }}>
-                  <button className="updteordr">Save</button>
-                </Link>
-              </div>
-            {/* ))} */}
-  
-            </div>
-          </div>
-          </>
-        ):(
-          <>
-          {orderData ?(
-          <>
-          <h3>Recent Orders</h3>
-            <div className='row align-items-center' key="1">
-          <div className='col-lg-8'>
-            <div className='product-image'>
-              <div className='image'>
-                {/* {images.map((image, index) => (
-                  <img key={index} src={image} alt={`Product ${index + 1}`} />
-                ))} */}
-                <img src={Prdimage1} alt='' />
-              </div>
-              <div className='prd-details'>
-                <h5>Order # : <b>{orderData.orderid}</b></h5>
-                {/* <h3>{productName}</0h3> */}
-              </div>
-            </div>
-          </div>
-  
-          <div className='col-lg-2'>
-            <div className='delivery-bttn'>
-              {orderData.status == "ordered" ? (
+
+    const handleSubmitDetails = (orderIndex) => {
+
+      const formData = new FormData();
+      // formData.append('files', files);
+      files.forEach((image_file) => {
+        formData.append("file[]", image_file);
+      });
+      formData.append('reason', descriptions);
+      formData.append('product_id', productid);
+      formData.append('order_id', orderid)
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      };
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+      axios
+        .post("http://localhost:8000/api/refund", formData, config)
+        .then((response) => {
+          setRefundDetailsVisible({
+            ...refundDetailsVisible,
+            [orderIndex]: false,
+          });
+          setRequestSentVisible({
+            ...requestSentVisible,
+            [orderIndex]: true,
+          });
+          getCustomerOrder();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    const handleCloseRequestSent = (orderIndex) => {
+      setRequestSentVisible({
+        ...requestSentVisible,
+        [orderIndex]: false,
+      });
+    };
+    const handleCallback = (childData) => {
+      setFiles(childData);
+    };
+    const handleDescriptions = (childData, orderId) => {
+      setDescriptions(childData);
+      setOrderId(orderId);
+    };
+    const handleProductId = (childData)=>{
+      setProductId(childData)
+    };
+    return (
+      <div className="row align-items-center" key="orderNumber">
+        <div className="col-lg-8">
+          <div className="product-image">
+            <div className="prd-details">
+              <h5>
+                Order # : <b>{orderData.orderid}</b>
+              </h5>
+              {/* <h3>"productName"</h3> */}
+              {orderProducts.length > 0 ? (
                 <>
-                <span>Delivery in Process</span>
+                  {orderProducts.map((product, index) => {
+                    let attributes = JSON.parse(product.attributes);
+                    return (
+                      <>
+                        <ul
+                          style={{
+                            listStyle: "none",
+                            padding: "0px",
+                            margin: "0px",
+                          }}
+                        >
+                          <li>
+                            <div className="image">
+                              {orderProducts.media?.length > 0 ? (
+                                <>
+                                  {/* {images.map((image, index) => (
+                            <img key={index} src={image} alt={`Product ${index + 1}`} />
+                          ))} */}
+                                </>
+                              ) : (
+                                <>
+                                  <img src={blank} alt="blank" />
+                                </>
+                              )}
+                            </div>
+                          </li>
+                          <li key={index}>Name: {product.name}</li>
+                          {attributes.length > 0 ? (
+                            <>
+                              <li>
+                                Attributes:
+                                <ul style={{ listStyle: "none" }}>
+                                  {attributes.map((attribute, index) => {
+                                    return (
+                                      <>
+                                        <li key={index}>
+                                          {attribute.size ? (
+                                            <>Size: {attribute.size}</>
+                                          ) : (
+                                            ""
+                                          )}
+                                          {attribute.quantity ? (
+                                            <>
+                                              &nbsp;&nbsp;| Quantity:{" "}
+                                              {attribute.quantity}
+                                            </>
+                                          ) : (
+                                            ""
+                                          )}{" "}
+                                          {attribute.colors ? (
+                                            <>
+                                              | Color:{" "}
+                                              <div
+                                                style={{
+                                                  width: "50px",
+                                                  background: attribute.colors,
+                                                }}
+                                              >
+                                                {attribute.colors}
+                                              </div>
+                                            </>
+                                          ) : (
+                                            ""
+                                          )}
+                                        </li>
+                                      </>
+                                    );
+                                  })}
+                                </ul>
+                              </li>
+                            </>
+                          ) : (
+                            ""
+                          )}
+                        </ul>
+
+                        {/* <div className='col' key={index}>
+                      <img src={path} style={{ width: '100%' }} alt={`Image ${index + 1}`} />
+                    </div> */}
+                      </>
+                    );
+                  })}
                 </>
-              ):('')}
-              {orderData.status == "pending" ? (
-                <>
-                <span>Delivery in Process</span>
-                </>
-              ):('')}
-              {orderData.status == "DELIVERED" ? (
-                <>
-                <span style={{ color : 'green'}}>Delivered</span>
-                </>
-              ):('')}
-              {orderData.status == "COMPLETED" ? (
-                <>
-                <span style={{ color : 'green'}}>Order Completed</span>
-                </>
-              ):('')}
-              {orderData.status == "REFUND" ? (
-                <>
-                <span>Order Refund</span>
-                </>
-              ):('')}
-            </div>
-          </div>
-          <div className='col-lg-2'>
-            <div className='rightarrow'>
-              <a href="#" onClick={(e) =>
-                  orderDetails(e, orderData.id)
-                }>
-                  {/* <Link to='/singleproduct'> */}
-                  <img src={RightArrow} alt='Right Arrow' />
-                  {/* </Link> */}
-  
-            </a>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>
-          </>
-        ):('No Orders')}
-          </>
-        )}
-        
-        </>
-      );
-    };
-  
-    const ordersData = [
-        {
-          orderNumber: '15s5d8e1',
-          productName: "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
-          images: [
-            Prdimage,
-          ],
-          refundStatus: 'In Process',
-        },
-        {
-            orderNumber: '15s5d8e2',
-            productName: "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
-            images: [
-              Prdimage1,
-            ],
-            refundStatus: 'Refunded',
-        },
-        {
-            orderNumber: '15s5d8e2',
-            productName: "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
-            images: [
-              Prdimage2, // Add more image URLs here for the first order
-              // Add more image URLs for the first order as needed
-            ],
-            refundStatus: 'Hold',
-        },
-    
-      ];
-      const [customerorders, setCustomerOrders] = useState({});
-      const [selectedProduct, setSelectedProduct] = useState(null);
-      const [selectedOrder, setSelectedOrder] = useState({});
-      const getCustomerOrder = () =>{
-        OrderServices.customerRefundOrders()
-          .then((response) => {
-            setCustomerOrders(response);
-            console.log('complted orders', response)
-        })
-      }
-      useEffect(() => {
-        getCustomerOrder();
-      }, []);
-      return (
-        <>
-          <div className='ongoing'>
-          {customerorders.length > 0 ?(
-          <>
-          {customerorders?.map((order, index) => {
-            return(
+        <div className="col-lg-2">
+          <div className="orderdeliver-bttn">
+            {orderData.status == "ordered" ? (
               <>
-              <React.Fragment key={index}>
-                {renderOrderBlock(order)}
-                {index !== customerorders.length - 1 && <hr />}
-              </React.Fragment>
+                <span>Delivery in Process</span>
               </>
-            )
-          })}
+            ) : (
+              ""
+            )}
+            {orderData.status == "pending" ? (
+              <>
+                <span>Delivery in Process</span>
+              </>
+            ) : (
+              ""
+            )}
+            {orderData.status == "delivered" ? (
+              <>
+                <span style={{ color: "green" }}>Delivered</span>
+              </>
+            ) : (
+              ""
+            )}
+            {orderData.status == "completed" ? (
+              <>
+                <span style={{ color: "green" }}>Order Completed</span>
+              </>
+            ) : (
+              ""
+            )}
+            {orderData.status == "refund" ? (
+              <>
+                <span>Order Refund Requested</span>
+              </>
+            ) : (
+              ""
+            )}
+            {/* <Link to=''>Order Delivered</Link> */}
+          </div>
+        </div>
+        <div className="col-lg-2">
+          <div className="refund-reorder">
+            <Link to="">
+              <button>View Order</button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const ordersData = [
+    {
+      orderNumber: "15s5d8e1",
+      productName:
+        "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
+      images: [Prdimage],
+      refundStatus: "In Process",
+    },
+    {
+      orderNumber: "15s5d8e2",
+      productName:
+        "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
+      images: [Prdimage1],
+      refundStatus: "Refunded",
+    },
+    {
+      orderNumber: "15s5d8e2",
+      productName:
+        "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
+      images: [
+        Prdimage2, // Add more image URLs here for the first order
+        // Add more image URLs for the first order as needed
+      ],
+      refundStatus: "Hold",
+    },
+  ];
+  const [customerorders, setCustomerOrders] = useState({});
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState({});
+  const getCustomerOrder = () => {
+    OrderServices.customerRefundOrders().then((response) => {
+      setCustomerOrders(response);
+      console.log("complted orders", response);
+    });
+  };
+  useEffect(() => {
+    getCustomerOrder();
+  }, []);
+  return (
+    <>
+      <div className="ongoing">
+        {customerorders.length > 0 ? (
+          <>
+            {customerorders?.map((order, index) => {
+              return (
+                <>
+                  <React.Fragment key={index}>
+                    {renderOrderBlock(order)}
+                    {index !== customerorders.length - 1 && <hr />}
+                  </React.Fragment>
+                </>
+              );
+            })}
           </>
-        ):(
-          'No Orders Exits'
+        ) : (
+          "No Orders Exits"
         )}
         {/* {ordersData.map((order, index) => (
           <React.Fragment key={index}>
@@ -365,14 +476,14 @@ const Refunds = () => {
           </React.Fragment>
         ))} */}
 
-            {/* {ordersData.map((order, index) => (
+        {/* {ordersData.map((order, index) => (
               <React.Fragment key={index}>
                 {renderOrderBlock(order)}
                 {index !== ordersData.length - 1 && <hr />}
               </React.Fragment>
             ))} */}
-          </div>
-        </>
-      );
-  };
+      </div>
+    </>
+  );
+};
 export default Refunds;
