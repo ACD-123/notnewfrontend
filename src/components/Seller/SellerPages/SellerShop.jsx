@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import Nav from '../../../assets/Images/SellerShop/nav.png'
 import Footer from '../../Footer'
 import Header from '../../Header'
@@ -8,14 +8,32 @@ import SellerCategories from './SellerCategories'
 import SellerCategoryShop from '../../Elements/SellerElements/SellerCategoryShop';
 import SellerAbout from './SellerAbout';
 import SellerFeedbackNew from './SellerFeedBackNew';
+import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
 
 const SellerShop = () => {
   const [activeTab, setActiveTab] = useState('seller1');
+  const [shopdata, setShopData] = useState([]);
+  const { pathname } = window.location;
+  const id = pathname.split("/").pop();
+  
+  const getShopData=()=>{
+    SellerServices.getStore(id)
+    .then((response) => {
+      if(response.status){
+        setShopData(response.data);
+      }
+    })
+    .catch((e) => {
+      console.log(e.message);
+    });
 
+  }
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-
+  useEffect(() => {
+    getShopData();
+  }, []);
   return (
     <>
     {/* HEADER */}
@@ -24,7 +42,7 @@ const SellerShop = () => {
     <section id='sellershop'>
       <div className='container'>
         <div className='row'>
-          <SellerProfileDetails />
+          <SellerProfileDetails shopdata={shopdata} />
         </div>
         <div className='row'>
           <div className='category-shop-about'>

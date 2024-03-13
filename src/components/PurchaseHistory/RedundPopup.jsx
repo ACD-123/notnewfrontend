@@ -12,7 +12,7 @@ const RefundPopup = (props) => {
   // const [descriptions, setDescriptions] = useState("");
   const [imgFile, setFiles] = useState([]);
 
-  const getOrders =() =>{
+ const getOrders =() =>{
       if(orderid){
         OrderServices.getbyid(orderid)
         .then((response) => {
@@ -53,8 +53,11 @@ const RefundPopup = (props) => {
     fileInputRef.current.click();
   };
   const handleDescriptions =(e) =>{
-    props.parentDescription(e.target.value)
+    props.parentDescription(e.target.value, orderid)
     // setDescriptions(e.target.value);
+  }
+  const handleProducts =(productId, orderId)=>{
+    props.parentProductId(productId)
   }
   useEffect(() => {
     getOrders();
@@ -62,7 +65,7 @@ const RefundPopup = (props) => {
   return (
     <div className='main-refund-popup'>
         <h1>Ask for a Refund</h1>
-        <RefundProductCart images={imgFile}/>
+        <RefundProductCart productIdCallBack={handleProducts}  images={imgFile}/>
       <h3>Refund Reason Images <span>( 5 images )</span></h3>  
       <input
         type="file"
