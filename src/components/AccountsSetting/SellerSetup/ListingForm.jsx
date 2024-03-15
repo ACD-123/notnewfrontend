@@ -311,7 +311,7 @@ const ListingForm = (props) => {
     //       'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
     //      }
     // }
-    // axios.post('http://localhost:8000/api/products/upload', formData, config)
+    // axios.post('https://notnewbackend.testingwebsitelink.com/api/products/upload', formData, config)
     //   .then(response => {
     //     localStorage.setItem('product_guid',response.data.product)
     //   })
@@ -495,7 +495,7 @@ const ListingForm = (props) => {
           },
         };
         axios
-          .post("http://localhost:8000/api/products/add", formData, config)
+          .post("https://notnewbackend.testingwebsitelink.com/api/products/add", formData, config)
           .then((response) => {
             setShowPopup(true);
             setIsLoading(false);
@@ -840,7 +840,7 @@ const ListingForm = (props) => {
                   <>
                     <img
                       key={index}
-                      src={`http://localhost:8000/image/product/${blob.name}`}
+                      src={`https://notnewbackend.testingwebsitelink.com/image/product/${blob.name}`}
                       alt={`Product ${index + 1}`}
                       style={{
                         width: "100px",

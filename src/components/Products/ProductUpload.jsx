@@ -25,7 +25,7 @@ const ProductUpload = () => {
             'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
            }
       }
-      axios.post('http://localhost:8000/api/products/upload', formData, config)
+      axios.post('https://notnewbackend.testingwebsitelink.com/api/products/upload', formData, config)
         .then(response => {
             console.log(response);
         })

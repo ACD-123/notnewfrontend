@@ -2,6 +2,7 @@ export const BASE_URL = process.env.REACT_APP_BASE_URL
 export const BASE_API = process.env.REACT_APP_API_URL
 export const STRIPE_PUBLISHABLE_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY
 export const GOOGLE_LOCATION_KEY = process.env.REACT_GOOGLE_LOCATION_KEY
+export const BASE_STORAGE_URL = process.env.REACT_APP_STORAGE_URL
 // export const CLIENT_ID = process.env.client_id
 // export const CLIENT_SECRET = process.env.client_secret
 // export const GRANT_TYPE = process.env.grant_type

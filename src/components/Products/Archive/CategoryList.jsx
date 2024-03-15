@@ -6,6 +6,7 @@ import Categoryimage4 from "../../../assets/Images/MainCategories/Category4.png"
 import Categoryimage5 from "../../../assets/Images/MainCategories/Category5.png"
 import Categoryimage6 from "../../../assets/Images/MainCategories/Category6.png"
 import Categoryimage7 from "../../../assets/Images/MainCategories/Category7.png"
+import blank from "../../../assets/Images/Productcard/blank.jpg";
 import { Link } from "react-router-dom";
 import CategoryServicies from '../../../services/API/Category'; //~/services/API/Category
 import { BASE_URL } from "../../../services/Constant";
@@ -68,7 +69,7 @@ const CategoryList = () => {
                             })}
                             </>
                           ):(
-                            <img src={Categoryimage1} alt={Categoryimage1} />
+                            <img src={blank} alt="blank" />
                           )
                           }
                         </div>

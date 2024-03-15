@@ -3,6 +3,8 @@ import Emailverifyimagebg from "../../assets/Images/Accountimages/signup.png";
 import Logo from "../../assets/Images/logo.png";
 import Line from "../../assets/Images/Accountimages/line.png";
 import AuthServices from "../../services/API/AuthService"; //~/services/API/AuthService
+import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
+
 import { toast } from "react-toastify";
 var Emailverifybg = {
   backgroundImage: `url(${Emailverifyimagebg})`,
@@ -55,7 +57,28 @@ const ForgotVerification = () => {
         setEnabled(false);
       });
   };
-
+  const handleResend = (e) =>{
+    e.preventDefault();
+    setIsLoading(true);
+    setEnabled(true);
+    let data={
+      'email': email
+    }
+    UserServices.resendForgetOtp(data)
+     .then((response) => {
+      if(response.status){
+        toast.success(response.data)
+      }
+    })
+    .catch((e) => {
+      console.log('Error:', e)
+      setIsLoading(false);
+      setEnabled(false);
+    }).then(() => {
+      setIsLoading(false);
+      setEnabled(false);
+    });
+}
   return (
     <>
       <section id="emailverification" style={Emailverifybg}>
@@ -108,6 +131,12 @@ const ForgotVerification = () => {
                       type="submit"
                       value="Send Code"
                     /> */}
+                    <div className="emailresend-recieve">
+                      <ul>
+                        <li className="code"><a href="#">Didn't Receive the code?</a></li>
+                        <li className="resend"><a href="#" onClick={handleResend}>Resend</a></li>
+                      </ul>
+                    </div>
                     <button
                       type="submit"
                       lassName="btn btn-primary"
