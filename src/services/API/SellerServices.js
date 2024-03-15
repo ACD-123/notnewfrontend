@@ -85,10 +85,9 @@ function setBank(data) {
     })
   }
 
-  function getShopDetails(data) {
-    console.log('data', data)
+  function getShopDetails() {
     return request({
-      url: `${baseUrl}getshopdetails/${data}`,
+      url: `${baseUrl}getshopdetails`,
       method: 'GET',
     })
   }

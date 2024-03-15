@@ -41,8 +41,9 @@ const SetupSellerAccount = () => {
     let loggedInUser = localStorage.getItem("user_details");
     if (loggedInUser) {
     const loggedInUsers = JSON.parse(loggedInUser);
-    SellerServices.getShopDetails(loggedInUsers?.id)
+    SellerServices.getShopDetails()
     .then((response) => {
+      console.log('shop')
       if(response.status){
         setFormData(response.data);
         State.get(response.data.country_id)
@@ -89,10 +90,26 @@ const SetupSellerAccount = () => {
     }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
+      const fd = new FormData();
+      fd.append("name", formData.name);
+      fd.append("email", formData.email);
+      fd.append("address", formData.address);
+      fd.append("phone", formData.phone);
+      fd.append("country", formData.country_id);
+      fd.append("state", formData.state_id);
+      fd.append("city", formData.city_id);
+      fd.append("zip", formData.zip);
+      if(profilePic){
+        fd.append("file", profilePic);
+      }
+      for (let pair of fd.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+      
       setIsLoading(true);
       setEnabled(true);
       if(formData.guid === ""){
-        SellerServices.save(formData)
+        SellerServices.save(fd)
         .then((response) => {
             setFormSubmitted(true);
         })
@@ -106,7 +123,7 @@ const SetupSellerAccount = () => {
           setEnabled(false);
         });
       }else{
-        SellerServices.update(formData)
+        SellerServices.update(fd)
         .then((response) => {
           toast.success(response);
           setFormSubmitted(true);

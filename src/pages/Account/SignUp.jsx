@@ -119,9 +119,30 @@ const SignUp = () => {
     }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
+      
+      const fd = new FormData();
+      fd.append("name", formData.name);
+      fd.append("email", formData.email);
+      fd.append("address", formData.address);
+      fd.append("phone", formData.phone);
+      fd.append("country", formData.country);
+      fd.append("state", formData.state);
+      fd.append("city", formData.city);
+      fd.append("zip", formData.zip);
+      fd.append("password", formData.password);
+      fd.append("state", formData.password_confirmation);
+      if(profilePic){
+        fd.append("file", profilePic);
+      }
+      // profilePic.forEach((image_file) => {
+      //   formData.append("file[]", image_file);
+      // });
+      for (let pair of fd.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
       setIsLoading(true);
       setEnabled(true);
-      AuthService.register(formData)
+      AuthService.register(fd)
       .then((response) => {
         if(response.status === "email"){
           toast.error(response.message);  

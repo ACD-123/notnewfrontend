@@ -72,7 +72,7 @@ function updateProfile(data) {
   return request({
     url: `${baseUrl}profileupdate`,
     data,
-    method: 'PATCH',
+    method: 'POST',
   })
 }
 
@@ -193,9 +193,25 @@ function getSellerActiveBid(){
     method: "GET"
   })
 }
+function resendOtp(data) {
+  return request({
+    url: `${baseUrl}resendOtp`,
+    data,
+    method: "POST"
+  })
+}
+function resendForgetOtp(data) {
+  return request({
+    url: `${baseUrl}resendForgetOtp`,
+    data,
+    method: "POST"
+  })
+}
 const UserService = {
   all,
   getUserBid,
+  resendOtp,
+  resendForgetOtp,
   getSellerActiveBid,
   deleteRecentUser,
   detail,

@@ -5,18 +5,20 @@ import SearchwithCategories from "./Elements/SearchwithCategories";
 import Avatar from "../assets/Images/Elements/avatar.png";
 import Cart from "../assets/Images/Elements/cart.png";
 import NavBar from "./Elements/NavBar";
+import blankUser from "../../src/assets/Images/User/blankuser.jpg"
 import { Link } from "react-router-dom";
 import UserServices from "../services/API/UserServices"; //~/services/API/AuthService
 import { toast } from "react-toastify";
 import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth"; // ~/services/Auth
 import AuthServices from "../services/API/AuthService"; //~/services/API/AuthService
 import CartServices from "../services/API/CartServices"; //~/services/API/CartServices
-
+import {BASE_STORAGE_URL} from "../services/Constant"
 const Header = () => {
   const items = useSelector(state => state.cupon.cupon);
   const cart_items = items ? items : 0;
   const [showDropdown, setShowDropdown] = useState(false);
   const [user, setUser] = useState({});
+  const [profilepic, setProfilePic] = useState("");
   const [cartitems, setCartItems] = useState(0);
   let token = localStorage.getItem("access_token");
   const toggleDropdown = () => {
@@ -29,6 +31,7 @@ const Header = () => {
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
+        setProfilePic(response.profile_image)
         setUserDetails(response);
         setUser(response);
         localStorage.setItem('user_details', JSON.parse(response));
@@ -43,13 +46,15 @@ const Header = () => {
      * In case of calling api
      * use following code
      */
-    CartServices.count()
-    .then((response) => {
-      setCartItems(response);
-    })
-    .catch((e) => {
-      toast.error(e.message);
-    });
+    if(token){
+      CartServices.count()
+      .then((response) => {
+        setCartItems(response);
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+    }
   }
   const signOut = (e) => {
     e.preventDefault();
@@ -100,7 +105,17 @@ const Header = () => {
                         className="avatar-container"
                         onClick={toggleDropdown}
                       >
-                        <img src={Avatar} alt="User Avatar" />
+                        {profilepic ? (
+                          <>
+                            <img src={`https://notnewbackend.testingwebsitelink.com/storage/${profilepic}`} width="50" height="50" style={{ borderRadius: "40px"}} alt="User Avatar" />
+                          </>
+                        ):(
+                          <>
+                            <img src={blankUser} width="50" height="50" style={{ borderRadius: "40px"}} alt="User Avatar" />
+                          </>
+                        )}
+                        {/* <img src={Avatar} alt="User Avatar" /> */}
+                        
                       </div>
                       {showDropdown && (
                         <div className="dropdown-content">

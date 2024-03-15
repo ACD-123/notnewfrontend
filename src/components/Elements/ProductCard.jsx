@@ -74,20 +74,26 @@ const ProductCard = (props) => {
     try {
       if (status == "active") {
         ProductServices.selfValue(status).then((response) => {
-          if (response.data.length > 0) {
-            setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+          if(response.data){
+            if (response.data.length > 0) {
+              setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+            }
           }
         });
       } else if (status == "inactive") {
         ProductServices.selfValue(status).then((response) => {
-          if (response.data.length > 0) {
-            setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+          if(response.data){
+            if (response.data.length > 0) {
+              setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+            }
           }
         });
       } else if (status == "scheduled") {
         ProductServices.selfValue(status).then((response) => {
-          if (response.data.length > 0) {
-            setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+          if(response.data){
+            if (response.data.length > 0) {
+              setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+            }
           }
         });
       } else if (props.products) {
