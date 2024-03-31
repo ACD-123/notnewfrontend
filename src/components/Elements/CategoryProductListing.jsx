@@ -68,8 +68,10 @@ const CategoryProductListing = () => {
         ProductServices.all()
         .then((response) => {
           // console.log('mobiles products', response.filter(product => product.category === categoryFilter))
-        const filteredProducts = response.filter(product => product.category === categoryFilter);
-        setProductData(filteredProducts.slice(0, 5)); // Limit to the first 5 products
+          if(response.status){
+            const filteredProducts = response.data.filter(product => product.category === categoryFilter);
+            setProductData(filteredProducts.slice(0, 5)); // Limit to the first 5 products
+          }
         })
       }catch (error) {
         console.error('Error fetching product data:', error);

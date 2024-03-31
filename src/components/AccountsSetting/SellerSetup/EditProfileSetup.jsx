@@ -21,15 +21,15 @@ const EditProfileSetup = () => {
     // Perform validations or modifications if needed
     setProfilePic(selectedFile);
   };
-  const getCountry = () => {
-    CountryServices.all()
-      .then((response) => {
-        setCountry(response);
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      });
-  };
+  // const getCountry = () => {
+  //   CountryServices.all()
+  //     .then((response) => {
+  //       setCountry(response);
+  //     })
+  //     .catch((e) => {
+  //       toast.error(e.message);
+  //     });
+  // };
   const getStates = () => {
     State.all()
       .then((response) => {
@@ -136,22 +136,27 @@ const EditProfileSetup = () => {
       if (loggedInUsers.isTrustedSeller === 1) {
         SellerServices.getShopDetails(loggedInUsers?.id)
           .then((response) => {
-            setShopData(response);
-            State.get(response.country_id)
-            .then((states) => {
-              setState(states);
-            })
-            City.get(response.state_id)
-            .then((cities) => {
-              setCity(cities);
-            })
+            if(response.status){
+              setShopData(response.data);
+              setCountry(response.data.country_id)
+              setState(response.data.state_id)
+              // setCountry("")
+            }
+            // State.get(response.country_id)
+            // .then((states) => {
+            //   setState(states);
+            // })
+            // City.get(response.state_id)
+            // .then((cities) => {
+            //   setCity(cities);
+            // })
           })
           .catch((e) => {
             console.log(e.message);
           });
       }
     }
-    getCountry();
+    // getCountry();
   }, []);
   return (
     <>
@@ -235,7 +240,10 @@ const EditProfileSetup = () => {
                     </div>
                     <div className="d-flex statesfield">
                       <div className="fieldss">
-                        <select
+                        <label  className="form-control">
+                        {countries}
+                        </label>
+                        {/* <select
                           class="form-select"
                           id="country"
                           value={shopData?.country_id}
@@ -255,11 +263,15 @@ const EditProfileSetup = () => {
                           ) : (
                             ""
                           )}
-                        </select>
+                        </select> */}
                         {errors.country_id && <p className="error">{errors.country_id}</p>}
                       </div>
                       <div className="fieldss">
-                        <select
+                      <label  className="form-control">
+                        {states}
+                        </label>
+
+                        {/* <select
                           class="form-select"
                           id="state"
                           value={shopData?.state_id}
@@ -280,11 +292,14 @@ const EditProfileSetup = () => {
                             // <option value="2">State 2</option>
                             ""
                           )}
-                        </select>
+                        </select> */}
                         {errors.state_id && <p className="error">{errors.state_id}</p>}
                       </div>
                       <div className="fieldss">
-                        <select
+                        <label  className="form-control">
+                          {cities}
+                        </label>
+                        {/* <select
                           class="form-select"
                           id="city"
                           name="city"
@@ -305,7 +320,7 @@ const EditProfileSetup = () => {
                           ) : (
                             ""
                           )}
-                        </select>
+                        </select> */}
                         {errors.city_id && <p className="error">{errors.city_id}</p>}
                       </div>
                     </div>

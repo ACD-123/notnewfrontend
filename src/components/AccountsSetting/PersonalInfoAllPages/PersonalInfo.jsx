@@ -4,7 +4,7 @@ import blankuser from "../../../assets/Images/User/blankuser.jpg";
 import UserServices from "../../../services/API/UserServices"; //~/services/API/UserServices
 import { setUserDetails, isLoggedin, getUserDetails } from "../../../services/Auth"; // ~/services/Auth
 import { toast } from "react-toastify";
-
+import {BASE_URL} from "../../../services/Constant"
 const PersonalInfo = () => {
   const [user, setUser] = useState({});
   const [phone, setPhone] = useState("");
@@ -20,10 +20,8 @@ const PersonalInfo = () => {
     site: "",
   });
   const getUser = () =>{
-    UserServices.self().then((response) => {
-      if(response.media){
-        setProfileImage(response.media[0].url);
-      }
+    UserServices.self().then((response) => {  
+      setProfileImage(response.profile_image);
       setEmail(response.email);
       setPhone(response.phone);
       setAd(response.address);
@@ -73,9 +71,8 @@ const PersonalInfo = () => {
     // });
     UserServices.updateProfile(fd)
     .then((response) => {
-      if(response.success){
-        setUserDetails(response)
-        toast.success(response.message)
+      if(response.status){
+        toast.success(response.data)
       }
     });
   };
@@ -94,18 +91,30 @@ const PersonalInfo = () => {
       <section id="prsnlinfo">
         <div className="row">
               <div className="col-lg-3">
+              {/* https://notnewbackend.testingwebsitelink.com/storage/users/51/user/0c98aa20-b9db-4629-9dca-ec6f0377533d.jfif */}
               <div className="profile-pic-wrapper">
                       <div className="pic-holder">
-                        <img
+                        {profilepic ? (<>
+                          <img
+                          id="profilePic"
+                          className="pic"
+                          src={`${BASE_URL}/${profilepic}`}
+                        />
+{/* src="https://notnewbackend.testingwebsitelink.com/storage/users/51/user/0c98aa20-b9db-4629-9dca-ec6f0377533d.jfif" */}
+
+                        </>):(
+                          <>
+                          <img
                           id="profilePic"
                           className="pic"
                           src={
                             profilePic
                               ? URL.createObjectURL(profilePic)
-                              : profilepic
+                              : profilePic
                           }
-                          alt="Profile"
                         />
+                          </>
+                        )}
                         <input
                           className="uploadProfileInput"
                           type="file"

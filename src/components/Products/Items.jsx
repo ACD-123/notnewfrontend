@@ -13,8 +13,9 @@ const RecentViewedItems = () => {
       try {
         ProductServices.all()
         .then((response) => {
-          console.log('response', response)
-        setProductData(response.slice(0, 6)); // Limit to the first 5 products
+          if(response.status){
+            setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+          }
       })
       } catch (error) {
         toast.error(error);

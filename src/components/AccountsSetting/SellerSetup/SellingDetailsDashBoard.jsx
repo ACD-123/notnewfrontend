@@ -7,6 +7,7 @@ import SellerProductImage5 from "../../../assets/Images/Categorylisting/5.png";
 import UserServices from "../../../services/API/UserServices"; //~/services/API/AuthService
 import OrderServices from "../../../services/API/OrderServices"; //~/services/API/OrderServices
 import TransactionServices from "../../../services/API/TransactionServices"; //~/services/API/TransactionServices
+import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
 import { toast } from "react-toastify";
 import {
   setUserDetails,
@@ -249,10 +250,23 @@ const SellingDetailsDashBoard = (props) => {
   const [selectedOrder, setSelectedOrder] = useState({});
   const [ordercount, setOrderCount] = useState(0);
   const [transaction, setTransaction] = useState(0.0);
+  const [shopdata, setShopData] = useState([]);
 
+  const getShopData=()=>{
+    SellerServices.getShopDetails()
+    .then((response) => {
+      if(response.status){
+        setShopData(response.data);
+      }
+    })
+    .catch((e) => {
+      console.log(e.message);
+    });
+  }
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
+        console.log('users', response)
         setUserDetails(response);
         setUser(response);
       })
@@ -309,6 +323,7 @@ const SellingDetailsDashBoard = (props) => {
     getUserCompletedCount();
     getOrderSummary();
     getTransactions();
+    getShopData();
   }, []);
 
   return (
@@ -323,6 +338,16 @@ const SellingDetailsDashBoard = (props) => {
         <>
           <section id="selleng-dashbaord">
             <h3>Hi {user ? <>{user.name}</> : "Seller"},</h3>
+            <h3>
+              {shopdata ? (
+                <>
+                              <Link to={`/sellershop/${shopdata.guid}`}>
+                My Shop
+              </Link></>
+              ):(
+                <></>
+              )}
+</h3>
             <div className="row minndabb">
               <div className="col-lg-4 col">
                 <div className="dabb">

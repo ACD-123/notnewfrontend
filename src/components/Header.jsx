@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth"; // ~/services/Auth
 import AuthServices from "../services/API/AuthService"; //~/services/API/AuthService
 import CartServices from "../services/API/CartServices"; //~/services/API/CartServices
-import {BASE_STORAGE_URL} from "../services/Constant"
+import {BASE_URL} from "../services/Constant"
 const Header = () => {
   const items = useSelector(state => state.cupon.cupon);
   const cart_items = items ? items : 0;
@@ -31,6 +31,7 @@ const Header = () => {
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
+        // console.log('response.profile_image', response.profile_image)
         setProfilePic(response.profile_image)
         setUserDetails(response);
         setUser(response);
@@ -104,10 +105,25 @@ const Header = () => {
                       <div
                         className="avatar-container"
                         onClick={toggleDropdown}
-                      >
+                      > 
                         {profilepic ? (
                           <>
-                            <img src={`https://notnewbackend.testingwebsitelink.com/storage/${profilepic}`} width="50" height="50" style={{ borderRadius: "40px"}} alt="User Avatar" />
+                          {/* https://notnewbackend.testingwebsitelink.com/images/User/62/a249749c-e1cd-49fe-8eb1-83595042ae64.jpg */}
+                          {(() => {
+                          if (user.register_type === 'google' || user.register_type === 'facebook') {
+                            return (
+                              <div>
+                                <img src={profilepic} width="50" height="50" style={{ borderRadius: "40px"}} alt={user.name} />
+                              </div>
+                            );
+                          } else if (user.register_type == 'email'){
+                            return (
+                              <div>
+                                <img src={`${BASE_URL}/${profilepic}`} width="50" height="50" style={{ borderRadius: "40px"}} alt={user.name} />
+                              </div>
+                            )
+                          }
+                        })()}
                           </>
                         ):(
                           <>

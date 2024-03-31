@@ -4,15 +4,19 @@ import Icon1 from '../../../assets/Images/SellerShop/icon1.png'
 import Icon2 from '../../../assets/Images/SellerShop/icon2.png'
 import Icon3 from '../../../assets/Images/SellerShop/icon3.png'
 import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
+import { toast } from "react-toastify";
 
 const SellerProfileDetails = (props) => {
     let shopData = props.shopdata;
+    console.log('shopData', shopData)
     const getFeedback = () =>{
         SellerServices.getFeedBack()
         .then((response) => {
             console.log('feedback', response)
         
             // setSaveSeller(response);
+        }).catch((e) => {
+            toast.error(e);
         });
     }
     useEffect(() => {

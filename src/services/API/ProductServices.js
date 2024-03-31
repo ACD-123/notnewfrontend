@@ -145,6 +145,7 @@ function getSaved(params = {}) {
     params,
   })
 }
+
 function getSaveByUser(params = {}) {
   return request({
     url: `${baseUrl}/getSaveByUser`,
@@ -241,13 +242,6 @@ function recent(params = {}) {
     params,
   })
 }
-function createRecent(data) {
-  return request({
-    url: `${baseUrl}/createRecents`,
-    data,
-    method: 'POST',
-  })
-}
 function Imgupload(data){
   return request({
     url: `${baseUrl}/upload`,
@@ -320,8 +314,15 @@ function getSavedSellerDetails(id) {
     method: 'GET',
   })
 }
+function getCompanies(){
+  return request({
+    url: `${baseUrl}/getcompanies`
+  })
+}
+
 const ProductServices = {
   all,
+  getCompanies,
   getProductByPrice,
   getSavedSellerDetails,
   getTrendingProduct,
@@ -364,7 +365,6 @@ const ProductServices = {
   getSavedAddress,
   recent,
   selfValue,
-  createRecent,
   storeProduct,
 }
 

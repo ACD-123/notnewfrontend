@@ -70,7 +70,7 @@ const SellerShop = () => {
         {activeTab === 'seller1' && <div><SellerCategories /></div>}
         {activeTab === 'seller2' && <div><SellerCategoryShop /></div>}
         {activeTab === 'seller3' && <div><SellerAbout /></div>}
-        {activeTab === 'seller4' && <div><SellerFeedbackNew /></div>}
+        {/* {activeTab === 'seller4' && <div><SellerFeedbackNew /></div>} */}
       </div>
     </div>
           </div>

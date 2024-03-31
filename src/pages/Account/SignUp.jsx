@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Signupimage from "../../assets/Images/Accountimages/signup.png";
 import Logo from "../../assets/Images/logo.png";
 import Avatarprofile from "../../assets/Images/avatarsignup.png";
@@ -7,17 +7,23 @@ import CountryServices from "../../services/API/CountryServices"; //~/services/A
 import State from "../../services/API/State"; //~/services/API/State
 import City from "../../services/API/City"; //~/services/API/City
 import AuthService from "../../services/API/AuthService"; //~/services/API/CountryServices
+import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
+import {GOOGLE_LOCATION_KEY} from '../../services/Constant'
+import {BASE_URL} from "../../services/Constant"
+
 import { toast } from "react-toastify";
 var Submitcss = {
   backgroundImage: `url(${Signupimage})`,
   backgroundSize: "cover",
   paddingTop: "40px",
 };
-
+const libraries = ['places'];
 const SignUp = () => {
+  const inputRef = useRef();
   const [profilePic, setProfilePic] = useState(null);
   const [formData, setFormData] = useState({
-    name: "",
+    firstname: "",
+    lastname: "",
     email: "",
     address: "",
     phone: "",
@@ -27,49 +33,52 @@ const SignUp = () => {
     zip: "",
     password: "",
     password_confirmation: "",
+    latitude: "",
+    longitude: ""
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
-  const [cities, setCity] = useState({});
-  const [states, setState] = useState({});
-  const [countries, setCountry] = useState({});
-
+  const [cities, setCity] = useState("City");
+  const [states, setState] = useState("States");
+  const [country, setCountry] = useState("Country");
+  const [address, setAddress] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [zip, setZip] = useState("");
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
+      libraries
+  });
+  const handlePlaceChanged = () => { 
+    const [ place ] = inputRef.current.getPlaces();
+    if(place) { 
+        setAddress(place.formatted_address)
+        setLatitude(place.geometry.location.lat())
+        setLongitude(place.geometry.location.lng())
+        for (var i = 0; i < place.address_components.length; i++) {
+          for (var j = 0; j < place.address_components[i].types.length; j++) {
+            if (place.address_components[i].types[j] == "postal_code") {
+                setZip(place.address_components[i].long_name)
+            // document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
+            }
+            if (place.address_components[i].types[0] == "locality") {
+                  setCity(place.address_components[i].long_name);
+                }
+            if (place.address_components[i].types[0] == "administrative_area_level_1") {
+                  setState(place.address_components[i].long_name);
+                }
+            if (place.address_components[i].types[0] == "country") {
+                  setCountry(place.address_components[i].long_name);
+              }
+          }
+        }
+    } 
+}
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     // Perform validations or modifications if needed
     setProfilePic(selectedFile);
-  };
-  const getCountry = () => {
-    CountryServices.all()
-      .then((response) => {
-        setCountry(response);
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      });
-  };
-  
-  const handleCountryChange = (e) => {
-    formData.country = e.target.value;
-    State.get(e.target.value)
-    .then((response) => {
-      setState(response)
-    })
-    .catch((e) => {
-      toast.error(e.message);
-    });
-  };
-
-  const handleStateChange = (e) => {
-    formData.state = e.target.value;
-    City.get(e.target.value)
-    .then((response) => {
-      setCity(response)
-    })
-    .catch((e) => {
-      toast.error(e.message);
-    });
   };
   
   const handleChange = (e) => {
@@ -83,29 +92,31 @@ const SignUp = () => {
     event.preventDefault();
     // Perform validation here (e.g., check for empty fields)
     const newErrors = {};
-    if (!formData.name) {
-      newErrors.name = "User Full Name is required";
+    if (!formData.firstname) {
+      newErrors.name = "User First Name is required";
+    }
+    if(!formData.lastname){
+      newErrors.lastname = "User Last Name is required";
     }
     if (!formData.email) {
       newErrors.email = "Email is required";
     }
-    if (!formData.address) {
+    if (!address) {
       newErrors.address = "Address is required";
     }
     if (!formData.phone) {
       newErrors.phone = "Phone is required";
     }
-    if (!formData.country) {
+    if (!country) {
       newErrors.country = "Country is required";
     }
-    
-    if (!formData.state) {
+    if (!states) {
       newErrors.state = "State is required";
     }
-    if (!formData.city) {
+    if (!cities) {
       newErrors.city = "City is required";
     }
-    if (!formData.zip) {
+    if (!zip) {
       newErrors.zip = "Zip is required";
     }
     if (!formData.password) {
@@ -120,8 +131,17 @@ const SignUp = () => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       
+      formData.address = address;
+      formData.country = country;
+      formData.state = states;
+      formData.city = cities;
+      formData.zip = zip;
+      formData.latitude = latitude;
+      formData.longitude = longitude;
+
       const fd = new FormData();
-      fd.append("name", formData.name);
+      fd.append("firstname", formData.firstname);
+      fd.append("lastname", formData.lastname);
       fd.append("email", formData.email);
       fd.append("address", formData.address);
       fd.append("phone", formData.phone);
@@ -130,7 +150,9 @@ const SignUp = () => {
       fd.append("city", formData.city);
       fd.append("zip", formData.zip);
       fd.append("password", formData.password);
-      fd.append("state", formData.password_confirmation);
+      fd.append("password_confirmation", formData.password_confirmation);
+      fd.append("latitude", formData.latitude);
+      fd.append("longitude", formData.longitude);
       if(profilePic){
         fd.append("file", profilePic);
       }
@@ -144,6 +166,7 @@ const SignUp = () => {
       setEnabled(true);
       AuthService.register(fd)
       .then((response) => {
+        console.log('status',response.status)
         if(response.status === "email"){
           toast.error(response.message);  
           setIsLoading(false);
@@ -163,7 +186,12 @@ const SignUp = () => {
         }
       })
       .catch((e) => {
-        toast.error(e.message);
+          if(e.response.status == "409"){
+            toast.error("Email Already Exists");
+            // toast.error(e.response?.data.message);
+          }else{
+            console.log(e.message)
+          }
         setIsLoading(false);
         setEnabled(false);
       })
@@ -172,14 +200,9 @@ const SignUp = () => {
         setEnabled(false);
       });
     }
-    // // Simulate form processing delay (remove this setTimeout in actual implementation)
-    // setTimeout(() => {
-    //   // Redirect to another page after processing the form
-    //   window.location.href = '/emailverification'; // Redirect to success page after form submission
-    // }, 1000); // Simulating a delay of 1 second for form processing (remove this in actual implementation)
   };
   useEffect(() => {
-    getCountry();
+    //
   }, []);
   return (
     <>
@@ -217,6 +240,7 @@ const SignUp = () => {
                   <div className="mb-3">
                     <div className="profile-pic-wrapper">
                       <div className="pic-holder">
+                        
                         <img
                           id="profilePic"
                           className="pic"
@@ -255,14 +279,28 @@ const SignUp = () => {
                       type="text"
                       className="form-control"
                       id="fullname"
-                      name="name"
-                      value={formData.name}
+                      name="firstname"
+                      value={formData.firstname}
                       onChange={handleChange}
                       placeholder="Enter your full name"
                     />
                   </div>
                   {errors.name && (
                     <p className="error">{errors.name}</p>
+                  )}
+                  <div className="mb-3">
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="lastname"
+                      name="lastname"
+                      value={formData.lastname}
+                      onChange={handleChange}
+                      placeholder="Enter your Last name"
+                    />
+                  </div>
+                  {errors.lastname && (
+                    <p className="error">{errors.lastname}</p>
                   )}
                   <div className="mb-3">
                     <input
@@ -293,7 +331,7 @@ const SignUp = () => {
                     <p className="error">{errors.phone}</p>
                   )}
                   <div className="mb-3">
-                    <input
+                    {/* <input
                       type="text"
                       className="form-control"
                       id="address"
@@ -301,20 +339,34 @@ const SignUp = () => {
                       value={formData.address}
                       onChange={handleChange}
                       placeholder="Enter your street address"
-                    />
+                    /> */}
+                     {isLoaded
+                      &&
+                      <StandaloneSearchBox
+                        onLoad={ref => inputRef.current = ref}
+                        onPlacesChanged={handlePlaceChanged}
+                      >
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter your street address"
+                        />
+                    </StandaloneSearchBox>}
                   </div>
                   {errors.address && (
                     <p className="error">{errors.address}</p>
                   )}
                   <div className="d-flex statesfield">
                     <div className="mb-3">
-                      <select 
+                      <label className="form-control">
+                      {country}
+                      </label>
+                      {/* <select 
                         className="form-select"
                         name="country"
                         value={formData.country}
                         onChange={handleCountryChange} 
                         id="country">
-                        {/* <!-- Populate options for countries --> */}
                         <option value="">Select Country</option>
                         {countries.length > 0 ? (
                           <>
@@ -325,20 +377,21 @@ const SignUp = () => {
                             } )}
                           </>
                         ) : ('')}
-                        {/* <!-- Add more options as needed --> */}
-                      </select>
+                      </select> */}
                       {errors.country && (
                       <p className="error">{errors.country}</p>
                     )}
                     </div>
                     <div className="mb-3">
-                      <select className="form-select" 
+                      <label className="form-control">
+                        {states}
+                      </label>
+                      {/* <select className="form-select" 
                         name="state"
                         value={formData.state}
                         onChange={handleStateChange}  
                         id="state"
                       >
-                        {/* <!-- Populate options for states based on the selected country --> */}
                         <option value="">Select States</option>
                         {states.length > 0 ?(
                           <>
@@ -348,23 +401,23 @@ const SignUp = () => {
                               )
                             } )}
                           </>
-                          // <option value="2">State 2</option>
                         ):('')}
-                        {/* <!-- Add more options as needed --> */}
-                      </select>
+                      </select> */}
                       {errors.state && (
                       <p className="error">{errors.state}</p>
                     )}
                     </div>
                     <div className="mb-3">
-                      <select 
+                      <label className="form-control">
+                        {cities}
+                      </label>
+                      {/* <select 
                         className="form-select" 
                         id="city"
                         name="city"
                         value={formData.city}
                         onChange={handleChange}  
                         >
-                        {/* <!-- Populate options for cities based on the selected state --> */}
                         <option value="">Select City</option>
                         {cities.length > 0 ? (
                           <>
@@ -375,9 +428,7 @@ const SignUp = () => {
                             } )}
                           </>
                         ):('')}
-                        
-                        {/* <!-- Add more options as needed --> */}
-                      </select>
+                      </select> */}
                       {errors.city && (
                         <p className="error">{errors.city}</p>
                       )}
@@ -389,7 +440,7 @@ const SignUp = () => {
                       className="form-control"
                       id="zip"
                       name="zip"
-                      value={formData.zip}
+                      value={zip}
                       onChange={handleChange} 
                       placeholder="Enter your zip code"
                     />

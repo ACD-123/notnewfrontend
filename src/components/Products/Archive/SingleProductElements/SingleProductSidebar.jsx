@@ -58,8 +58,8 @@ const SingleProductSidebar = () => {
         }); 
       }
       useEffect(() => {
-        getProduct();
-        getTrending();
+        // getProduct();
+        // getTrending();
       }, []);
   return (
    <>

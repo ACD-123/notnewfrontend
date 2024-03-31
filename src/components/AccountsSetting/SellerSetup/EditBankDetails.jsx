@@ -99,6 +99,7 @@ const getBanks = () => {
 useEffect(() => {
   getBanks();
   SellerServices.getBankDetails().then((response) => {
+    console.log('bank', response)
     setAccountName(response.accountName);
     setSelectedBank(response.bank_id);
     setAccountNumber(response.accountNumber);

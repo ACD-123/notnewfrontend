@@ -3,6 +3,7 @@ import Attribute from './Attributes'
 import ShippingPolicyData from "./ShippingPolicyData"
 import { Link } from 'react-router-dom'
 import ProductServices from '../../../../services/API/ProductServices'; //~/services/API/ProductServices
+import SellerServices from '../../../../services/API/SellerServices'; //~/services/API/SellerServices
 import CartServices from '../../../../services/API/CartServices'; //~/services/API/CartServices
 import { toast } from "react-toastify";
 import {useDispatch, useSelector} from 'react-redux'
@@ -20,7 +21,7 @@ const ProductInformation = () => {
     let data ={
       'id': id
     }
-    ProductServices.createRecent(data)
+    SellerServices.createRecent(data)
       .then((response) => {
         console.log('response',response)
       }) 
@@ -112,6 +113,8 @@ const ProductInformation = () => {
     window.location.href = `/customerdashboard?component=${componentName}`;
   };
   const hanldeWishList = (guid) =>{
+    console.log('productData', productData)
+    return;
     ProductServices.saved(guid,productData)
     .then((response) => {
       if(response.status){
@@ -145,7 +148,7 @@ const ProductInformation = () => {
               )
             }
           })()}
-          <Attribute />
+          {/* <Attribute /> */}
           <hr />
           <div className='price-product'>
               <h5>Price: <span>$ {productData.price}</span></h5>

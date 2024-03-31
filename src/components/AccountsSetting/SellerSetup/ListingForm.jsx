@@ -63,6 +63,7 @@ const ListingForm = (props) => {
   const [startDate, setStartDate] = useState(new Date());
   const [blobURL, setBlobURL] = useState(null);
   const [files, setFiles] = useState([]);
+  const [deliveryCompany, setdeliveryCompany] = useState({});
   const [blobs, setBolbs] = useState([]);
   const [editBlobs, setEditBolbs] = useState([]);
   const [product, setProduct] = useState({
@@ -586,11 +587,11 @@ const ListingForm = (props) => {
     // Add more states as needed
   ];
 
-  const deliveryCompany = [
-    { id: "fedex", name: "Fedex" },
-    { id: "usps", name: "USPS" },
-    { id: "americancourier", name: "AMERICAN COURIER" },
-  ];
+  // const deliveryCompany = [
+  //   { id: "fedex", name: "Fedex" },
+  //   { id: "usps", name: "USPS" },
+  //   { id: "americancourier", name: "AMERICAN COURIER" },
+  // ];
 
   const paidBy = [
     { id: "buyer", name: "Buyer" },
@@ -799,11 +800,14 @@ const ListingForm = (props) => {
       }
       setBolbs([...blobs]);
   }
-
+  // const fetchCompanies = () =>{
+  //   ProductServices.getCompanies
+  // }
   useEffect(() => {
     fetchCategory();
-    fetchCountries();
+    // fetchCountries();
     fetchStores();
+    // fetchCompanies();
     if (props.guid) {
       getProduct();
     }

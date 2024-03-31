@@ -12,7 +12,7 @@ function all(params = {}) {
 
 function detail(params = {}) {
   return request({
-    url: `${baseUrl}detail`,
+    url: `${baseUrl}detail/`,
     params,
   })
 }

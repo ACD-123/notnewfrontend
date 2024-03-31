@@ -131,7 +131,13 @@ function setBank(data) {
       method: 'GET'
     })
   }
-  
+  function createRecent(data) {
+    return request({
+      url: `${baseUrl}createRecents`,
+      data,
+      method: 'POST',
+    })
+  }
   
 
 const SellerServices = {
@@ -152,7 +158,8 @@ const SellerServices = {
   getStore,
   saveSeller,
   updateBank,
-  getBankDetails
+  getBankDetails,
+  createRecent,
 }
 
 export default SellerServices
