@@ -46,48 +46,38 @@ const ShoppingCart = () => {
   };
 
   const getCart = () => {
-    CartServices.self().then((response) => {
-      // if(response.products){
-        // setCoverPicture(response.products?.media[0].name)
-        setCart(response);
-        // if(response.length > 0){
-        //   response.forEach((item) => {
-        //     setCoverPicture(item.products.media[0].name)
-        //     // http://localhost:8000/image/product/
-        //     // images.push(item.name)
-        //   })
-        // }s
+    CartServices.self().then((res) => {
+       setCart(res);
+      // var cartPrice = [];
+      // var shippingPrice = [];
+      // var allPrices = [];
+      // if (response.length > 0) {
+      //   response.map((cat) => {
+      //     cartPrice.push(cat.price);
+      //     shippingPrice.push(cat.products.shipping_price);
+      //   });
       // }
-      var cartPrice = [];
-      var shippingPrice = [];
-      var allPrices = [];
-      if (response.length > 0) {
-        response.map((cat) => {
-          cartPrice.push(cat.price);
-          shippingPrice.push(cat.products.shipping_price);
-        });
-      }
-      let discountPrice = 0;
-      if (prices.length > 0) {
-        prices.map((price) => {
-          if (price.name !== "Discount") {
-            allPrices.push(price.value);
-          } else if (price.name === "Discount") {
-            setDiscountPrices(price.value);
-            discountPrice = price.value
-          }
-        });
-      }
-      let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
-      let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
-      setsubTotal(subttal);
-      setShippingPrice(shippingprice);
-      let adminPric = allPrices.reduce((a, v) => (a = a + v), 0)
-      setAdminPrices(adminPric);
-      var amountAfterDiscount = subttal - discountPrice;
-      var amountbyaddingprices = amountAfterDiscount + adminPric + shippingprice;
-      // var amountbyaddingprices = subttal + shippingprice;
-      setAmountAddingPrices(amountbyaddingprices);
+      // let discountPrice = 0;
+      // if (prices.length > 0) {
+      //   prices.map((price) => {
+      //     if (price.name !== "Discount") {
+      //       allPrices.push(price.value);
+      //     } else if (price.name === "Discount") {
+      //       setDiscountPrices(price.value);
+      //       discountPrice = price.value
+      //     }
+      //   });
+      // }
+      // let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
+      // let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
+      // setsubTotal(subttal);
+      // setShippingPrice(shippingprice);
+      // let adminPric = allPrices.reduce((a, v) => (a = a + v), 0)
+      // setAdminPrices(adminPric);
+      // var amountAfterDiscount = subttal - discountPrice;
+      // var amountbyaddingprices = amountAfterDiscount + adminPric + shippingprice;
+      // // var amountbyaddingprices = subttal + shippingprice;
+      // setAmountAddingPrices(amountbyaddingprices);
     });
   };
   const handleCheckOut = (e) => {
@@ -239,7 +229,7 @@ const ShoppingCart = () => {
                                   {coverpic ? (
                                     <>
                                   <img
-                                  src={`${BASE_URL}/image/product/${coverpic}`}
+                                  src={coverpic}
                                   alt={cat.name}
                                   height="150" 
                                   width="150"
@@ -258,9 +248,9 @@ const ShoppingCart = () => {
                                   {/* <img src={Productimage} /> */}
                                 </div>
                                 <div className="product-order-details">
-                                  <h5>{cat.products?.name}</h5>
+                                  {/* <h5>{cat.products?.name}</h5> */}
                                   {/* <span>Size : 9.5 , Color: Red</span> */}
-                                  {attributes.length > 0 ? (
+                                  {/* {attributes.length > 0 ? (
                                     <>
                                       {attributes.map((attribute, index) => {
                                         return (
@@ -294,7 +284,7 @@ const ShoppingCart = () => {
                                     </>
                                   ) : (
                                     ""
-                                  )}
+                                  )} */}
                                   <div className="quantitypadding">
                                     <p>
                                       <b>
