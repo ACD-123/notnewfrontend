@@ -30,6 +30,7 @@ import OutStock from "../components/AccountsSetting/SellerSetup/InStock"
 import Watchlist from "../components/CustomerDashboard/Watchlist"
 import Auctions from "../components/Products/Archive/Auctions"
 import ProductUpload from "../components/Products/ProductUpload"
+import NotFound from "../pages/NotFound"
 
 const PublicRoutes = () => {
 	return (
@@ -66,6 +67,7 @@ const PublicRoutes = () => {
 					<Route path="/outstock" element={<OutStock/>} />
 					<Route path="/watchlist" element={<Watchlist/>}/>
 					<Route path="/productupload" element={<ProductUpload/>} />
+					<Route path="/notfound" element={<NotFound/>} />
 				</Routes>
 			</BrowserRouter>
 		</>

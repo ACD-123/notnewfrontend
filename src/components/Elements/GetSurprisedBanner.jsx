@@ -20,7 +20,7 @@ const GetSurprisedBanner = () => {
         >
             <div className='text-button'>
                 <h1>Get<br />Surprised <br />by the price</h1>
-                <a href="/AllProducts"><button className='dark'>Shop Now <img src={Arrow} /></button></a>
+                <a href="/notFound"><button className='dark'>Shop Now <img src={Arrow} /></button></a>
             </div>
         </div>
     </div>

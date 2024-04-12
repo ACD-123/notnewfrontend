@@ -108,7 +108,7 @@ function self(params = {}) {
 
 function selfValue(value) {
   return request({
-    url: `${baseUrl}/self/${value}`
+    url: `${baseUrl}/${value}`
   })
 }
 
@@ -314,15 +314,9 @@ function getSavedSellerDetails(id) {
     method: 'GET',
   })
 }
-function getCompanies(){
-  return request({
-    url: `${baseUrl}/getcompanies`
-  })
-}
 
 const ProductServices = {
   all,
-  getCompanies,
   getProductByPrice,
   getSavedSellerDetails,
   getTrendingProduct,

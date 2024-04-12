@@ -14,7 +14,7 @@ const SubcategoriesList = (props) => {
         if(response.status){
           setCategoryData(response.data);
         }
-      }) 
+      }).catch(error => console.log(error)); 
   }
   const handleCategory  = (e, catId) =>{
     e.preventDefault();

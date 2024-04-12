@@ -1,21 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Profileimage from "../../../assets/Images/Profilesimage/1.png";
 import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
 import CountryServices from "../../../services/API/CountryServices"; //~/services/API/CountryServices
 import State from "../../../services/API/State"; //~/services/API/State
 import City from "../../../services/API/City"; //~/services/API/City
 import { toast } from "react-toastify";
+import Avatarprofile from "../../../assets/Images/avatarsignup.png";
+import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
 import moment from "moment";
+import {BASE_URL} from "../../../services/Constant"
 
+const libraries = ['places'];
 const EditProfileSetup = () => {
+  const inputRef = useRef();
   const [profilePic, setProfilePic] = useState(null);
   const [shopData, setShopData] = useState([]);
-  const [countries, setCountry] = useState({});
-  const [cities, setCity] = useState({});
-  const [states, setState] = useState({}); 
+  const [countries, setCountry] = useState("");
+  const [address, setAddress] = useState("");
+  const [currentaddress, setCurrentAddress] = useState("");
+  const [cities, setCity] = useState("");
+  const [states, setState] = useState(""); 
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
+  const [coverimage, setCoverImage] = useState("");
+  const [guid, setGuid] = useState("")
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [zip, setZip] = useState("Zip");
+  const [editaddress, setEditAddress] = useState(false);
+  const [addresses, setAddresses] = useState("");
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
+      libraries
+  });
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     // Perform validations or modifications if needed
@@ -70,9 +88,38 @@ const EditProfileSetup = () => {
       });
   };
 
+  const handlePlaceChanged = () => { 
+    const [ place ] = inputRef.current.getPlaces();
+    if(place) { 
+        setAddress(place.formatted_address)
+        setLatitude(place.geometry.location.lat())
+        setLongitude(place.geometry.location.lng())
+        for (var i = 0; i < place.address_components.length; i++) {
+          for (var j = 0; j < place.address_components[i].types.length; j++) {
+            if (place.address_components[i].types[j] == "postal_code") {
+                setZip(place.address_components[i].long_name)
+            // document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
+            }
+            if (place.address_components[i].types[0] == "locality") {
+                  setCity(place.address_components[i].long_name);
+                }
+            if (place.address_components[i].types[0] == "administrative_area_level_1") {
+                  setState(place.address_components[i].long_name);
+                }
+            if (place.address_components[i].types[0] == "country") {
+                  setCountry(place.address_components[i].long_name);
+              }
+          }
+        }
+    } 
+}
   const handleCityChange = (e) => {
     // shopData.city_id = e.target.value;
   };
+  const handleAddAddress =()=>{
+    setEditAddress(true)
+    // shopData.address = addresses;
+  }
   const handleSubmit = (e) =>{
     e.preventDefault();
     const newErrors = {};
@@ -82,31 +129,64 @@ const EditProfileSetup = () => {
     if (!shopData.email) {
       newErrors.email = "Email is required";
     }
-    if (!shopData.address) {
-      newErrors.address = "Address is required";
-    }
+    // if (!address) {
+    //   newErrors.address = "Address is required";
+    // }
     if (!shopData.phone) {
       newErrors.phone = "Phone is required";
     }
-    if (!shopData.country_id) {
+    if (!countries) {
       newErrors.country_id = "Country is required";
     }
-    if (!shopData.state_id) {
+    if (!states) {
       newErrors.state_id = "State is required";
     }
-    if (!shopData.city_id) {
+    if (!cities) {
       newErrors.city_id = "City is required";
     }
-    if (!shopData.zip) {
+    if (!zip) {
       newErrors.zip = "Zip is required";
     }
+    shopData.country_id = countries;
+    shopData.state_id = states;
+    shopData.city_id = cities; 
+    shopData.zip = zip;
+    shopData.address = address;
+    shopData.latitude = latitude;
+    shopData.longitude = longitude;
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
       setEnabled(true);
-      SellerServices.update(shopData)
+      const fd = new FormData();
+      fd.append("fullname", shopData.fullname);
+      fd.append("email", shopData.email);
+      fd.append("address", address);
+      fd.append("phone", shopData.phone);
+      fd.append("country_id", shopData.country_id);
+      fd.append("state_id", shopData.state_id);
+      fd.append("city_id", shopData.city_id);
+      fd.append("zip", shopData.zip);
+      fd.append("latitude", shopData.latitude);
+      fd.append("longitude", shopData.longitude);
+      if(address){
+        fd.append("address", address);
+      }else if(addresses){
+        fd.append("address", addresses);
+      }
+      if (profilePic) {
+        fd.append("file", profilePic);
+      }
+      for (let pair of fd.entries()) {
+        console.log('formdata params'+pair[0] + ", " + pair[1]);
+      }
+      fd.append("guid", guid);
+      SellerServices.update(fd)
       .then((response) => {
-        toast.success(response);
+        if(response.status){
+          toast.success(response.data);
+          setEditAddress(false)
+        }
         // setTimeout(() => {
           // setFormSubmitted(true);
         // }, 6000);
@@ -137,9 +217,13 @@ const EditProfileSetup = () => {
         SellerServices.getShopDetails(loggedInUsers?.id)
           .then((response) => {
             if(response.status){
+              setGuid(response.data.guid)
               setShopData(response.data);
               setCountry(response.data.country_id)
+              setCurrentAddress(response.data.address)
               setState(response.data.state_id)
+              setCity(response.data.city_id)
+              setAddress(response.data.address)
               // setCountry("")
             }
             // State.get(response.country_id)
@@ -162,8 +246,8 @@ const EditProfileSetup = () => {
     <>
       {/* Your existing form */}
       <section id="selleraccountsetup">
-        <div className="container">
-          {shopData ? (
+        <div className="container"> 
+           {shopData ? (
             <>
               <div
                 className="row align-items-center edit-profile"
@@ -171,8 +255,83 @@ const EditProfileSetup = () => {
               >
                 <div className="col-lg-9">
                   <div className="profile0-details">
-                    <div>
-                      <img src={Profileimage} />
+                  <div className="profile-pic-wrapper">
+                      <div className="pic-holder">
+                      {profilePic ? (<><img
+                          id="profilePic"
+                          className="pic"
+                          src={
+                            profilePic
+                              ? URL.createObjectURL(profilePic)
+                              : profilePic
+                          }
+                        /></>):(<>
+                        {shopData.cover_image ? (<>
+                          <img
+                          id="profilePic"
+                          className="pic"
+                          src={`${BASE_URL}/${shopData.cover_image}`}
+                        />
+
+                        </>):(
+                          <>
+                          <img
+                          id="profilePic"
+                          className="pic"
+                          src={
+                            profilePic
+                              ? URL.createObjectURL(profilePic)
+                              : profilePic
+                          }
+                        />
+                          </>
+                        )}
+                        </>)}
+                        {/* {shopData.cover_image ? (
+                          <>
+                          <img 
+                             id="profilePic"
+                             className="pic"
+                             src={`${BASE_URL}/${shopData.cover_image}`}
+                             width="100"
+                             height="50"
+                             style={{ borderRadius: "40px"}}
+                             alt={shopData.fullname} />
+                          </>
+                        ) : (
+                          <>
+                            <img
+                              id="profilePic"
+                              width="100"
+                              height="50"
+                              className="pic"
+                              src={Avatarprofile}
+                              alt="Profile"
+                            />
+                          </>
+                        )} */}
+                        <input
+                          className="uploadProfileInput"
+                          type="file"
+                          accept="image/png, image/gif, image/jpeg"
+                          name="profile_pic"
+                          id="newProfilePhoto"
+                          onChange={handleFileChange}
+                        />
+                        <label
+                          htmlFor="newProfilePhoto"
+                          className="upload-file-block"
+                        >
+                          <div className="text-center">
+                            <div className="mb-2">
+                              <i className="fa fa-camera fa-2x"></i>
+                            </div>
+                            <div className="text-uppercase">
+                              Upload <br /> Profile Photo
+                            </div>
+                          </div>
+                        </label>
+                      </div>
                     </div>
                     <div>
                       <h2>{shopData?.fullname}</h2>
@@ -183,9 +342,9 @@ const EditProfileSetup = () => {
                     </div>
                   </div>
                 </div>
-                <div className="col-lg-3">
+                {/* <div className="col-lg-3">
                   <button className="updte-profile">Update Profile</button>
-                </div>
+                </div> */}
               </div>
               <div className="row align-items-center">
                 <div className="signup-form-fields register">
@@ -227,7 +386,7 @@ const EditProfileSetup = () => {
                       {errors.phone && <p className="error">{errors.phone}</p>}
                     </div>
                     <div class="mb-3">
-                      <input
+                      {/* <input
                         type="text"
                         className="form-control"
                         value={shopData?.address}
@@ -235,7 +394,45 @@ const EditProfileSetup = () => {
                         name="address"
                         onChange={handleChange}
                         placeholder="Enter your street address"
-                      />
+                      /> */}
+                      {/* <label>Your Current Location:</label>
+                      <p>{currentaddress}</p>
+                      {isLoaded
+                      &&
+                      <StandaloneSearchBox
+                        onLoad={ref => inputRef.current = ref}
+                        onPlacesChanged={handlePlaceChanged}
+                      >
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter your street address"
+                        />
+                    </StandaloneSearchBox>} */}
+                    {editaddress ? (<>
+                        {isLoaded
+                          &&
+                          <StandaloneSearchBox
+                            onLoad={ref => inputRef.current = ref}
+                            onPlacesChanged={handlePlaceChanged}
+                          >
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your street address  "
+                            />
+                        </StandaloneSearchBox>}
+                      </>)
+                        :(<>
+                          <lable className="form-control" style={{ height: "150px"}}>
+                          {address}
+                          </lable>
+                          
+
+                        </>)}
+                          <a href="#" onClick={handleAddAddress}>Edit Address</a>
+                      <br />
+                      <br />
                       {errors.address && <p className="error">{errors.address}</p>}
                     </div>
                     <div className="d-flex statesfield">
@@ -331,13 +528,13 @@ const EditProfileSetup = () => {
                         id="zip"
                         name="zip"
                         onChange={handleChange}
-                        value={shopData?.zip}
+                        value={zip}
                         placeholder="Enter your zip code"
                       />
                       {errors.zip && <p className="error">{errors.zip}</p>}
                     </div>
                     <button disabled={enabled} className="btn btn-primary svavava" type="submit">
-                      {isLoading ? "loading.." : "Save"}
+                      {isLoading ? "loading.." : "Update"}
                     </button>
                   </form>
                 </div>

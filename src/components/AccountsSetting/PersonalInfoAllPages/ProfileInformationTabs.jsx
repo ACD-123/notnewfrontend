@@ -6,6 +6,7 @@ import SignSecurity from './SignSecurity';
 import Addresses from './Addresses';
 import SavedImages from './SavedImages';
 import SearchHistory from './SearchHistory';
+import NotFound_ from "../../../pages/NotFound_";
 
 const ProfileInformationTabs = (props) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('component1'); // Initial menu selection
@@ -45,9 +46,11 @@ const ProfileInformationTabs = (props) => {
       case 'component3':
         return  <Addresses />;
       case 'component4':
-        return <SavedImages />;
+          return <NotFound_/>
+        // return <SavedImages />;
         case 'component5':
-          return <SearchHistory />;
+          // return <SearchHistory />;
+          return <NotFound_/>
       default:
         return ; // Default to Test component if no matching menu item is found
     }

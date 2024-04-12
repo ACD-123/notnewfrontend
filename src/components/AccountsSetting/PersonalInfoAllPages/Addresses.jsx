@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import map from '../../../assets/Images/map.png';
 import UserServices from "../../../services/API/UserServices"; //~/services/API/UserServices
 import { toast } from "react-toastify";
-
+import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
+const libraries = ['places'];
 const Addresses = () => {
   const autoCompleteRef = useRef();
   const inputRef = useRef();
@@ -11,7 +12,7 @@ const Addresses = () => {
     fields: ["address_components", "geometry", "icon", "name"],
     types: ["establishment"]
    };
-
+   const [editaddress, setEditAddress] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [address, setAddress] = useState("");
   const [country, setCountry] = useState("");
@@ -23,9 +24,14 @@ const Addresses = () => {
   const [btn, setBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
-
+  const [zip, setZip] = useState("Zip");
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
+      libraries
+  });
   const togglePopup = () => {
     setShowPopup(!showPopup);
+    setEditAddress(false)
   };
   const handleSubmit = (e) =>{
     e.preventDefault();
@@ -46,6 +52,7 @@ const Addresses = () => {
         setIsLoading(false);
         setEnabled(false);
         togglePopup(false);
+        self();
       }
     }).catch((e) => {
       toast.error(e);
@@ -71,6 +78,51 @@ const Addresses = () => {
   const handleState =(e)=>{
     setState(e.target.value)
   }
+  const handlePlaceChanged = () => { 
+    const [ place ] = inputRef.current.getPlaces();
+    if(place) { 
+        setAddress(place.formatted_address)
+        setLatitude(place.geometry.location.lat())
+        setLongitude(place.geometry.location.lng())
+        for (var i = 0; i < place.address_components.length; i++) {
+          for (var j = 0; j < place.address_components[i].types.length; j++) {
+            if (place.address_components[i].types[j] == "postal_code") {
+                setZip(place.address_components[i].long_name)
+            // document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
+            }
+            if (place.address_components[i].types[0] == "locality") {
+                  setCity(place.address_components[i].long_name);
+                }
+            if (place.address_components[i].types[0] == "administrative_area_level_1") {
+                  setState(place.address_components[i].long_name);
+                }
+            if (place.address_components[i].types[0] == "country") {
+                  setCountry(place.address_components[i].long_name);
+              }
+          }
+        }
+    } 
+}
+const self =()=>{
+  UserServices.self()
+  .then((response) => {
+   setUser(response);
+   setAddress(response.address)
+   setCountry(response.country_id)
+   setState(response.state_id)
+   setCity(response.city_id)
+   setLatitude(response.latitute);
+   setLongitude(response.longitude);
+     if(response.address){
+       setBtn(true)
+     }
+   }).catch((e) => {
+     console.log(e);
+   });
+}
+const handleAddAddress =()=>{
+  setEditAddress(true)
+}
   useEffect(() => {
     // autoCompleteRef.current = new window.google.maps.places.Autocomplete(
     //  inputRef.current,
@@ -80,21 +132,7 @@ const Addresses = () => {
     //   const place = await autoCompleteRef.current.getPlace();
     //   console.log('places',{ place });
     //  });
-     UserServices.self()
-     .then((response) => {
-      setUser(response);
-      setAddress(response.address)
-      setCountry(response.country_id)
-      setState(response.state_id)
-      setCity(response.city_id)
-      setLatitude(response.latitute);
-      setLongitude(response.longitude);
-        if(response.address){
-          setBtn(true)
-        }
-      }).catch((e) => {
-        console.log(e);
-      });
+    self();
    }, []);
   return (
     <>
@@ -126,9 +164,9 @@ const Addresses = () => {
           <table style={{ width: "100%"}}>
             <thead>
                 <tr>
-                  <th>
+                  {/* <th>
                     SNo
-                  </th>
+                  </th> */}
                   <th>
                     Street Location
                   </th>
@@ -145,9 +183,9 @@ const Addresses = () => {
             </thead>
             <tbody>
               <tr>
-                <td>
+                {/* <td>
                 1.
-                </td>
+                </td> */}
                 <td>
                 {user.address}
                 </td>
@@ -163,6 +201,7 @@ const Addresses = () => {
               </tr>
             </tbody>
           </table>
+          
         </div>
       </section>
 
@@ -173,8 +212,32 @@ const Addresses = () => {
                 <img style={{width: "100%"}} src={map} />
                 <h3>Add Address</h3>
                 <form onSubmit={handleSubmit}>
-                  <input type="text" id="address" value={address} onChange={handleAddress} name="address" placeholder='Street Address' ref={inputRef} required />
+                  {editaddress ? (
+                    <>
+                     {isLoaded
+                      &&
+                      <StandaloneSearchBox
+                        onLoad={ref => inputRef.current = ref}
+                        onPlacesChanged={handlePlaceChanged}
+                      >
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter your street address"
+                        />
+                    </StandaloneSearchBox>}
+
+                    </>
+                  ):(<>
+                      {/* <input type="text" id="address" value={address} onChange={handleAddress} name="address" placeholder='Street Address' ref={inputRef} required /> */}
+                      <label
+                      className="form-control">
+                        {address}
+                      </label>
+                  </>)}
                   <br />
+                  <a href='#' onClick={handleAddAddress}>Edit Address</a>
+                  <br /><br />
                   <input type="text" id="country" value={country} onChange={handleCountry} name="country" placeholder='Country' required />
                   <br />
                   <input type="text" id="state" value={state} name="state" onChange={handleState} placeholder='State' required />

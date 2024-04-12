@@ -12,6 +12,7 @@ const SignSecurity = () => {
   const [facebookAccount, setFacebookAccount] = useState(false);
   const [secretquestion, setSecretQuestion] = useState(false);
   const [secquest, setSecQuest] = useState("");
+  const [secquestion, setSecQuestion] = useState("");
   const [secans, setSecAns] = useState("");
   const [errors, setErrors] = useState({});
   
@@ -47,6 +48,7 @@ const SignSecurity = () => {
             setSecQuest('')
             setSecAns('')
             setSecretQuestion(false)
+            getUserInfo()
           }else{
             setSecretQuestion(true)
           }
@@ -157,13 +159,22 @@ const SignSecurity = () => {
   const togglePasswordFields = () => {
     setShowPasswordFields(!showPasswordFields);
   };
+  const getUserInfo =()=>{
+    // let user = JSON.parse(localStorage.getItem('user_details'));
+    // console.log('user_details',user)
+    UserServices.self()
+    .then((res) => {
+      setStepVerification(res.twosteps)   
+      setThirdPartyAccess(res.thirdparty)   
+      setFacebookAccount(res.fbaccount)   
+      setSecQuestion(res.secret_question)   
+      setSecAns(res.secret_answer)  
+    }).catch((e) => {
+      console.log('error', e)
+    });
+  }
   useEffect(() => {
-    let user = JSON.parse(localStorage.getItem('user_details'));
-    setStepVerification(user.twosteps)   
-    setThirdPartyAccess(user.thirdparty)   
-    setFacebookAccount(user.fbaccount)   
-    setSecQuest(user.secret_question)   
-    setSecAns(user.secret_answer)   
+    getUserInfo()
   }, []);
   return (
     <>
@@ -227,7 +238,18 @@ const SignSecurity = () => {
                       {secretQuest.map((question) => {
                         return(
                           <>
-                            <option value={question.id}>{question.name}</option>
+                          {(() => {
+                          if (question.id === secquestion) {
+                            return (
+                              <option selected="true" value={question.id}>{question.name}</option>
+                            )
+                          } else {
+                            return (
+                              <option value={question.id}>{question.name}</option>
+                            )
+                          }
+                        })()}
+                            
                           </>
                         )
                       })}

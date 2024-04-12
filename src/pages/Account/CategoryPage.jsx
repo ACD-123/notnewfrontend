@@ -13,15 +13,17 @@ import Categorylistimage10 from "../../assets/Images/Categorylist/10.png"
 import Categorylistimage11 from "../../assets/Images/Categorylist/11.png"
 import Categorylistimage12 from "../../assets/Images/Categorylist/12.png"
 import Header from '../../components/Header'
+import blank from "../../assets/Images/Productcard/blank.jpg";
 import Footer from '../../components/Footer'
-import Category from "../../services/API/Category"; //~/services/API/Category
+import Home from "../../services/API/Home"; //~/services/API/Home
 import { BASE_URL } from "../../services/Constant";
 const CategoryPage = () => {
-  const [categories, setCategoryData] = useState({});
+  const [categories, setCategoryData] = useState([]);
   const getCategory = () => {
-    Category.all()
-    .then((response) => {
-      setCategoryData(response)
+    Home.getrecursive()
+    .then((res) => {
+      console.log('category data', res.length)
+      setCategoryData(res)
     })
   }
   useEffect(() => {
@@ -200,7 +202,7 @@ const CategoryPage = () => {
                         {categories.length > 0 ?(
                           <>
                           {categories?.map((category) => (
-                            <Link to={`/categorykeyword/${category.guid}`}><li>{category.name}</li></Link>
+                            <Link to={`/notFound`}><li>{category.name}</li></Link>
                           ))}
                           </>
                         ):('')}
@@ -242,7 +244,7 @@ const CategoryPage = () => {
                                       })}
                                       </>
                                     ):(
-                                      <img src={Categorylistimage2} alt={product.name} />
+                                      <img src={blank} alt={product.name} />
                                     )
                                     }
                                     <ul>

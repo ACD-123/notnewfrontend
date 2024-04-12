@@ -115,6 +115,13 @@ function getusercompletedcount(params = {}) {
     method: 'GET',
   })
 }
+function getuserbidscount(params = {}) {
+  return request({
+    url: `${baseUrl}/offers/counts`,
+    params,
+    method: 'GET',
+  })
+}
 function getbyid(id) {
   return request({
     url: `${baseUrl}/getById/${id}`,
@@ -177,6 +184,7 @@ const OrderServices = {
   customerRefundOrders,
   customerBuyAgainOrders,
   getbyid,
+  getuserbidscount,
   customerCompCount,
   customerPendCount,
   customerRefundCount,

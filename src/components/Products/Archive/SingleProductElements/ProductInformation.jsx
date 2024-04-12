@@ -12,6 +12,8 @@ import {saveCupon, deleteCupon} from '../../../../store/slices/cupon'
 const ProductInformation = () => {
   const dispatch = useDispatch()
   const [productData, setProductData] = useState([]);
+  const [gettags, setTags] = useState([]);
+  const [quantity, setQuantity] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
 
@@ -28,84 +30,92 @@ const ProductInformation = () => {
   };
   const getProduct =() =>{
     ProductServices.get(id)
-      .then((response) => {
-        setProductData(response)
+      .then((res) => {
+        setProductData(res)
+        let tags = JSON.parse(JSON.parse(res.tags));
+        let allTags = [];
+        {tags.map((tag, index) => (
+          allTags.push(tag.tag)
+        ))}
+        setTags(allTags);
       }) 
   }
   const addByNow =(e)=>{
     e.preventDefault();
-    setIsLoading(true);
-    setEnabled(true);
-      let arributes = localStorage.getItem('arributes');
-      arributes =JSON.parse(arributes);
-      let quanity = "";
-      if(arributes.quantity){
-        quanity = arributes.quantity;
-      }
-      let inputData ={
-        "price": productData.price,
-        "quantity":  quanity ? quanity: 1,
-        "product_id": productData.id,
-        "attributes": arributes,
-        "shop_id": productData.shop?.id,
-      }
-      CartServices.save(inputData)
-      .then((response) => {
-        if(response.success){
-          dispatch(saveCupon(response));
-          // window.location.href=`/checkouts/${productData.guid}`;
-        }else{
-          toast.error(response.message);
-        }
-      })
-      .catch((e) => {
-        toast.error(e.message);
-        setIsLoading(false);
-        setEnabled(false);
-      })
-      .then(() => {
-        setIsLoading(false);
-        setEnabled(false);
-      });
+    window.location.href = '/notfound'
+    // setIsLoading(true);
+    // setEnabled(true);
+    //   let arributes = localStorage.getItem('arributes');
+    //   arributes =JSON.parse(arributes);
+    //   let quanity = "";
+    //   // if(arributes.quantity){
+    //   //   quanity = arributes.quantity;
+    //   // }
+    //   let inputData ={
+    //     "price": productData.price,
+    //     "quantity":  1,
+    //     "product_id": productData.id,
+    //     "attributes": arributes,
+    //     "shop_id": productData.shop?.id,
+    //   }
+    //   CartServices.save(inputData)
+    //   .then((response) => {
+    //     if(response.success){
+    //       dispatch(saveCupon(response));
+    //       // window.location.href=`/checkouts/${productData.guid}`;
+    //     }else{
+    //       toast.error(response.message);
+    //     }
+    //   })
+    //   .catch((e) => {
+    //     toast.error(e.message);
+    //     setIsLoading(false);
+    //     setEnabled(false);
+    //   })
+    //   .then(() => {
+    //     setIsLoading(false);
+    //     setEnabled(false);
+    //   });
   }
   const addToCart = (e) =>{
       e.preventDefault();
-      setIsLoading(true);
-      setEnabled(true);
-        let arributes = localStorage.getItem('arributes');
-        arributes =JSON.parse(arributes);
-        let quanity = "";
-        if(arributes.quantity){
-          quanity = arributes.quantity;
-        }
-        let inputData ={
-          "price": productData.price,
-          "quantity":  quanity ? quanity: 1,
-          "product_id": productData.id,
-          "attributes": arributes,
-          "shop_id": productData.shop?.id,
-        }
-        CartServices.save(inputData)
-        .then((response) => {
-          if(response.success){
-            CartServices.count()
-            .then((response) => {
-              dispatch(saveCupon(response));
-            })
-            toast.success(response.message);
-          }else{
-            toast.error(response.message);
-          }
-        })
-        .catch((e) => {
-          toast.error(e.message);
-          setIsLoading(false);
-          setEnabled(false);
-        })
-        .then(() => {
-          setIsLoading(false);
-          setEnabled(false);
-        });
+      window.location.href = '/notfound'
+      // setIsLoading(true);
+      // setEnabled(true);
+      //   let arributes = localStorage.getItem('arributes');
+      //   arributes =JSON.parse(arributes);
+      //   let quanity = "";
+      //   // if(arributes.quantity){
+      //   //   quanity = arributes.quantity;
+      //   // }
+      //   let inputData ={
+      //     "price": productData.price,
+      //     "quantity":  1,
+      //     "product_id": productData.id,
+      //     "attributes": arributes,
+      //     "shop_id": productData.shop?.id,
+      //   }
+      //   CartServices.save(inputData)
+      //   .then((response) => {
+      //     if(response.success){
+      //       CartServices.count()
+      //       .then((response) => {
+      //         dispatch(saveCupon(response));
+      //       })
+      //       toast.success(response.message);
+      //     }else{
+      //       toast.error(response.message);
+      //     }
+      //   })
+      //   .catch((e) => {
+      //     toast.error(e.message);
+      //     setIsLoading(false);
+      //     setEnabled(false);
+      //   })
+      //   .then(() => {
+      //     setIsLoading(false);
+      //     setEnabled(false);
+      //   });
   }
   const handleDropdownItemClick = (componentName) => {
     // Here, you can navigate to the 'Activity' component and pass the selected component name as a query parameter or state
@@ -113,8 +123,6 @@ const ProductInformation = () => {
     window.location.href = `/customerdashboard?component=${componentName}`;
   };
   const hanldeWishList = (guid) =>{
-    console.log('productData', productData)
-    return;
     ProductServices.saved(guid,productData)
     .then((response) => {
       if(response.status){
@@ -124,6 +132,10 @@ const ProductInformation = () => {
     .catch((e) => {
       console.log(e)
     });
+  }
+  const handleQuantity = (e) =>{
+    e.preventDefault();
+    setQuantity(e.target.value)
   }
   useEffect(() => {
     saveRecentView();
@@ -149,6 +161,7 @@ const ProductInformation = () => {
             }
           })()}
           {/* <Attribute /> */}
+          Quantity: <input type="number" min="1" value={quantity} onChange={handleQuantity} />
           <hr />
           <div className='price-product'>
               <h5>Price: <span>$ {productData.price}</span></h5>
@@ -164,6 +177,18 @@ const ProductInformation = () => {
               {/* <Link onClick={() => handleDropdownItemClick('componentC')}><button>Add to Wishlist</button></Link> */}
               <Link onClick={() => hanldeWishList(productData.guid)}><button>Add to Wishlist</button></Link>
           </div>
+          <br />
+          <h3>Tags</h3>
+          <ul className='tagsList'>
+            {gettags.map((tag) => {
+              return (
+                <>
+                <li>{tag}</li>
+                </>
+              );
+            })}
+          </ul>
+          <br />
           <br />
           <h3>Descriptions</h3>
           {productData.description}

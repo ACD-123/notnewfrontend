@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Activity from './Activity'
 import Chat from './Chat';
 import AccountInfo from '../AccountsSetting/AccountInfo';
-
+import NotFound_ from '../../pages/NotFound_'
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState('tab1');
 
@@ -31,7 +31,7 @@ const Tabs = () => {
       </div>
       <div className="tab-content">
         {activeTab === 'tab1' && <div><Activity /></div>}
-        {activeTab === 'tab2' && <div><Chat /></div>}
+        {activeTab === 'tab2' && <div><NotFound_ /></div>}
         {activeTab === 'tab3' && <div><AccountInfo /></div>}
       </div>
     </div>

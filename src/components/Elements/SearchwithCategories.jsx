@@ -10,8 +10,9 @@ const SearchwithCategories = () => {
   const [categories, setCategory] = useState({});
   const getCategory = () => {
     Category.all()
-    .then((response) => {
-      setCategory(response)
+    .then((res) => {
+      console.log('all category', res)
+      // setCategory(response)
     })
   }
   useEffect(() => {

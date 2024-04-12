@@ -7,7 +7,8 @@ const Dashboard = () => {
     const [customerordercompcount, setCustOrderCompCount] = useState(0);
     const [customerorderpendcount, setCustomerOrderPendCount] = useState(0);
     const [customerorderrefcount, setCustomerOrderRefCount] = useState(0);
-
+    let loggedInUser = localStorage.getItem("user_details");
+    const loggedInUsers = JSON.parse(loggedInUser);
     const customerCompleteOrder = () =>{
         OrderServices.customerCompCount()
          .then((response) => {
@@ -41,7 +42,7 @@ useEffect(() => {
    <>
    <section id='dashboard-panel'>
     <div className='row firstrow'>
-        <h3>Hi, Customers</h3>
+        <h3>Hi, {loggedInUsers.name}</h3>
         <div className='col-lg-4 col-sm-4'>
             <div className='dashboard-result'>
             <h2>{customerordercompcount}</h2>

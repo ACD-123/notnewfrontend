@@ -249,6 +249,7 @@ const SellingDetailsDashBoard = (props) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState({});
   const [ordercount, setOrderCount] = useState(0);
+  const [orderoffer, setOfferCount] = useState(0);
   const [transaction, setTransaction] = useState(0.0);
   const [shopdata, setShopData] = useState([]);
 
@@ -266,26 +267,36 @@ const SellingDetailsDashBoard = (props) => {
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
-        console.log('users', response)
         setUserDetails(response);
         setUser(response);
       })
       .catch((e) => {
-        toast.error(e.message);
+        console.log(e.message);
       });
   };
 
   const getUserCompletedCount = () => {
     OrderServices.getusercompletedcount()
-      .then((response) => {
-        if(response.length > 0){
-          setOrderCount(response); 
+      .then((res) => {
+        if(res.length > 0){
+          setOrderCount(res); 
         }else{
           setOrderCount(0); 
         }
       })
       .catch((e) => {
-        toast.error(e.message);
+        console.log(e.message);
+      });
+  };
+
+  const getUserOffersCount = () => {
+    console.log('offers')
+    OrderServices.getuserbidscount()
+      .then((res) => {
+          setOfferCount(res); 
+      })
+      .catch((e) => {
+        console.log(e.message);
       });
   };
   const getOrderSummary = () => {
@@ -294,7 +305,7 @@ const SellingDetailsDashBoard = (props) => {
         setOrderSummary(response);
       })
       .catch((e) => {
-        toast.error(e.message);
+        console.log(e.message);
       });
   };
   const orderDetails = (index, id) => {
@@ -304,7 +315,7 @@ const SellingDetailsDashBoard = (props) => {
         setSelectedOrder(response);
       })
       .catch((e) => {
-        toast.error(e.message);
+        console.log(e.message);
       });
     setSelectedProduct(index);
   };
@@ -314,7 +325,7 @@ const SellingDetailsDashBoard = (props) => {
         setTransaction(response);
       })
       .catch((e) => {
-        toast.error(e.message);
+        console.log(e.message);
       });
   };
 
@@ -324,6 +335,7 @@ const SellingDetailsDashBoard = (props) => {
     getOrderSummary();
     getTransactions();
     getShopData();
+    getUserOffersCount();
   }, []);
 
   return (
@@ -337,16 +349,16 @@ const SellingDetailsDashBoard = (props) => {
       ) : (
         <>
           <section id="selleng-dashbaord">
-            <h3>Hi {user ? <>{user.name}</> : "Seller"},</h3>
+            <h3>Hi {shopdata ? <>{shopdata.fullname}</> : "Seller"},</h3>
             <h3>
-              {shopdata ? (
+              {/* {shopdata ? (
                 <>
-                              <Link to={`/sellershop/${shopdata.guid}`}>
+              <Link to={`/sellershop/${shopdata.guid}`}>
                 My Shop
               </Link></>
-              ):(
+            ):(
                 <></>
-              )}
+              )} */}
 </h3>
             <div className="row minndabb">
               <div className="col-lg-4 col">
@@ -381,7 +393,7 @@ const SellingDetailsDashBoard = (props) => {
               <div className="col-lg-4 col">
                 <div className="dabb">
                   <h4>Offers</h4>
-                  <h1>20</h1>
+                  <h1>{orderoffer}</h1>
                   <select style={{ width: "100%" }}>
                     <option value="">Select Year</option>
                     <option value="2024">2024</option>

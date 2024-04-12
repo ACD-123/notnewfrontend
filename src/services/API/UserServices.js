@@ -113,7 +113,7 @@ function secretQuestion(data){
   return request({
     url: `${baseUrl}secretquestion/`,
     data,
-    method: 'PATCH',
+    method: 'POST',
   })
 }
 

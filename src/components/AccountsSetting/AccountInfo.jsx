@@ -9,6 +9,7 @@ import MyTransactions from './SellerSetup/MyTransactions';
 import StripeTransactions from './SellerSetup/StripeTransactions';
 import InStock from './SellerSetup/InStock';
 import OutStock from './SellerSetup/OutStock';
+import NotFound_ from '../../pages/NotFound_'
 
 const AccountInfo = () => {
   const [selectedLink, setSelectedLink] = useState(null);
@@ -53,46 +54,54 @@ const AccountInfo = () => {
         );
       case 'stripe':
         return (
-          <div>
-            <StripeTransactions />
-          </div>
+          <NotFound_ />
+          // <div>
+          //   <StripeTransactions />
+          // </div>
         );
         case 'instock':
           return (
             <div>
-              <InStock />
+              {/* <InStock /> */}
+              <NotFound_ />
             </div>
           );
           case 'outstock':
             return (
               <div>
-                <OutStock />
+                {/* <OutStock /> */}
+                <NotFound_ />
               </div>
             );
       case 'PaymentInformation':
         return (
-          <div>
-            {/* Content for Payment Information */}
-            <h3>Payment Informationss</h3>
+          <>
+          <NotFound_ />
+          {/*<div>
+             Content for Payment Information */}
+            {/* <h3>Payment Informationss</h3> */}
             {/* Add your Payment Information content here */}
-            <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button>
-          </div>
+            {/* <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button> */}
+          {/* </div> */}
+          </>
         );
       case 'NotificationPreferences':
         return (
-          <div>
-            {/* Content for Notification Preferences */}
-            <h3>Notification Preferences</h3>
-            <NotificationPreferencesTabs handleGeneralNotifications={handleGeneralNotifications} />
-            <button className='backbutton-account' onClick={() => setSelectedLink(null)}>
-            <img src={Backimage} alt="Back" /> Back
-          </button>
-          </div>
+          <NotFound_ />
+          // <div>
+          //   {/* Content for Notification Preferences */}
+          //   <h3>Notification Preferences</h3>
+          //   <NotificationPreferencesTabs handleGeneralNotifications={handleGeneralNotifications} />
+          //   <button className='backbutton-account' onClick={() => setSelectedLink(null)}>
+          //   <img src={Backimage} alt="Back" /> Back
+          // </button>
+          // </div>
         );
         case 'transactions':
         return (
           <div>
-            <MyTransactions />
+            {/* <MyTransactions /> */}
+            <NotFound_ />
           </div>
         );
       default:
@@ -120,7 +129,7 @@ const AccountInfo = () => {
               ):(
                 <li onClick={() => handleLinkClick('Selling')}>Set Up Seller Account</li>
               )}
-                <li onClick={() => handleLinkClick('items')}>List an Item</li>
+                {/* <li onClick={() => handleLinkClick('items')}>List an Item</li> */}
               </ul>
             </div>
             <div className='personal-info-links'>

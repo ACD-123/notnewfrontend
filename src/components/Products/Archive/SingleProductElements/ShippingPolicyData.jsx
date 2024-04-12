@@ -31,7 +31,7 @@ const ShippingPolicyData = () => {
         </p>
         <h4>Delivery:</h4>
         <p>
-        Expedited International Shipping Estimated between {moment(productData.shipping_start).format("ll")} and {moment(productData.shipping_end).format("ll")} to 'zip'{productData.zip}
+        Expedited International Shipping Estimated between {moment(productData.shipping_start).format("ll")} and {moment(productData.shipping_end).format("ll")} to {productData.zip}
         Seller  {days?(<>{days}</>):(0)} days after receiving cleared payment.
         Please allow additional time if international delivery is subject to customs processing.
         </p>

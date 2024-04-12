@@ -8,25 +8,19 @@ import Categoryimage6 from "../../../assets/Images/MainCategories/Category6.png"
 import Categoryimage7 from "../../../assets/Images/MainCategories/Category7.png"
 import blank from "../../../assets/Images/Productcard/blank.jpg";
 import { Link } from "react-router-dom";
-import CategoryServicies from '../../../services/API/Category'; //~/services/API/Category
+// import CategoryServicies from '../../../services/API/Category'; //~/services/API/Category
+import Home from '../../../services/API/Home'; //~/services/API/Home
 import { BASE_URL } from "../../../services/Constant";
 const CategoryList = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
     const fetchCategoryData = async () => {
-      try {
-        CategoryServicies.all()
-        .then((response) => {
-          console.log('catgeories', response)
-          setCategoryData(response.slice(0, 6)); // Limit to the first 6 products
-        })
-      }catch (error) {
-        console.error('Error fetching product data:', error);
-        setError('Error fetching product data. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
+        Home.recursiveCategories()
+        .then((res) => {
+          setCategoryData(res.slice(0, 6)); // Limit to the first 6 products
+        }).catch(error =>  console.error('Error fetching product data:', error))
+        .finally(error => setLoading(false));
     };
     useEffect(() => {
       fetchCategoryData();
@@ -53,27 +47,33 @@ const CategoryList = () => {
               <p>{error}</p>
             ) : (
               <>
-                {categoryData.map((product) => {
+                {categoryData.map((category) => {
                   return (
-                    <div className='col col-lg-2' key={product.id}>
+                    <div className='col col-lg-2' key={category.id}>
                       <div className='productlist ctrrr'>
                         <div style={{height: '140px',width: '100%'}}>
-                          {product.media.length > 0 ?(
+                          {category.media.length > 0 ?(
                             <>
-                            {product.media?.map((media) => {
+                            {category.media?.map((media) => {
                               return(
                                 <>
-                                  <img src={`${BASE_URL}/image/category/${media.name}`} alt={media.name} />
+                                   <Link to={`/notfound`}>
+                                    <img src={`${BASE_URL}/image/category/${media.name}`} alt={media.name} />
+                                   </Link>
                                 </>
                               )
                             })}
                             </>
                           ):(
-                            <img src={blank} alt="blank" />
+                            <Link to={`/notfound`}>
+                              <img src={blank} alt="blank" />
+                            </Link>
                           )
                           }
                         </div>
-                        <Link to="/singlecategory"><h5 style={{ textAlign: "center", padding: "20px 0px" }}>{product.name}</h5></Link>
+                        <Link to={`/singlecategory/${category.guid}`}>
+                         <h5 style={{ textAlign: "center", padding: "20px 0px" }}>{category.name}</h5>
+                       </Link>
                       </div>
                     </div>
                   )

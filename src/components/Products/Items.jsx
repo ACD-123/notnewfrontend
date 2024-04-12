@@ -10,16 +10,12 @@ import { BASE_URL } from "../../services/Constant";
 const RecentViewedItems = () => {
     const [productData, setProductData] = useState([]);
     const fetchProductData = async () => {
-      try {
         ProductServices.all()
-        .then((response) => {
-          if(response.status){
-            setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+        .then((res) => {
+          if(res.status){
+            setProductData(res.data.slice(0, 6)); // Limit to the first 5 products
           }
-      })
-      } catch (error) {
-        toast.error(error);
-      }
+      }) .catch(error => console.log(error));
     };
     useEffect(() => {
       fetchProductData();
@@ -32,7 +28,7 @@ const RecentViewedItems = () => {
         <div className='container'>
             <div className='row'>
                 <div className='headings'>
-                <h3>New Items <span><Link to="/AllProducts">View More</Link></span></h3>
+                <h3>New Items <span><Link to="/notFound">View More</Link></span></h3>
                 </div>
             </div>
         </div>
@@ -45,10 +41,10 @@ const RecentViewedItems = () => {
                   {product?.auctioned ? (
                     // <Link to={`/auctionproduct/${product.id}`}>
                     <Link to={`/auctionproduct/${product?.guid}`}>
-                  
                       {product.media.length > 0 ? (
                         <>
-                          <img src={`${BASE_URL}/image/product/${product.media[0].name}`} alt={ProductImage1} />
+                          {/* <img src={`${BASE_URL}/image/product/${product.media[0].name}`} alt={ProductImage1} /> */}
+                          <img src={product.media[0].name} alt={product.media[0].name} />
                         </>
                       ):(
                         <>
@@ -61,7 +57,8 @@ const RecentViewedItems = () => {
                     <Link to={`/singleproduct/${product?.guid}`}>
                       {product.media.length > 0 ? (
                         <>
-                          <img src={`${BASE_URL}/image/product/${product.media[0].name}`} alt={ProductImage1} />
+                          {/* <img src={`${BASE_URL}/image/product/${product.media[0].name}`} alt={ProductImage1} /> */}
+                          <img src={product.media[0].name} alt={product.media[0].name} />
                         </>
                       ):(
                         <>
@@ -74,8 +71,8 @@ const RecentViewedItems = () => {
                     {product?.auctioned ? (
                       <Link to={`/auctionproduct/${product?.guid}`}>
                         <b>Bids:</b> $ {product.bids}
-                        <h3>{product.name.substring(0, 10)}...</h3>
-                        <h4>{product?.description.substring(0, 15)}...</h4>
+                        <h3>{product.name.substring(0, 15)}...</h3>
+                        <h4>{product?.description.substring(0, 25)}...</h4>
                       </Link>
                     ) : (
                       <Link to={`/singleproduct/${product.guid}`}>

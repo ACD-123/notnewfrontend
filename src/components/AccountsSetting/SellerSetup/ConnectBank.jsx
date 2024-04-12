@@ -39,7 +39,7 @@ const ConnectBank = () => {
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
       setEnabled(true);
-      console.log('Form submitted:', { selectedBank, accountName, accountNumber, bicSwift });
+      // console.log('Form submitted:', { selectedBank, accountName, accountNumber, bicSwift });
       const formData ={
         'bank_id' : selectedBank,
         'accountName' : accountName,
@@ -57,11 +57,11 @@ const ConnectBank = () => {
           setShowNewComponent(true);
         })
         .catch((e) => {
-          toast.error(e.message);
+          console.log(e.message);
         });
       })
       .catch((e) => {
-        toast.error(e.message);
+        console.log(e.message);
         setIsLoading(false);
         setEnabled(false);
       })
@@ -85,7 +85,7 @@ const ConnectBank = () => {
         setBanks(response);
       })
       .catch((e) => {
-        toast.error(e.message);
+        console.log(e.message);
       });
   };
   useEffect(() => {

@@ -26,6 +26,7 @@ const SetupSellerAccount = () => {
     zip: "",
     latitude: "",
     longitude: "",
+    description: "",
   });
   const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
@@ -41,6 +42,8 @@ const SetupSellerAccount = () => {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [zip, setZip] = useState("Zip");
+  const [editaddress, setEditAddress] = useState(false);
+  const [addresses, setAddresses] = useState("");
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
       libraries
@@ -84,16 +87,16 @@ const SetupSellerAccount = () => {
       const loggedInUsers = JSON.parse(loggedInUser);
       SellerServices.getShopDetails()
         .then((response) => {
-          console.log("shop", response);
           if (response.status) {
             setFormData(response.data);
             setGuid(response.data.guid)
             setCoverImage(response.data.cover_image);
             setCity(response.data.city_id);
             setState(response.data.state_id);
-            // setAddress(response.data.address); 
+            setAddress(response.data.address); 
             setCountry(response.data.country_id);
             setZip(response.data.zip)
+            setAddress(response.data.address)
           }
         })
         .catch((e) => {
@@ -128,12 +131,15 @@ const SetupSellerAccount = () => {
     if (!zip) {
       newErrors.zip = "Zip is required";
     }
+    if(!formData.description){
+      newErrors.description = "Description is required";
+    }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       formData.address = address;
-      formData.country_id = countries;
-      formData.state_id = states;
-      formData.city_id = cities;
+      formData.country = countries;
+      formData.state = states;
+      formData.city = cities;
       formData.zip = zip;
       formData.latitude = latitude;
       formData.longitude = longitude;
@@ -143,12 +149,13 @@ const SetupSellerAccount = () => {
       fd.append("email", formData.email);
       fd.append("address", formData.address);
       fd.append("phone", formData.phone);
-      fd.append("country", formData.country_id);
-      fd.append("state", formData.state_id);
-      fd.append("city", formData.city_id);
+      fd.append("country", formData.country);
+      fd.append("state", formData.state);
+      fd.append("city", formData.city);
       fd.append("zip", formData.zip);
       fd.append("latitude", formData.latitude);
       fd.append("longitude", formData.longitude);
+      fd.append("description", formData.description);
       fd.append("guid", guid);
       if (profilePic) {
         fd.append("file", profilePic);
@@ -164,12 +171,16 @@ const SetupSellerAccount = () => {
             setFormSubmitted(true);
             if (response.status) {
               toast.success(response.data);
+              setEditAddress(false)
             } else {
               toast.error(response.data);
             }
           })
           .catch((e) => {
-            toast.error(e.message);
+            if('email', e.response.data.message == '1'){
+              toast.error(e.response.data.data);
+            }
+            console.log('error:', e)
             setIsLoading(false);
             setEnabled(false);
           })
@@ -182,6 +193,7 @@ const SetupSellerAccount = () => {
           .then((response) => {
             toast.success(response);
             setFormSubmitted(true);
+            setEditAddress(false)
           })
           .catch((e) => {
             toast.error(e.message);
@@ -220,17 +232,24 @@ const SetupSellerAccount = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log('hello')
+    // console.log('hello')
     setFormData({
       ...formData,
       [name]: value,
     });
   };
+  const handleAddAddress =()=>{
+    setEditAddress(true)
+    // formData.address = addresses;
+  }
   useEffect(() => {
     let loggedInUser = localStorage.getItem("user_details");
     if (loggedInUser) {
       const loggedInUsers = JSON.parse(loggedInUser);
       setUser(loggedInUsers);
+      formData.fullname =loggedInUsers.name
+      formData.email =loggedInUsers.email
+      formData.phone =loggedInUsers.phone
       getUserStoreInfo();
     }
   }, []);
@@ -250,7 +269,37 @@ const SetupSellerAccount = () => {
                   <div className="mb-3">
                     <div className="profile-pic-wrapper">
                       <div className="pic-holder">
-                        {coverimage ? (
+                      {profilePic ? (<><img
+                          id="profilePic"
+                          className="pic"
+                          src={
+                            profilePic
+                              ? URL.createObjectURL(profilePic)
+                              : profilePic
+                          }
+                        /></>):(<>
+                        {coverimage ? (<>
+                          <img
+                          id="profilePic"
+                          className="pic"
+                          src={`${BASE_URL}/${coverimage}`}
+                        />
+
+                        </>):(
+                          <>
+                          <img
+                          id="profilePic"
+                          className="pic"
+                          src={
+                            profilePic
+                              ? URL.createObjectURL(profilePic)
+                              : profilePic
+                          }
+                        />
+                          </>
+                        )}
+                        </>)}
+                        {/* {coverimage ? (
                           <>
                           <img 
                              id="profilePic"
@@ -274,7 +323,7 @@ const SetupSellerAccount = () => {
                               alt="Profile"
                             />
                           </>
-                        )}
+                        )} */}
                         <input
                           className="uploadProfileInput"
                           type="file"
@@ -345,20 +394,44 @@ const SetupSellerAccount = () => {
                       onChange={handleChange}
                       placeholder="Enter your street address"
                     /> */}
-                    {isLoaded
-                      &&
-                      <StandaloneSearchBox
-                        onLoad={ref => inputRef.current = ref}
-                        onPlacesChanged={handlePlaceChanged}
-                      >
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter your street address"
-                        />
-                    </StandaloneSearchBox>}
+                    {editaddress ? (<>
+                        {isLoaded
+                          &&
+                          <StandaloneSearchBox
+                            onLoad={ref => inputRef.current = ref}
+                            onPlacesChanged={handlePlaceChanged}
+                          >
+                            <input
+                                type="text"
+                                className="form-control"
+                                placeholder="Enter your street address  "
+                            />
+                        </StandaloneSearchBox>}
+                      </>)
+                        :(<>
+                          <lable className="form-control" style={{ height: "150px"}}>
+                          {address}
+                          </lable>
+                          
+
+                        </>)}
+                          <a href="#" onClick={handleAddAddress}>Edit Address</a>
+                      <br />
+                      <br />
                   </div>
                   {errors.address && <p className="error">{errors.address}</p>}
+                  <div class="mb-3">
+                    <textarea
+                      className="form-control"
+                      id="description"
+                      name="description"
+                      onChange={handleChange}
+                      placeholder="Enter Your Description"
+                    >
+                      {formData.description}
+                    </textarea>
+                  </div>
+                  {errors.description && <p className="error">{errors.description}</p>}
                   <div className="d-flex statesfield">
                     <div className="fieldss">
                     <label className="form-control">
