@@ -63,7 +63,7 @@ const RecentlyViewed = () => {
               // <ProductCard key={product.id} {...product} />
             
           )} */}
-        </>):('loading..')}
+        </>):('Not Product Exists!')}
         
 
         {/* Button to clear all products */}

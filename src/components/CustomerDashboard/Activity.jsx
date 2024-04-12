@@ -11,6 +11,8 @@ import Watchlist from './Watchlist';
 import Dashboard from './Dashboard'
 import BuyAgain from './BuyAgain';
 import BidsOffer from './BidsOffer';
+import NotFound_ from '../../pages/NotFound_'
+
 import Chat from './Chat';
 const Activity = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('component'); // Initial menu selection
@@ -44,25 +46,34 @@ const Activity = () => {
       case 'component':
         return <Dashboard />;
       case 'componentA':
-        return <RecentlyViewed />;
+        // return <RecentlyViewed />;
+        return <NotFound_/>
       case 'componentB':
-        return <BidsOffer /> ;
+        // return <BidsOffer /> ;
+        return <NotFound_/>
       case 'componentC':
-        return <Wishlist /> ;
+        // return <Wishlist /> ;
+        return <NotFound_/>
       case 'componentD':
-        return <MainPurchase />;
+        // return <MainPurchase />;
+        return <NotFound_/>
       case 'componentE':
-        return <BuyAgain />;
+        // return <BuyAgain />;
+        return <NotFound_/>
       case 'componentF':
-        return ;
+        return <NotFound_/>;
       case 'componentG':
-        return <SavedSearches />;
+        // return <SavedSearches />;
+        return <NotFound_/>
       case 'componentH':
-        return <SavedSellers />;
+        // return <SavedSellers />;
+        return <NotFound_ />
       case 'componentI':
-        return <Chat />;
+        // return <Chat />;
+        return<NotFound_/>
       case 'componentJ':
-        return <Watchlist/>
+        // return <Watchlist/>
+        return <NotFound_/>
       default:
         return ; // Default to Test component if no matching menu item is found
     }

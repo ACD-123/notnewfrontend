@@ -51,7 +51,7 @@ const ProductGallery = () => {
               <>
                 <img
                   key={image.id}
-                  src={`${BASE_URL}/image/product/${image.name}`}
+                  src={`${image.name}`}
                   alt={image.name}
                   onClick={() => handleThumbnailClick(image.name)}
                   className={selectedImage === image.name ? "active" : ""}
@@ -76,7 +76,8 @@ const ProductGallery = () => {
       <>
         <div className="gallery-images">
           <img
-            src={`${BASE_URL}/image/product/${selectedImage}`}
+            // src={`${BASE_URL}/image/product/${selectedImage}`}
+            src={`${selectedImage}`}
             alt="Selected Product"
           />
         </div>

@@ -2,6 +2,7 @@ import React from 'react'
 import Bannerimage from '../../assets/Images/Elements/banner.png'
 import Bannerimage1 from '../../assets/Images/Elements/banner2.png'
 import Arrow from '../../assets/Images/Elements/arrow.png'
+import notFound from '../../pages/NotFound'
 import { Link } from 'react-router-dom'
 
 var Bannerbg = {
@@ -27,7 +28,7 @@ const Banner = () => {
       <div className='banner-text-button'>
         <h1>Best Deals <br></br>In Town</h1>
         <p>There are many variations of passages of Lorem Ipsum available</p>
-        <Link to="/AllProducts"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
+        <Link to="/notFound"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
       </div>
     </div>
     <div class="carousel-item"
@@ -36,7 +37,7 @@ const Banner = () => {
       <div className='banner-text-button'>
         <h1>Best Deals <br></br>In Town</h1>
         <p>There are many variations of passages of Lorem Ipsum available</p>
-        <Link to="/AllProducts"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
+        <Link to="/notFound"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
       </div>
     </div>
     <div class="carousel-item"
@@ -45,7 +46,7 @@ const Banner = () => {
       <div className='banner-text-button'>
         <h1>Best Deals <br></br>In Town</h1>
         <p>There are many variations of passages of Lorem Ipsum available</p>
-        <Link to="/AllProducts"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
+        <Link to="/notFound"><button className='dark'>Shop Now <img src={Arrow} /></button></Link>
       </div>
     </div>
   </div>

@@ -44,12 +44,12 @@ const SignIn = () => {
               .then(
                   response => {
                       console.log('responce from back end', response)
-                      localStorage.setItem('user', JSON.stringify(response.data.data))
-                      localStorage.setItem('token', JSON.stringify(response.data.token))
-                      window.location.replace('/');
+                      // localStorage.setItem('user', JSON.stringify(response.data.data))
+                      // localStorage.setItem('token', JSON.stringify(response.data.token))
+                      // window.location.replace('/');
                   })
               .catch(error => {
-                      alert(error.response);
+                      console.log(error.response);
                   });
           setData(response);
           setPicture(response.picture.data.url);
@@ -104,7 +104,7 @@ const SignIn = () => {
           xfbml: true,
           status: true,
           oauth: true,
-          channelUrl: 'https://zecodo-front.testingwebsitelink.com/',
+          channelUrl: 'https://notnew.testingwebsitelink.com/',
           version: "v17.0",
         });
         FB.AppEvents.logPageView();
@@ -169,7 +169,7 @@ const SignIn = () => {
     }
   };
   useEffect(() => {
-    fbInit();
+    // fbInit();
     getUserData();
     checkLogin();
   }, []);
@@ -213,16 +213,16 @@ const SignIn = () => {
                       <li>
                         <GoogleLogin
                           onSuccess={(credentialResponse) => {
-                            // console.log(credentialResponse);
+                            // console.log('google',credentialResponse);
                             AuthServices.googleLogin(credentialResponse)
-                              .then((response) => {
+                              .then((res) => {
                                 localStorage.setItem(
                                   "user_details",
-                                  JSON.stringify(response.data.data)
+                                  JSON.stringify(res.data)
                                 );
                                 localStorage.setItem(
                                   "access_token",
-                                  JSON.stringify(response.data.token)
+                                  res.token
                                 );
                                 window.location.replace("/");
                               })
@@ -242,7 +242,7 @@ const SignIn = () => {
                         <a href="#">
                         <FacebookLogin
                             appId="855777062581776"
-                            autoLoad={true}
+                            autoLoad={false}
                             fields="id,name,email,picture"
                             // scope="public_profile,email,user_friends"
                             scope={['email']}

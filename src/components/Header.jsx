@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth"; // ~/services/Auth
 import AuthServices from "../services/API/AuthService"; //~/services/API/AuthService
 import CartServices from "../services/API/CartServices"; //~/services/API/CartServices
-import {BASE_STORAGE_URL} from "../services/Constant"
+import {BASE_URL} from "../services/Constant"
 const Header = () => {
   const items = useSelector(state => state.cupon.cupon);
   const cart_items = items ? items : 0;
@@ -31,6 +31,7 @@ const Header = () => {
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
+        // console.log('response.profile_image', response.profile_image)
         setProfilePic(response.profile_image)
         setUserDetails(response);
         setUser(response);
@@ -104,10 +105,25 @@ const Header = () => {
                       <div
                         className="avatar-container"
                         onClick={toggleDropdown}
-                      >
+                      > 
                         {profilepic ? (
                           <>
-                            <img src={`https://notnewbackend.testingwebsitelink.com/storage/${profilepic}`} width="50" height="50" style={{ borderRadius: "40px"}} alt="User Avatar" />
+                          {/* http://localhost:8000/images/User/62/a249749c-e1cd-49fe-8eb1-83595042ae64.jpg */}
+                          {(() => {
+                          if (user.register_type === 'google' || user.register_type === 'facebook') {
+                            return (
+                              <div>
+                                <img src={profilepic} width="50" height="50" style={{ borderRadius: "40px"}} alt={user.name} />
+                              </div>
+                            );
+                          } else if (user.register_type == 'email'){
+                            return (
+                              <div>
+                                <img src={`${BASE_URL}/${profilepic}`} width="50" height="50" style={{ borderRadius: "40px"}} alt={user.name} />
+                              </div>
+                            )
+                          }
+                        })()}
                           </>
                         ):(
                           <>
@@ -223,7 +239,135 @@ const Header = () => {
                 </div>
               </div>
               <div className="col-md-4 col-sm-4 col">
-                <div className="cart-user">
+              {isLoggedin() ? (
+                  <div className="cart-user">
+                    <div className="cart">
+                      <span className="cartitmes">
+                      {cart_items}
+                      </span>
+                      <Link to="/shoppingcart">
+                        <img src={Cart} />
+                      </Link>
+                    </div>
+                    {/* <div className="cartitmes">
+
+                    <div/> */}
+
+                    <div className="user">
+                      <div
+                        className="avatar-container"
+                        onClick={toggleDropdown}
+                      > 
+                        {profilepic ? (
+                          <>
+                          {/* http://localhost:8000/images/User/62/a249749c-e1cd-49fe-8eb1-83595042ae64.jpg */}
+                          {(() => {
+                          if (user.register_type === 'google' || user.register_type === 'facebook') {
+                            return (
+                              <div>
+                                <img src={profilepic} width="50" height="50" style={{ borderRadius: "40px"}} alt={user.name} />
+                              </div>
+                            );
+                          } else if (user.register_type == 'email'){
+                            return (
+                              <div>
+                                <img src={`${BASE_URL}/${profilepic}`} width="50" height="50" style={{ borderRadius: "40px"}} alt={user.name} />
+                              </div>
+                            )
+                          }
+                        })()}
+                          </>
+                        ):(
+                          <>
+                            <img src={blankUser} width="50" height="50" style={{ borderRadius: "40px"}} alt="User Avatar" />
+                          </>
+                        )}
+                        {/* <img src={Avatar} alt="User Avatar" /> */}
+                        
+                      </div>
+                      {showDropdown && (
+                        <div className="dropdown-content">
+                          <ul>
+                            <li
+                              onClick={() =>
+                                handleDropdownItemClick("component")
+                              }
+                            >
+                              Dashboard
+                            </li>
+                            <li
+                              onClick={() =>
+                                handleDropdownItemClick("componentA")
+                              }
+                            >
+                              Recently viewed
+                            </li>
+                            <li
+                              onClick={() =>
+                                handleDropdownItemClick("componentB")
+                              }
+                            >
+                              Bids/Offers
+                            </li>
+                            <li
+                              onClick={() =>
+                                handleDropdownItemClick("componentC")
+                              }
+                            >
+                              Wishlist
+                            </li>
+                            <li
+                              onClick={() =>
+                                handleDropdownItemClick("componentD")
+                              }
+                            >
+                              purchase history
+                            </li>
+                            <li
+                              onClick={() =>
+                                handleDropdownItemClick("componentE")
+                              }
+                            >
+                              buy again
+                            </li>
+                            <li
+                              onClick={() =>
+                                handleDropdownItemClick("componentF")
+                              }
+                            >
+                              selling Hub
+                            </li>
+                            <li
+                              onClick={() =>
+                                handleDropdownItemClick("componentG")
+                              }
+                            >
+                              saved searches{" "}
+                            </li>
+                            <li
+                              onClick={() =>
+                                handleDropdownItemClick("componentH")
+                              }
+                            >
+                              saved sellers
+                            </li>
+                            <li
+                              onClick={() =>
+                                handleDropdownItemClick("componentI")
+                              }
+                            >
+                              messages
+                            </li>
+                            <li onClick={signOut}>Sign Out</li>
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                    <a href="/signin" className="login" >Sign In</a>
+                )}
+                {/* <div className="cart-user">
                   <div className="cart">
                     <Link to="/shoppingcart">
                       <img src={Cart} />
@@ -309,7 +453,7 @@ const Header = () => {
                       </div>
                     )}
                   </div>
-                </div>
+                </div> */}
               </div>
 
               <div className="col-md-4 col-sm-4 col">

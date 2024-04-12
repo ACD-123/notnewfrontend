@@ -71,7 +71,7 @@ const ProductCard = (props) => {
   const [submitted, setSubmitted] = useState(false);
 
   const fetchProductData = async () => {
-    try {
+    // try {
       if (status == "active") {
         ProductServices.selfValue(status).then((response) => {
           if(response.data){
@@ -79,7 +79,7 @@ const ProductCard = (props) => {
               setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
             }
           }
-        });
+        }).catch(error =>  console.error('Error fetching product data:', error));
       } else if (status == "inactive") {
         ProductServices.selfValue(status).then((response) => {
           if(response.data){
@@ -87,7 +87,7 @@ const ProductCard = (props) => {
               setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
             }
           }
-        });
+        }).catch(error =>  console.error('Error fetching product data:', error));
       } else if (status == "scheduled") {
         ProductServices.selfValue(status).then((response) => {
           if(response.data){
@@ -95,29 +95,21 @@ const ProductCard = (props) => {
               setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
             }
           }
-        });
+        }).catch(error =>  console.error('Error fetching product data:', error));
       } else if (props.products) {
         if (props.products.data?.length > 0) {
           setProductData(props.products.data.slice(0, 6));
         }
-        // ProductServices.get(props.id)
-        // .then((response) => {
-        //   console.log('get pro', response)
-        //   setProductData(
-        //   // if(response.data.length > 0){
-        //   //   setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
-        //   // }
-        // })
       } else {
         ProductServices.all().then((response) => {
           if (response.data) {
             setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
           }
-        });
+        }).catch(error =>  console.error('Error fetching product data:', error));
       }
-    } catch (error) {
-      toast.error(error);
-    }
+    // } catch (error) {
+    //   toast.error(error);
+    // }
   };
   const confirmDelete = (e, val) => {
     setShowPopup(true);
@@ -141,7 +133,6 @@ const ProductCard = (props) => {
   };
 
   useEffect(() => {
-    console.log('abc', props.products)
     // if(props.products.data > 0){
     //   setProductData(props.products.data.slice(0, 6));
     // }else{
@@ -182,7 +173,7 @@ const ProductCard = (props) => {
                                           to={`/singleproduct/${product.guid}`}
                                         >
                                           <img
-                                            src={`${BASE_URL}/image/product/${media.name}`}
+                                            src={media.name}
                                             alt={product.name}
                                           />
                                           {/* <img src={product.cover_image} alt={product.name} /> */}
@@ -215,7 +206,7 @@ const ProductCard = (props) => {
                                               to={`/singleproduct/${product.guid}`}
                                             >
                                               <img
-                                                src={`${BASE_URL}/image/product/${media.name}`}
+                                                src={media.name}
                                                 alt={product.name}
                                               />
                                               {/* <img src={product.cover_image} alt={product.name} /> */}

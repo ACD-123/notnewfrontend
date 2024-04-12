@@ -22,8 +22,8 @@ const Footer = () => {
 									<h6>Buy</h6>
 									<ul>
 										<li><Link to="/signup">Registration</Link></li>
-										<li><Link to="#">Auction Help</Link></li>
-										<li><Link to="#">Stores</Link></li>
+										<li><Link to="/notfound">Auction Help</Link></li>
+										<li><Link to="/notfound">Stores</Link></li>
 									</ul>
 								</div>
 							</div>
@@ -31,9 +31,9 @@ const Footer = () => {
 								<div className="nav-links-footer">
 									<h6>Sell</h6>
 									<ul>
-										<li><Link to="signup">Start selling</Link></li>
-										<li><Link to="#">learn to sell</Link></li>
-										<li><Link to="#">Refund Policy</Link></li>
+										<li><Link to="/notfound">Start selling</Link></li>
+										<li><Link to="/notfound">learn to sell</Link></li>
+										<li><Link to="/notfound">Refund Policy</Link></li>
 									</ul>
 								</div>
 							</div>
@@ -42,10 +42,10 @@ const Footer = () => {
 									<h6>Useful Links</h6>
 									<ul>
 										<li><Link to="/">Home</Link></li>
-										<li><Link to="#">About Us</Link></li>
-										<li><Link to="#">Services</Link></li>
-										<li><Link to="#">Portfolio</Link></li>
-										<li><Link to="#">Contact</Link></li>
+										<li><Link to="/notfound">About Us</Link></li>
+										<li><Link to="/notfound">Services</Link></li>
+										<li><Link to="/notfound">Portfolio</Link></li>
+										<li><Link to="/notfound">Contact</Link></li>
 									</ul>
 								</div>
 							</div>
@@ -53,10 +53,10 @@ const Footer = () => {
 								<div className="nav-links-footer">
 									<h6>About NotNew</h6>
 									<ul>
-										<li><Link to="/">Terms & Condition</Link></li>
-										<li><Link to="#">Privacy Policy</Link></li>
-										<li><Link to="#">Refund Policy</Link></li>
-										<li><Link to="#">Site Map</Link></li>
+										<li><Link to="/notfound">Terms & Condition</Link></li>
+										<li><Link to="/notfound">Privacy Policy</Link></li>
+										<li><Link to="/notfound">Refund Policy</Link></li>
+										<li><Link to="/notfound">Site Map</Link></li>
 									</ul>
 								</div>
 							</div>

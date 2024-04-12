@@ -53,7 +53,7 @@ const EditBankDetails = () => {
       .then((response) => {
         UserServices.detail()
         .then((responce) => {
-          toast.success(response);
+          toast.success(response.data);
           setShowSuccessPopup(true);
           setUserDetails(responce);
           setShowNewComponent(true);
@@ -93,18 +93,19 @@ const getBanks = () => {
       setBanks(response);
     })
     .catch((e) => {
-      toast.error(e.message);
+      console.log(e.message);
     });
 };
 useEffect(() => {
   getBanks();
   SellerServices.getBankDetails().then((response) => {
-    setAccountName(response.accountName);
-    setSelectedBank(response.bank_id);
-    setAccountNumber(response.accountNumber);
-    setBicSwift(response.bic_swift);
+    // console.log('bank', response)
+    setAccountName(response.data.accountName);
+    setSelectedBank(response.data.bank_id);
+    setAccountNumber(response.data.accountNumber);
+    setBicSwift(response.data.bic_swift);
   }).catch((e) => {
-      toast.error(e.message);
+      console.log(e.message);
     });
   //setShowNewComponent(true);
 }, []);

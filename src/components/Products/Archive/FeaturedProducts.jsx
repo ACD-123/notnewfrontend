@@ -7,16 +7,15 @@ import SellerServices from '../../../services/API/SellerServices'; //~/services/
 const FeaturedProducts = () => {
     const [featured, setFeatured] = useState([]);
     const fetchFeatured = async () => {
-        try {
+        
             SellerServices.getFeatured()
-          .then((response) => {
-            if(response.status){
-                setFeatured(response.data)
+          .then((res) => {
+            console.log('res', res)
+            if(res.status){
+                setFeatured(res.data)
             }
-          })
-        }catch (error) {
-          console.error('error:', error);
-        }
+          }).catch(error =>  console.error('Error fetching product data:', error))
+        
       };
       useEffect(() => {
         fetchFeatured();
@@ -41,7 +40,7 @@ const FeaturedProducts = () => {
                             <ProductCard />
                         </div>
                         <div className='row'>
-                            <Link to="/topcategory" style={{textDecoration: "unset"}}><button className='btnFeature'>
+                            <Link to="/notFound" style={{textDecoration: "unset"}}><button className='btnFeature'>
                             View More
                             </button></Link>
                         </div>

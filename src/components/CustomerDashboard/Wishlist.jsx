@@ -12,7 +12,8 @@ const Wishlist = () => {
   const getWishlist = () =>{
     ProductServices.getSaved()
     .then((response) => {
-      setProducts(response.data);
+      console.log('wishlist', response)
+      // setProducts(response.data);
     })
     .catch((e) => {
       console.log('error', e)

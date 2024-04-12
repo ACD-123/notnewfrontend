@@ -32,8 +32,8 @@ const SellerDetails = () => {
         });
     };
 useEffect(() => {
-    getProduct();
-    getItemSold();
+    // getProduct();
+    // getItemSold();
 }, []);
   return (
     <div className='sellerdetails' style={{padding: "50px 0px"}}>

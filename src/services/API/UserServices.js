@@ -12,7 +12,7 @@ function all(params = {}) {
 
 function detail(params = {}) {
   return request({
-    url: `${baseUrl}detail`,
+    url: `${baseUrl}detail/`,
     params,
   })
 }
@@ -113,7 +113,7 @@ function secretQuestion(data){
   return request({
     url: `${baseUrl}secretquestion/`,
     data,
-    method: 'PATCH',
+    method: 'POST',
   })
 }
 

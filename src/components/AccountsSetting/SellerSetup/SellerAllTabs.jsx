@@ -13,6 +13,7 @@ import EditBankDetails from './EditBankDetails';
 import EditProfileSetup from './EditProfileSetup';
 import SetupSellerAccount from './SetupSellerAccount';
 import MyTransactions from '../SellerSetup/MyTransactions';
+import NotFound from "../../../pages/NotFound_"
 
 const SellerAllTabs = (props) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('selling1');
@@ -56,21 +57,27 @@ const SellerAllTabs = (props) => {
       case 'selling3':
         return null;
       case 'sellings1':
-        return <OngoingOrderManagement />;
+        // return <OngoingOrderManagement />;
+        return <NotFound/>
         case 'sellings2':
-          return <CompleteOrderManagement />;
+          return <NotFound/> 
+          // return <CompleteOrderManagement />;
           case 'sellings3':
-          return <RefundManagement />; 
+          // return <RefundManagement />; 
+          return <NotFound/> 
       case 'selling4':
-        return <BidsNoffers />;
+        // return <BidsNoffers />;
+        return <NotFound/> 
       case 'selling5':
-        return <Chat />;
+        // return <Chat />;
+        return <NotFound/> 
       case 'selling6':
-        return null; // You can add the component for Feedbacks here
+        return <NotFound/>  // You can add the component for Feedbacks here
       case 'selling7':
-        return null; // You can add the component for Discounts & coupons here
+        return <NotFound/> // You can add the component for Discounts & coupons here
       case 'selling8':
-        return <MyTransactions/>; // You can add the component for Transactions here
+        // return <MyTransactions/>; // You can add the component for Transactions here
+        return <NotFound/>
         case 'sellingss1':
         return <EditProfileSetup />;
         case 'sellingss1b':
@@ -78,6 +85,8 @@ const SellerAllTabs = (props) => {
       case 'sellingss2':
         return <EditBankDetails />;
         case 'sellingss3':
+          return <NotFound/>
+        // return <SellingNotifications />;
         return <SellingNotifications />;
       default:
         return null;

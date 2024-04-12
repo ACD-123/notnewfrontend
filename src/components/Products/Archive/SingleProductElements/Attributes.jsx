@@ -9,10 +9,10 @@ const Attribute = () => {
   const id = pathname.split("/").pop();
   const curentAttribute = {};
   const getProduct = () => {
-    ProductServices.get(id).then((response) => {
-      setProductData(response);
-      if(response.attributes){
-        setProductAttributes(response.attributes);
+    ProductServices.get(id).then((res) => {
+      setProductData(res);
+      if(res.attributes){
+        setProductAttributes(JSON.parse(res.attributes));
       //   // setColors(JSON.parse(response.available_colors));
       //   setProductData(response);
       }
@@ -44,32 +44,6 @@ const Attribute = () => {
   useEffect(() => {
     getProduct();
   }, []);
-  // Sample product data
-  const products = [
-    {
-      id: 1,
-      name: "Product 1",
-      quantity: 12,
-      colors: ["Red", "Blue", "Green"],
-      sizes: ["Small", "Medium", "Large"],
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      quantity: 8,
-      colors: ["Black", "White", "Yellow"],
-      sizes: ["Medium", "Large", "Extra Large"],
-    },
-    {
-      id: 3,
-      name: "Product 3",
-      quantity: 15,
-      colors: ["Pink", "Purple", "Orange"],
-      sizes: ["Small", "Large", "Extra Large"],
-    },
-    // Add more products as needed
-  ];
-      
 
   const [selectedQuantity, setSelectedQuantity] = useState(0);
   const [selectedColor, setSelectedColor] = useState(0);
@@ -85,22 +59,30 @@ const Attribute = () => {
         <>
           <div className="inner-attributes">
             {attributes.map((item) => {
-              if(item.name === 'quantity'){
-                quantityList.push(
-                  <option key={item.value} value={item.value}>
-                      {item.value}
-                  </option>
-                );
+              if(item.select){
+                return(
+                  <>
+                    {item.select}
+                    <br/>
+                  </>
+                )
               }
+              
+              // if(item.name === 'quantity'){
+              //   quantityList.push(
+              //     <option key={item.value} value={item.value}>
+              //         {item.value}
+              //     </option>
+              //   );
+              // }
               return (
                 <>
-                  {/* <label htmlFor="quantity">Quantity Available:</label>
-                  {item.quantity} */}
+                 
                 </>
               );
             })}
           </div>
-          <label htmlFor="color">Available Color:</label>
+          {/* <label htmlFor="color">Available Color:</label>
           {attributes.map((item) => {
             if(item.name === 'color'){
               return(
@@ -115,8 +97,8 @@ const Attribute = () => {
                 </>
               )
             }
-          })}
-          <div className="inner-attributes">
+          })} */}
+          {/* <div className="inner-attributes">
             <label htmlFor="quantity">Quantity:</label>
             <select
               id="quantity"
@@ -128,12 +110,10 @@ const Attribute = () => {
                         )}
               >
               <option value="0">Select Qauntity</option>
-              {/* {quantityList.length > 0 ? <> */}
               {quantityList}
-              {/* </> : ""} */}
             </select>
-          </div>
-          <div className="inner-attributes">
+          </div> */}
+          {/* <div className="inner-attributes">
           {attributes.map((item) => {
               if(item.name === 'size'){
                 sizeList.push(
@@ -144,8 +124,6 @@ const Attribute = () => {
               }
               return (
                 <>
-                  {/* <label htmlFor="quantity">Quantity Available:</label>
-                  {item.quantity} */}
                 </>
               );
             })}
@@ -163,17 +141,17 @@ const Attribute = () => {
               {sizeList}
             </select>
             
-          </div>
-          <div className="inner-attributes">
+          </div> */}
+          {/* <div className="inner-attributes">
             <label htmlFor="tags">Tags:</label>
             <p id="tags">
             {JSON.parse(JSON.parse(productData.tags))}
             </p>
-          </div>
+          </div> */}
         </>
       ) : (
         ""
-      )}
+      )} 
     </div>
   );
 };

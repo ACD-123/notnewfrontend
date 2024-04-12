@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Objection from "../../../assets/Images/objection.png";
 import Down from "../../../assets/Images/down.png";
 import Checkimg from "../../../assets/Images/Auction/check.png";
@@ -10,14 +10,20 @@ import CountryServices from "../../../services/API/CountryServices"; //~/service
 import State from "../../../services/API/State"; //~/services/API/State
 import City from "../../../services/API/City"; //~/services/API/City
 import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
+import Home from "../../../services/API/Home"; //~/services/API/Home
+import ReturnShipping from "./ReturnShipping"; //~/services/API/Home
+import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
 import { toast } from "react-toastify";
 import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
+import { PRODUCT_ID } from "../../../services/Constant";
+const libraries = ["places"];
 const ListingForm = (props) => {
-  // Popup
-  const [showPopup, setShowPopup] = useState(false); // State for showing the popup
-  const [showEditPopup, setShowEditPopup] = useState(false); // State for showing the popup
+  const inputRef = useRef();
+  const [editaddress, setEditAddress] = useState(true);
+  const [showPopup, setShowPopup] = useState(false);
+  const [showEditPopup, setShowEditPopup] = useState(false);
   const [shippingStart, setShippingStart] = useState("");
   const [shippingEnd, setShippingEnd] = useState("");
   const [isToggled, setIsToggled] = useState(false);
@@ -42,12 +48,12 @@ const ListingForm = (props) => {
   const [returnpaidby, setReturnPaidBy] = useState("");
   const [showContent, setShowContent] = useState(false);
   const [showContents, setShowContents] = useState(false);
-  const [country, setCountry] = useState("");
+  const [country, setCountry] = useState("Country");
   const [selectedCountryCode, setSelectedCountryCode] = useState("");
-  const [states, setStates] = useState([]);
-  const [state, setState] = useState("");
-  const [cities, setCities] = useState([]);
-  const [city, setCity] = useState("");
+  const [states, setStates] = useState("State");
+  const [state, setState] = useState("State");
+  const [cities, setCities] = useState("City");
+  const [city, setCity] = useState("City");
   const [countries, setCountries] = useState([]);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -60,11 +66,22 @@ const ListingForm = (props) => {
   const [editproduct, setEditProduct] = useState(false);
   const [shippingLocation, setShippingLocation] = useState("");
   const [conditions, setCondition] = useState("");
+  const [address, setAddress] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [blobURL, setBlobURL] = useState(null);
   const [files, setFiles] = useState([]);
+  const [deliveryCompany, setdeliveryCompany] = useState({});
   const [blobs, setBolbs] = useState([]);
   const [editBlobs, setEditBolbs] = useState([]);
+  const [brands, setBrands] = useState([]);
+  const [brand, setBrand] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [zip, setZip] = useState("Zip");
+  const [hours, setHours] = useState("");
+  const [durations, setDurations] = useState("");
+  const [attributes, setAttribnutes] = useState([]);
+  // const [addresses, setAddress] = useState("");
   const [product, setProduct] = useState({
     images: [],
     condition: "",
@@ -73,7 +90,8 @@ const ListingForm = (props) => {
     category: "",
     brand: "",
     stockCapacity: 0,
-    sizes: [{ size: "Small", quantity: 0, color: "" }],
+    attributes: [],
+    tags: [{ tag: "" }],
     availableColors: [],
     description: "",
     sellingNow: false,
@@ -89,7 +107,7 @@ const ListingForm = (props) => {
     deliverddomestic: false,
     deliverdinternational: false,
     deliverycompany: "",
-    tags: [],
+    // tags: [],
     country: "",
     state: "",
     city: "",
@@ -101,7 +119,12 @@ const ListingForm = (props) => {
     returndurationlimit: 0,
     returnshippingpaidby: "",
     returnshippinglocation: "",
+    hours: "",
     action: "add",
+  });
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
+    libraries,
   });
   let imagesFiles = [];
   let loggedInUser = localStorage.getItem("user_details");
@@ -146,6 +169,10 @@ const ListingForm = (props) => {
     product.deliverddomestic = true;
     setDomestic(!domestic);
   };
+  const handleAddress = (e) => {
+    product.address = e.target.value;
+    setDomestic(!domestic);
+  };
   const handleInternational = (e) => {
     product.deliverdinternational = true;
     setInternational(!international);
@@ -169,19 +196,28 @@ const ListingForm = (props) => {
     setBids(e.target.value);
   };
   const handleDurationChange = (e) => {
-    product.durations = e.target.value;
+    product.shipingdurations = e.target.value;
     setDuration(e.target.value);
+  };
+  const handleDurations = (e) => {
+    // durations
+    setDurations(e.target.value);
+    product.durations = e.target.value;
+  };
+  const handleHours = (e) => {
+    product.hours = e.target.value;
+    setHours(e.target.value);
   };
   const handleAuctionStartDate = (e) => {
     product.auctionListing = e.target.value;
     // product.auctionListing = moment(date).format("DD-MM-YYYY");
     setAuctionStartDate(e.target.value);
   };
-  const handleAuctionEndDate = (e) =>{
+  const handleAuctionEndDate = (e) => {
     product.auctionEndListing = e.target.value;
     // product.auctionEndListing = moment(date).format("DD-MM-YYYY");
     setAuctionEndDate(e.target.value);
-  }
+  };
 
   const handleToggle1 = () => {
     setIsToggled1(!isToggled1);
@@ -199,8 +235,23 @@ const ListingForm = (props) => {
 
   const handleCategory = (e) => {
     const cat = e.target.value;
+    let attribute = localStorage.getItem('attributes')
+    localStorage.setItem('attributes', null);      
+    localStorage.setItem('attributes', JSON.stringify([{'attributes': 'set Attribute'}]));      
+    localStorage.removeItem('selectedColors')
+    localStorage.removeItem('radiogrp')
+    localStorage.removeItem('selected')
+    localStorage.removeItem('chkgrp')
+    
     product.category = e.target.value;
     setCategory(cat);
+    Category.productAttributes(e.target.value)
+      .then((res) => {
+        setAttribnutes(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
   const handleShop = (e) => {
     product.store = e.target.value;
@@ -227,35 +278,289 @@ const ListingForm = (props) => {
       setProduct({ ...product, tags: updatedTags });
     });
   };
+  const handlePlaceChanged = () => {
+    const [place] = inputRef.current.getPlaces();
+    if (place) {
+      setAddress(place.formatted_address);
+      setLatitude(place.geometry.location.lat());
+      setLongitude(place.geometry.location.lng());
+      for (var i = 0; i < place.address_components.length; i++) {
+        for (var j = 0; j < place.address_components[i].types.length; j++) {
+          if (place.address_components[i].types[j] == "postal_code") {
+            setZip(place.address_components[i].long_name);
+            // document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
+          }
+          if (place.address_components[i].types[0] == "locality") {
+            setCity(place.address_components[i].long_name);
+          }
+          if (
+            place.address_components[i].types[0] ==
+            "administrative_area_level_1"
+          ) {
+            setState(place.address_components[i].long_name);
+          }
+          if (place.address_components[i].types[0] == "country") {
+            setCountry(place.address_components[i].long_name);
+          }
+        }
+      }
+    }
+  };
 
-  const handleInputChange = (e, index) => {
+  const handleAddAddress = () => {
+    setEditAddress(false);
+    product.address = address;
+  };
+  const handleBrands = (e) => {
+    setBrand(e.target.value);
+    product.brand = e.target.value;
+  };
+  const handleTagChange = (e, index) => {
     const { name, value } = e.target;
     const newErrors = {};
-    if (name === "size" || name === "quantity" || name === "color") {
-      const updatedSizes = [...product.sizes];
-      updatedSizes[index][name] = value;
-      // console.log('updatedSizes', updatedSizes);
-      // setProduct({ ...product, sizes: JSON.stringify(updatedSizes) });
-      setProduct({ ...product, sizes: updatedSizes });
-    }else {
-      setProduct({ ...product, [name]: value });
-    }
-    if (name === "color") {
-      const updatedColors = [value];
-      setProduct({ ...product, availableColors: updatedColors });
-    }
-    if (name === "tags") {
-      const updatedTags = [value];
+    if (name === "tag") {
+      const updatedTags = [...product.tags];
+      updatedTags[index][name] = value;
       setProduct({ ...product, tags: updatedTags });
+    } 
+  };
+  // const handleTagChange = (e, index) =>{
+  //   const { name, value } = e.target;
+  //   const newErrors = {};
+  //   const updatedTags = [value];
+  //   setProduct({ ...product, tags: updatedTags });
+  // }
+  const handleInputChange = (e, index) => { 
+    const { name, value } = e.target;
+    const newErrors = {};
+    setProduct({ ...product, [name]: value });  
+  };
+  
+  const handleRadioChange = (e, index) => {
+    const { name, value } = e.target;
+    let getItems =JSON.parse(localStorage.getItem('attributes'));
+    if(getItems){
+        var i = getItems.length;
+        while(i--){
+          if( getItems[i] 
+                && getItems[i].hasOwnProperty("radio")  ){ 
+                  getItems.splice(i,1);
+          }
+        }
+        let arrayObj = {};
+        arrayObj ={
+          "radio" : value
+        }
+        let finalArray = [];
+        if(getItems){
+          finalArray = getItems;
+        }
+        finalArray.push(arrayObj)
+        localStorage.setItem('attributes', JSON.stringify(finalArray));
+    }
+    
+  };
+  const handleTextChange = (e) => {
+    const { name, value } = e.target;
+    let getItems = JSON.parse(localStorage.getItem('attributes'));
+    if(getItems){
+        var i = getItems.length;
+        while(i--){
+          if( getItems[i] 
+                && getItems[i].hasOwnProperty("text")  ){ 
+                  getItems.splice(i,1);
+          }
+        }
+        let arrayObj = {};
+        arrayObj ={
+          "text" : value
+        }
+        let finalArray = [];
+        if(getItems){
+          finalArray = getItems;
+        }
+        finalArray.push(arrayObj)
+        localStorage.setItem('attributes', JSON.stringify(finalArray));
     }
   };
-
   const handleColorChange = (e) => {
-    const color = e.target.value;
-    const updatedColors = [...product.availableColors, color];
-    setProduct({ ...product, availableColors: updatedColors });
+    const { name, value } = e.target;
+    let getColors = JSON.parse(localStorage.getItem('selectedColors'));
+        let colors = [];
+        if(getColors){
+          colors = getColors;
+        }
+        colors.push(value)
+        localStorage.setItem('selectedColors', JSON.stringify(colors));
+        let getFinalColors = JSON.parse(localStorage.getItem('selectedColors'))
+        let getAttributes = JSON.parse(localStorage.getItem('attributes'));
+        if(getAttributes){
+            var i = getAttributes.length;
+            while(i--){
+              if( getAttributes[i] 
+                    && getAttributes[i].hasOwnProperty("colors")  ){ 
+                      getAttributes.splice(i,1);
+              }
+            }
+            let colorObj = {};
+            colorObj ={
+              "colors" : getFinalColors
+            }
+            let finalArray = [];
+            if(getAttributes){
+              finalArray = getAttributes;
+            }
+            finalArray.push(colorObj)
+            localStorage.setItem('attributes', JSON.stringify(finalArray));
+            // const color = e.target.value;
+            // const updatedColors = [...product.availableColors, color];
+            // setProduct({ ...product, availableColors: updatedColors });
+            // console.log('colors', product)
+        }
   };
+  const handleFileChange = (e) => {
+    // const color = e.target.value;
+    // const updatedColors = [...product.availableColors, color];
+    // setProduct({ ...product, availableColors: updatedColors });
+  };
+  
+  const handleCheckboxChange = (e) => {
+    const { name, value } = e.target;
+    if(e.target.checked === true){
+      let getItems = JSON.parse(localStorage.getItem('attributes'));
+      if(getItems){
+        var i = getItems.length;
+        while(i--){
+          if( getItems[i] 
+                && getItems[i].hasOwnProperty("checkbox")  ){ 
+                  getItems.splice(i,1);
+          }
+        }
+        let arrayObj = {};
+        arrayObj ={
+          "checkbox" : value
+        }
+        let finalArray = [];
+        if(getItems){
+          finalArray = getItems;
+        }
+        finalArray.push(arrayObj)
+        localStorage.setItem('attributes', JSON.stringify(finalArray)); 
+      }
+    }else{
+      let getItems = JSON.parse(localStorage.getItem('attributes'));
+      if(getItems){
+        var i = getItems.length;
+          while(i--){
+            if( getItems[i] 
+                  && getItems[i].hasOwnProperty("checkbox")  ){ 
+                    getItems.splice(i,1);
+            }
+          }
+          localStorage.setItem('attributes', JSON.stringify(getItems)); 
+        }
+      }
+  };
+  const handleCheckboxGrpChange = (e) => {
+    console.log('uniqueNumbers')
+    const { name, value } = e.target;
+    let getChkGrp = JSON.parse(localStorage.getItem('chkgrp'));
+    let chkgrp = [];
+    if(getChkGrp){
+      chkgrp = getChkGrp;
+    }
+    chkgrp.push(value)
+    let chkgrped =chkgrp.filter((value, index) => chkgrp.indexOf(value)=== index);
+    localStorage.setItem('chkgrp', JSON.stringify(chkgrped));
+    let getFinalChkGrp = JSON.parse(localStorage.getItem('chkgrp'))
+    let getAttributes = JSON.parse(localStorage.getItem('attributes'));
+    if(getAttributes){
+      var i = getAttributes.length; 
+    while(i--){
+      if( getAttributes[i] 
+            && getAttributes[i].hasOwnProperty("checkboxgroup")  ){ 
+              getAttributes.splice(i,1);
+      }
+    }
+    let chkgrpObj = {};
+    chkgrpObj ={
+      "checkboxgroup" : getFinalChkGrp
+    }
+    let finalArray = [];
+    if(getAttributes){
+      finalArray = getAttributes;
+    }
+    finalArray.push(chkgrpObj)
+          
+    localStorage.setItem('attributes', JSON.stringify(finalArray));
+    }
+  };
+  const handleSelectChange = (e) =>{
+    const { name, value } = e.target;
+    let getSelected = JSON.parse(localStorage.getItem('selected'));
+    let select = [];
+    if(getSelected){
+      select = getSelected;
+    }
+    select.push(value)
+    let selected =select.filter((value, index) => select.indexOf(value)=== index);
+    localStorage.setItem('selected', JSON.stringify(selected));
+    let getFinalSelect = JSON.parse(localStorage.getItem('selected'))
+    let getAttributes = JSON.parse(localStorage.getItem('attributes'));
+    if(getAttributes){
+      var i = getAttributes.length;
+        while(i--){
+          if( getAttributes[i] 
+                && getAttributes[i].hasOwnProperty("selected")  ){ 
+                  getAttributes.splice(i,1);
+          }
+        }
+        let selectObj = {};
+        selectObj ={
+          "select" : getFinalSelect
+        }
+        let finalArray = [];
+        if(getAttributes){
+          finalArray = getAttributes;
+        }
+        finalArray.push(selectObj)
+        localStorage.setItem('attributes', JSON.stringify(finalArray));
+    }
 
+  }
+  const handleRadioGrpChange = (e) => {
+    const { name, value } = e.target;
+    let getRadioGrp = JSON.parse(localStorage.getItem('radiogrp'));
+    let radiogrp = [];
+    if(getRadioGrp){
+      radiogrp = getRadioGrp;
+    }
+    radiogrp.push(value)
+    let radiogrped =radiogrp.filter((value, index) => radiogrp.indexOf(value)=== index);
+    localStorage.setItem('radiogrp', JSON.stringify(radiogrped));
+    let getFinalRadiogGrp = JSON.parse(localStorage.getItem('radiogrp'))
+    let getAttributes = JSON.parse(localStorage.getItem('attributes'));
+    if(getAttributes){
+      var i = getAttributes.length;
+    while(i--){
+      if( getAttributes[i] 
+            && getAttributes[i].hasOwnProperty("radiogrp")  ){ 
+              getAttributes.splice(i,1);
+      }
+    }
+    let radiogrpObj = {};
+    radiogrpObj ={
+      "radiogrp" : getFinalRadiogGrp
+    }
+    let finalArray = [];
+    if(getAttributes){
+      finalArray = getAttributes;
+    }
+    finalArray.push(radiogrpObj)
+    localStorage.setItem('attributes', JSON.stringify(finalArray));
+    }
+    
+  };
   const handleCondition = (e) => {
     e.preventDefault();
     setCondition(e.target.value);
@@ -273,15 +578,20 @@ const ListingForm = (props) => {
     if (files.length > 4) {
       //
     } else {
-      setFiles([...files, e.target.files[0]]);
+      setFiles([...files, e.target.files]);
     }
-  }
+  };
   const handleImageUpload = (e) => {
     if (blobs.length > 4) {
       const newErrors = {};
       newErrors.images = "You can not upload more then 5 images";
       setErrors(newErrors);
     } else {
+      // console.log('files', e.target.files)
+      // {[e.target.files]?.map((file) => {
+        // console.log('file', file.File)
+        // setBolbs([...blobs, URL.createObjectURL(file)]);
+      // })}
       setBolbs([...blobs, URL.createObjectURL(e.target.files[0])]);
     }
     if (files.length > 4) {
@@ -311,7 +621,7 @@ const ListingForm = (props) => {
     //       'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
     //      }
     // }
-    // axios.post('https://notnewbackend.testingwebsitelink.com/api/products/upload', formData, config)
+    // axios.post('http://localhost:8000api/products/upload', formData, config)
     //   .then(response => {
     //     localStorage.setItem('product_guid',response.data.product)
     //   })
@@ -320,21 +630,23 @@ const ListingForm = (props) => {
     //   });
   };
 
-  const handleAddSize = () => {
+  const handleAddTags = () => {
     setProduct({
       ...product,
-      sizes: [...product.sizes, { size: "", quantity: 0 }],
+      tags: [...product.tags, { tag: ""}],
     });
     return;
   };
 
-  const handleAddTags = (e) => {
-    setProduct({
-      ...product,
-      tags: [...product.tags, ""],
-    });
-    return;
-  };
+  // const handleAddTags = (e) => {
+  //   let tags = localStorage.getItem('tags');
+  //   // 
+  //   setProduct({
+  //     ...product,
+  //     tags: [...product.tags, ""],
+  //   });
+  //   //return;
+  // };
 
   const handleCountryChange = (e) => {
     product.country = e.target.value;
@@ -359,9 +671,9 @@ const ListingForm = (props) => {
     if (!product.brand) {
       newErrors.brand = "Brand is required";
     }
-    if (!product.stockCapacity || product.stockCapacity === 0) {
-      newErrors.stockCapacity = "Stock Capacity is required";
-    }
+    // if (!product.stockCapacity || product.stockCapacity === 0) {
+    //   newErrors.stockCapacity = "Stock Capacity is required";
+    // }
     if (!product.description) {
       newErrors.description = "Description is required";
     }
@@ -396,9 +708,13 @@ const ListingForm = (props) => {
       newErrors.shippingprice = "Shipping Price is required";
     }
 
-    if (!product.shippingstart && !product.shippingstart) {
-      newErrors.shippingstartend = "Shipping Start and End is required";
-    }
+    // if (!product.shippingstart && !product.shippingstart) {
+    //   newErrors.shippingstartend = "Shipping Start and End is required";
+    // }
+    // if (!product.durations && !product.durations) {
+    //   newErrors.durations = "Shipping Start and End is required";
+    // }
+
     if (!product.returnshippingpaidby) {
       newErrors.returnshippingpaidby = "Shipping Paid By is required";
     }
@@ -417,20 +733,191 @@ const ListingForm = (props) => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
-      setEnabled(true);
+      setEnabled(true);     
       if (props.guid) {
-        product.category = product.category ? product.category : category;
-        product.sizes = product.sizes;
-        product.sellingNow = isToggled;
-        product.shippingstart = shippingStart;
-        product.shippingend = shippingEnd;
-        ProductServices.update(props.guid, product)
+        // product.country = country;
+        // product.city = city;
+        // product.state = state;
+        // product.brand = brand;
+        // product.zip = zip;
+        // // console.log('product', product)
+        // const formData = new FormData();
+        // product.condition = localStorage.getItem("product_condition");
+        // formData.append("title", product.title);
+        // formData.append("condition", localStorage.getItem("product_condition"));
+        // formData.append("model", product.model);
+        // formData.append("category", product.category);
+        // formData.append("brand_id", product.brand);
+        // formData.append("stockCapacity", product.stockCapacity);
+        // formData.append("sizes", JSON.stringify(product.sizes));
+        // formData.append("availableColors", product.availableColors);
+        // formData.append("description", product.description);
+        // formData.append("sellingNow", product.sellingNow);
+        // formData.append("price", product.price);
+        // formData.append("saleprice", product.saleprice);
+        // formData.append("minpurchase", product.minpurchase);
+        // formData.append("listing", product.listing);
+        // formData.append("auctioned", product.auctions);
+        // formData.append("bids", product.bids);
+        // formData.append("shipingdurations", product.shipingdurations);
+        // formData.append("durations", product.shipingdurations);
+        // formData.append("hours", product.hours);
+        // formData.append("auctionListing", product.auctionListing);
+        // formData.append("auctionEndListing", product.auctionEndListing);
+        // formData.append("deliverddomestic", product.deliverddomestic);
+        // formData.append("tags", JSON.stringify(product.tags));
+        // formData.append("deliverdinternational", product.deliverdinternational);
+        // formData.append("deliverycompany", product.deliverycompany);
+        // formData.append("country", product.country);
+        // formData.append("city", product.city);
+        // formData.append("state", product.state);
+        // formData.append("zip", product.zip);
+        // formData.append("address", address);
+        // formData.append("shippingprice", product.shippingprice);
+        // formData.append("shippingstart", product.shippingstart);
+        // formData.append("shippingend", product.shippingend);
+        // formData.append("returnshippingprice", product.returnshippingprice);
+        // formData.append("returndurationlimit", product.returndurationlimit);
+        // formData.append("returnshippingpaidby", product.returnshippingpaidby);
+        // formData.append("termsdescription", "termsdescription");
+        // let getAttributes = localStorage.getItem('attributes');
+        // if(getAttributes){
+        //   formData.append("attributes", localStorage.getItem('attributes'));
+        // }else{
+        //   formData.append("attributes", JSON.stringify([{'attributes': "No Atributes"}]));
+        // }
+        // formData.append(
+        //   "returnshippinglocation",
+        //   product.returnshippinglocation
+        // );
+        // /**
+        //  * For Images Uploads Start
+        //  */
+        // files.forEach((image_file) => {
+        //   formData.append("file[]", image_file);
+        // });
+        // for (let pair of formData.entries()) {
+        //   console.log(pair[0] + ", " + pair[1]);
+        // }
+        // const config = {
+        //   headers: {
+        //     "content-type": "multipart/form-data",
+        //     Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        //   },
+        // };
+        // axios
+        //   .post("http://localhost:8000/api/products/add", formData, config)
+        //   .then((response) => {
+        //     setShowPopup(true);
+        //     setIsLoading(false);
+        //     setEnabled(false);
+        //     localStorage.removeItem("product_condition");
+        //     setTimeout(() => {
+        //       props.parentCallback(null);
+        //     }, 4000);
+        //   })
+        //   .then(() => {
+        //     setIsLoading(false);
+        //     setEnabled(false);
+        //   })
+        //   .catch((error) => {
+        //     console.log(error);
+        //   });
+
+
+
+        product.country = country;
+        product.city = city;
+        product.state = state;
+        product.brand = brand;
+        product.zip = zip;
+        // console.log('product', product)
+        const fD = new FormData();
+        fD.append("title", product.title);
+        fD.append("condition", localStorage.getItem('product_condition'));
+        fD.append("model", product.model);
+        fD.append("category", product.category);
+        fD.append("brand_id", product.brand);
+        fD.append("stockCapacity", product.stockCapacity);
+        fD.append("sizes", JSON.stringify(product.sizes));
+        fD.append("availableColors", product.availableColors);
+        fD.append("description", product.description);
+        fD.append("sellingNow", product.sellingNow);
+        fD.append("price", product.price);
+        fD.append("saleprice", product.saleprice);
+        fD.append("minpurchase", product.minpurchase);
+        fD.append("listing", product.listing);
+        fD.append("auctioned", product.auctions);
+        fD.append("bids", product.bids);
+        fD.append("shipingdurations", product.shipingdurations);
+        fD.append("durations", product.shipingdurations);
+        fD.append("hours", product.hours);
+        fD.append("auctionListing", product.auctionListing);
+        fD.append("auctionEndListing", product.auctionEndListing);
+        fD.append("deliverddomestic", product.deliverddomestic);
+        fD.append("tags", JSON.stringify(product.tags));
+        fD.append("deliverdinternational", product.deliverdinternational);
+        fD.append("deliverycompany", product.deliverycompany);
+        fD.append("country", product.country);
+        fD.append("city", product.city);
+        fD.append("state", product.state);
+        fD.append("zip", product.zip);
+        fD.append("address", address);
+        fD.append("shippingprice", product.shippingprice);
+        fD.append("shippingstart", product.shippingstart);
+        fD.append("shippingend", product.shippingend);
+        fD.append("returnshippingprice", product.returnshippingprice);
+        fD.append("returndurationlimit", product.returndurationlimit);
+        fD.append("returnshippingpaidby", product.returnshippingpaidby);
+        fD.append("termsdescription", "termsdescription");
+        let getAttributes = localStorage.getItem('attributes');
+        if(getAttributes){
+          fD.append("attributes", localStorage.getItem('attributes'));
+        }else{
+          fD.append("attributes", JSON.stringify([{'attributes': "No Atributes"}]));
+        }
+        fD.append(
+          "returnshippinglocation",
+          product.returnshippinglocation
+        );
+        /**
+         * For Images Uploads Start
+         */
+        files.forEach((image_file) => {
+          fD.append("file[]", image_file);
+        });
+        for (let pair of fD.entries()) {
+          console.log(pair[0] + ", " + pair[1]);
+        }
+
+        // ProductServices.update(props.guid, formData)
+        //   .then((response) => {
+        //     // toast.success(response.message);
+        //     setShowEditPopup(true);
+        //     setIsLoading(false);
+        //     setEnabled(false);
+        //     // localStorage.removeItem('product_condition');
+        //     setTimeout(() => {
+        //       props.parentCallback(null);
+        //     }, 4000);
+        //   })
+        //   .then(() => {
+        //     setIsLoading(false);
+        //     setEnabled(false);
+        //   });
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        };
+        axios
+          .post(`http://localhost:8000/api/products/${props.guid}`, fD, config)
           .then((response) => {
-            // toast.success(response.message);
             setShowEditPopup(true);
             setIsLoading(false);
             setEnabled(false);
-            // localStorage.removeItem('product_condition');
+            localStorage.removeItem('product_condition');
             setTimeout(() => {
               props.parentCallback(null);
             }, 4000);
@@ -438,16 +925,24 @@ const ListingForm = (props) => {
           .then(() => {
             setIsLoading(false);
             setEnabled(false);
+          })
+          .catch((error) => {
+            console.log(error);
           });
       } else {
-        console.log('product', product)
+        product.country = country;
+        product.city = city;
+        product.state = state;
+        product.brand = brand;
+        product.zip = zip;
+        // console.log('product', product)
         const formData = new FormData();
         product.condition = localStorage.getItem("product_condition");
         formData.append("title", product.title);
         formData.append("condition", localStorage.getItem("product_condition"));
         formData.append("model", product.model);
         formData.append("category", product.category);
-        formData.append("brand", product.brand);
+        formData.append("brand_id", product.brand);
         formData.append("stockCapacity", product.stockCapacity);
         formData.append("sizes", JSON.stringify(product.sizes));
         formData.append("availableColors", product.availableColors);
@@ -457,9 +952,11 @@ const ListingForm = (props) => {
         formData.append("saleprice", product.saleprice);
         formData.append("minpurchase", product.minpurchase);
         formData.append("listing", product.listing);
-        formData.append("auctions", product.auctions);
+        formData.append("auctioned", product.auctions);
         formData.append("bids", product.bids);
-        formData.append("durations", product.durations);
+        formData.append("shipingdurations", product.shipingdurations);
+        formData.append("durations", product.shipingdurations);
+        formData.append("hours", product.hours);
         formData.append("auctionListing", product.auctionListing);
         formData.append("auctionEndListing", product.auctionEndListing);
         formData.append("deliverddomestic", product.deliverddomestic);
@@ -469,12 +966,21 @@ const ListingForm = (props) => {
         formData.append("country", product.country);
         formData.append("city", product.city);
         formData.append("state", product.state);
+        formData.append("zip", product.zip);
+        formData.append("address", address);
         formData.append("shippingprice", product.shippingprice);
         formData.append("shippingstart", product.shippingstart);
         formData.append("shippingend", product.shippingend);
         formData.append("returnshippingprice", product.returnshippingprice);
         formData.append("returndurationlimit", product.returndurationlimit);
         formData.append("returnshippingpaidby", product.returnshippingpaidby);
+        formData.append("termsdescription", "termsdescription");
+        let getAttributes = localStorage.getItem('attributes');
+        if(getAttributes){
+          formData.append("attributes", localStorage.getItem('attributes'));
+        }else{
+          formData.append("attributes", JSON.stringify([{'attributes': "No Atributes"}]));
+        }
         formData.append(
           "returnshippinglocation",
           product.returnshippinglocation
@@ -495,7 +1001,7 @@ const ListingForm = (props) => {
           },
         };
         axios
-          .post("https://notnewbackend.testingwebsitelink.com/api/products/add", formData, config)
+          .post("http://localhost:8000/api/products/add", formData, config)
           .then((response) => {
             setShowPopup(true);
             setIsLoading(false);
@@ -586,11 +1092,11 @@ const ListingForm = (props) => {
     // Add more states as needed
   ];
 
-  const deliveryCompany = [
-    { id: "fedex", name: "Fedex" },
-    { id: "usps", name: "USPS" },
-    { id: "americancourier", name: "AMERICAN COURIER" },
-  ];
+  // const deliveryCompany = [
+  //   { id: "fedex", name: "Fedex" },
+  //   { id: "usps", name: "USPS" },
+  //   { id: "americancourier", name: "AMERICAN COURIER" },
+  // ];
 
   const paidBy = [
     { id: "buyer", name: "Buyer" },
@@ -598,20 +1104,20 @@ const ListingForm = (props) => {
     { id: "admin", name: "Admin" },
   ];
 
-  const durations = [
-    { id: "1", name: "1" },
-    { id: "2", name: "2" },
-    { id: "3", name: "3" },
-    { id: "4", name: "4" },
-    { id: "5", name: "5" },
-    { id: "6", name: "6" },
-    { id: "7", name: "7" },
-    { id: "8", name: "8" },
-    { id: "9", name: "9" },
-    { id: "10", name: "10" },
-    { id: "11", name: "11" },
-    { id: "12", name: "12" },
-  ];
+  // const durations = [
+  //   { id: "1", name: "1" },
+  //   { id: "2", name: "2" },
+  //   { id: "3", name: "3" },
+  //   { id: "4", name: "4" },
+  //   { id: "5", name: "5" },
+  //   { id: "6", name: "6" },
+  //   { id: "7", name: "7" },
+  //   { id: "8", name: "8" },
+  //   { id: "9", name: "9" },
+  //   { id: "10", name: "10" },
+  //   { id: "11", name: "11" },
+  //   { id: "12", name: "12" },
+  // ];
   const citiesData = [
     { id: "city1", name: "City 1" },
     { id: "city2", name: "City 2" },
@@ -687,7 +1193,7 @@ const ListingForm = (props) => {
         }
       })
       .catch((e) => {
-        toast.error(e.message);
+        console.log(e);
       });
   };
   const getProduct = () => {
@@ -696,19 +1202,20 @@ const ListingForm = (props) => {
     }
     setEditProduct(true);
     ProductServices.get(props.guid).then((response) => {
-      console.log('response', response)
+      // console.log("edit product", response);
       setCategory(response.category_id);
       let productData = {
         store: response.shop_id,
         shopid: response.shop_id,
         images: [],
         scheduled: false,
+        condition: response.condition,
         title: response.name,
         model: response.model,
-        category: category,
-        brand: response.brand,
+        category: response.category_id,
+        brand: response.brand_id,
         stockCapacity: response.stockcapacity ? response.stockcapacity : 0,
-        sizes:  JSON.parse(response.attributes),
+        sizes: JSON.parse(response.attributes),
         availableColors: [],
         description: response.description,
         sellingNow: response.selling_now,
@@ -730,10 +1237,18 @@ const ListingForm = (props) => {
         returndurationlimit: response.return_ship_duration_limt,
         returnshippingpaidby: response.return_ship_paid_by,
         returnshippinglocation: response.return_ship_location,
-        bids:response.bids,
-        duration:response.durations,
+        bids: response.bids,
+        duration: response.durations,
+        minpurchase: response.min_purchase,
+        shipingdurations : response.shiping_durations,
         action: "edit",
       };
+      localStorage.setItem('product_condition', response.condition)
+      setAddress(response.postal_address);
+      setState(response.state)
+      setCity(response.city)
+      setZip(response.zip)
+      setBrand(response.brand_id);
       setProduct(productData);
       if (response.selling_now == "1") {
         setBuyNow(true);
@@ -760,13 +1275,13 @@ const ListingForm = (props) => {
         setDomestic(true);
       } else {
         setDomestic(false);
-      }      
+      }
       if (response.deliverd_international == "1") {
         setInternational(true);
       } else {
         setInternational(false);
-      }      
-      setDeliverCompany(response.delivery_company)
+      }
+      setDeliverCompany(response.delivery_company);
       // setAuctionStartDate(moment(response.auction_listing).format("YYYY-MM-DD"))
       setShippingLocation(response.return_ship_location);
       let startDate = moment(response.shipping_start).format("YYYY-MM-DD");
@@ -774,13 +1289,13 @@ const ListingForm = (props) => {
       setShippingStart(startDate);
       setShippingEnd(endDate);
       setCondition(response.condition);
-      State.get(response.country_id).then((response) => {
-        setState(response);
-      });
-      City.get(response.state_id).then((response) => {
-        setCity(response);
-      });
-      if(response.media){
+      // State.get(response.country_id).then((response) => {
+      //   setState(response);
+      // });
+      // City.get(response.state_id).then((response) => {
+      //   setCity(response);
+      // });
+      if (response.media) {
         setBolbs(response.media);
       }
     });
@@ -791,19 +1306,46 @@ const ListingForm = (props) => {
     { id: "Refurbished", name: "Refurbished" },
     { id: "Vintage", name: "Vintage" },
   ];
-  const removeThumbnail = (e, val) =>{
+  const removeThumbnail = (e, val) => {
     e.preventDefault();
-      const index = blobs.indexOf(val);
-      if (index > -1) {
-        blobs.splice(index, 1);
-      }
-      setBolbs([...blobs]);
-  }
-
+    const index = blobs.indexOf(val);
+    if (index > -1) {
+      blobs.splice(index, 1);
+    }
+    setBolbs([...blobs]);
+  };
+  // const fetchCompanies = () =>{
+  //
+  // }
+  const getCompany = () => {
+    Home.getCompanies()
+      .then((res) => {
+        if (res.status) {
+          setdeliveryCompany(res.data);
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  };
+  const getBrands = () => {
+    Home.getbrands()
+      .then((res) => {
+        setBrands(res); // if (res.status) {
+        //   // setdeliveryCompany(res.data);
+        // }
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
+  };
   useEffect(() => {
     fetchCategory();
-    fetchCountries();
-    fetchStores();
+    // fetchCountries();
+    // fetchStores();
+    getCompany();
+    getBrands();
+    // fetchCompanies();
     if (props.guid) {
       getProduct();
     }
@@ -828,157 +1370,161 @@ const ListingForm = (props) => {
           <>
             <input
               type="file"
-              accept="image/*"
+              accept="image/png, image/gif, image/jpeg"
               multiple
               onChange={handleEditImageUpload}
             />
-             <div className="imgegallry">
-          {blobs.length > 0 ? (
-            <>
-              {blobs.map((blob, index) => {
-                return (
-                  <>
-                    <img
-                      key={index}
-                      src={`https://notnewbackend.testingwebsitelink.com/image/product/${blob.name}`}
-                      alt={`Product ${index + 1}`}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "cover",
-                        margin: "5px",
-                      }}
-                    />
-                    <a href="#" 
-                      onClick={(e) =>
-                        removeThumbnail(e,blob)
-                      }>X</a>
-                    </>
-                );
-              })}
-            </>
-          ) : (
-            ""
-          )}
-          {editBlobs.length > 0 ?(
-            <>
-            {editBlobs.map((blob, index) => {
-              return (
+            <div className="imgegallry">
+              {blobs.length > 0 ? (
                 <>
-                  <img
-                    key={index}
-                    src={blob}
-                    alt={`Product ${index + 1}`}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "cover",
-                      margin: "5px",
-                    }}
-                  />
-                  <a href="#" 
-                    onClick={(e) =>
-                      removeThumbnail(e,blob)
-                    }>X</a>
-                  </>
-              );
-            })}
+                  {blobs.map((blob, index) => {
+                    return (
+                      <>
+                        <img
+                          key={index}
+                          src={blob.name}
+                          alt={`Product ${index + 1}`}
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            objectFit: "cover",
+                            margin: "5px",
+                          }}
+                        />
+                        <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
+                          X
+                        </a>
+                      </>
+                    );
+                  })}
+                </>
+              ) : (
+                ""
+              )}
+              {editBlobs.length > 0 ? (
+                <>
+                  {editBlobs.map((blob, index) => {
+                    return (
+                      <>
+                        <img
+                          key={index}
+                          src={blob}
+                          alt={`Product ${index + 1}`}
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            objectFit: "cover",
+                            margin: "5px",
+                          }}
+                        />
+                        <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
+                          X
+                        </a>
+                      </>
+                    );
+                  })}
+                </>
+              ) : (
+                ""
+              )}
+              {errors.editimages && (
+                <p className="error">{errors.editimages}</p>
+              )}
+              {product.images.length > 0 ? (
+                <>
+                  {product.images.map((imageUrl, index) => {
+                    return (
+                      <>
+                        <img
+                          key={index}
+                          src={imageUrl}
+                          alt={`Product ${index + 1}`}
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            objectFit: "cover",
+                            margin: "5px",
+                          }}
+                        />
+                      </>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
           </>
-          ):('')}
-          {errors.editimages && <p className="error">{errors.editimages}</p>}
-          {product.images.length > 0 ? (
-            <>
-              {product.images.map((imageUrl, index) => {
-                return (
-                  <>
-                    <img
-                      key={index}
-                      src={imageUrl}
-                      alt={`Product ${index + 1}`}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "cover",
-                        margin: "5px",
-                      }}
-                    />
-                  </>
-                );
-              })}
-            </>
-          ) : (
-            <></>
-          )}
-        </div>
-          </>
-        ):(
+        ) : (
           <>
-                      <input
+            <input
               type="file"
-              accept="image/*"
+              accept="image/png, image/gif, image/jpeg"
               multiple
               onChange={handleImageUpload}
             />
-             <div className="imgegallry">
-          {blobs.length > 0 ? (
-            <>
-              {blobs.map((blob, index) => {
-                return (
-                  <>
-                  {blob ? (<>
-                    <img
-                      key={index}
-                      src={blob}
-                      alt={`Product ${index + 1}`}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "cover",
-                        margin: "5px",
-                      }}
-                    />
-                  </>):('')}
-                    <a href="#" 
-                    onClick={(e) =>
-                      removeThumbnail(e,blob)
-                    }>X</a>
-                  </>
-                );
-              })}
-            </>
-          ) : (
-            ""
-          )}
-          {errors.images && <p className="error">{errors.images}</p>}
+            <div className="imgegallry">
+              {blobs.length > 0 ? (
+                <>
+                  {blobs.map((blob, index) => {
+                    return (
+                      <>
+                        {blob ? (
+                          <>
+                            <img
+                              key={index}
+                              src={blob}
+                              alt={`Product ${index + 1}`}
+                              style={{
+                                width: "100px",
+                                height: "100px",
+                                objectFit: "cover",
+                                margin: "5px",
+                              }}
+                            />
+                          </>
+                        ) : (
+                          ""
+                        )}
+                        <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
+                          X
+                        </a>
+                      </>
+                    );
+                  })}
+                </>
+              ) : (
+                ""
+              )}
+              {errors.images && <p className="error">{errors.images}</p>}
 
-          {product.images.length > 0 ? (
-            <>
-              {product.images.map((imageUrl, index) => {
-                return (
-                  <>
-                    <img
-                      key={index}
-                      src={imageUrl}
-                      alt={`Product ${index + 1}`}
-                      style={{
-                        width: "100px",
-                        height: "100px",
-                        objectFit: "cover",
-                        margin: "5px",
-                      }}
-                    />
-                  </>
-                );
-              })}
-            </>
-          ) : (
-            <></>
-          )}
-        </div>
+              {product.images.length > 0 ? (
+                <>
+                  {product.images.map((imageUrl, index) => {
+                    return (
+                      <>
+                        <img
+                          key={index}
+                          src={imageUrl}
+                          alt={`Product ${index + 1}`}
+                          style={{
+                            width: "100px",
+                            height: "100px",
+                            objectFit: "cover",
+                            margin: "5px",
+                          }}
+                        />
+                      </>
+                    );
+                  })}
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
           </>
         )}
-        
-       
+
         <p className="notify-images">
           <img src={Objection} /> Add a minimum of 5 images covering all angles
           of the item that describe it well.
@@ -1110,6 +1656,30 @@ const ListingForm = (props) => {
         />
         {errors.model && <p className="error">{errors.model}</p>}
         <div className="delivery-company">
+          <div>Select Brand</div>
+          <div>
+            <select value={product.brand} onChange={handleBrands}>
+              <option>Select Brands</option>
+              {brands.length > 0 ? (
+                <>
+                  {brands?.map((brand) => {
+                    return (
+                      <>
+                        <option value={brand.id} key={brand.id}>
+                          {brand.name}
+                        </option>
+                      </>
+                    );
+                  })}
+                </>
+              ) : (
+                ""
+              )}
+            </select>
+          </div>
+        </div>
+        {errors.brand && <p className="error">{errors.brand}</p>}
+        <div className="delivery-company">
           <div>Select Category</div>
           <div>
             <select value={category} onChange={handleCategory}>
@@ -1131,17 +1701,153 @@ const ListingForm = (props) => {
           </div>
         </div>
         {errors.category && <p className="error">{errors.category}</p>}
-        <div className="stockcapa" style={{ marginTop: "20px" }}>
-          <input
-            type="text"
-            placeholder="Brand"
-            name="brand"
-            value={product.brand}
-            onChange={handleInputChange}
-          />
-          {errors.brand && <p className="error">{errors.brand}</p>}
-        </div>
-        <div className="stockcapa">
+        {attributes.length ? (
+          <>
+            <h4>ATTRIBUTES</h4>
+            {attributes?.map((attr, index) => {
+              if (attr.type === "SELECT") {
+                return (
+                  <>
+                  <br />
+                    <div className="delivery-company">
+                      <div>{attr.name}</div>
+                      <div>
+                        <select onChange={handleSelectChange}  name={attr.type}>
+                          <option key={index}>Select {attr.name}</option>
+                          {attr.options?.map((att) => {
+                            return (
+                              <>
+                                <option value={att}>{att}</option>
+                              </>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    </div>
+                  </>
+                );
+              }
+              if (attr.type === "RADIO_GROUP") {
+                return (
+                  <>
+                  <h3>{attr.name}</h3>
+                    {attr.options?.map((att, index) => {
+                      return (
+                        <>
+                          <div className="listschedule1">
+                            <div>{att}</div>
+                            <div>
+                              <label className="switch3">
+                                <input
+                                  type="radio"
+                                  id={`contactChoice${index}`}
+                                  key={index}
+                                  value={att}
+                                  // checked={domestic}
+                                  name={attr.type}
+                                  onChange={handleRadioGrpChange}
+                                />
+                                <span className="slider3 round3"></span>
+                              </label>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+                  </>
+                );
+              }
+              if (attr.type === "TEXT") {
+                return (
+                  <>
+                  <br />
+                    <input onChange={handleTextChange} name={attr.type} type={attr.type} id={`text${index}`} />
+                  </>
+                );
+              }
+              if (attr.type === "CHECKBOX") {
+                return (
+                  <>
+                  <br />
+                    <input onChange={handleCheckboxChange} value={attr.name} name={attr.type} type={attr.type} id={`check${index}`} />{attr.name}
+                  </>
+                );
+              }
+              if (attr.type === "CHECKBOX_GROUP") {
+                return (
+                  <>
+                 <h3>{attr.name}</h3>
+                    {attr.options?.map((att, index) => {
+                      return (
+                        <>
+                          <div className="listschedule1">
+                            <div>{att}</div>
+                            <div>
+                              <label className="switch3">
+                                <input
+                                  type="checkbox"
+                                  id={`checkgrp${index}`}
+                                  key={index}
+                                  value={att}
+                                  name={attr.type}
+                                  onChange={handleCheckboxGrpChange}
+                                />
+                                <span className="slider3 round3"></span>
+                              </label>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+                  </>
+                );
+              }
+              if (attr.type === "FILE") {
+                return (
+                  <>
+                    <br />
+                    <input type={attr.type} name={attr.type} onChange={handleFileChange} />
+                  </>
+                );
+              }
+              if (attr.type === "COLOR_PICKER") {
+                return (
+                  <>
+                    <br />
+                    <input type='color' name={attr.type} onChange={handleColorChange}  className="colr" />
+                  </>
+                );
+              }
+              if (attr.type === "RADIO") {
+                return (
+                  <>
+                  <br />
+                  <div className="listschedule1">
+                            <div>{attr.name}</div>
+                            <div>
+                              <label className="switch3">
+                                <input
+                                  type="radio"
+                                  id={`radio${index}`}
+                                  value={attr.name}
+                                  name={attr.type}
+                                  onChange={handleRadioChange}
+                                />
+                                <span className="slider3 round3"></span>
+                              </label>
+                            </div>
+                          </div>
+                          </>
+                );
+              }
+            })}
+            <h4>&nbsp;</h4>
+          </>
+        ) : (
+          <></>
+        )}
+
+        {/* <div className="stockcapa">
           <label>
             Stock Capacity
             <input
@@ -1155,7 +1861,7 @@ const ListingForm = (props) => {
           {errors.stockCapacity && (
             <p className="error">{errors.stockCapacity}</p>
           )}
-        </div>
+        </div> */}
         {/* {props.guid ? (
           <>
             <table style={{ width: "100%"}}>
@@ -1197,49 +1903,7 @@ const ListingForm = (props) => {
         </table>
           </>
         ):('')} */}
-        {product?.sizes.map((size, index) => (
-          <div className="sizequntycolr" key={index}>
-            <label>Size</label>
-            <input
-              type="text"
-              name="size"
-              value={size.size}
-              onChange={(e) => handleInputChange(e, index)}
-            />
-            <label>Quantity</label>
-            <input
-              type="number"
-              placeholder="Quantity"
-              name="quantity"
-              value={size.quantity}
-              onChange={(e) => handleInputChange(e, index)}
-            />
-            <label>Color</label>
-            <input
-              className="colr"
-              value={size.color}
-              type="color"
-              name="color"
-              onChange={(e) => handleInputChange(e, index)}
-            />
-            {/* <input className="colr" value={size.color} type="color" onChange={handleColorChange} /> */}
-            {size.color ? (
-              <>
-                <a href="#" onClick={(e) => removeAttributes(e, size.color)}>
-                  Delete
-                </a>
-              </>
-            ) : (
-              ""
-            )}
-          </div>
-        ))}
-        <div className="sizeaddmre">
-          <button type="button" onClick={handleAddSize}>
-            Add Size
-          </button>
-          {errors.quantity && <p className="error">{errors.quantity}</p>}
-        </div>
+          
         <textarea
           placeholder="Description"
           name="description"
@@ -1325,6 +1989,7 @@ const ListingForm = (props) => {
               <div>
                 <input
                   type="number"
+                  min="1"
                   placeholder="$"
                   name={bids}
                   value={product.bids}
@@ -1332,28 +1997,44 @@ const ListingForm = (props) => {
                 />
               </div>
             </div>
-            {errors.price && <p className="error">{errors.price}</p>}
             <div className="delivery-company">
-              <div>Duration</div>
+              <div>Durations</div>
               <div>
-              <select
-                  name={product.duration}
-                  value={product.duration}
-                  onChange={handleDurationChange}
+                <input
+                  type="number"
+                  min="1"
+                  placeholder="$"
+                  name={durations}
+                  value={product.durations}
+                  onChange={handleDurations}
+                />
+              </div>
+            </div>
+            <div className="delivery-company">
+              <div>Hours</div>
+              <div>
+                <select
+                  name={product.hours}
+                  value={product.hours}
+                  onChange={handleHours}
                 >
-                  <option value="0">--Select hours--</option>
-                  {durations?.map((duration, index) => {
-                  return (
-                    <>
-                      <option key={index} value={duration.id}>{duration.name}</option>
-                    </>
-                    )
-                  })}
+                  <option value="0">Select Hours</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="1">12</option>
                 </select>
               </div>
             </div>
-            {errors.duration && <p className="error">{errors.duration}</p>}
-            <div className="set-price">
+            {/* <div className="set-price">
               <div>Schedule your Listing Start Time</div>
               <div>
               <input
@@ -1363,13 +2044,13 @@ const ListingForm = (props) => {
                   onChange={(e) =>
                     handleAuctionStartDate(e)
                   }
-                />
-                {/* <DatePicker
+                /> */}
+            {/* <DatePicker
                   selected={auctionstartDate}
                   minDate={new Date()}
                   onChange={(date) => handleAuctionStartDate(date)}
                 /> */}
-                {/* <label className="switch2">
+            {/* <label className="switch2">
               <input
                 type="checkbox"
                 checked={listing}
@@ -1378,10 +2059,10 @@ const ListingForm = (props) => {
               />
               <span className="slider2 round2"></span>
             </label> */}
-              </div>
-            </div>
-            {errors.listing && <p className="error">{errors.listing}</p>}
-            <div className="set-price">
+            {/* </div>
+            </div> */}
+            {/* {errors.listing && <p className="error">{errors.listing}</p>} */}
+            {/* <div className="set-price">
               <div>Schedule your Listing End Time</div>
               <div>
                 <input
@@ -1394,8 +2075,7 @@ const ListingForm = (props) => {
                 />
               </div>
             </div>
-            {errors.duration && <p className="error">{errors.duration}</p>}
-
+            {errors.duration && <p className="error">{errors.duration}</p>} */}
           </>
         ) : (
           ""
@@ -1406,8 +2086,9 @@ const ListingForm = (props) => {
               <div>Set Price</div>
               <div>
                 <input
-                  type="text"
+                  type="number"
                   placeholder="$"
+                  min="1"
                   name={product.price}
                   value={product.price}
                   onChange={handlePriceChange}
@@ -1415,7 +2096,7 @@ const ListingForm = (props) => {
               </div>
             </div>
             {errors.price && <p className="error">{errors.price}</p>}
-            <div className="set-price">
+            {/* <div className="set-price">
               <div>Set Sales Price</div>
               <div>
                 <input
@@ -1427,12 +2108,13 @@ const ListingForm = (props) => {
                 />
               </div>
             </div>
-            {errors.saleprice && <p className="error">{errors.saleprice}</p>}
+            {errors.saleprice && <p className="error">{errors.saleprice}</p>} */}
             <div className="set-price">
               <div>Minimum Purchase</div>
               <div>
                 <input
-                  type="text"
+                  type="number"
+                  min="1"
                   placeholder="$"
                   name={product.minpurchase}
                   value={product.minpurchase}
@@ -1444,10 +2126,17 @@ const ListingForm = (props) => {
             <div className="listschedule">
               <div>Schedule your Listing</div>
               <div>
-                <DatePicker
+                {/* <DatePicker
                   selected={startDate}
                   minDate={new Date()}
                   onChange={(date) => handleStartDate(date)}
+                /> */}
+                <input
+                  type="date"
+                  placeholder="To"
+                  name="listing"
+                  value={product.listing}
+                  onChange={handleLisitng}
                 />
                 {/* <label className="switch2">
                 <input
@@ -1466,7 +2155,27 @@ const ListingForm = (props) => {
           ""
         )}
         <h4>TAGS</h4>
-        {product?.tags.length > 0 ? (
+        {product?.tags.map((tag, index) => (
+          <div className="sizequntycolr" key={index}>
+            <input
+              type="text"
+              name="tag"
+              value={tag.tag}
+              onChange={(e) => handleTagChange(e, index)}
+            />
+                <a href="#" onClick={(e) => removeTags(e, tag.tag)}>
+                  Delete
+                </a>
+
+          </div>
+        ))}
+        <div className="sizeaddmre">
+          <button type="button" onClick={handleAddTags}>
+            Add Tags
+          </button>
+          {errors.tags && <p className="error">{errors.tags}</p>}
+        </div>
+        {/* {product?.tags.length > 0 ? (
           <>
             {product?.tags.map((tag, index) => {
               return (
@@ -1477,7 +2186,7 @@ const ListingForm = (props) => {
                       name="tags"
                       value={tag}
                       placeholder="Tags"
-                      onChange={(e) => handleInputChange(e, index)}
+                      onChange={(e) => handleTagChange(e, index)}
                     />
                     <>
                       <a href="#" onClick={(e) => removeTags(e, tag)}>
@@ -1491,13 +2200,13 @@ const ListingForm = (props) => {
           </>
         ) : (
           ""
-        )}
-        <div className="sizeaddmre">
-          <button type="button" onClick={handleAddTags}>
+        )} */}
+        {/* <div className="sizeaddmre"> */}
+          {/* <button type="button" onClick={handleAddTags}>
             Add Tags
-          </button>
-          {errors.tags && <p className="error">{errors.tags}</p>}
-        </div>
+          </button> */}
+          {/* {errors.tags && <p className="error">{errors.tags}</p>} */}
+        {/* </div> */}
         {/* <div className="stockcapa">
           <label>
             <input
@@ -1559,107 +2268,85 @@ const ListingForm = (props) => {
               onChange={handleDeliverCompany}
             >
               <option value="">Select Delivery Company</option>
-              {deliveryCompany?.map((company) => (
-                <option key={company.name} value={company.name}>{company.name}</option>
-              ))}
+              {deliveryCompany.length > 0 ? (
+                <>
+                  {deliveryCompany.map((company) => (
+                    <option key={company.name} value={company.name}>
+                      {company.name}
+                    </option>
+                  ))}
+                </>
+              ) : (
+                <></>
+              )}
             </select>
           </div>
         </div>
         {errors.deliverycompany && (
           <p className="error">{errors.deliverycompany}</p>
         )}
+
         <div className="delivery-company">
-          <div>Select Country</div>
-          <div>
-            <select
-              value={product.country}
-              name={product.country}
-              onChange={handleCountryChange}
-            >
-              <option>All Countries</option>
-              {country.length > 0 ? (
-                <>
-                  {country.map((c) => {
-                    return (
-                      <>
-                        <option key={c.id} value={c.id}>
-                          {c.name}
-                        </option>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                ""
-              )}
-            </select>
+          <label>
+            Enter your street Address
+            {props.guid ? (
+              <>
+                {editaddress ? (
+                  <>
+                                        <lable className="form-control" style={{ height: "150px" }}>
+                      {address}
+                    </lable>
+                    
+                  </>
+                ) : (
+                  <>
+                  {isLoaded && (
+                      <StandaloneSearchBox
+                        onLoad={(ref) => (inputRef.current = ref)}
+                        onPlacesChanged={handlePlaceChanged}
+                      >
+                        <input type="text" />
+                      </StandaloneSearchBox>
+                    )}
+                  </>
+                )}{" "}
+                <a href="#" onClick={handleAddAddress}>
+                  Edit Address
+                </a>
+              </>
+            ) : (
+              <>
+                {isLoaded && (
+                  <StandaloneSearchBox
+                    onLoad={(ref) => (inputRef.current = ref)}
+                    onPlacesChanged={handlePlaceChanged}
+                  >
+                    <input type="text" />
+                  </StandaloneSearchBox>
+                )}
+              </>
+            )}
+          </label>
+        </div>
+        <div className="row">
+          <div className="col-lg-4">
+            <div className="delivery-company">
+              <label className="switch3">{state}</label>
+            </div>
+            {errors.states && <p className="error">{errors.states}</p>}
+          </div>
+          <div className="col-lg-4">
+            <div className="delivery-company">
+              <label className="switch3">{city}</label>
+            </div>
+            {errors.city && <p className="error">{errors.city}</p>}
+          </div>
+          <div className="col-lg-4">
+            <div className="delivery-company">{zip}</div>
+            {errors.city && <p className="error">{errors.city}</p>}
           </div>
         </div>
-        {errors.country && <p className="error">{errors.country}</p>}
-        {locations.map((location, index) => (
-          <div className="row" key={index}>
-            <div className="col-lg-6">
-              <div className="delivery-company">
-                <div>Select States</div>
-                <div>
-                  <select
-                    value={product.state}
-                    name={product.state}
-                    onChange={(e) => handleStateChange(e)}
-                  >
-                    <option>Select a States</option>
-                    {state.length > 0 ? (
-                      <>
-                        {state?.map((state) => {
-                          return (
-                            <option key={state.id} value={state.id}>
-                              {state.name}
-                            </option>
-                          );
-                        })}
-                      </>
-                    ) : (
-                      // <option value="2">State 2</option>
-                      ""
-                    )}
-                  </select>
-                </div>
-              </div>
-              {errors.states && <p className="error">{errors.states}</p>}
-            </div>
-            <div className="col-lg-6">
-              <div className="delivery-company">
-                <div>Select City</div>
-                <div>
-                  <select
-                    value={product.city}
-                    name={product.city}
-                    onChange={(e) => handleCity(e.target.value)}
-                  >
-                    <option>Select a City</option>
-                    {cities.map((city) => (
-                      <option key={city.id} value={city.id}>
-                        {city.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              {errors.city && <p className="error">{errors.city}</p>}
-            </div>
-          </div>
-        ))}
-        {/* <div className="set-price">
-          <div>Shipping Price</div>
-          <div>
-            <input
-              type="text"
-              placeholder="$"
-              value={product.weight}
-              onChange={handlePriceChanges}
-            />
-          </div>
-        </div> */}
+
         <div className="set-price">
           <div>Shipping Price</div>
           <div>
@@ -1676,36 +2363,39 @@ const ListingForm = (props) => {
           <p className="error">{errors.shippingprice}</p>
         )}
         {/* Add the Shipping Duration inputs */}
-        <div className="shipping-duration">
+        <div className="delivery-company">
           <div>Shipping Duration</div>
-          <div className="dyss">
-            <div>
+          <select
+            name={product.shipingdurations}
+            value={product.shipingdurations}
+            onChange={handleDurationChange}
+          >
+            <option>Select Duration</option>
+            <option value="7-10 Days">7-10 Days</option>
+          </select>
+
+          {/* <div>
               <input
                 type="date"
                 placeholder="From"
                 value={shippingStart}
                 onChange={handleShippingStartChange}
               />
-            </div>
-            <div>
+            </div> */}
+          {/* <div>
               <span>-</span>
-            </div>
-            <div>
+            </div> */}
+          {/* <div>
               <input
                 type="date"
                 placeholder="To"
                 value={shippingEnd}
                 onChange={handleShippingEndChange}
               />
-            </div>
-            <div>
-              <span>Days</span>
-            </div>
-          </div>
+            </div> */}
         </div>
-        {errors.shippingstartend && (
-          <p className="error">{errors.shippingstartend}</p>
-        )}
+        {errors.durations && <p className="error">{errors.durations}</p>}
+
         <div className="set-price">
           <div>Return Shipping Price</div>
           <div>
@@ -1753,28 +2443,16 @@ const ListingForm = (props) => {
         {errors.returnshippingpaidby && (
           <p className="error">{errors.returnshippingpaidby}</p>
         )}
-        <div className="delivery-company">
+        {/* <div className="delivery-company">
           <div>Return Shipping Location</div>
           <div>
-            <select value={shippingLocation} onChange={handleShippingLocation}>
-              <option value="">All Countries</option>
-              {country.length > 0 ? (
-                <>
-                  {country.map((country) => (
-                    <option key={country.id} value={country.id}>
-                      {country.name}
-                    </option>
-                  ))}
-                </>
-              ) : (
-                ""
-              )}
-            </select>
+          
+            
           </div>
-        </div>
-        {errors.returnshippinglocation && (
+        </div> */}
+        {/* {errors.returnshippinglocation && (
           <p className="error">{errors.returnshippinglocation}</p>
-        )}
+        )} */}
         <div className="row actvtebuttns">
           <div className="col-lg-6">
             {props.guid ? (

@@ -6,6 +6,7 @@ import BidPlacement from "../Elements/BidPlacement";
 import ShippingPolicyData from "../Products/Archive/SingleProductElements/ShippingPolicyData"; //'./components/Products/Archive/SingleProductElements/ShippingPolicyData'
 import Confirmation from "./Confirmation";
 import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
+import SellerServices from "../../services/API/SellerServices"; //~/services/API/SellerServices
 import BidsServices from "../../services/API/BidsServices"; //~/services/API/BidsServices
 import WatchListServices from "../../services/API/WatchListServices"; //~/services/API/WatchListServices
 import { toast } from "react-toastify";
@@ -40,7 +41,7 @@ const AuctionProductInformation = () => {
     let data = {
       id: id,
     };
-    ProductServices.createRecent(data).then((response) => {
+    SellerServices.createRecent(data).then((response) => {
       console.log("response", response);
     });
   };

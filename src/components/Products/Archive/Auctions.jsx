@@ -32,6 +32,7 @@ const Auctions = () => {
   const currentCards = products.slice(indexOfFirstCard, indexOfLastCard);
 
   const renderProductCards = () => {
+    console.log('currentCards', currentCards)
     return currentCards.map((product) => (
       <ProductCard key={product.id} product={product} />
     ));

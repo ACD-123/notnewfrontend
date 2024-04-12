@@ -53,7 +53,7 @@ const ShoppingCart = () => {
         // if(response.length > 0){
         //   response.forEach((item) => {
         //     setCoverPicture(item.products.media[0].name)
-        //     // https://notnewbackend.testingwebsitelink.com/image/product/
+        //     // http://localhost:8000/image/product/
         //     // images.push(item.name)
         //   })
         // }s

@@ -14,7 +14,7 @@ const SizeToggle = (props) => {
     ProductServices.getSizes()
     .then((response) => {
       setSizes(response.data);
-    })
+    }).catch(error => console.log(error))
   }
   const handleSizeSelect = (size) => {
     setSelectedSize(size);

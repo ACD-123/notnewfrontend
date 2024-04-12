@@ -176,7 +176,7 @@ section#singup .register form button.btn.btn-primary {
 }
 
 .profile-pic-wrapper {
-  width: 100%;
+  /* width: 100%; */
   position: relative;
   display: flex;
   flex-direction: column;
@@ -3292,6 +3292,7 @@ section#selleng-dashbaord .product-item .img-title p {
   padding: 20px 20px;
   border-radius: 10px;
   color: #fff;
+  height: 220px;
 }
 section#product-management button.listing {
   color: #fff;
@@ -4712,4 +4713,15 @@ section#getsurpriseprice .text-button {
     right: -3px;
     top: -5px;
 }
-
+.pac-container { z-index: 100000 !important; }
+.tagsList ul{
+  padding: 0;
+  margin: 0;
+}
+.tagsList li{
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  float: left;
+  margin-right: 10px ;
+}
