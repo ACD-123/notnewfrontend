@@ -50,7 +50,9 @@ const Header = () => {
     if(token){
       CartServices.count()
       .then((response) => {
-        setCartItems(response);
+        if(response > 0){
+          setCartItems(response);
+        }
       })
       .catch((e) => {
         console.log(e.message);
@@ -91,7 +93,7 @@ const Header = () => {
                   <div className="cart-user">
                     <div className="cart">
                       <span className="cartitmes">
-                      {cart_items}
+                      {cart_items ? cart_items : cartitems}
                       </span>
                       <Link to="/shoppingcart">
                         <img src={Cart} />

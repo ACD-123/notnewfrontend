@@ -67,7 +67,22 @@ const SignIn = () => {
   });
   useGoogleOneTapLogin({
     onSuccess: (credentialResponse) => {
-      console.log(credentialResponse);
+      // console.log(credentialResponse);
+      AuthServices.googleLogin(credentialResponse)
+        .then((res) => {
+          localStorage.setItem(
+            "user_details",
+            JSON.stringify(res.data)
+          );
+          localStorage.setItem(
+            "access_token",
+            res.token
+          );
+          window.location.replace("/");
+        })
+        .catch((error) => {
+          console.log("ERROR:: ", error.response);
+        });
     },
     onError: () => {
       console.log("Login Failed");

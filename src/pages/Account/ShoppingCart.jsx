@@ -46,23 +46,13 @@ const ShoppingCart = () => {
   };
 
   const getCart = () => {
-    CartServices.self().then((response) => {
-      // if(response.products){
-        // setCoverPicture(response.products?.media[0].name)
-        setCart(response);
-        // if(response.length > 0){
-        //   response.forEach((item) => {
-        //     setCoverPicture(item.products.media[0].name)
-        //     // http://localhost:8000/image/product/
-        //     // images.push(item.name)
-        //   })
-        // }s
-      // }
+    CartServices.self().then((res) => {
+       setCart(res);
       var cartPrice = [];
       var shippingPrice = [];
       var allPrices = [];
-      if (response.length > 0) {
-        response.map((cat) => {
+      if (res.length > 0) {
+        res.map((cat) => {
           cartPrice.push(cat.price);
           shippingPrice.push(cat.products.shipping_price);
         });
@@ -118,10 +108,11 @@ const ShoppingCart = () => {
     CartServices.remove(id).then((response) => {
       if (response.success) {
         toast.success(response.message);
-        CartServices.count()
-        .then((response) => {
-          dispatch(saveCupon(response));
-        })
+        // CartServices.count()
+        // .then((response) => {
+        //   dispatch(saveCupon(response));
+        // })
+        dispatch(deleteCupon);
         getCart();
 
       } else {
@@ -239,7 +230,7 @@ const ShoppingCart = () => {
                                   {coverpic ? (
                                     <>
                                   <img
-                                  src={`${BASE_URL}/image/product/${coverpic}`}
+                                  src={coverpic}
                                   alt={cat.name}
                                   height="150" 
                                   width="150"
@@ -258,9 +249,9 @@ const ShoppingCart = () => {
                                   {/* <img src={Productimage} /> */}
                                 </div>
                                 <div className="product-order-details">
-                                  <h5>{cat.products?.name}</h5>
+                                  {/* <h5>{cat.products?.name}</h5> */}
                                   {/* <span>Size : 9.5 , Color: Red</span> */}
-                                  {attributes.length > 0 ? (
+                                  {/* {attributes.length > 0 ? (
                                     <>
                                       {attributes.map((attribute, index) => {
                                         return (
@@ -294,7 +285,7 @@ const ShoppingCart = () => {
                                     </>
                                   ) : (
                                     ""
-                                  )}
+                                  )} */}
                                   <div className="quantitypadding">
                                     <p>
                                       <b>
