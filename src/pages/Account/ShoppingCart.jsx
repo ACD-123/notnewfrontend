@@ -48,36 +48,36 @@ const ShoppingCart = () => {
   const getCart = () => {
     CartServices.self().then((res) => {
        setCart(res);
-      // var cartPrice = [];
-      // var shippingPrice = [];
-      // var allPrices = [];
-      // if (response.length > 0) {
-      //   response.map((cat) => {
-      //     cartPrice.push(cat.price);
-      //     shippingPrice.push(cat.products.shipping_price);
-      //   });
-      // }
-      // let discountPrice = 0;
-      // if (prices.length > 0) {
-      //   prices.map((price) => {
-      //     if (price.name !== "Discount") {
-      //       allPrices.push(price.value);
-      //     } else if (price.name === "Discount") {
-      //       setDiscountPrices(price.value);
-      //       discountPrice = price.value
-      //     }
-      //   });
-      // }
-      // let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
-      // let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
-      // setsubTotal(subttal);
-      // setShippingPrice(shippingprice);
-      // let adminPric = allPrices.reduce((a, v) => (a = a + v), 0)
-      // setAdminPrices(adminPric);
-      // var amountAfterDiscount = subttal - discountPrice;
-      // var amountbyaddingprices = amountAfterDiscount + adminPric + shippingprice;
-      // // var amountbyaddingprices = subttal + shippingprice;
-      // setAmountAddingPrices(amountbyaddingprices);
+      var cartPrice = [];
+      var shippingPrice = [];
+      var allPrices = [];
+      if (res.length > 0) {
+        res.map((cat) => {
+          cartPrice.push(cat.price);
+          shippingPrice.push(cat.products.shipping_price);
+        });
+      }
+      let discountPrice = 0;
+      if (prices.length > 0) {
+        prices.map((price) => {
+          if (price.name !== "Discount") {
+            allPrices.push(price.value);
+          } else if (price.name === "Discount") {
+            setDiscountPrices(price.value);
+            discountPrice = price.value
+          }
+        });
+      }
+      let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
+      let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
+      setsubTotal(subttal);
+      setShippingPrice(shippingprice);
+      let adminPric = allPrices.reduce((a, v) => (a = a + v), 0)
+      setAdminPrices(adminPric);
+      var amountAfterDiscount = subttal - discountPrice;
+      var amountbyaddingprices = amountAfterDiscount + adminPric + shippingprice;
+      // var amountbyaddingprices = subttal + shippingprice;
+      setAmountAddingPrices(amountbyaddingprices);
     });
   };
   const handleCheckOut = (e) => {
@@ -108,10 +108,11 @@ const ShoppingCart = () => {
     CartServices.remove(id).then((response) => {
       if (response.success) {
         toast.success(response.message);
-        CartServices.count()
-        .then((response) => {
-          dispatch(saveCupon(response));
-        })
+        // CartServices.count()
+        // .then((response) => {
+        //   dispatch(saveCupon(response));
+        // })
+        dispatch(deleteCupon);
         getCart();
 
       } else {
