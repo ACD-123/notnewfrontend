@@ -11,6 +11,8 @@ const libraries = ['places'];
 const PersonalInfo = () => {
   const inputRef = useRef();
   const [user, setUser] = useState({});
+  const [name, setName] = useState("");
+  const [lastname, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAd] = useState("");
   const [emails, setEmail] = useState("");
@@ -41,6 +43,8 @@ const PersonalInfo = () => {
     UserServices.self().then((response) => {  
       setProfileImage(response.profile_image);
       setEmail(response.email);
+      setName(response.name);
+      setLastName(response.last_name);
       setPhone(response.phone);
       setAd(response.address);
       setSite(response.site);
@@ -59,10 +63,18 @@ const PersonalInfo = () => {
   const handleSite = (e) =>{
     setSite(e.target.value);
   }
-
+  const handleName = (e) => {
+    setName(e.target.value);
+  }
+  const handleLastName = (e) => {
+    setLastName(e.target.value);
+  }
+  // name,handleName lastname,handleLastName
   const handleSubmit = (e) => {
     e.preventDefault();
     const fd = new FormData();
+    fd.append("name", name);
+    fd.append("lastname", lastname);
     fd.append("email", emails);
     fd.append("phone", phone);
     fd.append("site", site);
@@ -249,6 +261,24 @@ const handleAddAddress =()=>{
               <h5>Profile Information</h5>
               <div className="prnform">
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <input
+                    type="text"
+                    name="name" 
+                    value={name}
+                    onChange={handleName}
+                    required
+                    placeholder="Name"
+                  />
+                  <br/>
+                  <input
+                    type="text"
+                    name="last_name"
+                    value={lastname}
+                    onChange={handleLastName} 
+                    required
+                    placeholder="Last Name"
+                  />
+                  <br />
                   <input
                     type="text"
                     name="phone"

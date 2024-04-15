@@ -46,40 +46,43 @@ const ProductInformation = () => {
   }
   const addByNow =(e)=>{
     e.preventDefault();
-    window.location.href = '/notfound'
-    // setIsLoading(true);
-    // setEnabled(true);
-    //   let arributes = localStorage.getItem('arributes');
-    //   arributes =JSON.parse(arributes);
-    //   let quanity = "";
-    //   // if(arributes.quantity){
-    //   //   quanity = arributes.quantity;
-    //   // }
-    //   let inputData ={
-    //     "price": productData.price,
-    //     "quantity":  1,
-    //     "product_id": productData.id,
-    //     "attributes": arributes,
-    //     "shop_id": productData.shop?.id,
-    //   }
-    //   CartServices.save(inputData)
-    //   .then((response) => {
-    //     if(response.success){
-    //       dispatch(saveCupon(response));
-    //       // window.location.href=`/checkouts/${productData.guid}`;
-    //     }else{
-    //       toast.error(response.message);
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     toast.error(e.message);
-    //     setIsLoading(false);
-    //     setEnabled(false);
-    //   })
-    //   .then(() => {
-    //     setIsLoading(false);
-    //     setEnabled(false);
-    //   });
+    // window.location.href = '/notfound'
+    setIsLoading(true);
+    setEnabled(true);
+      let arributes = localStorage.getItem('arributes');
+      arributes =JSON.parse(arributes);
+      let quanity = "";
+      // if(arributes.quantity){
+      //   quanity = arributes.quantity;
+      // }
+      let inputData ={
+        "price": productData.price,
+        "quantity":  1,
+        "product_id": productData.id,
+        "attributes": arributes,
+        "shop_id": productData.shop?.id,
+      }
+      CartServices.save(inputData)
+      .then((response) => {
+        if(response.success){
+          CartServices.count()
+            .then((response) => {
+              dispatch(saveCupon(response));
+            })
+          // window.location.href=`/checkouts/${productData.guid}`;
+        }else{
+          toast.error(response.message);
+        }
+      })
+      .catch((e) => {
+        toast.error(e.message);
+        setIsLoading(false);
+        setEnabled(false);
+      })
+      .then(() => {
+        setIsLoading(false);
+        setEnabled(false);
+      });
   }
   const addToCart = (e) =>{
       e.preventDefault();
@@ -186,7 +189,7 @@ const ProductInformation = () => {
               {/* <Link onClick={() => handleDropdownItemClick('component')}><button>Edit</button></Link> */}
           </div>
               );
-            } else if (productData.user_id === loggedInUsers.id){
+            } else if (productData.user_id !== loggedInUsers.id){
               return (
                 <div className='pay-buttons'>
               {/* <Link to={`/checkouts/${productData.guid}`}> */}
