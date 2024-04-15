@@ -67,7 +67,7 @@ const PublicRoutes = () => {
 					<Route path="/outstock" element={<OutStock/>} />
 					<Route path="/watchlist" element={<Watchlist/>}/>
 					<Route path="/productupload" element={<ProductUpload/>} />
-					<Route path="/notfound" element={<NotFound/>} />
+					<Route path="*" element={<NotFound/>} />
 				</Routes>
 			</BrowserRouter>
 		</>

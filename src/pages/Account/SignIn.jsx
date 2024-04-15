@@ -212,6 +212,8 @@ const SignIn = () => {
                     <ul>
                       <li>
                         <GoogleLogin
+                        theme="filled_black"
+                        text="signin_with"
                           onSuccess={(credentialResponse) => {
                             // console.log('google',credentialResponse);
                             AuthServices.googleLogin(credentialResponse)
@@ -234,22 +236,21 @@ const SignIn = () => {
                             console.log("Login Failed");
                           }}
                         />
-                        ;{/* <a href="#" onClick={() => login()}> */}
-                        <img src={Google} />
+                        {/* <a href="#" onClick={() => login()}> */}
+                        {/* <img src={Google} /> */}
                         {/* </a> */}
                       </li>
                       <li>
-                        <a href="#">
                         <FacebookLogin
                             appId="855777062581776"
                             autoLoad={false}
                             fields="id,name,email,picture"
+                            textButton="Sign in with Facebook"
                             // scope="public_profile,email,user_friends"
                             scope={['email']}
                             callback={responseFacebook}
                             icon="fa-facebook" />
-                          <img src={Facebook} />
-                        </a>
+                          {/* <img src={Facebook} /> */}
                       </li>
                     </ul>
                   </div>

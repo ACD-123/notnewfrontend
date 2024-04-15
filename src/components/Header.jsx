@@ -86,7 +86,7 @@ const Header = () => {
               <div className="col-lg-6">
                 <SearchwithCategories />
               </div>
-              <div className="col-lg-2">
+              <div className="col-lg-2" style={{textAlign:'end'}}>
                 {isLoggedin() ? (
                   <div className="cart-user">
                     <div className="cart">

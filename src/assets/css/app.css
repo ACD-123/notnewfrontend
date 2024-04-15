@@ -90,6 +90,7 @@ line-height: 28px;
 letter-spacing: 0em;
 text-align: left;
 
+text-decoration: auto;
 }
 
 
@@ -450,8 +451,9 @@ form#loginForm input#email, form#loginForm input#password {
 .verifyfromgoogle .images-google ul {
   margin: 0px 0;
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 40px;
+  gap: 20px;
   padding: 0;
 }
 .remember-password .remm a {
@@ -509,6 +511,7 @@ section#savedsellers p {
 .cart-user .user .dropdown-content ul li {
   list-style: none;
   margin-bottom: 10px;
+  text-align: left;
   text-transform: capitalize;
   cursor: pointer;
   transition: .9s;
@@ -859,7 +862,7 @@ section#categorylistings .col img {
 }
 section#categorylistings .col {
   flex: unset;
-  width: 25%;
+  width: fit-content;
 }
 section#categorylistings .productlist h3 {
   font-size: 20px;
@@ -4687,13 +4690,45 @@ section#getsurpriseprice .text-button {
   padding: 16px 10px;
   border-radius: 10px;
 }
+.kep-login-facebook.metro {
+  align-items: center;
+    background: #202124;
+    border: none;
+    color: white;
+    padding: 2px 10px 2px 2px;
+    display: flex;
+    /* width: 50px; */
+    /* height: 50px; */
+    border-radius: 4px !important;
+    justify-content: space-between;
+    font-size: 13px;
+    gap: 7px;
+    text-transform: capitalize;
+    font-family: "Google Sans", arial, sans-serif;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
+.kep-login-facebook .fa {
+  padding: 6px 12px;
+  margin-right: auto !important;
+  font-size: 24px;
+  background: white;
+  color: #1976d2;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
 .login{
+  width: auto;
+  display: inline-flex;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   color: #fff;
   border-radius: 5px;
-  padding: 10px;
-  margin-left: 92px;
+  padding: 10px 33px;
   text-decoration: none;
+  justify-content: center;
+  align-items: center;
 }
 .login:hover{
   color: #fff;
