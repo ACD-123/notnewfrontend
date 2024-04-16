@@ -2475,16 +2475,6 @@ const ListingForm = (props) => {
             )}
           </div>
           <div className="col-lg-6">
-            {/* <button className="btn2" onClick={handleActivateProduct} type="submit" style={{ marginTop: "10px" }}>
-         Activate Product
-          </button> */}
-            {/* <button
-              type="submit"
-              className="btn2"
-              style={{ marginTop: "10px" }}
-            >
-              Activate Product
-            </button> */}
             {props.guid ? (
               <>
                 <input

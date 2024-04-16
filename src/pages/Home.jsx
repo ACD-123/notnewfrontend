@@ -24,7 +24,7 @@ const Home = () => {
 
 			{/* Banner Include */}
 			<Banner />
-			{/* Banner Includer */}
+			{/* Banner Include */}
 
 			{/* RecentViewedItems Include */}
 			<RecentViewedItems />

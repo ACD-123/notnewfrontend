@@ -3,6 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Container from 'react-bootstrap/Container';
+import { Link } from 'react-router-dom';
 
 const NavBar = () => {
 
@@ -18,15 +19,15 @@ const NavBar = () => {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/topcategory">Top Categories</Nav.Link>
-            <Nav.Link href="/notFound">Auctions</Nav.Link>
-            <Nav.Link href="/notFound">Hot Deals</Nav.Link>
-            <Nav.Link href="/notFound">Top Sellers</Nav.Link>
+            <Link className='nav-link' to="/">Home</Link>
+            <Link className='nav-link' to="/topcategory">Top Categories</Link>
+            <Link className='nav-link' to="/notFound">Auctions</Link>
+            <Link className='nav-link' to="/notFound">Hot Deals</Link>
+            <Link className='nav-link' to="/notFound">Top Sellers</Link>
             {/* <Nav.Link href="/categorykeyword">Electronics</Nav.Link>
             <Nav.Link href="/categorykeyword">Vintage Products</Nav.Link>
             <Nav.Link href="/categorykeyword">Auto Parts</Nav.Link> */}
-            <Nav.Link href="/notFound">Recomendations</Nav.Link>
+            <Link className='nav-link' to="/notFound">Recomendations</Link>
           </Nav>
           
         </Navbar.Collapse>

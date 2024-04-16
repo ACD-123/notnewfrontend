@@ -179,7 +179,9 @@ const ProductInformation = () => {
           <div className='price-product'>
               <h5>Price: <span>$ {productData.price}</span></h5>
           </div>
-          {(() => {
+          {loggedInUsers ? (<>
+            {(() => {
+            
             if (productData.user_id === loggedInUsers.id) {
               return (
                 <div className='pay-buttons'>
@@ -205,6 +207,19 @@ const ProductInformation = () => {
               );
             }
           })()}
+          </>):(<>
+            <div className='pay-buttons'>
+              {/* <Link to={`/checkouts/${productData.guid}`}> */}
+                <button onClick={addByNow}>Buy It Now</button>
+                {/* </Link> */}
+              <button onClick={addToCart}  disabled={enabled}>
+                {isLoading ? "loading.." : "Add to Cart"}
+              </button>
+              {/* <Link to="/shoppingcart"><button>Add to Cart</button></Link> */}
+              {/* <Link onClick={() => handleDropdownItemClick('componentC')}><button>Add to Wishlist</button></Link> */}
+              <Link onClick={() => hanldeWishList(productData.guid)}><button>Add to Wishlist</button></Link>
+          </div></>)}
+          
           
           <br />
           <h3>Tags</h3>

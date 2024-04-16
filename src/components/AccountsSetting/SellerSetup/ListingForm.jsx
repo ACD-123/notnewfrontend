@@ -448,7 +448,6 @@ const ListingForm = (props) => {
       }
   };
   const handleCheckboxGrpChange = (e) => {
-    console.log('uniqueNumbers')
     const { name, value } = e.target;
     let getChkGrp = JSON.parse(localStorage.getItem('chkgrp'));
     let chkgrp = [];
