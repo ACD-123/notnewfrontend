@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Emailverifyimagebg from "../../assets/Images/Accountimages/signup.png";
 import Logo from "../../assets/Images/logo.png";
 import Line from "../../assets/Images/Accountimages/line.png";
@@ -12,7 +12,27 @@ var Emailverifybg = {
   paddingTop: "40px",
 };
 
+
 const ForgotVerification = () => {
+  
+  const [resendCountdown, setResendCountdown] = useState(60); // Initial countdown value
+
+  useEffect(() => {
+    let countdownInterval;
+
+    if (resendCountdown > 0) {
+      // Start the countdown timer if the countdown value is greater than 0
+      countdownInterval = setInterval(() => {
+        setResendCountdown((prevCountdown) => prevCountdown - 1); // Decrement countdown value every second
+      }, 1000);
+    }
+
+    return () => {
+      // Cleanup function to clear the interval when component unmounts or countdown reaches 0
+      clearInterval(countdownInterval);
+    };
+  }, [resendCountdown]); // Run the effect whenever the resendCountdown state changes
+
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
@@ -61,6 +81,7 @@ const ForgotVerification = () => {
     e.preventDefault();
     setIsLoading(true);
     setEnabled(true);
+    setResendCountdown(60);
     let data={
       'email': email
     }
@@ -79,6 +100,12 @@ const ForgotVerification = () => {
       setEnabled(false);
     });
 }
+// Helper function to format countdown time in minutes and seconds
+const formatCountdownTime = (seconds) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+};
   return (
     <>
       <section id="emailverification" style={Emailverifybg}>
@@ -131,15 +158,28 @@ const ForgotVerification = () => {
                       type="submit"
                       value="Send Code"
                     /> */}
-                    <div className="emailresend-recieve">
-                      <ul>
-                        <li className="code"><a href="#">Didn't Receive the code?</a></li>
-                        <li className="resend"><a href="#" onClick={handleResend}>Resend</a></li>
+                    <div className="emailresend-recieve py-4">
+                      <ul style={{alignItems:'center'}}>
+                      <li className="code">
+            {/* Display the countdown timer */}
+            <a href=''>
+              {resendCountdown > 0
+              ? `Resend code in ${formatCountdownTime(resendCountdown)}`
+              : "Didn't receive the code?"}
+              </a>
+          </li>
+          <li className="resend">
+            {/* Disable the resend button during countdown */}
+            <button disabled={resendCountdown > 0} onClick={handleResend}>
+              Resend
+            </button>
+          </li>
                       </ul>
+                      
                     </div>
                     <button
                       type="submit"
-                      lassName="btn btn-primary"
+                      className="btn btn-primary"
                       disabled={enabled}
                     >
                       {isLoading ? "loading.." : "Send Code"}

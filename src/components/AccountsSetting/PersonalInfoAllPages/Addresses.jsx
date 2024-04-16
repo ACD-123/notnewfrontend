@@ -106,19 +106,21 @@ const Addresses = () => {
 const self =()=>{
   UserServices.self()
   .then((response) => {
-   setUser(response);
-   setAddress(response.address)
-   setCountry(response.country_id)
-   setState(response.state_id)
-   setCity(response.city_id)
-   setLatitude(response.latitute);
-   setLongitude(response.longitude);
-     if(response.address){
-       setBtn(true)
-     }
-   }).catch((e) => {
-     console.log(e);
-   });
+    setUser(response);
+    setAddress(response.address)
+    setCountry(response.country_id)
+    setState(response.state_id)
+    setCity(response.city_id)
+    setLatitude(response.latitute);
+    setLongitude(response.longitude);
+    if(response.address){
+      setBtn(true)
+    }
+    setIsLoading(false); // Set loading state to false after fetching user data
+  }).catch((e) => {
+    console.log(e);
+    setIsLoading(false); // Set loading state to false on error
+  });
 }
 const handleAddAddress =()=>{
   setEditAddress(true)
@@ -136,6 +138,9 @@ const handleAddAddress =()=>{
    }, []);
   return (
     <>
+    {isLoading && <div>Loading...</div>}
+    {!isLoading && (
+      <>
       <section id='addresses-personal'>
         <div className='row'>
           <div className='addadrs'>
@@ -255,6 +260,8 @@ const handleAddAddress =()=>{
           </div>
         </div>
       )}
+      </>
+    )}
     </>
   );
 };

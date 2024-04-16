@@ -270,14 +270,13 @@ const ListingForm = (props) => {
       console.log("product.sizes", product.sizes);
     });
   };
-  const removeTags = (e, tags) => {
+  const removeTags = (e, index) => {
     e.preventDefault();
-    product.tags?.map((tag, index) => {
-      product.tags.splice(index, 1);
-      const updatedTags = [...product.tags];
-      setProduct({ ...product, tags: updatedTags });
-    });
+    const updatedTags = [...product.tags];
+    updatedTags.splice(index, 1);
+    setProduct({ ...product, tags: updatedTags });
   };
+  
   const handlePlaceChanged = () => {
     const [place] = inputRef.current.getPlaces();
     if (place) {
@@ -324,12 +323,6 @@ const ListingForm = (props) => {
       setProduct({ ...product, tags: updatedTags });
     } 
   };
-  // const handleTagChange = (e, index) =>{
-  //   const { name, value } = e.target;
-  //   const newErrors = {};
-  //   const updatedTags = [value];
-  //   setProduct({ ...product, tags: updatedTags });
-  // }
   const handleInputChange = (e, index) => { 
     const { name, value } = e.target;
     const newErrors = {};
@@ -412,16 +405,9 @@ const ListingForm = (props) => {
             }
             finalArray.push(colorObj)
             localStorage.setItem('attributes', JSON.stringify(finalArray));
-            // const color = e.target.value;
-            // const updatedColors = [...product.availableColors, color];
-            // setProduct({ ...product, availableColors: updatedColors });
-            // console.log('colors', product)
         }
   };
   const handleFileChange = (e) => {
-    // const color = e.target.value;
-    // const updatedColors = [...product.availableColors, color];
-    // setProduct({ ...product, availableColors: updatedColors });
   };
   
   const handleCheckboxChange = (e) => {
@@ -587,11 +573,6 @@ const ListingForm = (props) => {
       newErrors.images = "You can not upload more then 5 images";
       setErrors(newErrors);
     } else {
-      // console.log('files', e.target.files)
-      // {[e.target.files]?.map((file) => {
-        // console.log('file', file.File)
-        // setBolbs([...blobs, URL.createObjectURL(file)]);
-      // })}
       setBolbs([...blobs, URL.createObjectURL(e.target.files[0])]);
     }
     if (files.length > 4) {
@@ -599,35 +580,6 @@ const ListingForm = (props) => {
     } else {
       setFiles([...files, e.target.files[0]]);
     }
-
-    /**
-     * Old Logic Start
-     */
-    // const files = Array.from(e.target.files).slice(0, 5);
-    // imgArray.push(files);
-    // console.log('files', imgArray)
-    // const imageUrls = files.map((file) => URL.createObjectURL(file));
-    // setProduct({ ...product, images: files });
-    /**
-     * Old Logic Ends
-     */
-
-    // { files: [...this.state.files, ...e.target.files] }
-    // const formData = new FormData();
-    // formData.append('images', e.target.files[0]);
-    // const config = {
-    //     headers: {
-    //       'content-type': 'multipart/form-data',
-    //       'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-    //      }
-    // }
-    // axios.post('http://localhost:8000api/products/upload', formData, config)
-    //   .then(response => {
-    //     localStorage.setItem('product_guid',response.data.product)
-    //   })
-    //   .catch(error => {
-    //       console.log(error);
-    //   });
   };
 
   const handleAddTags = () => {
@@ -637,16 +589,6 @@ const ListingForm = (props) => {
     });
     return;
   };
-
-  // const handleAddTags = (e) => {
-  //   let tags = localStorage.getItem('tags');
-  //   // 
-  //   setProduct({
-  //     ...product,
-  //     tags: [...product.tags, ""],
-  //   });
-  //   //return;
-  // };
 
   const handleCountryChange = (e) => {
     product.country = e.target.value;
@@ -671,160 +613,26 @@ const ListingForm = (props) => {
     if (!product.brand) {
       newErrors.brand = "Brand is required";
     }
-    // if (!product.stockCapacity || product.stockCapacity === 0) {
-    //   newErrors.stockCapacity = "Stock Capacity is required";
-    // }
     if (!product.description) {
       newErrors.description = "Description is required";
     }
-    // if (!product.sellingNow || !product.auctions) {
-    //   newErrors.sellingNow = "Buy it Now is required";
-    // }
-    // if (!product.price) {
-    //   newErrors.price = "Price is required";
-    // }
-    // if (!product.listing) {
-    //   newErrors.listing = "Listing is required";
-    // }
-    // if (!isToggled) {
-    //   newErrors.buyitnow = "Buy it Now is required";
-    // }
     if (!product.deliverycompany) {
       newErrors.deliverycompany = "Deliver Company is required";
     }
-    // if (!product.deliverddomestic || !product.deliverdinternational) {
-    //   newErrors.deliverdomestically = "Deliver is required";
-    // }
-    // if(!product.country){
-    //   newErrors.country = "Country is required";
-    // }
-    // if(!product.states){
-    //   newErrors.states = "States is required";
-    // }
-    // if(!product.city){
-    //   newErrors.city = "City is required";
-    // }
     if (!product.shippingprice) {
       newErrors.shippingprice = "Shipping Price is required";
     }
-
-    // if (!product.shippingstart && !product.shippingstart) {
-    //   newErrors.shippingstartend = "Shipping Start and End is required";
-    // }
-    // if (!product.durations && !product.durations) {
-    //   newErrors.durations = "Shipping Start and End is required";
-    // }
-
     if (!product.returnshippingpaidby) {
       newErrors.returnshippingpaidby = "Shipping Paid By is required";
     }
     if (!product.tags || product.tags.length == 0) {
       newErrors.tags = "Please Enter Tags";
     }
-    // if(!shippingLocation){
-    //   newErrors.returnshippinglocation = "Shipping Locations is required";
-    // }
-    // if(!product.returndurationlimit){
-    //   newErrors.returndurationlimit = "Shipping Duration Limit is required";
-    // }
-    // if(!product.shippingLocation){
-    //   newErrors.returnshippingprice = "Shipping Price is required";
-    // }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
       setEnabled(true);     
       if (props.guid) {
-        // product.country = country;
-        // product.city = city;
-        // product.state = state;
-        // product.brand = brand;
-        // product.zip = zip;
-        // // console.log('product', product)
-        // const formData = new FormData();
-        // product.condition = localStorage.getItem("product_condition");
-        // formData.append("title", product.title);
-        // formData.append("condition", localStorage.getItem("product_condition"));
-        // formData.append("model", product.model);
-        // formData.append("category", product.category);
-        // formData.append("brand_id", product.brand);
-        // formData.append("stockCapacity", product.stockCapacity);
-        // formData.append("sizes", JSON.stringify(product.sizes));
-        // formData.append("availableColors", product.availableColors);
-        // formData.append("description", product.description);
-        // formData.append("sellingNow", product.sellingNow);
-        // formData.append("price", product.price);
-        // formData.append("saleprice", product.saleprice);
-        // formData.append("minpurchase", product.minpurchase);
-        // formData.append("listing", product.listing);
-        // formData.append("auctioned", product.auctions);
-        // formData.append("bids", product.bids);
-        // formData.append("shipingdurations", product.shipingdurations);
-        // formData.append("durations", product.shipingdurations);
-        // formData.append("hours", product.hours);
-        // formData.append("auctionListing", product.auctionListing);
-        // formData.append("auctionEndListing", product.auctionEndListing);
-        // formData.append("deliverddomestic", product.deliverddomestic);
-        // formData.append("tags", JSON.stringify(product.tags));
-        // formData.append("deliverdinternational", product.deliverdinternational);
-        // formData.append("deliverycompany", product.deliverycompany);
-        // formData.append("country", product.country);
-        // formData.append("city", product.city);
-        // formData.append("state", product.state);
-        // formData.append("zip", product.zip);
-        // formData.append("address", address);
-        // formData.append("shippingprice", product.shippingprice);
-        // formData.append("shippingstart", product.shippingstart);
-        // formData.append("shippingend", product.shippingend);
-        // formData.append("returnshippingprice", product.returnshippingprice);
-        // formData.append("returndurationlimit", product.returndurationlimit);
-        // formData.append("returnshippingpaidby", product.returnshippingpaidby);
-        // formData.append("termsdescription", "termsdescription");
-        // let getAttributes = localStorage.getItem('attributes');
-        // if(getAttributes){
-        //   formData.append("attributes", localStorage.getItem('attributes'));
-        // }else{
-        //   formData.append("attributes", JSON.stringify([{'attributes': "No Atributes"}]));
-        // }
-        // formData.append(
-        //   "returnshippinglocation",
-        //   product.returnshippinglocation
-        // );
-        // /**
-        //  * For Images Uploads Start
-        //  */
-        // files.forEach((image_file) => {
-        //   formData.append("file[]", image_file);
-        // });
-        // for (let pair of formData.entries()) {
-        //   console.log(pair[0] + ", " + pair[1]);
-        // }
-        // const config = {
-        //   headers: {
-        //     "content-type": "multipart/form-data",
-        //     Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        //   },
-        // };
-        // axios
-        //   .post("http://localhost:8000/api/products/add", formData, config)
-        //   .then((response) => {
-        //     setShowPopup(true);
-        //     setIsLoading(false);
-        //     setEnabled(false);
-        //     localStorage.removeItem("product_condition");
-        //     setTimeout(() => {
-        //       props.parentCallback(null);
-        //     }, 4000);
-        //   })
-        //   .then(() => {
-        //     setIsLoading(false);
-        //     setEnabled(false);
-        //   })
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
-
-
 
         product.country = country;
         product.city = city;
@@ -889,22 +697,6 @@ const ListingForm = (props) => {
         for (let pair of fD.entries()) {
           console.log(pair[0] + ", " + pair[1]);
         }
-
-        // ProductServices.update(props.guid, formData)
-        //   .then((response) => {
-        //     // toast.success(response.message);
-        //     setShowEditPopup(true);
-        //     setIsLoading(false);
-        //     setEnabled(false);
-        //     // localStorage.removeItem('product_condition');
-        //     setTimeout(() => {
-        //       props.parentCallback(null);
-        //     }, 4000);
-        //   })
-        //   .then(() => {
-        //     setIsLoading(false);
-        //     setEnabled(false);
-        //   });
         const config = {
           headers: {
             "content-type": "multipart/form-data",
@@ -1018,31 +810,6 @@ const ListingForm = (props) => {
           .catch((error) => {
             console.log(error);
           });
-        /**
-         * For Images Uploads Ends
-         */
-
-        /***
-         *
-         */
-        // ProductServices.save(product)
-        // .then((response) => {
-        //   // toast.success(response.message);
-        //   setShowPopup(true);
-        //   setIsLoading(false);
-        //   setEnabled(false);
-        //   localStorage.removeItem('product_condition');
-        //   setTimeout(() => {
-        //     props.parentCallback(null)
-        //   }, 4000);
-        // })
-        // .then(() => {
-        //   setIsLoading(false);
-        //   setEnabled(false);
-        // });
-        /***
-         *
-         */
       }
     }
     // console.log("Submitted product:", product);
@@ -1092,11 +859,6 @@ const ListingForm = (props) => {
     // Add more states as needed
   ];
 
-  // const deliveryCompany = [
-  //   { id: "fedex", name: "Fedex" },
-  //   { id: "usps", name: "USPS" },
-  //   { id: "americancourier", name: "AMERICAN COURIER" },
-  // ];
 
   const paidBy = [
     { id: "buyer", name: "Buyer" },
@@ -1104,20 +866,6 @@ const ListingForm = (props) => {
     { id: "admin", name: "Admin" },
   ];
 
-  // const durations = [
-  //   { id: "1", name: "1" },
-  //   { id: "2", name: "2" },
-  //   { id: "3", name: "3" },
-  //   { id: "4", name: "4" },
-  //   { id: "5", name: "5" },
-  //   { id: "6", name: "6" },
-  //   { id: "7", name: "7" },
-  //   { id: "8", name: "8" },
-  //   { id: "9", name: "9" },
-  //   { id: "10", name: "10" },
-  //   { id: "11", name: "11" },
-  //   { id: "12", name: "12" },
-  // ];
   const citiesData = [
     { id: "city1", name: "City 1" },
     { id: "city2", name: "City 2" },
@@ -1138,12 +886,6 @@ const ListingForm = (props) => {
     }, 500);
   };
 
-  // Function to update cities based on the selected state (simulated for demonstration)
-  // const fetchCities = (stateId) => {
-  //   setTimeout(() => {
-  //     setCities(citiesData[stateId]);
-  //   }, 500);
-  // };
   const fetchCities = () => {
     setCities(citiesData);
   };
@@ -1463,65 +1205,44 @@ const ListingForm = (props) => {
               multiple
               onChange={handleImageUpload}
             />
-            <div className="imgegallry">
-              {blobs.length > 0 ? (
-                <>
-                  {blobs.map((blob, index) => {
-                    return (
-                      <>
-                        {blob ? (
-                          <>
-                            <img
-                              key={index}
-                              src={blob}
-                              alt={`Product ${index + 1}`}
-                              style={{
-                                width: "100px",
-                                height: "100px",
-                                objectFit: "cover",
-                                margin: "5px",
-                              }}
-                            />
-                          </>
-                        ) : (
-                          ""
-                        )}
-                        <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
-                          X
-                        </a>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                ""
-              )}
-              {errors.images && <p className="error">{errors.images}</p>}
+           <div className="imgegallry">
+  {/* Render blobs */}
+  {blobs.length > 0 && blobs.map((blob, index) => (
+    <div key={index}>
+      <img
+        src={blob}
+        alt={`Product ${index + 1}`}
+        style={{
+          width: "100px",
+          height: "100px",
+          objectFit: "cover",
+          margin: "5px",
+        }}
+      />
+      <a href="#" onClick={(e) => removeThumbnail(e, blob)}>X</a>
+    </div>
+  ))}
 
-              {product.images.length > 0 ? (
-                <>
-                  {product.images.map((imageUrl, index) => {
-                    return (
-                      <>
-                        <img
-                          key={index}
-                          src={imageUrl}
-                          alt={`Product ${index + 1}`}
-                          style={{
-                            width: "100px",
-                            height: "100px",
-                            objectFit: "cover",
-                            margin: "5px",
-                          }}
-                        />
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                <></>
-              )}
-            </div>
+  {/* Render product images */}
+  {product.images.length > 0 && product.images.map((imageUrl, index) => (
+    <div key={index}>
+      <img
+        src={imageUrl}
+        alt={`Product ${index + 1}`}
+        style={{
+          width: "100px",
+          height: "100px",
+          objectFit: "cover",
+          margin: "5px",
+        }}
+      />
+    </div>
+  ))}
+
+  {errors.images && <p className="error">{errors.images}</p>}
+  {errors.editimages && <p className="error">{errors.editimages}</p>}
+</div>
+
           </>
         )}
 
@@ -2155,20 +1876,20 @@ const ListingForm = (props) => {
           ""
         )}
         <h4>TAGS</h4>
+        <div className="sizequntycolr" >
         {product?.tags.map((tag, index) => (
-          <div className="sizequntycolr" key={index}>
-            <input
-              type="text"
-              name="tag"
-              value={tag.tag}
-              onChange={(e) => handleTagChange(e, index)}
-            />
-                <a href="#" onClick={(e) => removeTags(e, tag.tag)}>
-                  Delete
-                </a>
+  <div key={index}>
+    <input 
+      type="text"
+      name="tag"
+      value={tag.tag}
+      onChange={(e) => handleTagChange(e, index)}
+    />
+    <a href="#" onClick={(e) => removeTags(e, index)}>Delete</a>
+  </div>
+))}
 
-          </div>
-        ))}
+</div>
         <div className="sizeaddmre">
           <button type="button" onClick={handleAddTags}>
             Add Tags

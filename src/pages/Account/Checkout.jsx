@@ -235,7 +235,7 @@ const Checkout = () => {
                                     {bidcartimage.length > 0 ? (
                                       <>
                                         <div class="product-image">
-                                          <img src={`${BASE_URL}/image/product/${bidcart.media[0].name}`}
+                                          <img src={`${bidcart.media[0].name}`}
                                           width="150" height="150" alt={bidcart.media[0].name} />
                                         </div>
                                       </>
@@ -337,7 +337,7 @@ const Checkout = () => {
                                     {cat.products.media.length > 0 ? (
                                       <>
                                         <div class="product-image">
-                                          <img src={`${BASE_URL}/image/product/${cat.products.media[0].name}`}
+                                          <img src={cat.products.media[0].name}
                                           width="150" height="150" alt={cat.products.media[0].name} />
                                         </div>
                                       </>

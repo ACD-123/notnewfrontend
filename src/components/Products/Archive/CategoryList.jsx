@@ -15,16 +15,29 @@ const CategoryList = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-    const fetchCategoryData = async () => {
-        Home.recursiveCategories()
-        .then((res) => {
-          setCategoryData(res.slice(0, 6)); // Limit to the first 6 products
-        }).catch(error =>  console.error('Error fetching product data:', error))
-        .finally(error => setLoading(false));
-    };
-    useEffect(() => {
-      fetchCategoryData();
-    }, []);
+  const [loadingDots, setLoadingDots] = useState('...'); // State to control loading dots
+
+  const fetchCategoryData = async () => {
+    Home.recursiveCategories()
+      .then((res) => {
+        setCategoryData(res.slice(0, 6)); // Limit to the first 6 products
+      }).catch(error => {
+        setError('Error fetching product data:', error);
+      }).finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchCategoryData();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLoadingDots(prev => prev === '...' ? '' : prev + '.');
+    }, 500); // Change the interval time as needed
+    return () => clearInterval(interval);
+  }, []);
   return (
    <>
    <section id='product-recents-viewed'>
@@ -49,6 +62,7 @@ const CategoryList = () => {
               <>
                 {categoryData.map((category) => {
                   return (
+                    <Link to={`/singlecategory/${category.guid}`}>
                     <div className='col col-lg-2' key={category.id}>
                       <div className='productlist ctrrr'>
                         <div style={{height: '140px',width: '100%'}}>
@@ -57,9 +71,7 @@ const CategoryList = () => {
                             {category.media?.map((media) => {
                               return(
                                 <>
-                                   <Link to={`/notfound`}>
                                     <img src={`${BASE_URL}/image/category/${media.name}`} alt={media.name} />
-                                   </Link>
                                 </>
                               )
                             })}
@@ -71,11 +83,10 @@ const CategoryList = () => {
                           )
                           }
                         </div>
-                        <Link to={`/singlecategory/${category.guid}`}>
                          <h5 style={{ textAlign: "center", padding: "20px 0px" }}>{category.name}</h5>
-                       </Link>
                       </div>
                     </div>
+                       </Link>
                   )
                 })}
              </>
@@ -84,7 +95,13 @@ const CategoryList = () => {
           </div>
         </section>
       </>
-     ):('')}
+     ):(
+      <>
+      <div className='container'>
+        <h3>Loading{loadingDots}</h3>
+      </div>
+    </>
+     )}
       </section>
    </>
   )
