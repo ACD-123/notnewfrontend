@@ -3,13 +3,16 @@ import ProductCard from '../../Elements/ProductCard';
 import Chat from '../../CustomerDashboard/Chat';
 import Addresses from '../PersonalInfoAllPages/Addresses'
 import ListingForm from './ListingForm';
+import SellingDashboard from './SellingDashboard';
+
 const ProductManagement = () => {
   const [selectedOption, setSelectedOption] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [activeTab, setActiveTab] = useState('active');
   const [productguid, setProductGuid] = useState("");
-
+  let loggedIn = localStorage.getItem('user_details');
+  let loggedUser = JSON.parse(loggedIn)
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
     setSubmitted(false); // Reset submitted state when a new option is selected
@@ -59,6 +62,8 @@ const ProductManagement = () => {
   return (
     <>
       {renderSelectedComponent() || ( // Render component or the product-management section
+      <>
+      {loggedUser.isTrustedSeller ? (<>
         <section id='product-management'>
           <div className='row align-items-center'>
             <div className='col-lg-7'>
@@ -139,6 +144,10 @@ const ProductManagement = () => {
             {activeTab === 'scheduled' && !submitted && <ProductCard edit="edit" parentCallback={handleParentCallback} status='scheduled' />}
           </div>
         </section>
+      </>):(<>
+      <SellingDashboard/></>)}
+        
+        </>
       )}
     </>
   );

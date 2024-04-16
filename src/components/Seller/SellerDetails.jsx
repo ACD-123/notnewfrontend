@@ -5,9 +5,10 @@ import ReviewSection from './ReviewSection'
 import PopularProductSearch from './PopularProductSearch'
 import SellerFeedback from './SellerFeedback'
 import { useState, useEffect } from 'react'
-import SellerServices from "../../services/API/SellerServices"; //~/services/API/SellerServices
+import Home from "../../services/API/Home"; //~/services/API/Home
 import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../services/Constant";
 
 const SellerDetails = () => {
     const [shopData, setShopData] = useState([]);
@@ -21,9 +22,18 @@ const SellerDetails = () => {
         window.location.href = `/customerdashboard?component=${componentName}`;
       };
       const getProduct = () => {
-        ProductServices.get(id).then((response) => {
-          setProductData(response);
-          setShopData(response.shop);
+        ProductServices.get(id).then((res) => {
+          setProductData(res);
+          Home.getshopData(res?.shop_id)
+            .then((response) => {
+                if(response.status){
+                    console.log('response', response.data)
+                    setShopData(response.data)
+                }
+            }).catch((e) => {
+                console.log(e)
+            }); 
+        //   setShopData(res.shop_id);
         });
       };
     const getItemSold = () => {
@@ -32,17 +42,19 @@ const SellerDetails = () => {
         });
     };
 useEffect(() => {
-    // getProduct();
+    getProduct();
     // getItemSold();
 }, []);
   return (
     <div className='sellerdetails' style={{padding: "50px 0px"}}>
-                    <div className='container'>
+        {shopData ? (
+            <>
+                 <div className='container'>
                         <div className='row align-items-center'>
                             <div className='col-lg-9'>
                                 <div className='profile-details-seller'>
                                     <div className='image'>
-                                        <img src={Sellerprofile} />
+                                        <img src={`${BASE_URL}/${shopData.cover_image}`}  width="100" height="100" />
                                     </div>
                                     <div className='profile-record'>
                                         <h4>{shopData.fullname}</h4>
@@ -78,6 +90,9 @@ useEffect(() => {
                         </div>
                         {/* SECOND ROW */}
                     </div>
+            </>
+        ):(<></>)}
+                   
     </div>
   )
 }

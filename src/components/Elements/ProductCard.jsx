@@ -12,55 +12,6 @@ import ProductServices from "../../services/API/ProductServices"; //~/services/A
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../services/Constant";
 
-// const productData = [
-//   {
-//     id: 1,
-//     title: 'Zapatillas De Baloncesto Unisex Soft Sole ',
-//     price: 50,
-//     salePrice: 40,
-//     image: ProductImage1,
-//     discount: 50,
-//     auction: true,
-//   },
-//   {
-//     id: 2,
-//     title: 'Zapatillas De Baloncesto Unisex Soft Sole ',
-//     price: 60,
-//     salePrice: 50,
-//     image: ProductImage2,
-//     discount: 50,
-//     auction: false,
-//   },
-//   {
-//     id: 3,
-//     title: 'Zapatillas De Baloncesto Unisex Soft Sole ',
-//     price: 60,
-//     salePrice: 50,
-//     image: ProductImage3,
-//     discount: 50,
-//     auction: false,
-//   },
-//   {
-//     id: 4,
-//     title: 'Zapatillas De Baloncesto Unisex Soft Sole ',
-//     price: 60,
-//     salePrice: 50,
-//     image: ProductImage4,
-//     discount: 50,
-//     auction: false,
-//   },
-//   {
-//     id: 5,
-//     title: 'Zapatillas De Baloncesto Unisex Soft Sole ',
-//     price: 60,
-//     salePrice: 50,
-//     image: ProductImage5,
-//     discount: 50,
-//     auction: true,
-//   },
-
-//   // Add more products as needed
-// ];
 const ProductCard = (props) => {
   let status = props.status;
   let edit = props.edit;
