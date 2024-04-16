@@ -24,8 +24,25 @@ function recursiveCategories(params = {}) {
       url: `${baseUrl}recursiveCategories`
     })
   }
+  function  getshopData(id){
+    return request({
+      url: `${baseUrl}getshopData/${id}`,
+      method: 'GET',
+    })
+  }
+  function removeDuplicates(arr) {
+    let unique = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (unique.indexOf(arr[i]) === -1) {
+            unique.push(arr[i]);
+        }
+    }
+    return unique;
+}
   const Home = {
     recursiveCategories,
+    getshopData,
+    removeDuplicates,
     getCompanies,
     getbrands,
     getrecursive

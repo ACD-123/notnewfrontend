@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { toast } from "react-toastify";
 import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
+import Home from '../../services/API/Home'; //~/services/API/Home
 
 // storeProduct
 const PopularProductSearch = (props) => {
@@ -9,16 +10,22 @@ const PopularProductSearch = (props) => {
   let categoryLists = [];
   const getPopular =()=>{
     try {
-      console.log('props.shopId', props.shopId)
       ProductServices.storeCategories(props.shopId)
           .then((response) => {
             for (let i = 0; i < response.length; i++) {
-              categoryLists.push({ val: i, text: response[i].category.name }); 
+                categoryLists.push({ val: i, text: response[i].category.name }); 
             }
-            setCategoryList(categoryLists);
+            let categorylist =[];
+            for(let j = 0; j < categoryLists.length; j++){
+                categorylist.push(categoryLists[j].text)
+            }
+            let uniqueCategory  = Home.removeDuplicates(categorylist);
+            if(uniqueCategory.length > 0){
+              setCategoryList(uniqueCategory);
+            }
           }) 
       } catch (error) {
-        toast.error(error);
+        console.log(error);
       }
   }
   useEffect(() => {
@@ -34,7 +41,7 @@ const PopularProductSearch = (props) => {
               {categoryList.map((category) => {
                   return(
                     <>
-                    <li>{category.text}</li>
+                    <li>{category}</li>
                     </>
                   )
                 })}

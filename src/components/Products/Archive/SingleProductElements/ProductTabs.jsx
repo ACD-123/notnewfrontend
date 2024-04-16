@@ -47,10 +47,12 @@ const ProductTabs = () => {
                         <th>Product Name</th>
                         <td>{productData.name}</td>
                     </tr>
-                    <tr>
-                        <th>Brand</th>
-                        <td>{productData.brand}</td>
-                    </tr>
+                    {productData.brand ? (<>
+                        <tr>
+                          <th>Brand</th>
+                          <td>{productData.brand}</td>
+                      </tr>
+                    </>):(<></>)}
                     {productData.model ? (
                       <>
                         <tr>

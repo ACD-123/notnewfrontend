@@ -8,26 +8,42 @@ import Heart from '../../../../assets/Images/Singleproduct/Sidebar/heart.png'
 import { Link } from 'react-router-dom'
 import ProductServices from "../../../../services/API/ProductServices"; //~/services/API/ProductServices
 import SellerServices from "../../../../services/API/SellerServices"; //~/services/API/SellerServices
+import Home from "../../../../services/API/Home"; //~/services/API/Home
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../../../services/Constant";
 
 const SingleProductSidebar = () => {
     const [productData, setProductData] = useState([]);
     const [shopData, setShopData] = useState([]);
     const [trendingProduct, setTrendingProduct] = useState(0);
     const [savedseller, setSavedSeller] = useState("");
+    let loggedIn = localStorage.getItem("user_details");
+    let logedIn;
+    if(loggedIn){
+        logedIn = JSON.parse(loggedIn);
+    }
 
     const { pathname } = window.location;
     const id = pathname.split("/").pop();
     const getProduct = () => {
-        ProductServices.get(id).then((response) => {
-            setShopData(response.shop)
-            setProductData(response);
-            getSellerSavedData(response?.shop.id);
-        });
+        ProductServices.get(id).then((res) => {
+            setProductData(res);
+            getSellerSavedData(res?.shop_id);
+            Home.getshopData(res?.shop_id)
+            .then((response) => {
+                if(response.status){
+                    setShopData(response.data)
+                }
+            }).catch((e) => {
+                console.log(e)
+            }); 
+        }).catch((e) => {
+            console.log(e)
+        });;
     };
     const getTrending = () => {
-        ProductServices.getTrendingProduct(id).then((response) => {
-            setTrendingProduct(response)
+        ProductServices.getTrendingProduct(id).then((res) => {
+            setTrendingProduct(res)
         });
     };
       
@@ -38,16 +54,20 @@ const SingleProductSidebar = () => {
       };
       const handleSellerServices = (e) =>{
         e.preventDefault();
-        let data ={
-            shop_id: productData.shop_id
+        if(logedIn){
+            let data ={
+                shop_id: productData.shop_id
+            }
+            SellerServices.saveSeller(data)
+            .then((response) => {
+                toast.success(response);
+                getSellerSavedData(productData.shop.id);
+            }).catch((e) => {
+                console.log('Error:', e)
+            }); 
+        }else{
+            window.location.href="/signin";
         }
-        SellerServices.saveSeller(data)
-        .then((response) => {
-            toast.success(response);
-            getSellerSavedData(productData.shop.id);
-        }).catch((e) => {
-            toast.error(e.message);
-        }); 
       }
       const getSellerSavedData = (shop_id) =>{
         ProductServices.getSavedSellerDetails(shop_id)
@@ -58,19 +78,19 @@ const SingleProductSidebar = () => {
         }); 
       }
       useEffect(() => {
-        // getProduct();
-        // getTrending();
+        getProduct();
+        getTrending();
       }, []);
   return (
    <>
    <div className='singleproduct-sidebar'>
     
     <div className='secure'>
-        <div className='image'>
-            <img src={Secureimage1} />
-        </div>
         {trendingProduct ? (
-            <>
+            <>  
+                <div className='image'>
+                    <img src={Secureimage1} />
+                </div>
                 <div className='text-secure'>
                     <h4>Trending Product</h4>
                     <p>{trendingProduct} Products has been Sold.</p>
@@ -109,8 +129,11 @@ const SingleProductSidebar = () => {
         </div>
     </div>
     <hr />
-    <div className='store'>
-    <img src={Image} />
+    {shopData ? (<>
+        <div className='store'>
+    
+    <img width="150" height="100" src={`${BASE_URL}/${shopData.cover_image}`} />
+    
     <h2>{shopData.fullname}</h2>
     </div>
     <div className='storecontactdetails'>
@@ -129,6 +152,9 @@ const SingleProductSidebar = () => {
             <li><Link to="#">View Other Products</Link></li>
         </ul>
     </div>
+    </>):(<></>)}
+    
+    
    </div>
    </>
   )
