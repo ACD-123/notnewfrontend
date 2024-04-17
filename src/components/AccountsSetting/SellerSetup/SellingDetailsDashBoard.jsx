@@ -20,6 +20,7 @@ import icon2 from "../../../assets/Images/icons/2.png";
 import icon3 from "../../../assets/Images/icons/3.png";
 import StarRating from "../../OrderManagement/StarRating";
 import Location from "../../../assets/Images/map.png";
+import { Spinner } from "react-bootstrap";
 const products = [
   {
     id: 1,
@@ -252,6 +253,7 @@ const SellingDetailsDashBoard = (props) => {
   const [orderoffer, setOfferCount] = useState(0);
   const [transaction, setTransaction] = useState(0.0);
   const [shopdata, setShopData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   const getShopData=()=>{
     SellerServices.getShopDetails()
@@ -300,9 +302,11 @@ const SellingDetailsDashBoard = (props) => {
       });
   };
   const getOrderSummary = () => {
+    setIsLoading(true); // Start loading
     OrderServices.ordersummary()
       .then((response) => {
         setOrderSummary(response);
+        setIsLoading(false); // Stop loading when data is fetched
       })
       .catch((e) => {
         console.log(e.message);
@@ -340,7 +344,13 @@ const SellingDetailsDashBoard = (props) => {
 
   return (
     <>
-      {selectedProduct ? (
+    {isLoading ? ( // Show loader while fetching cart items
+                <div className="loader-container">
+                  <Spinner animation="border" role="status" />
+                </div>
+              ) : (
+                <>
+{selectedProduct ? (
         <>
           <div className="reviews-view-ordrmngment">
             <DetailedProductInfo order={selectedOrder} />
@@ -478,6 +488,9 @@ const SellingDetailsDashBoard = (props) => {
           </section>
         </>
       )}
+                </>
+              )}
+      
     </>
   );
 };

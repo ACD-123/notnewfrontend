@@ -1,5 +1,5 @@
-import React from "react"
-import { BrowserRouter, Route, Routes } from "react-router-dom"
+import React, { useEffect } from "react"
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
 import Home from "../pages/Home"
 import SignUp from "../pages/Account/SignUp"
 import EmailVerification from "../pages/Account/EmailVerification"
@@ -32,10 +32,21 @@ import Auctions from "../components/Products/Archive/Auctions"
 import ProductUpload from "../components/Products/ProductUpload"
 import NotFound from "../pages/NotFound"
 
+function ScrollToTop() {
+	const { pathname } = useLocation();
+  
+	useEffect(() => {
+	  // Scroll to the top whenever pathname changes
+	  window.scrollTo(0, 0);
+	}, [pathname]);
+  
+	return null;
+  }
 const PublicRoutes = () => {
 	return (
 		<>
 			<BrowserRouter>
+			<ScrollToTop />
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/signup" element={<SignUp />} />

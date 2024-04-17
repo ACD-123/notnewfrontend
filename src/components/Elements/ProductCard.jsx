@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../services/Constant";
+import { Spinner } from "react-bootstrap";
 
 const ProductCard = (props) => {
   let status = props.status;
@@ -20,47 +21,30 @@ const ProductCard = (props) => {
   const [editform, setEditForm] = useState(false); // State for showing the popup
   const [guid, setGuid] = useState(""); // State for showing the popup
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(true); // State for loading indicator
 
   const fetchProductData = async () => {
-    // try {
-      if (status == "active") {
-        ProductServices.selfValue(status).then((response) => {
-          if(response.data){
-            if (response.data.length > 0) {
-              setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
-            }
-          }
-        }).catch(error =>  console.error('Error fetching product data:', error));
-      } else if (status == "inactive") {
-        ProductServices.selfValue(status).then((response) => {
-          if(response.data){
-            if (response.data.length > 0) {
-              setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
-            }
-          }
-        }).catch(error =>  console.error('Error fetching product data:', error));
-      } else if (status == "scheduled") {
-        ProductServices.selfValue(status).then((response) => {
-          if(response.data){
-            if (response.data.length > 0) {
-              setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
-            }
-          }
-        }).catch(error =>  console.error('Error fetching product data:', error));
+    try {
+      setLoading(true); // Set loading state to true
+      let response;
+      if (status === "active" || status === "inactive" || status === "scheduled") {
+        response = await ProductServices.selfValue(status);
       } else if (props.products) {
-        if (props.products.data?.length > 0) {
-          setProductData(props.products.data.slice(0, 6));
-        }
+        response = props.products;
       } else {
-        ProductServices.all().then((response) => {
-          if (response.data) {
-            setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
-          }
-        }).catch(error =>  console.error('Error fetching product data:', error));
+        response = await ProductServices.all();
       }
-    // } catch (error) {
-    //   toast.error(error);
-    // }
+      if (response.data) {
+        setProductData(response.data.slice(0, 6)); // Limit to the first 5 products
+      } else {
+        setProductData([]); // If no data received, set product data to an empty array
+      }
+      setLoading(false); // Set loading state to false
+    } catch (error) {
+      setLoading(false); // Set loading state to false in case of error
+      console.error('Error fetching product data:', error);
+      toast.error("Error fetching product data");
+    }
   };
   const confirmDelete = (e, val) => {
     setShowPopup(true);
@@ -96,6 +80,15 @@ const ProductCard = (props) => {
       <section id="productcard" style={{ padding: "15px 0px" }}>
         <div className="container">
           <div className="row">
+          {loading ? (
+              <div className="loader-container">
+              <Spinner animation="border" role="status">
+                {/* <span className="sr-only">Loading...</span> */}
+              </Spinner>
+            </div>
+            ) : productData.length > 0 ? (
+              // Display products if available
+              <>
             {productData.length > 0 ? (
               <>
                 {productData.map((product) => {
@@ -351,6 +344,11 @@ const ProductCard = (props) => {
               </>
             ) : (
               "No Product Exists"
+            )}
+            </>
+            ) : (
+              // Display "No Product Exists" if no products available
+              <div>No Product Exists</div>
             )}
           </div>
         </div>

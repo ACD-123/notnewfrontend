@@ -394,7 +394,6 @@ const SetupSellerAccount = () => {
                       onChange={handleChange}
                       placeholder="Enter your street address"
                     /> */}
-                    {editaddress ? (<>
                         {isLoaded
                           &&
                           <StandaloneSearchBox
@@ -404,18 +403,10 @@ const SetupSellerAccount = () => {
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Enter your street address  "
+                                placeholder={`${address}`}
                             />
                         </StandaloneSearchBox>}
-                      </>)
-                        :(<>
-                          <lable className="form-control" style={{ height: "150px"}}>
-                          {address}
-                          </lable>
-                          
-
-                        </>)}
-                          <a href="#" onClick={handleAddAddress}>Edit Address</a>
+                     
                       <br />
                       <br />
                   </div>

@@ -21,14 +21,16 @@ import {useDispatch, useSelector} from 'react-redux'
 import {saveCupon, deleteCupon} from '../../store/slices/cupon'
 import blank from "../../assets/Images/Productcard/blank.jpg";
 import { BASE_URL } from "../../services/Constant";
+import { Spinner } from "react-bootstrap";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch()
   const [showDiscountField, setShowDiscountField] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
-  const [cart, setCart] = useState({});
+  const [cart, setCart] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
   const [cartitem, setCartItems] = useState(0);
-  const [prices, setPrices] = useState({});
+  const [prices, setPrices] = useState([]);
   const [availableprices, setAvailablePrices] = useState({});
   const [savedLater, setSavedLater] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -46,8 +48,10 @@ const ShoppingCart = () => {
   };
 
   const getCart = () => {
+    setIsLoading(true); // Start loading
     CartServices.self().then((res) => {
-       setCart(res);
+      setCart(res);
+      setIsLoading(false); // Stop loading when data is fetched
       var cartPrice = [];
       var shippingPrice = [];
       var allPrices = [];
@@ -210,6 +214,12 @@ const ShoppingCart = () => {
           <h2>Shopping Cart</h2>
           <div className="row">
             <div className="col-lg-8">
+            {isLoading ? ( // Show loader while fetching cart items
+                <div className="loader-container">
+                  <Spinner animation="border" role="status" />
+                </div>
+              ) : (
+                <>
               {cart.length > 0 ? (
                 <>
                   {cart.map((cat, index) => {
@@ -249,43 +259,7 @@ const ShoppingCart = () => {
                                   {/* <img src={Productimage} /> */}
                                 </div>
                                 <div className="product-order-details">
-                                  {/* <h5>{cat.products?.name}</h5> */}
-                                  {/* <span>Size : 9.5 , Color: Red</span> */}
-                                  {/* {attributes.length > 0 ? (
-                                    <>
-                                      {attributes.map((attribute, index) => {
-                                        return (
-                                          <>
-                                            {attribute.color}
-                                            <span>
-                                              {attribute.size ? (
-                                                <>Size : {attribute.size}</>
-                                              ) : (
-                                                ""
-                                              )}{" "}
-                                              {attribute.color ? (
-                                                <>
-                                                  Color:{" "}
-                                                  <div
-                                                    style={{
-                                                      background:
-                                                        attribute.color,
-                                                    }}
-                                                  >
-                                                    &nbsp;
-                                                  </div>
-                                                </>
-                                              ) : (
-                                                ""
-                                              )}
-                                            </span>
-                                          </>
-                                        );
-                                      })}
-                                    </>
-                                  ) : (
-                                    ""
-                                  )} */}
+                                  
                                   <div className="quantitypadding">
                                     <p>
                                       <b>
@@ -370,6 +344,8 @@ const ShoppingCart = () => {
                     </div>
                   </div>
                 </>
+              )}
+              </>
               )}
               {cart.length > 0 ? (
                 <>

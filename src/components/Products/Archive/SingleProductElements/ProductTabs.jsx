@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from "react";
-import ProductServices from "../../../../services/API/ProductServices"; //~/services/API/ProductServices
-
+import ProductServices from "../../../../services/API/ProductServices";
 import ShippingPolicyData from './ShippingPolicyData';
+
 const ProductTabs = () => {
   const [selectedTab, setSelectedTab] = useState('aboutProduct');
   const [productData, setProductData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // State variable for loading state
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
 
   const handleTabClick = (tab) => {
     setSelectedTab(tab);
   };
+
   const getProduct = () => {
+    setIsLoading(true); // Set loading state to true
     ProductServices.get(id).then((response) => {
       setProductData(response);
+      setIsLoading(false); // Set loading state to false once data is fetched
     });
   };  
+
   useEffect(() => {
     getProduct();
   }, []);
+
   return (
     <div className="product-details">
       <div className="tabs">
@@ -36,6 +42,10 @@ const ProductTabs = () => {
         </button>
       </div>
       <div className="tab-content">
+      {isLoading ? ( // Show loader if data is loading
+          <div>Loading...</div>
+        ) : (
+        <>
         {selectedTab === 'aboutProduct' && (
           <div className="about-product">
             {/* Content for About the Product tab */}
@@ -81,6 +91,8 @@ const ProductTabs = () => {
           <div className="shipping-returns">
             <ShippingPolicyData />
           </div>
+        )}
+        </>
         )}
       </div>
     </div>

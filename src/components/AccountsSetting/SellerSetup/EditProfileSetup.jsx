@@ -315,6 +315,7 @@ const EditProfileSetup = () => {
                           type="file"
                           accept="image/png, image/gif, image/jpeg"
                           name="profile_pic"
+                          style={{display:'none'}}
                           id="newProfilePhoto"
                           onChange={handleFileChange}
                         />
@@ -409,8 +410,7 @@ const EditProfileSetup = () => {
                             placeholder="Enter your street address"
                         />
                     </StandaloneSearchBox>} */}
-                    {editaddress ? (<>
-                        {isLoaded
+                       {isLoaded
                           &&
                           <StandaloneSearchBox
                             onLoad={ref => inputRef.current = ref}
@@ -419,18 +419,10 @@ const EditProfileSetup = () => {
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Enter your street address  "
+                                placeholder={`${address}`}
                             />
                         </StandaloneSearchBox>}
-                      </>)
-                        :(<>
-                          <lable className="form-control" style={{ height: "150px"}}>
-                          {address}
-                          </lable>
-                          
-
-                        </>)}
-                          <a href="#" onClick={handleAddAddress}>Edit Address</a>
+                     
                       <br />
                       <br />
                       {errors.address && <p className="error">{errors.address}</p>}

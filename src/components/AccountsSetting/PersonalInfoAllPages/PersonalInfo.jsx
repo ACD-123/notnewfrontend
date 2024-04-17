@@ -136,7 +136,7 @@ const PersonalInfo = () => {
   return (
     <>
       {isLoading ? ( // Render loader if isLoading is true
-        <div className="loader-container">
+        <div className="loader-container text-center">
           <Spinner animation="border" role="status">
             {/* <span className="sr-only">Loading...</span> */}
           </Spinner>

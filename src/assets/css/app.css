@@ -1158,7 +1158,7 @@ border: 2px solid transparent;
 }
 div#totalordervalue {
   padding-bottom: 70px;
-  position: fixed;
+  /* position: fixed; */
   padding-top: 31px;
 }
 .order-details {
@@ -3342,6 +3342,7 @@ section#listing-creating-form ::placeholder {
 section#listing-creating-form textarea {
   height: 140px;
   margin-top: 14px;
+  padding: 16px 10px;
 }
 
 section#listing-creating-form input, section#listing-creating-form textarea {
@@ -3349,8 +3350,16 @@ section#listing-creating-form input, section#listing-creating-form textarea {
   margin-bottom: 10px;
   background: #F0F0F0;
   border: 0;
-  padding: 16px 10px;
+  /* padding: 16px 10px; */
   border-radius: 10px;
+}
+input.newInputUpload {
+  padding: 16px 10px;
+}
+#listing-creating-form .imgegallry {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 section#listing-creating-form .sizeaddmre button {
   padding: 0 0;
@@ -3401,7 +3410,14 @@ p.notify-images img {
   position: relative;
   display: inline-block;
   width: 60px;
+  /* height: 34px; */
+}
+.listschedule1 span.slider3.round3 {
   height: 34px;
+}
+.sizequntycolr input[type="text"] {
+  height: 45px;
+  padding: 16px 10px;
 }
 
 .switch1 input,.switch2 input,.switch3 input {
@@ -3479,7 +3495,7 @@ section#listing-creating-form .set-price, section#listing-creating-form .shippin
   align-items: center;
   margin-top: 10px;
   background: #f0f0f0;
-  padding: 10px 20px;
+  padding: 16px 10px;
   border-radius: 10px;
 }
 .slider1:before,.slider2:before,.slider3:before {
@@ -3911,6 +3927,7 @@ section#productcard .col .productlist img {
 }
 @media (max-width: 1024px) {
   .thumbnails {
+    flex-wrap: wrap;
     display: flex;
 }
   section#single-product .product-gallery {

@@ -1243,6 +1243,7 @@ const ListingForm = (props) => {
         shipingdurations : response.shiping_durations,
         action: "edit",
       };
+      console.log(setProduct, 'ddd')
       localStorage.setItem('product_condition', response.condition)
       setAddress(response.postal_address);
       setState(response.state)
@@ -1355,17 +1356,9 @@ const ListingForm = (props) => {
       <form
         encType="multipart/form-data"
         onSubmit={handleSubmit}
-        style={{ maxWidth: "90%", margin: "0 auto", overflow: "hidden" }}
+        style={{ maxWidth: "90%", margin: "0 auto", }}
       >
-        {editproduct ? (
-          <>
-            <h3 style={{ color: "#000" }}>Edit Your Product</h3>
-          </>
-        ) : (
-          <>
-            <h3 style={{ color: "#000" }}>Describe Your Product</h3>
-          </>
-        )}
+        <h3 style={{ color: "#000" }}>Edit Your Product</h3>
         {props.edit ? (
           <>
             <input
@@ -1433,6 +1426,7 @@ const ListingForm = (props) => {
               {product.images.length > 0 ? (
                 <>
                   {product.images.map((imageUrl, index) => {
+                    console.log(imageUrl);
                     return (
                       <>
                         <img
@@ -2509,7 +2503,7 @@ const ListingForm = (props) => {
                 </button> */}
                 <button
                   className="btn2"
-                  style={{ marginTop: "10px" }}
+                  style={{ marginTop: "10px" ,position:'relative',width:'100%'}}
                   disabled={enabled}
                   type="submit"
                 >

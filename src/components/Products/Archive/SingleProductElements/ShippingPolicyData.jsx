@@ -7,13 +7,19 @@ const ShippingPolicyData = () => {
   const [days, setDays] = useState(0);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
+  const [isLoading, setIsLoading] = useState(true); // State variable for loading state
   let now,end,duration;
   const getProduct = () => {
+    setIsLoading(true); // Set loading state to true
+
     ProductServices.get(id).then((response) => {
       setProductData(response);
       now = moment(response.shipping_end); 
       end = moment(response.shipping_start); 
       duration = moment.duration(now.diff(end));
+      console.log(duration);
+      setIsLoading(false); // Set loading state to false once data is fetched
+
       setDays(Math.round(duration.asDays()));
     });
   };
@@ -22,6 +28,9 @@ const ShippingPolicyData = () => {
   }, []);
   return (
     <>
+    {isLoading ? ( // Show loader if data is loading
+          <div>Loading...</div>
+        ) : (
       <div className="shippingpolicy" style={{ padding: "30px 0px" }}>
         <h4>Shipping:</h4>
         <p>
@@ -41,6 +50,7 @@ const ShippingPolicyData = () => {
         <p>{productData.return_ship_duration_limt ? (<>{productData.return_ship_duration_limt} days returns. Buyer pays for return shipping. See details- for more information about returns</>):('')} </p>
         <h4>Payments: <img src={Payment} /></h4>
       </div>
+        )}
     </>
   );
 };

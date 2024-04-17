@@ -18,6 +18,7 @@ import moment from "moment";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { PRODUCT_ID } from "../../../services/Constant";
+import { Spinner } from "react-bootstrap";
 const libraries = ["places"];
 const ListingForm = (props) => {
   const inputRef = useRef();
@@ -95,13 +96,13 @@ const ListingForm = (props) => {
     availableColors: [],
     description: "",
     sellingNow: false,
-    price: 0,
-    saleprice: 0,
+    price: '',
+    saleprice: '',
     minpurchase: 1,
     listing: "",
     auctions: false,
-    bids: 0,
-    durations: 0,
+    bids: '',
+    durations: '1',
     auctionListing: "",
     auctionEndListing: "",
     deliverddomestic: false,
@@ -112,11 +113,11 @@ const ListingForm = (props) => {
     state: "",
     city: "",
     locations: [],
-    shippingprice: 0,
+    shippingprice: "",
     shippingstart: "",
     shippingend: "",
-    returnshippingprice: 0,
-    returndurationlimit: 0,
+    returnshippingprice: "",
+    returndurationlimit: "",
     returnshippingpaidby: "",
     returnshippinglocation: "",
     hours: "",
@@ -235,14 +236,17 @@ const ListingForm = (props) => {
 
   const handleCategory = (e) => {
     const cat = e.target.value;
-    let attribute = localStorage.getItem('attributes')
-    localStorage.setItem('attributes', null);      
-    localStorage.setItem('attributes', JSON.stringify([{'attributes': 'set Attribute'}]));      
-    localStorage.removeItem('selectedColors')
-    localStorage.removeItem('radiogrp')
-    localStorage.removeItem('selected')
-    localStorage.removeItem('chkgrp')
-    
+    let attribute = localStorage.getItem("attributes");
+    localStorage.setItem("attributes", null);
+    localStorage.setItem(
+      "attributes",
+      JSON.stringify([{ attributes: "set Attribute" }])
+    );
+    localStorage.removeItem("selectedColors");
+    localStorage.removeItem("radiogrp");
+    localStorage.removeItem("selected");
+    localStorage.removeItem("chkgrp");
+
     product.category = e.target.value;
     setCategory(cat);
     Category.productAttributes(e.target.value)
@@ -276,7 +280,7 @@ const ListingForm = (props) => {
     updatedTags.splice(index, 1);
     setProduct({ ...product, tags: updatedTags });
   };
-  
+
   const handlePlaceChanged = () => {
     const [place] = inputRef.current.getPlaces();
     if (place) {
@@ -321,230 +325,227 @@ const ListingForm = (props) => {
       const updatedTags = [...product.tags];
       updatedTags[index][name] = value;
       setProduct({ ...product, tags: updatedTags });
-    } 
+    }
   };
-  const handleInputChange = (e, index) => { 
+  const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     const newErrors = {};
-    setProduct({ ...product, [name]: value });  
+    setProduct({ ...product, [name]: value });
   };
-  
+
   const handleRadioChange = (e, index) => {
     const { name, value } = e.target;
-    let getItems =JSON.parse(localStorage.getItem('attributes'));
-    if(getItems){
-        var i = getItems.length;
-        while(i--){
-          if( getItems[i] 
-                && getItems[i].hasOwnProperty("radio")  ){ 
-                  getItems.splice(i,1);
-          }
+    let getItems = JSON.parse(localStorage.getItem("attributes"));
+    if (getItems) {
+      var i = getItems.length;
+      while (i--) {
+        if (getItems[i] && getItems[i].hasOwnProperty("radio")) {
+          getItems.splice(i, 1);
         }
-        let arrayObj = {};
-        arrayObj ={
-          "radio" : value
-        }
-        let finalArray = [];
-        if(getItems){
-          finalArray = getItems;
-        }
-        finalArray.push(arrayObj)
-        localStorage.setItem('attributes', JSON.stringify(finalArray));
+      }
+      let arrayObj = {};
+      arrayObj = {
+        radio: value,
+      };
+      let finalArray = [];
+      if (getItems) {
+        finalArray = getItems;
+      }
+      finalArray.push(arrayObj);
+      localStorage.setItem("attributes", JSON.stringify(finalArray));
     }
-    
   };
   const handleTextChange = (e) => {
     const { name, value } = e.target;
-    let getItems = JSON.parse(localStorage.getItem('attributes'));
-    if(getItems){
-        var i = getItems.length;
-        while(i--){
-          if( getItems[i] 
-                && getItems[i].hasOwnProperty("text")  ){ 
-                  getItems.splice(i,1);
-          }
+    let getItems = JSON.parse(localStorage.getItem("attributes"));
+    if (getItems) {
+      var i = getItems.length;
+      while (i--) {
+        if (getItems[i] && getItems[i].hasOwnProperty("text")) {
+          getItems.splice(i, 1);
         }
-        let arrayObj = {};
-        arrayObj ={
-          "text" : value
-        }
-        let finalArray = [];
-        if(getItems){
-          finalArray = getItems;
-        }
-        finalArray.push(arrayObj)
-        localStorage.setItem('attributes', JSON.stringify(finalArray));
+      }
+      let arrayObj = {};
+      arrayObj = {
+        text: value,
+      };
+      let finalArray = [];
+      if (getItems) {
+        finalArray = getItems;
+      }
+      finalArray.push(arrayObj);
+      localStorage.setItem("attributes", JSON.stringify(finalArray));
     }
   };
   const handleColorChange = (e) => {
     const { name, value } = e.target;
-    let getColors = JSON.parse(localStorage.getItem('selectedColors'));
-        let colors = [];
-        if(getColors){
-          colors = getColors;
+    let getColors = JSON.parse(localStorage.getItem("selectedColors"));
+    let colors = [];
+    if (getColors) {
+      colors = getColors;
+    }
+    colors.push(value);
+    localStorage.setItem("selectedColors", JSON.stringify(colors));
+    let getFinalColors = JSON.parse(localStorage.getItem("selectedColors"));
+    let getAttributes = JSON.parse(localStorage.getItem("attributes"));
+    if (getAttributes) {
+      var i = getAttributes.length;
+      while (i--) {
+        if (getAttributes[i] && getAttributes[i].hasOwnProperty("colors")) {
+          getAttributes.splice(i, 1);
         }
-        colors.push(value)
-        localStorage.setItem('selectedColors', JSON.stringify(colors));
-        let getFinalColors = JSON.parse(localStorage.getItem('selectedColors'))
-        let getAttributes = JSON.parse(localStorage.getItem('attributes'));
-        if(getAttributes){
-            var i = getAttributes.length;
-            while(i--){
-              if( getAttributes[i] 
-                    && getAttributes[i].hasOwnProperty("colors")  ){ 
-                      getAttributes.splice(i,1);
-              }
-            }
-            let colorObj = {};
-            colorObj ={
-              "colors" : getFinalColors
-            }
-            let finalArray = [];
-            if(getAttributes){
-              finalArray = getAttributes;
-            }
-            finalArray.push(colorObj)
-            localStorage.setItem('attributes', JSON.stringify(finalArray));
-        }
+      }
+      let colorObj = {};
+      colorObj = {
+        colors: getFinalColors,
+      };
+      let finalArray = [];
+      if (getAttributes) {
+        finalArray = getAttributes;
+      }
+      finalArray.push(colorObj);
+      localStorage.setItem("attributes", JSON.stringify(finalArray));
+    }
   };
-  const handleFileChange = (e) => {
-  };
-  
+  const handleFileChange = (e) => {};
+
   const handleCheckboxChange = (e) => {
     const { name, value } = e.target;
-    if(e.target.checked === true){
-      let getItems = JSON.parse(localStorage.getItem('attributes'));
-      if(getItems){
+    if (e.target.checked === true) {
+      let getItems = JSON.parse(localStorage.getItem("attributes"));
+      if (getItems) {
         var i = getItems.length;
-        while(i--){
-          if( getItems[i] 
-                && getItems[i].hasOwnProperty("checkbox")  ){ 
-                  getItems.splice(i,1);
+        while (i--) {
+          if (getItems[i] && getItems[i].hasOwnProperty("checkbox")) {
+            getItems.splice(i, 1);
           }
         }
         let arrayObj = {};
-        arrayObj ={
-          "checkbox" : value
-        }
+        arrayObj = {
+          checkbox: value,
+        };
         let finalArray = [];
-        if(getItems){
+        if (getItems) {
           finalArray = getItems;
         }
-        finalArray.push(arrayObj)
-        localStorage.setItem('attributes', JSON.stringify(finalArray)); 
+        finalArray.push(arrayObj);
+        localStorage.setItem("attributes", JSON.stringify(finalArray));
       }
-    }else{
-      let getItems = JSON.parse(localStorage.getItem('attributes'));
-      if(getItems){
+    } else {
+      let getItems = JSON.parse(localStorage.getItem("attributes"));
+      if (getItems) {
         var i = getItems.length;
-          while(i--){
-            if( getItems[i] 
-                  && getItems[i].hasOwnProperty("checkbox")  ){ 
-                    getItems.splice(i,1);
-            }
+        while (i--) {
+          if (getItems[i] && getItems[i].hasOwnProperty("checkbox")) {
+            getItems.splice(i, 1);
           }
-          localStorage.setItem('attributes', JSON.stringify(getItems)); 
         }
+        localStorage.setItem("attributes", JSON.stringify(getItems));
       }
+    }
   };
   const handleCheckboxGrpChange = (e) => {
     const { name, value } = e.target;
-    let getChkGrp = JSON.parse(localStorage.getItem('chkgrp'));
+    let getChkGrp = JSON.parse(localStorage.getItem("chkgrp"));
     let chkgrp = [];
-    if(getChkGrp){
+    if (getChkGrp) {
       chkgrp = getChkGrp;
     }
-    chkgrp.push(value)
-    let chkgrped =chkgrp.filter((value, index) => chkgrp.indexOf(value)=== index);
-    localStorage.setItem('chkgrp', JSON.stringify(chkgrped));
-    let getFinalChkGrp = JSON.parse(localStorage.getItem('chkgrp'))
-    let getAttributes = JSON.parse(localStorage.getItem('attributes'));
-    if(getAttributes){
-      var i = getAttributes.length; 
-    while(i--){
-      if( getAttributes[i] 
-            && getAttributes[i].hasOwnProperty("checkboxgroup")  ){ 
-              getAttributes.splice(i,1);
+    chkgrp.push(value);
+    let chkgrped = chkgrp.filter(
+      (value, index) => chkgrp.indexOf(value) === index
+    );
+    localStorage.setItem("chkgrp", JSON.stringify(chkgrped));
+    let getFinalChkGrp = JSON.parse(localStorage.getItem("chkgrp"));
+    let getAttributes = JSON.parse(localStorage.getItem("attributes"));
+    if (getAttributes) {
+      var i = getAttributes.length;
+      while (i--) {
+        if (
+          getAttributes[i] &&
+          getAttributes[i].hasOwnProperty("checkboxgroup")
+        ) {
+          getAttributes.splice(i, 1);
+        }
       }
-    }
-    let chkgrpObj = {};
-    chkgrpObj ={
-      "checkboxgroup" : getFinalChkGrp
-    }
-    let finalArray = [];
-    if(getAttributes){
-      finalArray = getAttributes;
-    }
-    finalArray.push(chkgrpObj)
-          
-    localStorage.setItem('attributes', JSON.stringify(finalArray));
+      let chkgrpObj = {};
+      chkgrpObj = {
+        checkboxgroup: getFinalChkGrp,
+      };
+      let finalArray = [];
+      if (getAttributes) {
+        finalArray = getAttributes;
+      }
+      finalArray.push(chkgrpObj);
+
+      localStorage.setItem("attributes", JSON.stringify(finalArray));
     }
   };
-  const handleSelectChange = (e) =>{
+  const handleSelectChange = (e) => {
     const { name, value } = e.target;
-    let getSelected = JSON.parse(localStorage.getItem('selected'));
+    let getSelected = JSON.parse(localStorage.getItem("selected"));
     let select = [];
-    if(getSelected){
+    if (getSelected) {
       select = getSelected;
     }
-    select.push(value)
-    let selected =select.filter((value, index) => select.indexOf(value)=== index);
-    localStorage.setItem('selected', JSON.stringify(selected));
-    let getFinalSelect = JSON.parse(localStorage.getItem('selected'))
-    let getAttributes = JSON.parse(localStorage.getItem('attributes'));
-    if(getAttributes){
+    select.push(value);
+    let selected = select.filter(
+      (value, index) => select.indexOf(value) === index
+    );
+    localStorage.setItem("selected", JSON.stringify(selected));
+    let getFinalSelect = JSON.parse(localStorage.getItem("selected"));
+    let getAttributes = JSON.parse(localStorage.getItem("attributes"));
+    if (getAttributes) {
       var i = getAttributes.length;
-        while(i--){
-          if( getAttributes[i] 
-                && getAttributes[i].hasOwnProperty("selected")  ){ 
-                  getAttributes.splice(i,1);
-          }
+      while (i--) {
+        if (getAttributes[i] && getAttributes[i].hasOwnProperty("selected")) {
+          getAttributes.splice(i, 1);
         }
-        let selectObj = {};
-        selectObj ={
-          "select" : getFinalSelect
-        }
-        let finalArray = [];
-        if(getAttributes){
-          finalArray = getAttributes;
-        }
-        finalArray.push(selectObj)
-        localStorage.setItem('attributes', JSON.stringify(finalArray));
+      }
+      let selectObj = {};
+      selectObj = {
+        select: getFinalSelect,
+      };
+      let finalArray = [];
+      if (getAttributes) {
+        finalArray = getAttributes;
+      }
+      finalArray.push(selectObj);
+      localStorage.setItem("attributes", JSON.stringify(finalArray));
     }
-
-  }
+  };
   const handleRadioGrpChange = (e) => {
     const { name, value } = e.target;
-    let getRadioGrp = JSON.parse(localStorage.getItem('radiogrp'));
+    let getRadioGrp = JSON.parse(localStorage.getItem("radiogrp"));
     let radiogrp = [];
-    if(getRadioGrp){
+    if (getRadioGrp) {
       radiogrp = getRadioGrp;
     }
-    radiogrp.push(value)
-    let radiogrped =radiogrp.filter((value, index) => radiogrp.indexOf(value)=== index);
-    localStorage.setItem('radiogrp', JSON.stringify(radiogrped));
-    let getFinalRadiogGrp = JSON.parse(localStorage.getItem('radiogrp'))
-    let getAttributes = JSON.parse(localStorage.getItem('attributes'));
-    if(getAttributes){
+    radiogrp.push(value);
+    let radiogrped = radiogrp.filter(
+      (value, index) => radiogrp.indexOf(value) === index
+    );
+    localStorage.setItem("radiogrp", JSON.stringify(radiogrped));
+    let getFinalRadiogGrp = JSON.parse(localStorage.getItem("radiogrp"));
+    let getAttributes = JSON.parse(localStorage.getItem("attributes"));
+    if (getAttributes) {
       var i = getAttributes.length;
-    while(i--){
-      if( getAttributes[i] 
-            && getAttributes[i].hasOwnProperty("radiogrp")  ){ 
-              getAttributes.splice(i,1);
+      while (i--) {
+        if (getAttributes[i] && getAttributes[i].hasOwnProperty("radiogrp")) {
+          getAttributes.splice(i, 1);
+        }
       }
+      let radiogrpObj = {};
+      radiogrpObj = {
+        radiogrp: getFinalRadiogGrp,
+      };
+      let finalArray = [];
+      if (getAttributes) {
+        finalArray = getAttributes;
+      }
+      finalArray.push(radiogrpObj);
+      localStorage.setItem("attributes", JSON.stringify(finalArray));
     }
-    let radiogrpObj = {};
-    radiogrpObj ={
-      "radiogrp" : getFinalRadiogGrp
-    }
-    let finalArray = [];
-    if(getAttributes){
-      finalArray = getAttributes;
-    }
-    finalArray.push(radiogrpObj)
-    localStorage.setItem('attributes', JSON.stringify(finalArray));
-    }
-    
   };
   const handleCondition = (e) => {
     e.preventDefault();
@@ -555,10 +556,13 @@ const ListingForm = (props) => {
     let totalBlobs = blobs.length + editBlobs.length;
     if (totalBlobs > 4) {
       const newErrors = {};
-      newErrors.editimages = "You can not upload more then 5 images";
+      newErrors.editimages = "You can not upload more than 5 images";
       setErrors(newErrors);
     } else {
-      setEditBolbs([...editBlobs, URL.createObjectURL(e.target.files[0])]);
+      const newBlob = URL.createObjectURL(e.target.files[0]);
+      const updatedEditBlobs = [...editBlobs];
+      updatedEditBlobs[ImageBitmapRenderingContext] = newBlob; // Replace the image at the specified index
+      setEditBolbs(updatedEditBlobs);
     }
     if (files.length > 4) {
       //
@@ -566,25 +570,35 @@ const ListingForm = (props) => {
       setFiles([...files, e.target.files]);
     }
   };
+  
+  
   const handleImageUpload = (e) => {
-    if (blobs.length > 4) {
-      const newErrors = {};
-      newErrors.images = "You can not upload more then 5 images";
-      setErrors(newErrors);
-    } else {
-      setBolbs([...blobs, URL.createObjectURL(e.target.files[0])]);
+    const newBlobs = [];
+    const newFiles = [];
+    
+    // Loop through each uploaded file
+    for (let i = 0; i < e.target.files.length; i++) {
+      // Check if the total number of images exceeds the limit
+      if (blobs.length + newBlobs.length >= 5) {
+        const newErrors = {};
+        newErrors.images = "You can not upload more than 5 images";
+        setErrors(newErrors);
+        break; // Exit loop if the limit is reached
+      } else {
+        // Add the new blob and file to their respective arrays
+        newBlobs.push(URL.createObjectURL(e.target.files[i]));
+        newFiles.push(e.target.files[i]);
+      }
     }
-    if (files.length > 4) {
-      //
-    } else {
-      setFiles([...files, e.target.files[0]]);
-    }
+  
+    // Update state with the new blobs and files
+    setBolbs([...blobs, ...newBlobs]);
+    setFiles([...files, ...newFiles]);
   };
-
   const handleAddTags = () => {
     setProduct({
       ...product,
-      tags: [...product.tags, { tag: ""}],
+      tags: [...product.tags, { tag: "" }],
     });
     return;
   };
@@ -630,9 +644,8 @@ const ListingForm = (props) => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
-      setEnabled(true);     
+      setEnabled(true);
       if (props.guid) {
-
         product.country = country;
         product.city = city;
         product.state = state;
@@ -641,7 +654,7 @@ const ListingForm = (props) => {
         // console.log('product', product)
         const fD = new FormData();
         fD.append("title", product.title);
-        fD.append("condition", localStorage.getItem('product_condition'));
+        fD.append("condition", localStorage.getItem("product_condition"));
         fD.append("model", product.model);
         fD.append("category", product.category);
         fD.append("brand_id", product.brand);
@@ -677,16 +690,16 @@ const ListingForm = (props) => {
         fD.append("returndurationlimit", product.returndurationlimit);
         fD.append("returnshippingpaidby", product.returnshippingpaidby);
         fD.append("termsdescription", "termsdescription");
-        let getAttributes = localStorage.getItem('attributes');
-        if(getAttributes){
-          fD.append("attributes", localStorage.getItem('attributes'));
-        }else{
-          fD.append("attributes", JSON.stringify([{'attributes': "No Atributes"}]));
+        let getAttributes = localStorage.getItem("attributes");
+        if (getAttributes) {
+          fD.append("attributes", localStorage.getItem("attributes"));
+        } else {
+          fD.append(
+            "attributes",
+            JSON.stringify([{ attributes: "No Atributes" }])
+          );
         }
-        fD.append(
-          "returnshippinglocation",
-          product.returnshippinglocation
-        );
+        fD.append("returnshippinglocation", product.returnshippinglocation);
         /**
          * For Images Uploads Start
          */
@@ -708,7 +721,7 @@ const ListingForm = (props) => {
             setShowEditPopup(true);
             setIsLoading(false);
             setEnabled(false);
-            localStorage.removeItem('product_condition');
+            localStorage.removeItem("product_condition");
             setTimeout(() => {
               props.parentCallback(null);
             }, 4000);
@@ -766,11 +779,14 @@ const ListingForm = (props) => {
         formData.append("returndurationlimit", product.returndurationlimit);
         formData.append("returnshippingpaidby", product.returnshippingpaidby);
         formData.append("termsdescription", "termsdescription");
-        let getAttributes = localStorage.getItem('attributes');
-        if(getAttributes){
-          formData.append("attributes", localStorage.getItem('attributes'));
-        }else{
-          formData.append("attributes", JSON.stringify([{'attributes': "No Atributes"}]));
+        let getAttributes = localStorage.getItem("attributes");
+        if (getAttributes) {
+          formData.append("attributes", localStorage.getItem("attributes"));
+        } else {
+          formData.append(
+            "attributes",
+            JSON.stringify([{ attributes: "No Atributes" }])
+          );
         }
         formData.append(
           "returnshippinglocation",
@@ -858,7 +874,6 @@ const ListingForm = (props) => {
     // Add more states as needed
   ];
 
-
   const paidBy = [
     { id: "buyer", name: "Buyer" },
     { id: "seller", name: "Seller" },
@@ -942,6 +957,7 @@ const ListingForm = (props) => {
       product.action = "edit";
     }
     setEditProduct(true);
+    setIsLoading(true);
     ProductServices.get(props.guid).then((response) => {
       // console.log("edit product", response);
       setCategory(response.category_id);
@@ -981,16 +997,17 @@ const ListingForm = (props) => {
         bids: response.bids,
         duration: response.durations,
         minpurchase: response.min_purchase,
-        shipingdurations : response.shiping_durations,
+        shipingdurations: response.shiping_durations,
         action: "edit",
       };
-      localStorage.setItem('product_condition', response.condition)
+      localStorage.setItem("product_condition", response.condition);
       setAddress(response.postal_address);
-      setState(response.state)
-      setCity(response.city)
-      setZip(response.zip)
+      setState(response.state);
+      setCity(response.city);
+      setZip(response.zip);
       setBrand(response.brand_id);
       setProduct(productData);
+      setIsLoading(false);
       if (response.selling_now == "1") {
         setBuyNow(true);
       } else {
@@ -1093,6 +1110,13 @@ const ListingForm = (props) => {
   }, []);
   return (
     <section id="listing-creating-form">
+      {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status">
+            {/* <span className="sr-only">Loading...</span> */}
+          </Spinner>
+        </div>
+      ) : (
       <form
         encType="multipart/form-data"
         onSubmit={handleSubmit}
@@ -1108,105 +1132,39 @@ const ListingForm = (props) => {
           </>
         )}
         {props.edit ? (
-          <>
-            <input
-              type="file"
-              accept="image/png, image/gif, image/jpeg"
-              multiple
-              onChange={handleEditImageUpload}
-            />
-            <div className="imgegallry">
-              {blobs.length > 0 ? (
-                <>
-                  {blobs.map((blob, index) => {
-                    return (
-                      <>
-                        <img
-                          key={index}
-                          src={blob.name}
-                          alt={`Product ${index + 1}`}
-                          style={{
-                            width: "100px",
-                            height: "100px",
-                            objectFit: "cover",
-                            margin: "5px",
-                          }}
-                        />
-                        <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
-                          X
-                        </a>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                ""
-              )}
-              {editBlobs.length > 0 ? (
-                <>
-                  {editBlobs.map((blob, index) => {
-                    return (
-                      <>
-                        <img
-                          key={index}
-                          src={blob}
-                          alt={`Product ${index + 1}`}
-                          style={{
-                            width: "100px",
-                            height: "100px",
-                            objectFit: "cover",
-                            margin: "5px",
-                          }}
-                        />
-                        <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
-                          X
-                        </a>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                ""
-              )}
-              {errors.editimages && (
-                <p className="error">{errors.editimages}</p>
-              )}
-              {product.images.length > 0 ? (
-                <>
-                  {product.images.map((imageUrl, index) => {
-                    return (
-                      <>
-                        <img
-                          key={index}
-                          src={imageUrl}
-                          alt={`Product ${index + 1}`}
-                          style={{
-                            width: "100px",
-                            height: "100px",
-                            objectFit: "cover",
-                            margin: "5px",
-                          }}
-                        />
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                <></>
-              )}
-            </div>
-          </>
-        ) : (
-          <>
-            <input
-              type="file"
-              accept="image/png, image/gif, image/jpeg"
-              multiple
-              onChange={handleImageUpload}
-            />
-           <div className="imgegallry">
-  {/* Render blobs */}
-  {blobs.length > 0 && blobs.map((blob, index) => (
+  <>
+    <input
+      type="file"
+      className="newInputUpload"
+      accept="image/png, image/gif, image/jpeg"
+      multiple
+      onChange={handleEditImageUpload}
+    />
+    <div className="imgegallry">
+      {/* Render blobs */}
+      {blobs.length > 0 &&
+  blobs.map((blob, index) => (
+    <div key={index}>
+      <img
+        src={blob.name} 
+        alt={`Product ${index + 1}`}
+        style={{
+          width: "100px",
+          height: "100px",
+          objectFit: "cover",
+          margin: "5px",
+        }}
+      />
+      <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
+        X
+      </a>
+    </div>
+  ))}
+
+
+      {/* Render product images */}
+      {editBlobs.length > 0 &&
+  editBlobs.map((blob, index) => (
     <div key={index}>
       <img
         src={blob}
@@ -1218,31 +1176,90 @@ const ListingForm = (props) => {
           margin: "5px",
         }}
       />
-      <a href="#" onClick={(e) => removeThumbnail(e, blob)}>X</a>
+      <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
+        X
+      </a>
     </div>
   ))}
 
-  {/* Render product images */}
-  {product.images.length > 0 && product.images.map((imageUrl, index) => (
-    <div key={index}>
-      <img
-        src={imageUrl}
-        alt={`Product ${index + 1}`}
-        style={{
-          width: "100px",
-          height: "100px",
-          objectFit: "cover",
-          margin: "5px",
-        }}
-      />
-    </div>
-  ))}
 
-  {errors.images && <p className="error">{errors.images}</p>}
-  {errors.editimages && <p className="error">{errors.editimages}</p>}
-</div>
-
+      {errors.editimages && (
+        <p className="error">{errors.editimages}</p>
+      )}
+      {product.images.length > 0 ? (
+        <>
+          {product.images.map((imageUrl, index) => {
+            return (
+              <>
+                <img
+                  key={index}
+                  src={imageUrl}
+                  alt={`Product ${index + 1}`}
+                  style={{
+                    width: "100px",
+                    height: "100px",
+                    objectFit: "cover",
+                    margin: "5px",
+                  }}
+                />
+              </>
+            );
+          })}
+        </>
+      ) : (
+        <></>
+      )}
+            </div>
           </>
+        ) : (
+          <>
+          <input
+            type="file"
+            className="newInputUpload"
+            accept="image/png, image/gif, image/jpeg"
+            multiple
+            onChange={handleImageUpload}
+          />
+          <div className="imgegallry">
+            {/* Render blobs */}
+            {blobs.length > 0 &&
+              blobs.map((blob, index) => (
+                <div key={index}>
+                  <img
+                    src={blob}
+                    alt={`Product ${index + 1}`}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      objectFit: "cover",
+                      margin: "5px",
+                    }}
+                  />
+                  <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
+                    X
+                  </a>
+                </div>
+              ))}
+            {/* Render product images */}
+            {product.images.length > 0 &&
+              product.images.map((imageUrl, index) => (
+                <div key={index}>
+                  <img
+                    src={imageUrl}
+                    alt={`Product ${index + 1}`}
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      objectFit: "cover",
+                      margin: "5px",
+                    }}
+                  />
+                </div>
+              ))}
+            {errors.images && <p className="error">{errors.images}</p>}
+            {errors.editimages && <p className="error">{errors.editimages}</p>}
+          </div>
+        </>
         )}
 
         <p className="notify-images">
@@ -1362,6 +1379,7 @@ const ListingForm = (props) => {
         <input
           type="text"
           placeholder="Product Title"
+          className="newInputUpload"
           name="title"
           value={product.title}
           onChange={handleInputChange}
@@ -1369,6 +1387,7 @@ const ListingForm = (props) => {
         {errors.title && <p className="error">{errors.title}</p>}
         <input
           type="text"
+          className="newInputUpload"
           placeholder="Item Model"
           name="model"
           value={product.model}
@@ -1428,11 +1447,11 @@ const ListingForm = (props) => {
               if (attr.type === "SELECT") {
                 return (
                   <>
-                  <br />
+                    <br />
                     <div className="delivery-company">
                       <div>{attr.name}</div>
                       <div>
-                        <select onChange={handleSelectChange}  name={attr.type}>
+                        <select onChange={handleSelectChange} name={attr.type}>
                           <option key={index}>Select {attr.name}</option>
                           {attr.options?.map((att) => {
                             return (
@@ -1450,7 +1469,7 @@ const ListingForm = (props) => {
               if (attr.type === "RADIO_GROUP") {
                 return (
                   <>
-                  <h3>{attr.name}</h3>
+                    <h3>{attr.name}</h3>
                     {attr.options?.map((att, index) => {
                       return (
                         <>
@@ -1480,23 +1499,36 @@ const ListingForm = (props) => {
               if (attr.type === "TEXT") {
                 return (
                   <>
-                  <br />
-                    <input onChange={handleTextChange} name={attr.type} type={attr.type} id={`text${index}`} />
+                    <br />
+                    <input
+                    className="newInputUpload"
+                      onChange={handleTextChange}
+                      name={attr.type}
+                      type={attr.type}
+                      id={`text${index}`}
+                    />
                   </>
                 );
               }
               if (attr.type === "CHECKBOX") {
                 return (
                   <>
-                  <br />
-                    <input onChange={handleCheckboxChange} value={attr.name} name={attr.type} type={attr.type} id={`check${index}`} />{attr.name}
+                    <br />
+                    <input
+                      onChange={handleCheckboxChange}
+                      value={attr.name}
+                      name={attr.type}
+                      type={attr.type}
+                      id={`check${index}`}
+                    />
+                    {attr.name}
                   </>
                 );
               }
               if (attr.type === "CHECKBOX_GROUP") {
                 return (
                   <>
-                 <h3>{attr.name}</h3>
+                    <h3>{attr.name}</h3>
                     {attr.options?.map((att, index) => {
                       return (
                         <>
@@ -1526,7 +1558,11 @@ const ListingForm = (props) => {
                 return (
                   <>
                     <br />
-                    <input type={attr.type} name={attr.type} onChange={handleFileChange} />
+                    <input
+                      type={attr.type}
+                      name={attr.type}
+                      onChange={handleFileChange}
+                    />
                   </>
                 );
               }
@@ -1534,30 +1570,35 @@ const ListingForm = (props) => {
                 return (
                   <>
                     <br />
-                    <input type='color' name={attr.type} onChange={handleColorChange}  className="colr" />
+                    <input
+                      type="color"
+                      name={attr.type}
+                      onChange={handleColorChange}
+                      className="colr"
+                    />
                   </>
                 );
               }
               if (attr.type === "RADIO") {
                 return (
                   <>
-                  <br />
-                  <div className="listschedule1">
-                            <div>{attr.name}</div>
-                            <div>
-                              <label className="switch3">
-                                <input
-                                  type="radio"
-                                  id={`radio${index}`}
-                                  value={attr.name}
-                                  name={attr.type}
-                                  onChange={handleRadioChange}
-                                />
-                                <span className="slider3 round3"></span>
-                              </label>
-                            </div>
-                          </div>
-                          </>
+                    <br />
+                    <div className="listschedule1">
+                      <div>{attr.name}</div>
+                      <div>
+                        <label className="switch3">
+                          <input
+                            type="radio"
+                            id={`radio${index}`}
+                            value={attr.name}
+                            name={attr.type}
+                            onChange={handleRadioChange}
+                          />
+                          <span className="slider3 round3"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </>
                 );
               }
             })}
@@ -1623,7 +1664,7 @@ const ListingForm = (props) => {
         </table>
           </>
         ):('')} */}
-          
+
         <textarea
           placeholder="Description"
           name="description"
@@ -1723,7 +1764,7 @@ const ListingForm = (props) => {
                 <input
                   type="number"
                   min="1"
-                  placeholder="$"
+                  placeholder="1"
                   name={durations}
                   value={product.durations}
                   onChange={handleDurations}
@@ -1835,7 +1876,7 @@ const ListingForm = (props) => {
                 <input
                   type="number"
                   min="1"
-                  placeholder="$"
+                  placeholder="1"
                   name={product.minpurchase}
                   value={product.minpurchase}
                   onChange={handleMinPurchaseChange}
@@ -1875,20 +1916,21 @@ const ListingForm = (props) => {
           ""
         )}
         <h4>TAGS</h4>
-        <div className="sizequntycolr" >
-        {product?.tags.map((tag, index) => (
-  <div key={index}>
-    <input 
-      type="text"
-      name="tag"
-      value={tag.tag}
-      onChange={(e) => handleTagChange(e, index)}
-    />
-    <a href="#" onClick={(e) => removeTags(e, index)}>Delete</a>
-  </div>
-))}
-
-</div>
+        <div className="sizequntycolr">
+          {product?.tags.map((tag, index) => (
+            <div key={index}>
+              <input
+                type="text"
+                name="tag"
+                value={tag.tag}
+                onChange={(e) => handleTagChange(e, index)}
+              />
+              <a href="#" onClick={(e) => removeTags(e, index)}>
+                Delete
+              </a>
+            </div>
+          ))}
+        </div>
         <div className="sizeaddmre">
           <button type="button" onClick={handleAddTags}>
             Add Tags
@@ -1922,10 +1964,10 @@ const ListingForm = (props) => {
           ""
         )} */}
         {/* <div className="sizeaddmre"> */}
-          {/* <button type="button" onClick={handleAddTags}>
+        {/* <button type="button" onClick={handleAddTags}>
             Add Tags
           </button> */}
-          {/* {errors.tags && <p className="error">{errors.tags}</p>} */}
+        {/* {errors.tags && <p className="error">{errors.tags}</p>} */}
         {/* </div> */}
         {/* <div className="stockcapa">
           <label>
@@ -2007,46 +2049,36 @@ const ListingForm = (props) => {
         )}
 
         <div className="delivery-company">
-          <label>
-            Enter your street Address
-            {props.guid ? (
-              <>
-                {editaddress ? (
-                  <>
-                                        <lable className="form-control" style={{ height: "150px" }}>
-                      {address}
-                    </lable>
-                    
-                  </>
-                ) : (
-                  <>
+          {props.guid ? (
+            <>
+            
                   {isLoaded && (
-                      <StandaloneSearchBox
-                        onLoad={(ref) => (inputRef.current = ref)}
-                        onPlacesChanged={handlePlaceChanged}
-                      >
-                        <input type="text" />
-                      </StandaloneSearchBox>
-                    )}
-                  </>
-                )}{" "}
-                <a href="#" onClick={handleAddAddress}>
-                  Edit Address
-                </a>
-              </>
-            ) : (
-              <>
-                {isLoaded && (
-                  <StandaloneSearchBox
-                    onLoad={(ref) => (inputRef.current = ref)}
-                    onPlacesChanged={handlePlaceChanged}
-                  >
-                    <input type="text" />
-                  </StandaloneSearchBox>
-                )}
-              </>
-            )}
-          </label>
+                    <StandaloneSearchBox
+                      onLoad={(ref) => (inputRef.current = ref)}
+                      onPlacesChanged={handlePlaceChanged}
+                      style={{width:'100%'}}
+                    >
+                      <input
+                        type="text"
+                        placeholder={`${address}`}
+                      />
+                    </StandaloneSearchBox>
+                  )}
+                </>
+             
+          ) : (
+            <>
+              {isLoaded && (
+                <StandaloneSearchBox
+                style={{width:'100%'}}
+                  onLoad={(ref) => (inputRef.current = ref)}
+                  onPlacesChanged={handlePlaceChanged}
+                >
+                  <input type="text" placeholder="Enter your street Address" />
+                </StandaloneSearchBox>
+              )}
+            </>
+          )}
         </div>
         <div className="row">
           <div className="col-lg-4">
@@ -2276,6 +2308,7 @@ const ListingForm = (props) => {
           )}
         </div>
       </form>
+      )}
     </section>
   );
 };
