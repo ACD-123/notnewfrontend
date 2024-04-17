@@ -109,7 +109,7 @@ const Stripe = (props) => {
             Pay
           </button> */}
             <div className="imgtoop">
-                <img src={Payment} alt="" />
+                {/* <img src={Payment} alt="" /> */}
                 {/* <Link to="/checkout"> */}
                 {/* <button
                     disabled={!stripes || !elements}
