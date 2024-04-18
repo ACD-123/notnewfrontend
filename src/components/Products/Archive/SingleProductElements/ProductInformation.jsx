@@ -10,6 +10,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {saveCupon, deleteCupon} from '../../../../store/slices/cupon'
 import EditListingForm from '../../../AccountsSetting/SellerSetup/EditListingForm'
 import { Spinner } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 const ProductInformation = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,22 @@ const ProductInformation = () => {
   const id = pathname.split('/').pop();
   let loggedInUser = localStorage.getItem('user_details');
   const loggedInUsers = JSON.parse(loggedInUser);
+  const navigate = useNavigate();
 
+  let incNum = () => {
+    if (quantity < 10) {
+      setQuantity(Number(quantity) + 1);
+    }
+  };
+  let decNum = () => {
+    if (quantity > 0) {
+      setQuantity(quantity - 1);
+    }
+  };
+  // let handleQuantity = (e) => {
+    
+  // };
+  
   const saveRecentView = () => {
     let data = {
       id: id,
@@ -50,6 +66,11 @@ const ProductInformation = () => {
   };
   const addByNow = (e) => {
     e.preventDefault();
+    if (!loggedInUsers) {
+      // User is not logged in, navigate to the sign-in page
+      navigate('/signin');
+      return;
+    }
     setIsLoading(true);
     setEnabled(true);
     let arributes = localStorage.getItem('arributes');
@@ -81,6 +102,12 @@ const ProductInformation = () => {
   };
   const addToCart = (e) => {
     e.preventDefault();
+    if (!loggedInUsers) {
+      // User is not logged in, navigate to the sign-in page
+      navigate('/signin');
+      return;
+    }
+  
     setIsLoading(true);
     setEnabled(true);
     let arributes = localStorage.getItem('arributes');
@@ -124,6 +151,7 @@ const ProductInformation = () => {
       });
   };
   const handleQuantity = (e) => {
+    setQuantity(e.target.value);
     e.preventDefault();
     setQuantity(e.target.value);
   };
@@ -162,7 +190,27 @@ const ProductInformation = () => {
             }
           })()}
           {/* <Attribute /> */}
-          Quantity: <input type="number" min="1" value={quantity} onChange={handleQuantity} />
+          <div className="price">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <button class="btn" type="button" onClick={decNum}>
+                              -
+                            </button>
+                          </div>
+                          <input
+                            type="text"
+                            class="form-control"
+                            value={quantity}
+                            onChange={handleQuantity}
+                          />
+                          <div class="input-group-prepend">
+                            <button class="btn" type="button" onClick={incNum}>
+                              +
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+          {/* Quantity: <input type="number" min="1" value={quantity} onChange={handleQuantity} /> */}
           <hr />
           <div className='price-product'>
               <h5>Price: <span>$ {productData.price}</span></h5>

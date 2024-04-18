@@ -9,6 +9,7 @@ import Avatarprofile from "../../../assets/Images/avatarsignup.png";
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
 import moment from "moment";
 import {BASE_URL} from "../../../services/Constant"
+import { Spinner } from "react-bootstrap";
 
 const libraries = ['places'];
 const EditProfileSetup = () => {
@@ -214,16 +215,19 @@ const EditProfileSetup = () => {
     if (loggedInUser) {
       const loggedInUsers = JSON.parse(loggedInUser);
       if (loggedInUsers.isTrustedSeller === 1) {
+        setIsLoading(true); // Start loading
         SellerServices.getShopDetails(loggedInUsers?.id)
           .then((response) => {
             if(response.status){
               setGuid(response.data.guid)
+              console.log('shop')
               setShopData(response.data);
               setCountry(response.data.country_id)
               setCurrentAddress(response.data.address)
               setState(response.data.state_id)
               setCity(response.data.city_id)
               setAddress(response.data.address)
+              setIsLoading(false); // Stop loading when data is fetched
               // setCountry("")
             }
             // State.get(response.country_id)
@@ -244,6 +248,15 @@ const EditProfileSetup = () => {
   }, []);
   return (
     <>
+    {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status">
+            {/* <span className="sr-only">Loading...</span> */}
+          </Spinner>
+        </div>
+      ) : (
+        <>
+
       {/* Your existing form */}
       <section id="selleraccountsetup">
         <div className="container"> 
@@ -537,6 +550,8 @@ const EditProfileSetup = () => {
           )}
         </div>
       </section>
+      </>
+      )}
     </>
   );
 };

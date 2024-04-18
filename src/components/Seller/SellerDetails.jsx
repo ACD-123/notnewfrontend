@@ -27,7 +27,7 @@ const SellerDetails = () => {
           Home.getshopData(res?.shop_id)
             .then((response) => {
                 if(response.status){
-                    console.log('response', response.data)
+                    console.log('shop', response.data)
                     setShopData(response.data)
                 }
             }).catch((e) => {

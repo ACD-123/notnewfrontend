@@ -223,6 +223,7 @@ const ShoppingCart = () => {
               {cart.length > 0 ? (
                 <>
                   {cart.map((cat, index) => {
+                    console.log('sss',cart);
                     let attributes = JSON.parse(cat.attributes);
                     const isSaved = cartids.includes(cat.id);
                     let coverpic;
@@ -259,15 +260,16 @@ const ShoppingCart = () => {
                                   {/* <img src={Productimage} /> */}
                                 </div>
                                 <div className="product-order-details">
-                                  
-                                  <div className="quantitypadding">
-                                    <p>
-                                      <b>
-                                        <span>QTY: {cat.quantity}</span>
-                                      </b>
-                                    </p>
-                                  </div>
-                                  <span className="unter">
+                        <h5>{cat.products.name} </h5>
+                        <span>Size : 9.5 , Color: Red</span>
+                        <div className="quantitypadding">
+                          <p>
+                            <b>
+                            <span>QTY: {cat.quantity}</span>
+                            </b>
+                          </p>
+                        </div>
+                        <span className="unter">
                                     {/* International(have to work) */}
                                     {cat.products?.location? (
                                       <>
@@ -278,7 +280,7 @@ const ShoppingCart = () => {
                                       <></>
                                     )}
                                   </span>
-                                </div>
+                      </div>
                               </div>
                             </div>
                             <div className="col-lg-3">

@@ -16,3 +16,36 @@ code {
   gap: 10px;
   align-items: center;
 }
+.price .input-group .input-group-prepend button.btn {
+  padding: 10px;
+  height: 30px;
+  width: 30px;
+  border-radius: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  margin: 0px;
+  box-shadow: 0px 0px 4px 0px white;
+  border: none;
+}
+.price .input-group {
+  background: #000000a1;
+  width: max-content;
+  padding: 0px 8px;
+  display: flex;
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+}
+.price .input-group input.form-control {
+  max-width: 100px;
+  width: 100px;
+  text-align: center;
+  background: none;
+  border-radius: 24px !important;
+  border: none;
+  color: white;
+}
