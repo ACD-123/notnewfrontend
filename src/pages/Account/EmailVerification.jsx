@@ -5,6 +5,7 @@ import Line from "../../assets/Images/Accountimages/line.png"
 import AuthServices from "../../services/API/AuthService"; //~/services/API/AuthService
 import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 var Emailverifybg = {
   backgroundImage: `url(${Emailverifyimagebg})`,
@@ -17,10 +18,28 @@ const EmailVerification = () => {
   const [email, setEmail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
-  const extractEmail = () =>{
-    const { pathname } = window.location;
-    const email = pathname.split("/").pop();
-    setEmail(email);
+  const params = useParams(); // Initialize the useParams hook
+  
+  const [resendCountdown, setResendCountdown] = useState(60); // Initial countdown value
+
+  useEffect(() => {
+    let countdownInterval;
+
+    if (resendCountdown > 0) {
+      // Start the countdown timer if the countdown value is greater than 0
+      countdownInterval = setInterval(() => {
+        setResendCountdown((prevCountdown) => prevCountdown - 1); // Decrement countdown value every second
+      }, 1000);
+    }
+
+    return () => {
+      // Cleanup function to clear the interval when component unmounts or countdown reaches 0
+      clearInterval(countdownInterval);
+    };
+  }, [resendCountdown]); // Run the effect whenever the resendCountdown state changes
+
+  const extractEmail = () => {
+    setEmail(params.email); // Extract email from useParams hook
   }
   const handleInputChange = (index, value) => {
     if (value.length > 1) {
@@ -49,7 +68,7 @@ const EmailVerification = () => {
         toast.success(response.message);
         setTimeout(() => {
           window.location.href = "/signin";
-        }, 6000);
+        }, 1500);
       })
       .catch((e) => {
         toast.error("Otp is not Correct");
@@ -60,18 +79,12 @@ const EmailVerification = () => {
         setIsLoading(false);
         setEnabled(false);
       });
-    // console.log("Submitted code:", code);
-    // verifyOtp
-    // Redirect to another page after processing the form
-    // if (code === "1234") {
-    //   // Replace "1234" with the desired verification code
-    //   window.location.href = '/signin'; // Redirect to success page after code verification
-    // }
   };
   const handleResend = (e) =>{
     e.preventDefault();
     setIsLoading(true);
     setEnabled(true);
+    setResendCountdown(60);
     let data={
       'email': email
     }
@@ -93,6 +106,12 @@ const EmailVerification = () => {
   useEffect(() => {
     extractEmail();
   }, []);
+
+  const formatCountdownTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
   return (
     <>
       <section id="emailverification" style={Emailverifybg}>
@@ -142,10 +161,18 @@ const EmailVerification = () => {
                         />
                       ))}
                     </div>
-                    <div className="emailresend-recieve">
+                    <div className="emailresend-recieve py-4">
                       <ul>
-                        <li className="code"><a href="#">Didn't Receive the code?</a></li>
-                        <li className="resend"><a href="#" onClick={handleResend}>Resend</a></li>
+                        <li className="code"><a href=''>
+              {resendCountdown > 0
+              ? `Resend code in ${formatCountdownTime(resendCountdown)}`
+              : "Didn't receive the code?"}
+              </a></li>
+                        <li className="resend">
+                        <button disabled={resendCountdown > 0} onClick={handleResend}>
+              Resend
+            </button>
+                        </li>
                       </ul>
                     </div>
                     <button className="btn btn-primary" type="submit" disabled={enabled}>

@@ -274,12 +274,7 @@ const ListingForm = (props) => {
       console.log("product.sizes", product.sizes);
     });
   };
-  const removeTags = (e, index) => {
-    e.preventDefault();
-    const updatedTags = [...product.tags];
-    updatedTags.splice(index, 1);
-    setProduct({ ...product, tags: updatedTags });
-  };
+ 
 
   const handlePlaceChanged = () => {
     const [place] = inputRef.current.getPlaces();
@@ -602,7 +597,12 @@ const ListingForm = (props) => {
     });
     return;
   };
-
+  const removeTags = (e, index) => {
+    e.preventDefault();
+    const updatedTags = [...product.tags];
+    updatedTags.splice(index, 1);
+    setProduct({ ...product, tags: updatedTags });
+  };
   const handleCountryChange = (e) => {
     product.country = e.target.value;
     State.get(e.target.value)
@@ -1136,7 +1136,7 @@ const ListingForm = (props) => {
     <input
       type="file"
       className="newInputUpload"
-      accept="image/png, image/gif, image/jpeg"
+      accept="image/png, image/jpeg"
       multiple
       onChange={handleEditImageUpload}
     />
@@ -1216,7 +1216,7 @@ const ListingForm = (props) => {
           <input
             type="file"
             className="newInputUpload"
-            accept="image/png, image/gif, image/jpeg"
+            accept="image/png, image/jpeg"
             multiple
             onChange={handleImageUpload}
           />
@@ -1917,26 +1917,32 @@ const ListingForm = (props) => {
         )}
         <h4>TAGS</h4>
         <div className="sizequntycolr">
-          {product?.tags.map((tag, index) => (
-            <div key={index}>
-              <input
-                type="text"
-                name="tag"
-                value={tag.tag}
-                onChange={(e) => handleTagChange(e, index)}
-              />
-              <a href="#" onClick={(e) => removeTags(e, index)}>
-                Delete
-              </a>
-            </div>
-          ))}
-        </div>
-        <div className="sizeaddmre">
-          <button type="button" onClick={handleAddTags}>
-            Add Tags
-          </button>
-          {errors.tags && <p className="error">{errors.tags}</p>}
-        </div>
+          <div >
+  {product?.tags.map((tag, index) => (
+      <>
+      <input
+      key={index}
+        type="text"
+        name="tag"
+        value={tag.tag}
+        onChange={(e) => handleTagChange(e, index)}
+      />
+      {index > 0 && ( // Only render delete button if index is greater than 0
+        <a href="#" onClick={(e) => removeTags(e, index)}>
+          Delete
+        </a>
+      )}
+      </>
+  ))}
+    </div>
+</div>
+<div className="sizeaddmre">
+  <button type="button" onClick={handleAddTags}>
+    Add Tags
+  </button>
+  {errors.tags && <p className="error">{errors.tags}</p>}
+</div>
+
         {/* {product?.tags.length > 0 ? (
           <>
             {product?.tags.map((tag, index) => {
@@ -1995,7 +2001,7 @@ const ListingForm = (props) => {
                 <input
                   type="radio"
                   value={product.deliverddomestic}
-                  checked={domestic}
+                  // checked={domestic}
                   name="deliver"
                   onChange={handleDomestic}
                 />
@@ -2010,7 +2016,7 @@ const ListingForm = (props) => {
                 type="radio"
                 name="deliver"
                 value={product.deliverdinternational}
-                checked={international}
+                // checked={international}
                 onChange={handleInternational}
               />
               <span className="slider3 round3"></span>

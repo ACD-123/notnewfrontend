@@ -25,7 +25,7 @@ const FeaturedProducts = () => {
     {featured.length > 0 ? (<>
         <section id='featuredproduct'>
         <div className='container noenCon'>
-            <div className='row'>
+            <div className='row' style={{justifyContent:'center'}}>
             {featured.map((store, index) => {
                 return(
                     <>
@@ -40,9 +40,9 @@ const FeaturedProducts = () => {
                             <ProductCard />
                         </div>
                         <div className='row'>
-                            <Link to="/notFound" style={{textDecoration: "unset"}}><button className='btnFeature'>
-                            View More
-                            </button></Link>
+                            <Link to="/notFound" style={{textDecoration: "unset"}}>
+                                <button className='btnFeature'>View More</button>
+                            </Link>
                         </div>
                     </>
                 )

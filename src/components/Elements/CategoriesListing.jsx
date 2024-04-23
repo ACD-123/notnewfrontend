@@ -43,7 +43,7 @@ const CategoriesListing = () => {
               <>
                 {categories?.map((product) => (
                   <div
-                    className="col"
+                    className="col-lg-3"
                     key={product.id}
                     style={{ padding: "40px 20px" }}
                   >

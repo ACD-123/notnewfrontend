@@ -326,7 +326,7 @@ const EditProfileSetup = () => {
                         <input
                           className="uploadProfileInput"
                           type="file"
-                          accept="image/png, image/gif, image/jpeg"
+                          accept="image/png, image/jpeg"
                           name="profile_pic"
                           style={{display:'none'}}
                           id="newProfilePhoto"

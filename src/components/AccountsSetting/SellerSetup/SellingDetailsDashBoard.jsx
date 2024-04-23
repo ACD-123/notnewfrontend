@@ -254,6 +254,8 @@ const SellingDetailsDashBoard = (props) => {
   const [transaction, setTransaction] = useState(0.0);
   const [shopdata, setShopData] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Add loading state
+  let loggedInUser = localStorage.getItem("user_details");
+  const loggedInUsers = JSON.parse(loggedInUser);
 
   const getShopData=()=>{
     SellerServices.getShopDetails()
@@ -359,7 +361,7 @@ const SellingDetailsDashBoard = (props) => {
       ) : (
         <>
           <section id="selleng-dashbaord">
-            <h3>Hi {shopdata ? <>{shopdata.fullname}</> : "Seller"},</h3>
+            <h3>Hi {loggedInUsers.name},</h3>
             <h3>
               {/* {shopdata ? (
                 <>

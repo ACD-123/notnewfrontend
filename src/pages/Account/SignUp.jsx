@@ -10,15 +10,19 @@ import AuthService from "../../services/API/AuthService"; //~/services/API/Count
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
 import {GOOGLE_LOCATION_KEY} from '../../services/Constant'
 import {BASE_URL} from "../../services/Constant"
-
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+
 var Submitcss = {
   backgroundImage: `url(${Signupimage})`,
   backgroundSize: "cover",
   paddingTop: "40px",
 };
 const libraries = ['places'];
+
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const inputRef = useRef();
   const [profilePic, setProfilePic] = useState(null);
   const [formData, setFormData] = useState({
@@ -51,6 +55,7 @@ const SignUp = () => {
       libraries
   });
   const handlePlaceChanged = () => { 
+
     const [ place ] = inputRef.current.getPlaces();
     if(place) { 
         setAddress(place.formatted_address)
@@ -175,6 +180,8 @@ const SignUp = () => {
           toast.success(response.message);
           setIsLoading(false);
           setEnabled(false);
+          navigate(`/emailverification/${formData.email}`);
+
         }else if(response.status === "fails"){
           toast.error(response.message);
           setIsLoading(false);

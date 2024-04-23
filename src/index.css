@@ -30,6 +30,9 @@ code {
   box-shadow: 0px 0px 4px 0px white;
   border: none;
 }
+.carousel-container .carousel-image{
+  object-fit: contain;
+}
 .price .input-group {
   background: #000000a1;
   width: max-content;
@@ -39,6 +42,16 @@ code {
   justify-content: center;
   align-items: center;
   height: 50px;
+}
+.carousel-container .carousel-item.fade {
+  opacity: inherit;
+}
+.divider{
+  background: #fbfbfb;
+  padding: 14px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px 0px #cfcaca;
+  margin-bottom: 20px;
 }
 .price .input-group input.form-control {
   max-width: 100px;

@@ -229,9 +229,9 @@ section#singup .register form button.btn.btn-primary {
   cursor: pointer;
 }
 
-.pic-holder:hover .upload-file-block,
-.uploadProfileInput:focus ~ .upload-file-block {
-  opacity: 1;
+.pic-holder .upload-file-block,
+.uploadProfileInput ~ .upload-file-block {
+  opacity: 0.7;
 }
 
 .pic-holder.uploadInProgress .upload-file-block {
@@ -693,7 +693,7 @@ section#productcard .col .productlist img {
   height: 163px;
   width: 100%;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 4px;
 }
 section#productcard .col p ul li {
   list-style: none;
@@ -852,14 +852,21 @@ footer {
   text-decoration: unset;
   color: #000;
 }
-section#categorylistings .col img {
+section#categorylistings .productImageTopCat{
+  padding: 10px;
+  height: 100%;
   border-radius: 20px;
-  height: 150px;
-  object-fit: cover;
-  width: 100%;
   border: 1px solid #ebebeb;
 }
-section#categorylistings .col {
+section#categorylistings  img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+  /* border-radius: 20px; */
+  /* border: 1px solid #ebebeb; */
+}
+
+section#categorylistings  {
   flex: unset;
   width: fit-content;
 }
@@ -1078,6 +1085,11 @@ h3#storetitle {
   font-size: 18px;
   margin: 0;
   line-height: 28px;
+  background: linear-gradient(45deg, #0096d3, #7246a6);
+    padding: 5px 16px;
+    color: white;
+    border-radius: 6px;
+    width: fit-content;
 }
 .discountfields ::placeholder {
   color: #0000008f !important;
@@ -1162,6 +1174,7 @@ div#totalordervalue {
   padding-top: 31px;
 }
 .order-details {
+  margin-bottom: 20px;
   border: 1px solid #f0f0f0;
   padding: 10px;
   background-color: #fbfbfb;
@@ -1419,6 +1432,10 @@ padding: 15px 0px 15px 30px;
 }
 .gallery-images img {
   border-radius: 10px;
+}
+.thumbnails{
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 /* product gallery */
 
@@ -3305,6 +3322,7 @@ section#product-management button.listing {
 }
 ul.active-inactive-schedule li.active {
   color: #000;
+  background: none;
   border-bottom: 3px solid #427cb6;
 }
 ul.active-inactive-schedule li {
@@ -4517,6 +4535,7 @@ section#activity-main-dashboard button.mobile-menu-toggle {
 }
   #sectionToRemove .product-detail .product-image img {
     width: 100%;
+    object-fit: contain;
 }
   section#product-recents-viewed .headings h3 {
     text-align: center;

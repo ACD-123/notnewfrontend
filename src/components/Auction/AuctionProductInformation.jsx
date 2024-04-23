@@ -11,6 +11,7 @@ import BidsServices from "../../services/API/BidsServices"; //~/services/API/Bid
 import WatchListServices from "../../services/API/WatchListServices"; //~/services/API/WatchListServices
 import { toast } from "react-toastify";
 import moment from "moment";
+import { Spinner } from "react-bootstrap";
 
 
 const AuctionProductInformation = () => {
@@ -29,7 +30,7 @@ const AuctionProductInformation = () => {
   const [bestoffer, setBestOffer] = useState(0);
   const [currenttime, setCurrentTime] = useState("");
   const [shippingprice, setShippingPrice] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true); // Set initial value to true
   const [enabled, setEnabled] = useState(false);
   const [totalBid, setTotalBid] = useState(0); // State to hold the total bid value
   const [errors, setErrors] = useState({});
@@ -127,6 +128,10 @@ const AuctionProductInformation = () => {
       setMinutes(minutes);
       const currDate = new Date();//.toLocaleTimeString;
       setCurrentTime(moment(currDate).format('hh:mm A'))
+    }) 
+    .finally(() => {
+      // Set isLoading to false once data fetching is complete
+      setIsLoading(false);
     });
   };
 
@@ -248,6 +253,13 @@ const AuctionProductInformation = () => {
   }, []);
   return (
     <>
+    {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container">
+          <Spinner animation="border" role="status">
+          </Spinner>
+        </div>
+      ) : (
+      <>
       {productData ? (
         <>
           <div className="product-info">
@@ -412,6 +424,8 @@ const AuctionProductInformation = () => {
       ) : (
         ""
       )}
+      </>
+    )}
     </>
   );
 };

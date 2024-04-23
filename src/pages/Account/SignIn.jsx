@@ -168,7 +168,7 @@ const SignIn = () => {
             }
             setTimeout(() => {
               window.location.href = "/";
-            }, 6000);
+            }, 1500);
             setAccessToken(response.token);
           }
         })

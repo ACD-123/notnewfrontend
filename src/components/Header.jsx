@@ -110,7 +110,7 @@ const Header = () => {
                       > 
                         {profilepic ? (
                           <>
-                          {/* http://localhost:8000/images/User/62/a249749c-e1cd-49fe-8eb1-83595042ae64.jpg */}
+                          {/* https://notnewbackend.testingwebsitelink.com/images/User/62/a249749c-e1cd-49fe-8eb1-83595042ae64.jpg */}
                           {(() => {
                           if (user.register_type === 'google' || user.register_type === 'facebook') {
                             return (
@@ -262,7 +262,7 @@ const Header = () => {
                       > 
                         {profilepic ? (
                           <>
-                          {/* http://localhost:8000/images/User/62/a249749c-e1cd-49fe-8eb1-83595042ae64.jpg */}
+                          {/* https://notnewbackend.testingwebsitelink.com/images/User/62/a249749c-e1cd-49fe-8eb1-83595042ae64.jpg */}
                           {(() => {
                           if (user.register_type === 'google' || user.register_type === 'facebook') {
                             return (

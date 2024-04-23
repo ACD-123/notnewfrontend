@@ -65,7 +65,7 @@ const ForgotVerification = () => {
         toast.success(response.message);
         setTimeout(() => {
           window.location.href = "/resetpassword/"+email;
-        }, 6000);
+        }, 1500);
       })
       .catch((e) => {
         toast.error("Otp is not Correct");

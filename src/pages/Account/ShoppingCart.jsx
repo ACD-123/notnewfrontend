@@ -86,19 +86,19 @@ const ShoppingCart = () => {
   };
   const handleCheckOut = (e) => {
     e.preventDefault();
-    let data = {
-      dicount_code: localStorage.getItem("discountCode"),
-      items_number: cartitem,
-      sub_total: amountaddingprices,
-      shipping_total: shippingprice,
-      admin_prices: JSON.stringify(availableprices),
-      order_total: amountaddingprices,
-    };
-    CheckoutServices.save(data).then((response) => {
-      if (response.success) {
+    // let data = {
+    //   dicount_code: localStorage.getItem("discountCode"),
+    //   items_number: cartitem,
+    //   sub_total: amountaddingprices,
+    //   shipping_total: shippingprice,
+    //   admin_prices: JSON.stringify(availableprices),
+    //   order_total: amountaddingprices,
+    // };
+    // CheckoutServices.save(data).then((response) => {
+    //   if (response.success) {
         window.location.href = "/checkout";
-      }
-    });
+    //   }
+    // });
   };
   const handleDiscountSubmit = () => {
     // Logic to handle applying the discount code
@@ -109,7 +109,10 @@ const ShoppingCart = () => {
 
   const handleRemoveSection = (e, id) => {
     e.preventDefault();
-    CartServices.remove(id).then((response) => {
+    let req ={
+      "cart_id": id
+    }
+    CartServices.remove(req).then((response) => {
       if (response.success) {
         toast.success(response.message);
         // CartServices.count()
@@ -233,7 +236,9 @@ const ShoppingCart = () => {
                     return (
                       <>
                         <div className="order-details" id="sectionToRemove">
-                          <h3 id="storetitle">Seller: {cat.shop?.fullname}</h3>
+                        <div className='py-3'>
+                          <h3 id="storetitle"> {cat.shop?.fullname}</h3>
+                          </div>
                           <div className="row">
                             <div className="col-lg-9">
                               <div className="product-detail">

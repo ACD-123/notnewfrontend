@@ -621,7 +621,7 @@ const ListingForm = (props) => {
     //       'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
     //      }
     // }
-    // axios.post('http://localhost:8000api/products/upload', formData, config)
+    // axios.post('https://notnewbackend.testingwebsitelink.comapi/products/upload', formData, config)
     //   .then(response => {
     //     localStorage.setItem('product_guid',response.data.product)
     //   })
@@ -806,7 +806,7 @@ const ListingForm = (props) => {
         //   },
         // };
         // axios
-        //   .post("http://localhost:8000/api/products/add", formData, config)
+        //   .post("https://notnewbackend.testingwebsitelink.com/api/products/add", formData, config)
         //   .then((response) => {
         //     setShowPopup(true);
         //     setIsLoading(false);
@@ -912,7 +912,7 @@ const ListingForm = (props) => {
           },
         };
         axios
-          .post(`http://localhost:8000/api/products/${props.guid}`, fD, config)
+          .post(`https://notnewbackend.testingwebsitelink.com/api/products/${props.guid}`, fD, config)
           .then((response) => {
             setShowEditPopup(true);
             setIsLoading(false);
@@ -1001,7 +1001,7 @@ const ListingForm = (props) => {
           },
         };
         axios
-          .post("http://localhost:8000/api/products/add", formData, config)
+          .post("https://notnewbackend.testingwebsitelink.com/api/products/add", formData, config)
           .then((response) => {
             setShowPopup(true);
             setIsLoading(false);
@@ -1363,7 +1363,7 @@ const ListingForm = (props) => {
           <>
             <input
               type="file"
-              accept="image/png, image/gif, image/jpeg"
+              accept="image/png, image/jpeg"
               multiple
               onChange={handleEditImageUpload}
             />
@@ -1453,7 +1453,7 @@ const ListingForm = (props) => {
           <>
             <input
               type="file"
-              accept="image/png, image/gif, image/jpeg"
+              accept="image/png, image/jpeg"
               multiple
               onChange={handleImageUpload}
             />

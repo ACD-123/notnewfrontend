@@ -197,7 +197,7 @@ const PersonalInfo = () => {
                                     />
                                   </>
                                 )}
-                                {/* src="http://localhost:8000/storage/users/51/user/0c98aa20-b9db-4629-9dca-ec6f0377533d.jfif" */}
+                                {/* src="https://notnewbackend.testingwebsitelink.com/storage/users/51/user/0c98aa20-b9db-4629-9dca-ec6f0377533d.jfif" */}
                               </>
                             ) : (
                               <>
@@ -218,7 +218,7 @@ const PersonalInfo = () => {
                         <input
                           className="uploadProfileInput"
                           type="file"
-                          accept="image/png, image/gif, image/jpeg"
+                          accept="image/png, image/jpeg"
                           name="profile_pic"
                           style={{ display: "none" }}
                           id="newProfilePhoto"

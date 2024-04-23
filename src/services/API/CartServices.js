@@ -17,10 +17,11 @@ function save(data) {
   })
 }
 
-function remove(id) {
+function remove(data) {
   return request({
-    url: `${baseUrl}/destroy/${id}`,
-    method: 'DELETE',
+    url: `${baseUrl}/destroy/`,
+    data,
+    method: 'POST',
   })
 }
 

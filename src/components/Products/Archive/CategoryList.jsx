@@ -62,9 +62,9 @@ const CategoryList = () => {
               <>
                 {categoryData.map((category) => {
                   return (
-                    <Link to={`/singlecategory/${category.guid}`}>
-                    <div className='col col-lg-2' key={category.id}>
-                      <div className='productlist ctrrr'>
+                    <div className='col col-lg-2'>
+                      <Link to={`/singlecategory/${category.guid}`}>
+                      <div className='productlist ctrrr' key={category.id}>
                         <div style={{height: '140px',width: '100%'}}>
                           {category.media.length > 0 ?(
                             <>
@@ -85,8 +85,8 @@ const CategoryList = () => {
                         </div>
                          <h5 style={{ textAlign: "center", padding: "20px 0px" }}>{category.name}</h5>
                       </div>
-                    </div>
                        </Link>
+                    </div>
                   )
                 })}
              </>

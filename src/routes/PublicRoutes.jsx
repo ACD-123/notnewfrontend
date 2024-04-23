@@ -50,7 +50,8 @@ const PublicRoutes = () => {
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/signup" element={<SignUp />} />
-					<Route path="/emailverification/:id/:guid/:expires/:email" element={<EmailVerification />} />
+					{/* <Route path="/emailverification/:id/:guid/:expires/:email" element={<EmailVerification />} /> */}
+					<Route path="/emailverification/:email" element={<EmailVerification />} />
 					<Route path="/signin" element={<SignIn />} />
 					<Route path="/topcategory" element={<TopCategory />} />
 					<Route path="/singlecategory/:guid" element={<SingleCategory />} />

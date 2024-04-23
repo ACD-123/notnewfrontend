@@ -38,7 +38,7 @@ const RecentViewedItems = () => {
                 <div className='productlist'>
                   {product?.auctioned ? (
                     <>
-                      {product.products?.name}
+                      {/* {product.products?.name} */}
                       <Link to={`/auctionproduct/${product.products?.guid}`}>
                       {product.products?.media[0].name? (
                         <>
@@ -57,7 +57,7 @@ const RecentViewedItems = () => {
                     <Link to={`/singleproduct/${product.products?.guid}`}>
                       {product.products?.media[0].name ? (
                         <>
-                        {/* http://localhost:8000/image/product/aa.jpg */}
+                        {/* https://notnewbackend.testingwebsitelink.com/image/product/aa.jpg */}
                           <img src={`${product.products?.media[0].name}`} alt="" />
                         </>
                       ):(

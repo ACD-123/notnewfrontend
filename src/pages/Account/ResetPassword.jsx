@@ -47,7 +47,7 @@ const ResetPassword = () => {
           toast.success(response.message);
           setTimeout(() => {
             window.location.href = "/signin";
-          }, 6000);
+          }, 1500);
         })
         .catch((e) => {
           toast.error(e.message);
