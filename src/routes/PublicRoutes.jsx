@@ -31,6 +31,7 @@ import Watchlist from "../components/CustomerDashboard/Watchlist"
 import Auctions from "../components/Products/Archive/Auctions"
 import ProductUpload from "../components/Products/ProductUpload"
 import NotFound from "../pages/NotFound"
+import CheckoutBuyNow from "../pages/Account/CheckoutBuyNow"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -63,6 +64,7 @@ const PublicRoutes = () => {
 					<Route path="/shoppingcart" element={<ShoppingCart />} />
 					<Route path="/categorykeyword/:guid" element={<CategoryKeyword />} />
 					<Route path="/checkout" element={<Checkout />} />
+					<Route path="/checkout-buynow/:guid" element={<CheckoutBuyNow />} />
 					<Route path="/checkouts/:guid" element={<Checkout />} />
 					<Route path="/singleproduct/:guid" element={<SingleProduct />} />
 					<Route path="/customerdashboard" element={<MainDashboard />} />

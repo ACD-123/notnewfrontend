@@ -4,6 +4,7 @@ import ShippingPolicyData from "./ShippingPolicyData";
 import { Link } from "react-router-dom";
 import ProductServices from "../../../../services/API/ProductServices"; //~/services/API/ProductServices
 import SellerServices from "../../../../services/API/SellerServices"; //~/services/API/SellerServices
+import CheckoutServices from "../../../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
 import CartServices from "../../../../services/API/CartServices"; //~/services/API/CartServices
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 const ProductInformation = () => {
   const dispatch = useDispatch();
   const [productData, setProductData] = useState([]);
+  console.log('productData',productData)
   const [gettags, setTags] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true); // Set initial value to true
@@ -51,8 +53,8 @@ const ProductInformation = () => {
   const getProduct = () => {
     ProductServices.get(id)
       .then((res) => {
-        setProductData(res);
-        let tags = JSON.parse(JSON.parse(res.tags));
+        setProductData(res.data);
+        let tags = JSON.parse(JSON.parse(res.data.tags));
         let allTags = [];
         {
           tags.map((tag, index) => allTags.push(tag.tag));
@@ -73,24 +75,33 @@ const ProductInformation = () => {
     }
     setIsLoading(true);
     setEnabled(true);
+    navigate("/checkout-buynow/"+productData.guid);
     let arributes = localStorage.getItem("arributes");
     arributes = JSON.parse(arributes);
     let inputData = {
-      price: productData.price,
-      quantity: 1,
       product_id: productData.id,
-      attributes: arributes,
-      shop_id: productData.shop?.id,
+      quantity: 1,
+      // price: productData.price,
+      // quantity: 1,
+      // product_id: productData.id,
+      // attributes: arributes,
+      // shop_id: productData.shop?.id,
     };
-    CartServices.save(inputData)
+    // console.log(productData.id)
+    CheckoutServices.save(inputData)
       .then((response) => {
-        if (response.success) {
-          CartServices.count().then((response) => {
-            dispatch(saveCupon(response));
-          });
-        } else {
-          toast.error(response.message);
+        console.log(response)
+        if(response.success){
+          toast.success('buy now added')
         }
+
+        // if (response.success) {
+        //   CartServices.count().then((response) => {
+        //     dispatch(saveCupon(response));
+        //   });
+        // } else {
+        //   toast.error(response.message);
+        // }
       })
       .catch((e) => {
         toast.error(e.message);

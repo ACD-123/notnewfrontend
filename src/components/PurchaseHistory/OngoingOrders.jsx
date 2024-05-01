@@ -16,28 +16,11 @@ import Location from "../../assets/Images/map.png";
 import { BASE_URL } from "../../services/Constant";
 
 const DetailedProductInfo = ({ order }) => {
-  console.log('order', order)
+  console.log("order", order);
   const [orderitems, setOrderItems] = useState({});
-  const [estDelivery, setEstDelivery] = useState("");
-  const [orderstatus, setOrderStatus] = useState("");
-  const [shipping, setShipping] = useState(0);
-  const [discount, setDiscount] = useState(0);
-  const handleEstDelivery = (event) => {
-    setEstDelivery(event.target.value);
-  };
-  const handleOrderStatus = (e) => {
-    e.preventDefault();
-    setOrderStatus(e.target.value);
-  };
-  const getOrderItems = () => {
-    if (order.order) {
-      setOrderItems(JSON.parse(JSON.parse(order.order.orderItems)));
-    }
-  };
-  // Modify this component to display detailed product information as per your needs
   return (
     <>
-      {order.order ? (
+      {order.length > 0 ? (
         <>
           <div className="detailed-product-info">
             <h3>Order Details</h3>
@@ -180,11 +163,12 @@ const DetailedProductInfo = ({ order }) => {
   );
 };
 const OngoingOrders = () => {
-  const [customerorders, setCustomerOrders] = useState({});
+  const [customerorders, setCustomerOrders] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState({});
   const getCustomerOrder = () => {
     OrderServices.customerOngoingOrders().then((response) => {
+      console.log("customer", response);
       setCustomerOrders(response);
     });
   };
@@ -276,16 +260,22 @@ const OngoingOrders = () => {
                                       <div className="image">
                                         {product.media?.length > 0 ? (
                                           <>
-                                            {product.media.map((image, index) => {
-                                              if(index === 0){
-                                                return(
-                                                  <>
-                                                    <img key={index} src={`${BASE_URL}/image/product/${image.name}`} alt={image.name} />
-                                                  </>
-                                                  // <img key={index} src={image} alt={`Product ${index + 1}`} />
-                                                )
+                                            {product.media.map(
+                                              (image, index) => {
+                                                if (index === 0) {
+                                                  return (
+                                                    <>
+                                                      <img
+                                                        key={index}
+                                                        src={`${BASE_URL}/image/product/${image.name}`}
+                                                        alt={image.name}
+                                                      />
+                                                    </>
+                                                    // <img key={index} src={image} alt={`Product ${index + 1}`} />
+                                                  );
+                                                }
                                               }
-                                            })}
+                                            )}
                                           </>
                                         ) : (
                                           <>
@@ -320,10 +310,10 @@ const OngoingOrders = () => {
                                                         </>
                                                       ) : (
                                                         ""
-                                                      )}{" "}
+                                                      )}
                                                       {attribute.colors ? (
                                                         <>
-                                                          | Color:{" "}
+                                                          | Color:
                                                           <div
                                                             style={{
                                                               width: "50px",
@@ -413,7 +403,7 @@ const OngoingOrders = () => {
                         onClick={(e) => orderDetails(e, orderData.id)}
                       >
                         {/* <Link to='/singleproduct'> */}
-                          <button>View Details</button>
+                        <button>View Details</button>
                         {/* <img src={RightArrow} alt="Right Arrow" /> */}
                         {/* </Link> */}
                       </a>
@@ -429,30 +419,6 @@ const OngoingOrders = () => {
       </>
     );
   };
-
-  const ordersData = [
-    {
-      orderNumber: "15s5d8e1",
-      productName:
-        "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
-      images: [Prdimage],
-    },
-    {
-      orderNumber: "15s5d8e2",
-      productName:
-        "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
-      images: [Prdimage1],
-    },
-    {
-      orderNumber: "15s5d8e2",
-      productName:
-        "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
-      images: [
-        Prdimage2, // Add more image URLs here for the first order
-        // Add more image URLs for the first order as needed
-      ],
-    },
-  ];
   useEffect(() => {
     getCustomerOrder();
   }, []);

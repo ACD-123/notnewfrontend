@@ -30,9 +30,9 @@ const ProductGallery = () => {
   };
   const getProduct = () => {
     ProductServices.get(id).then((response) => {
-      if(response.media.length > 0){
-        setProductData(response.media);
-        setSelectedImage(response.media[0].name);
+      if(response.data.media.length > 0){
+        setProductData(response.data.media);
+        setSelectedImage(response.data.media[0].name);
       }
     });
   };

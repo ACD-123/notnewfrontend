@@ -16,7 +16,8 @@ const ProductTabs = () => {
   const getProduct = () => {
     setIsLoading(true); // Set loading state to true
     ProductServices.get(id).then((response) => {
-      setProductData(response);
+      console.log(response)
+      setProductData(response.data);
       setIsLoading(false); // Set loading state to false once data is fetched
     });
   };  
@@ -60,7 +61,7 @@ const ProductTabs = () => {
                     {productData.brand ? (<>
                         <tr>
                           <th>Brand</th>
-                          <td>{productData.brand}</td>
+                          <td>{productData.brand.name}</td>
                       </tr>
                     </>):(<></>)}
                     {productData.model ? (

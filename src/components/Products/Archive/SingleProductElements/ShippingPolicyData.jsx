@@ -13,9 +13,9 @@ const ShippingPolicyData = () => {
     setIsLoading(true); // Set loading state to true
 
     ProductServices.get(id).then((response) => {
-      setProductData(response);
-      now = moment(response.shipping_end); 
-      end = moment(response.shipping_start); 
+      setProductData(response.data);
+      now = moment(response.data.shipping_end); 
+      end = moment(response.data.shipping_start); 
       duration = moment.duration(now.diff(end));
       console.log(duration);
       setIsLoading(false); // Set loading state to false once data is fetched

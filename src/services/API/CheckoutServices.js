@@ -12,7 +12,7 @@ function all(params = {}) {
 
 function self(params = {}) {
   return request({
-    url: `${baseUrl}/self`,
+    url: `${baseUrl}/self_`,
     params,
   })
 }

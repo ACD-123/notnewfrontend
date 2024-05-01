@@ -43,7 +43,7 @@ const ProductCard = (props) => {
     } catch (error) {
       setLoading(false); // Set loading state to false in case of error
       console.error('Error fetching product data:', error);
-      toast.error("Error fetching product data");
+      // toast.error("Error fetching product data");
     }
   };
   const confirmDelete = (e, val) => {

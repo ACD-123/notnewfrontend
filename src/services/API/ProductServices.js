@@ -25,18 +25,18 @@ function update(id, data) {
   })
 }
 
-// function get(id, params = {}) {
-//   return request({
-//     url: `${baseUrl}/show/${id}`,
-//     params,
-//   })
-// }
 function get(id, params = {}) {
   return request({
-    url: `${baseUrl}/shows/${id}`,
+    url: `${baseUrl}/${id}`,
     params,
   })
 }
+// function get(id, params = {}) {
+//   return request({
+//     url: `${baseUrl}/shows/${id}`,
+//     params,
+//   })
+// }
 function destroy(id) {
   return request({
     url: `${baseUrl}/${id}`,

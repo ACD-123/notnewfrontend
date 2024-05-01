@@ -45,19 +45,19 @@ useEffect(() => {
         <h3>Hi, {loggedInUsers.name}</h3>
         <div className='col-lg-4 col-sm-4'>
             <div className='dashboard-result'>
-            <h2>{customerordercompcount}</h2>
+            <h2>{customerordercompcount !== null ? customerordercompcount : 0}</h2>
             <p>Order Completed</p>
             </div>
         </div>
         <div className='col-lg-4 col-sm-4'>
         <div className='dashboard-result'>
-            <h2>{customerorderpendcount}</h2>
+        <h2>{customerorderpendcount !== null ? customerorderpendcount : 0}</h2>
             <p>Order Pending</p>
             </div>
         </div>
         <div className='col-lg-4 col-sm-4'>
         <div className='dashboard-result'>
-            <h2>{customerorderrefcount}</h2>
+        <h2>{customerorderrefcount !== null ? customerorderrefcount : 0}</h2>
             <p>Order Refund</p>
             </div>
         </div>

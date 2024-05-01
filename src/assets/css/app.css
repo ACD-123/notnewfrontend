@@ -1199,9 +1199,15 @@ div#totalordervalue {
 hr.dashed{
   color: #cecece;
 }
+.gridersys{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 .product-detail {
   display: flex;
   gap:15px;
+  align-items: center;
 }
 .order-details .buttonright {
   display: flex;
@@ -1433,7 +1439,11 @@ padding: 15px 0px 15px 30px;
 .gallery-images img {
   border-radius: 10px;
 }
+.gallery-images{
+  width: 70%;
+}
 .thumbnails{
+  width: 30%;
   flex-direction: column;
   flex-wrap: wrap;
 }
@@ -4611,9 +4621,9 @@ section#product-recents-viewed .headings h3 span {
     font-size: 12px;
     line-height: 22px;
 }
-  .thumbnails img {
+  /* .thumbnails img {
     height: 59px;
-}
+} */
   .shippingpolicy h4 img {
     width: 100%;
     margin: 0 !important;

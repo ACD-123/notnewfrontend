@@ -155,7 +155,7 @@ function customerRefundCount() {
 }
 function customerOngoingOrders() {
   return request({
-    url: `${baseUrl}/customer/ongoing`,
+    url: `${ordersApi}/activecustomer`,
     method: 'GET',
   })
 }

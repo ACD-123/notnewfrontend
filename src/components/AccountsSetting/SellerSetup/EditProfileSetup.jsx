@@ -16,6 +16,7 @@ const EditProfileSetup = () => {
   const inputRef = useRef();
   const [profilePic, setProfilePic] = useState(null);
   const [shopData, setShopData] = useState([]);
+  console.log('render',shopData)
   const [countries, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [currentaddress, setCurrentAddress] = useState("");
@@ -28,7 +29,7 @@ const EditProfileSetup = () => {
   const [guid, setGuid] = useState("")
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-  const [zip, setZip] = useState("Zip");
+  const [zip, setZip] = useState("");
   const [editaddress, setEditAddress] = useState(false);
   const [addresses, setAddresses] = useState("");
   const { isLoaded, loadError } = useJsApiLoader({
@@ -90,30 +91,32 @@ const EditProfileSetup = () => {
   };
 
   const handlePlaceChanged = () => { 
-    const [ place ] = inputRef.current.getPlaces();
-    if(place) { 
-        setAddress(place.formatted_address)
-        setLatitude(place.geometry.location.lat())
-        setLongitude(place.geometry.location.lng())
+    const [place] = inputRef.current.getPlaces();
+    if (place) { 
+      setAddress(place.formatted_address);
+      setLatitude(place.geometry.location.lat());
+      setLongitude(place.geometry.location.lng());
+      if (place.address_components) { // Add a check for address_components
         for (var i = 0; i < place.address_components.length; i++) {
           for (var j = 0; j < place.address_components[i].types.length; j++) {
-            if (place.address_components[i].types[j] == "postal_code") {
-                setZip(place.address_components[i].long_name)
-            // document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
+            if (place.address_components[i].types[j] === "postal_code") {
+              setZip(place.address_components[i].long_name);
             }
-            if (place.address_components[i].types[0] == "locality") {
-                  setCity(place.address_components[i].long_name);
-                }
-            if (place.address_components[i].types[0] == "administrative_area_level_1") {
-                  setState(place.address_components[i].long_name);
-                }
-            if (place.address_components[i].types[0] == "country") {
-                  setCountry(place.address_components[i].long_name);
-              }
+            if (place.address_components[i].types[0] === "locality") {
+              setCity(place.address_components[i].long_name);
+            }
+            if (place.address_components[i].types[0] === "administrative_area_level_1") {
+              setState(place.address_components[i].long_name);
+            }
+            if (place.address_components[i].types[0] === "country") {
+              setCountry(place.address_components[i].long_name);
+            }
           }
         }
+      }
     } 
-}
+  };
+  
   const handleCityChange = (e) => {
     // shopData.city_id = e.target.value;
   };
@@ -221,6 +224,7 @@ const EditProfileSetup = () => {
             if(response.status){
               setGuid(response.data.guid)
               console.log('shop')
+              console.log('zip',response.data.zip)
               setShopData(response.data);
               setCountry(response.data.country_id)
               setCurrentAddress(response.data.address)

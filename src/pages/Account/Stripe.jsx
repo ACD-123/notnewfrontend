@@ -57,15 +57,33 @@ const Stripe = (props) => {
     }else{
       carts = props.cart;
       carts?.map((cart) => {
-          cartItems.push(cart.products);
+        let data;
+        // console.log('sss', cart.attributes)
+        if(cart.attributes !== 'null'){
+          data ={
+            "product_id": cart.product_id,
+            "quantity": cart.quantity,
+            "price": parseFloat(cart.price) * parseInt(cart.quantity),
+            "attributes": cart.attributes
+          }
+        }else{
+          data ={
+            "product_id": cart.product_id,
+            "quantity": cart.quantity,
+            "price": parseFloat(cart.price) * parseInt(cart.quantity),
+            "attributes": []
+          }
+        }
+          cartItems.push(data);
       })
     }
-    
+    console.log(JSON.stringify(cartItems))
+
     let data ={
         "buyer_id" : loggedInUsers.id,
         "payment_type": 'Stripe',
         "discountcode": localStorage.getItem('discountcode'),
-        "orderItems": JSON.stringify(cartItems),
+        "orderItems": JSON.stringify(JSON.stringify(cartItems)),
         "subtotal_cost": props.subtotal,
         "actual_cost": props.subtotal,
         "shipping_cost": props.shippingprice,

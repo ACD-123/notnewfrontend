@@ -50,10 +50,14 @@ const Checkout = () => {
   const [subTotal, setsubTotal] = useState(0);
   const [shippingprice, setShippingPrice] = useState(0);
   const [adminprices, setAdminPrices] = useState(0);
+  const [ordertype, setOrderType] = useState("");
   const [amountaddingprices, setAmountAddingPrices] = useState(0);
   const [cartitem, setCartItems] = useState(0);
   const [savedLater, setSavedLater] = useState(false);
   const [cartids, setCartIds] = useState([]);
+  const [bidcartimage, setBidCartImage] = useState([]);
+  const [bidcart, setBidCart] = useState({});
+  const [bidquantity, setQuantity] = useState(0);
 
   const changeAddress = (e, change) => {
     e.preventDefault();
@@ -103,7 +107,22 @@ const Checkout = () => {
   const [cart, setCart] = useState([]);
   
   const getCart = () => {
+    var bidProduct = localStorage.getItem('bid_product');
+
     setIsLoading(true); // Start loading
+    if(bidProduct){
+      console.log('bidProduct', JSON.parse(bidProduct))
+      setBidCartImage(JSON.parse(bidProduct).media)
+      setBidCart(JSON.parse(bidProduct));
+      setQuantity(1);
+      let prices = JSON.parse(bidProduct).bids + JSON.parse(bidProduct).shipping_price
+      setAmountAddingPrices(prices)
+      setShippingPrice(JSON.parse(bidProduct).shipping_price)
+      setsubTotal(JSON.parse(bidProduct).bids);
+      setOrderType("bids")
+      // console.log('.attribute', JSON.parse(bidProduct.attribute))
+      // setBidCartAttributes(JSON.parse(bidProduct.attribute))
+      }else{
     CartServices.self().then((res) => {
       setCart(res);
       setIsLoading(false); // Stop loading when data is fetched
@@ -133,11 +152,13 @@ const Checkout = () => {
       setShippingPrice(shippingprice);
       let adminPric = allPrices.reduce((a, v) => (a = a + v), 0)
       setAdminPrices(adminPric);
+      setOrderType("Cart")
       var amountAfterDiscount = subttal - discountPrice;
       var amountbyaddingprices = amountAfterDiscount + adminPric + shippingprice;
       // var amountbyaddingprices = subttal + shippingprice;
       setAmountAddingPrices(amountbyaddingprices);
-    });
+    })
+    };
   };
   const handleCheckOut = (e) => {
     e.preventDefault();
@@ -159,13 +180,15 @@ const Checkout = () => {
 
   const getForSavedLater = () => {
     SaveLaterServices.getByUser().then((response) => {
-      response.map((crt) => {
-        cart_ids.push(crt.cart_id);
-      });
-      setCartIds(cart_ids);
+      const cartIds = response.map((crt) => crt.cart_id);
+      // console.log(cartIds)
+      setCartIds(cartIds);
     });
   };
+
   const handleSaveLater = (e, cartId) => {
+    console.log('cart',cartId);
+    // return;
     e.preventDefault();
     let data = {
       cart_id: cartId,
@@ -173,7 +196,7 @@ const Checkout = () => {
     SaveLaterServices.add(data).then((response) => {
       toast.success(response.message);
       setSavedLater(true);
-      getForSavedLater();
+      getForSavedLater(); // Update cartIds after adding to saved later
     });
   };
   const handlePrices = () => {
@@ -310,20 +333,27 @@ const Checkout = () => {
                 <span class="tabstop">{userDetails?.address}</span>
 
                 </>):(<></>)}
-                <div class="tabs-check">
+                {/* <div class="tabs-check">
                  
-                  <Elements stripe={stripePromise} options={options}>
+                <Elements stripe={stripePromise} options={options}>
                     <Stripe
                       changeAdds={changeAdds}
                       parentCallback={handleCallback}
                       zip={zip}
+                      subtotal={subTotal}
                       secondAddress={secondaddress}
+                      cart={cart}
+                      bidcart={bidcart}
+                      orderType={ordertype}
+                      adminprices={adminprices}
+                      shippingprice={shippingprice}
+                      total={amountaddingprices}
                       changeaddress={changeAdds}
                       ordertype={ordertyp}
-                      address={userDetails?.address}
+                      address={userDetails?.street_address}
                     />
                   </Elements>
-                </div>
+                </div> */}
               </div>
                     <div class="order-details" id="order-detailsid">
                         <h3>Shipping Details</h3>
@@ -401,42 +431,57 @@ const Checkout = () => {
                     {checkoutData && checkoutData.map((order, orderIndex) => (
                       
   <div key={orderIndex} className='divider'>
-    <h3 id="storetitle">{order.fullname}</h3>
-    {order.products.map((product, productIndex) => (
-      <div key={productIndex} className="order-details">
-        <div className="row">
-          <div className="col-lg-9">
-            <div className="product-detail">
-            <div className="product-image">
-                <img src={product.media[0].name} alt="" style={{ width: '258px', height: '258px' }} />
+    <h3 id="storetitle">{order.storename}</h3>
+    {order.products.map((product, productIndex) => {
+  const isSaved = cartids.includes(product.cartid); // Correct variable name
+  console.log('cartid', product.cartid)
+  return (
+    <div key={productIndex} className="order-details">
+      <div className="row">
+        <div className="col-lg-9">
+          <div className="product-detail">
+            <div className="product-image" style={{ width: '35%' }}>
+              <img src={product.media[0].name} alt="" style={{ width: '100%', objectFit: 'contain' }} />
             </div>
-
-              <div className="product-order-details">
-                <h5>{product.name}</h5>
-                <span>Size: {product.size}, Color: {product.color}</span>
-                <div className="quantitypadding">
-                  <p><b><span>QTY: {product.quantity}</span></b></p>
-                </div>
-                <span className="unter">{product.postal_address}</span>
+            <div className="product-order-details">
+              <h5>{product.name}</h5>
+              <span>Size: {product.size}, Color: {product.color}</span>
+              <div className="quantitypadding">
+                <p><b><span>QTY: {product.cartquantity}</span></b></p>
               </div>
-            </div>
-          </div>
-          <div className="col-lg-3">
-            <div className="prices-order-details">
-              <h4>US $ {product.price}</h4>
-              <span>+US $29.99</span>
+              <span className="unter">{product.postal_address}</span>
             </div>
           </div>
         </div>
-        <hr className="dashed" />
-        <div className="buttonright">
-          <button className="btn btn-info btn-lg transparent" type="button" >Save for later</button>
-          <button className="btn btn-info btn-lg danger" type="button"
-            onClick={(e) => handleSaveLater(e, product.id)}
-          >Save for later</button>
+        <div className="col-lg-3">
+          <div className="prices-order-details">
+            <h4>US $ {product.cartprice}</h4>
+            {/* <span>+US $29.99</span> */}
+          </div>
         </div>
       </div>
-    ))}
+      <hr className="dashed" />
+      <div className="buttonright">
+        {isSaved ? (
+          <button
+            className="btn btn-info btn-lg transparent"
+            type="button"
+          >
+            Saved for later
+          </button>
+        ) : (
+          <button
+            className="btn btn-info btn-lg transparent"
+            type="button"
+            onClick={(e) => handleSaveLater(e, product.cartid)}
+          >
+            Save for later
+          </button>
+        )}
+      </div>
+    </div>
+  );
+})}
   </div>
 ))}
 
@@ -492,12 +537,12 @@ const Checkout = () => {
                         </td>
                       </tr>
                     </table>
-                    <div class="imgtoop">
+                    {/* <div class="imgtoop">
           <img src={Payment} alt="" />
           <button class="btn btn-info btn-lg gradientbtncolor" type="button">
             Confirm & Pay
           </button>
-        </div>
+        </div> */}
                   </div>
                 </>
               ) : (

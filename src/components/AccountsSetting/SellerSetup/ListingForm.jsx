@@ -278,32 +278,38 @@ const ListingForm = (props) => {
 
   const handlePlaceChanged = () => {
     const [place] = inputRef.current.getPlaces();
+    console.log('place:', place); // Add this line to check the value of place
     if (place) {
       setAddress(place.formatted_address);
       setLatitude(place.geometry.location.lat());
       setLongitude(place.geometry.location.lng());
-      for (var i = 0; i < place.address_components.length; i++) {
-        for (var j = 0; j < place.address_components[i].types.length; j++) {
-          if (place.address_components[i].types[j] == "postal_code") {
-            setZip(place.address_components[i].long_name);
-            // document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
-          }
-          if (place.address_components[i].types[0] == "locality") {
-            setCity(place.address_components[i].long_name);
-          }
-          if (
-            place.address_components[i].types[0] ==
-            "administrative_area_level_1"
-          ) {
-            setState(place.address_components[i].long_name);
-          }
-          if (place.address_components[i].types[0] == "country") {
-            setCountry(place.address_components[i].long_name);
+      let political, administrative_area_level_1, postalCode;
+  
+      for (let i = 0; i < place.address_components.length; i++) {
+        console.log('Address component:', place.address_components[i]);
+  
+        const component = place.address_components[i];
+        for (let j = 0; j < component.types.length; j++) {
+          if (component.types[j] === 'country') {
+            political = component.long_name;
+          } else if (component.types[j] === 'administrative_area_level_1') {
+            administrative_area_level_1 = component.long_name;
+          } else if (component.types[j] === 'postal_code') {
+            postalCode = component.long_name;
           }
         }
       }
+  
+      console.log('state:', administrative_area_level_1);
+      console.log('country:', political);
+      console.log('postal Code:', postalCode);
+  
+      setState(administrative_area_level_1);
+      setCity(place.name); // or setCity(place.vicinity);
+      setZip(postalCode);
     }
   };
+  
 
   const handleAddAddress = () => {
     setEditAddress(false);
@@ -1917,9 +1923,9 @@ const ListingForm = (props) => {
         )}
         <h4>TAGS</h4>
         <div className="sizequntycolr">
-          <div >
+          <div className="gridersys">
   {product?.tags.map((tag, index) => (
-      <>
+      <div>
       <input
       key={index}
         type="text"
@@ -1932,7 +1938,7 @@ const ListingForm = (props) => {
           Delete
         </a>
       )}
-      </>
+      </div>
   ))}
     </div>
 </div>
@@ -2054,56 +2060,51 @@ const ListingForm = (props) => {
           <p className="error">{errors.deliverycompany}</p>
         )}
 
-        <div className="delivery-company">
-          {props.guid ? (
-            <>
-            
-                  {isLoaded && (
-                    <StandaloneSearchBox
-                      onLoad={(ref) => (inputRef.current = ref)}
-                      onPlacesChanged={handlePlaceChanged}
-                      style={{width:'100%'}}
-                    >
-                      <input
-                        type="text"
-                        placeholder={`${address}`}
-                      />
-                    </StandaloneSearchBox>
-                  )}
-                </>
-             
-          ) : (
-            <>
-              {isLoaded && (
-                <StandaloneSearchBox
-                style={{width:'100%'}}
-                  onLoad={(ref) => (inputRef.current = ref)}
-                  onPlacesChanged={handlePlaceChanged}
-                >
-                  <input type="text" placeholder="Enter your street Address" />
-                </StandaloneSearchBox>
-              )}
-            </>
-          )}
-        </div>
-        <div className="row">
-          <div className="col-lg-4">
-            <div className="delivery-company">
-              <label className="switch3">{state}</label>
-            </div>
-            {errors.states && <p className="error">{errors.states}</p>}
-          </div>
-          <div className="col-lg-4">
-            <div className="delivery-company">
-              <label className="switch3">{city}</label>
-            </div>
-            {errors.city && <p className="error">{errors.city}</p>}
-          </div>
-          <div className="col-lg-4">
-            <div className="delivery-company">{zip}</div>
-            {errors.city && <p className="error">{errors.city}</p>}
-          </div>
-        </div>
+<div className="delivery-company" style={{ display: 'block', width: '100%' }}>
+  {props.guid ? (
+    <>
+      {isLoaded && (
+        <StandaloneSearchBox
+          onPlacesChanged={handlePlaceChanged}
+          style={{ width: '100%' }}
+        >
+          <input type="text" placeholder={`${address}`} />
+        </StandaloneSearchBox>
+      )}
+    </>
+  ) : (
+    <>
+      {isLoaded && (
+        <StandaloneSearchBox
+          style={{ width: '100%' }}
+          onLoad={(ref) => (inputRef.current = ref)}
+          onPlacesChanged={handlePlaceChanged}
+        >
+          <input type="text" placeholder="Enter your street Address" />
+        </StandaloneSearchBox>
+      )}
+    </>
+  )}
+</div>
+<div className="row">
+  <div className="col-lg-4">
+    <div className="delivery-company">
+      <label style={{ display: 'contents' }} className="switch3">{state}</label>
+    </div>
+    {errors.states && <p className="error">{errors.states}</p>}
+  </div>
+  <div className="col-lg-4">
+    <div className="delivery-company">
+      <label style={{ display: 'contents' }} className="switch3">{city}</label>
+    </div>
+    {errors.city && <p className="error">{errors.city}</p>}
+  </div>
+  <div className="col-lg-4">
+    <div className="delivery-company">{zip}</div>
+    {errors.city && <p className="error">{errors.city}</p>}
+  </div>
+</div>
+
 
         <div className="set-price">
           <div>Shipping Price</div>
