@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Prdimage from "../../assets/Images/Singleproduct/prdimage.png";
 import Prdimage1 from "../../assets/Images/Singleproduct/Product1.png";
 import Prdimage2 from "../../assets/Images/Singleproduct/Product2.png";
-import Prdimage3 from "../../assets/Images/Singleproduct/Product3.png";
+import Prdimage3 from "../../assets/Images/icons/completed.png";
 import Prdimage4 from "../../assets/Images/Singleproduct/product.png";
 import Location from "../../assets/Images/map.png";
 import icon1 from "../../assets/Images/icons/1.png";
@@ -10,6 +10,8 @@ import icon2 from "../../assets/Images/icons/2.png";
 import icon3 from "../../assets/Images/icons/3.png";
 import { Link } from "react-router-dom";
 import StarRating from "./StarRating";
+import OrderServices from "../../services/API/OrderServices";
+import { toast } from "react-toastify";
 // DetailedProductInfo component to display details of a single product
 const DetailedProductInfo = ({ product }) => {
   // Modify this component to display detailed product information as per your needs
@@ -129,122 +131,22 @@ const CompleteOrderManagement = () => {
     setSelectedProduct(null);
   };
 
-  const ordersData = [
-    {
-      orderNumber: "312323",
-      productName: "EliteStride: High-Performance Running Shoes",
-      images: [Prdimage],
-      reviews: [
-        {
-          comment:
-            "I absolutely love my new pair of shoes! The comfort level is off the charts, and they fit like a dream right out of the box. The design is sleek and stylish, making them versatile for both casual outings and more formal occasions. What impressed me the most was the quality of materials used; these shoes feel durable and well-made. Plus, the traction on the soles is fantastic, providing excellent grip on various surfaces. Overall, Im extremely satisfied with my purchase and would highly recommend these shoes to anyone looking for both style and comfort!",
-          rating: 2,
-        },
-        // Other reviews for this product
-      ],
-      status: "Delivered",
-      address: "2438 6th Ave, Ketchikan, Alaska 99901, USA",
-      phone: "02184548845",
-      name: "Slim Shady",
-      deliveryStatus: "Tue, Dec 15 -Wed, Dec 16",
-      price: "38.00",
-      quantity: "3",
-      size: "2.9",
-      color: "Red, GREEN",
-      subTotal: "58.88",
-      item: "2",
-      shipping: "56.00",
-      discount: "-30",
-      orderTotal: "98.00",
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
-    },
-    {
-      orderNumber: "53535",
-      productName: "SneakEase: Stylish & Comfortable Casual Sneakers",
-      images: [Prdimage1],
-      reviews: [
-        {
-          comment:
-            "I took these boots on a rugged hiking trip, and they performed flawlessly. The ankle support provided stability on uneven terrain, and the waterproofing kept my feet dry even through puddles and streams. Theyre sturdy without feeling bulky, and the grip on the soles is exceptional. Despite the tough conditions, my feet felt comfortable and supported throughout the entire hike. These boots are a game-changer for any outdoor enthusiast!",
-          rating: 4.9,
-        },
-        // Other reviews for this product
-      ],
-      status: "Delivered",
-      address: "2438 6th Ave, Ketchikan, Alaska 99901, USA",
-      phone: "02184548845",
-      name: "Jon Wick",
-      deliveryStatus: "Tue, Dec 15 -Wed, Dec 16",
-      price: "38.00",
-      quantity: "5",
-      size: "2.9",
-      color: "Red, GREEN",
-      subTotal: "58.88",
-      item: "2",
-      shipping: "56.00",
-      discount: "-30",
-      orderTotal: "98.00",
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
-    },
-    {
-      orderNumber: "414324",
-      productName: "SummitTrail: Durable & Waterproof Hiking Boots",
-      images: [Prdimage2],
-      reviews: [
-        {
-          comment:
-            "Ive been wearing these sneakers every day since I got them! Theyre not only stylish but incredibly comfortable. The memory foam insoles feel like walking on clouds, and the arch support is fantastic. Theyre also very versatile, matching perfectly with various outfits. The quality is evident, and after weeks of constant wear, they still look brand new. I highly recommend these for anyone seeking comfort and style in their everyday footwear.",
-          rating: 2.5,
-        },
-        // Other reviews for this product
-      ],
-      status: "Delivered",
-      address: "2438 6th Ave, Ketchikan, Alaska 99901, USA",
-      phone: "02184548845",
-      name: "Johnny",
-      deliveryStatus: "Tue, Dec 12 -Wed, Dec 16",
-      price: "38.00",
-      quantity: "3",
-      size: "2.9",
-      color: "Green, White",
-      subTotal: "58.88",
-      item: "2",
-      shipping: "56.00",
-      discount: "-30",
-      orderTotal: "98.00",
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
-    },
-    {
-      orderNumber: "636363",
-      productName: "EleganceStep: Classic & Comfortable Dress Shoes",
-      images: [Prdimage3],
-      reviews: [
-        {
-          comment:
-            "As a dedicated runner, finding the right pair of shoes is crucial. These running shoes exceeded my expectations! The cushioning is superb, offering incredible support and comfort mile after mile. They are incredibly lightweight, which helps with my speed, and the breathability keeps my feet cool even on longer runs. The design is also striking, and the traction is top-notch. I couldnt be happier with my purchase!",
-          rating: 5,
-        },
-        // Other reviews for this product
-      ],
-      status: "Delivered",
-      address: "2438 6th Ave, Ketchikan, Alaska 99901, USA",
-      phone: "02184548845",
-      name: "John Doe",
-      deliveryStatus: "Tue, Dec 23 -Wed, Dec 16",
-      price: "38.00",
-      quantity: "3",
-      size: "2.9",
-      color: "Red, Black",
-      subTotal: "58.88",
-      item: "2",
-      shipping: "56.00",
-      discount: "-30",
-      orderTotal: "98.00",
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
-    },
-  ];
-  if (showReviews && selectedProduct !== null && ordersData[selectedProduct]) {
-    const selectedOrder = ordersData[selectedProduct];
+  const getOrderSummary = () => {
+    OrderServices.sellerCompletedOrders()
+      .then((response) => {
+        console.log('ordersCompleted',response);
+        setSelectedProduct(response);
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  };
+
+  useEffect(() => {
+    getOrderSummary();
+  }, []);
+  if (showReviews && selectedProduct !== null && selectedProduct[selectedProduct]) {
+    const selectedOrder = selectedProduct[selectedProduct];
 
     return (
       <div className="reviews-view-ordrmngment">
@@ -275,8 +177,8 @@ const CompleteOrderManagement = () => {
     );
   }
 
-  if (selectedProduct !== null && ordersData[selectedProduct]) {
-    const selectedOrder = ordersData[selectedProduct];
+  if (selectedProduct !== null && selectedProduct[selectedProduct]) {
+    const selectedOrder = selectedProduct[selectedProduct];
 
     return (
       <div className="detailed-view">
@@ -291,25 +193,26 @@ const CompleteOrderManagement = () => {
   return (
     <div className="ongoing ordmangemnt">
       <h3>Complete Orders</h3>
-      {ordersData.map((order, index) => (
-        <div className="row align-items-center" key={order.orderNumber}>
+      {selectedProduct && selectedProduct.data && selectedProduct.data.map((order, index) => (
+        <div className="row align-items-center" key={index}>
           <div className="col-lg-8">
             <div className="product-image">
               <div className="image">
-                {order.images.map((image, imgIndex) => (
+                {/* {order.images.map((image, imgIndex) => (
                   <img
                     key={imgIndex}
                     src={image}
                     alt={`Product ${imgIndex + 1}`}
                   />
-                ))}
+                ))} */}
+                  <img  src={Prdimage3} alt="Product" />
               </div>
               <div className="prd-details">
                 <h5>
-                  Order # : <b>{order.orderNumber}</b>
+                  Order # : <b>{order.orderid}</b>
                 </h5>
-                <h3>{order.productName}</h3>
-                <h6 style={{ color: "#70BE44" }}>{order.status}</h6>
+                <h3><span style={{fontWeight:'normal'}}>Customer Name:</span> {order.fullname}</h3>
+                <h6 style={{ color: "#70BE44" }}><span style={{fontWeight:'normal',color:'black'}}>Order Status: </span>{order.status}</h6>
               </div>
             </div>
           </div>
@@ -321,7 +224,7 @@ const CompleteOrderManagement = () => {
               </button>
               <br />
               <button className="rviews" onClick={() => handleReviews(index)}>
-                Reviews
+                Refund
               </button>
             </div>
           </div>

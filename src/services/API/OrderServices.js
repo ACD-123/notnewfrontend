@@ -153,21 +153,45 @@ function customerRefundCount() {
     method: 'GET',
   })
 }
-function customerOngoingOrders() {
+function sellerOngoingOrders() {
   return request({
-    url: `${ordersApi}/activecustomer`,
+    url: `${ordersApi}/active`,
     method: 'GET',
   })
 }
+function customerOngoingOrders() {
+  return request({
+    url: `${ordersApi}/active`,
+    method: 'GET',
+  })
+}
+// function customerOngoingOrders() {
+//   return request({
+//     url: `${ordersApi}/active`,
+//     method: 'GET',
+//   })
+// }
 function customerCompletedOrders() {
   return request({
-    url: `${baseUrl}/customer/completed`,
+    url: `${ordersApi}/completedcustomer`,
+    method: 'GET',
+  })
+}
+function sellerCompletedOrders() {
+  return request({
+    url: `${ordersApi}/completed`,
     method: 'GET',
   })
 }
 function customerRefundOrders() {
   return request({
-    url: `${baseUrl}/customer/refund`,
+    url: `${ordersApi}/refundcustomer`,
+    method: 'GET',
+  })
+}
+function sellerRefundOrders() {
+  return request({
+    url: `${ordersApi}/refund`,
     method: 'GET',
   })
 }
@@ -179,6 +203,9 @@ function customerBuyAgainOrders() {
 }
 const OrderServices = {
   save,
+  sellerRefundOrders,
+  sellerCompletedOrders,
+  sellerOngoingOrders,
   customerOngoingOrders,
   customerCompletedOrders,
   customerRefundOrders,

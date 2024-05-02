@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Prdimage from '../../assets/Images/Singleproduct/prdimage.png';
 import Prdimage1 from '../../assets/Images/Singleproduct/Product1.png';
 import Prdimage2 from '../../assets/Images/Singleproduct/Product2.png';
-import Prdimage3 from '../../assets/Images/Singleproduct/Product3.png'
+import Prdimage3 from '../../assets/Images/icons/active.png'
 import Prdimage4 from '../../assets/Images/Singleproduct/product.png'
 import Location from '../../assets/Images/map.png'
 import icon1 from '../../assets/Images/icons/1.png'
@@ -23,34 +23,37 @@ const DetailedProductInfo = ({ order }) => {
     status: "",
     orderid: ""
   });
+const orderId = order.id;
 
-  let orderId = order;
-  const getOrder =(orderId) =>{
-    OrderServices.getbyid(order)
-      .then((response) => {
-        let orderItems = JSON.parse(JSON.parse(response.orderItems))
-        console.log('oredrs', response)
-        setOrder(response);
-        setOrderItems(orderItems);
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      });
-  }
-  const handleSubmit =(e) =>{
-    e.preventDefault();
-    let id = document.getElementById('orderid').value;
-    OrderServices.updateSeller(id, formData)
-      .then((response) => {
-        if(response.success){
-          toast.success(response.message)
-        }else{
-          toast.error(response)
-        }
-      }).catch((e) => {
-        toast.error(e.message);
-      });
-  }
+const getOrder = (orderId) => {
+  OrderServices.getbyid(orderId) // Pass orderId instead of order
+    .then((response) => {
+      let orderItems = JSON.parse(JSON.parse(response.orderItems));
+      console.log('ordersById', response);
+      setOrder(response);
+      setOrderItems(orderItems);
+    })
+    .catch((e) => {
+      toast.error(e.message);
+    });
+};
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+  OrderServices.updateSeller(order.id, formData) // Use order.id directly
+    .then((response) => {
+      console.log('orderId', response);
+      if (response.success) {
+        toast.success(response.message);
+      } else {
+        toast.error(response);
+      }
+    })
+    .catch((e) => {
+      toast.error(e.message);
+    });
+};
+
   const handleInputChange =(e)=>{
     const { name, value } = e.target;
     setFormData({
@@ -59,8 +62,8 @@ const DetailedProductInfo = ({ order }) => {
     });
   }
   useEffect(() => {
-    getOrder();
-  }, []);
+    getOrder(orderId);
+  }, [orderId]);
   // Modify this component to display detailed order information as per your needs
   return (
     <>
@@ -211,105 +214,13 @@ const OngoingOrderManagement = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [ordersummary, setOrderSummary] = useState({});
 
-  const handleViewDetails = (orderId) => {
-    // console.log('order id', orderid)
-    setSelectedProduct(orderId);
+  const handleViewDetails = (order) => {
+    setSelectedProduct(order);
   };
-  const ordersData = [
-    {
-      orderNumber: '312323',
-      productName: "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #12121",
-      images: [
-        Prdimage,
-      ],
-      status: 'Pending',
-      address: '2438 6th Ave, Ketchikan, Alaska 99901, USA',
-      phone: '02184548845',
-      name: 'Slim Shady',
-      deliveryStatus: 'Tue, Dec 15 -Wed, Dec 16',
-      price: '38.00',
-      quantity: '3',
-      size: '2.9',
-      color: 'Red, GREEN',
-      subTotal: '58.88',
-      item: '2',
-      shipping: '56.00',
-      discount: '-30',
-      orderTotal: '98.00',
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
-    },
-    {
-       orderNumber: '53535',
-      productName: "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #3131",
-      images: [
-        Prdimage1,
-      ],
-      status: 'Pending',
-      address: '2438 6th Ave, Ketchikan, Alaska 99901, USA',
-      phone: '02184548845',
-      name: 'Slim Shady',
-      deliveryStatus: 'Tue, Dec 15 -Wed, Dec 16',
-      price: '38.00',
-      quantity: '3',
-      size: '2.9',
-      color: 'Red, GREEN',
-      subTotal: '58.88',
-      item: '2',
-      shipping: '56.00',
-      discount: '-30',
-      orderTotal: '98.00',
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
-    },
-    {
-        orderNumber: '414324',
-      productName: "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #42424",
-      images: [
-        Prdimage2,
-      ],
-      status: 'Pending',
-      address: '2438 6th Ave, Ketchikan, Alaska 99901, USA',
-      phone: '02184548845',
-      name: 'Slim Shady',
-      deliveryStatus: 'Tue, Dec 12 -Wed, Dec 16',
-      price: '38.00',
-      quantity: '3',
-      size: '2.9',
-      color: 'Red, White',
-      subTotal: '58.88',
-      item: '2',
-      shipping: '56.00',
-      discount: '-30',
-      orderTotal: '98.00',
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
-    },
-    {
-        orderNumber: '636363',
-      productName: "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #52525",
-      images: [
-        Prdimage3,
-      ],
-      status: 'Pending',
-      address: '2438 6th Ave, Ketchikan, Alaska 99901, USA',
-      phone: '02184548845',
-      name: 'John Doe',
-      deliveryStatus: 'Tue, Dec 23 -Wed, Dec 16',
-      price: '38.00',
-      quantity: '3',
-      size: '2.9',
-      color: 'Red, Black',
-      subTotal: '58.88',
-      item: '2',
-      shipping: '56.00',
-      discount: '-30',
-      orderTotal: '98.00',
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
-    },
-    
-
-  ];
   const getOrderSummary = () => {
-    OrderServices.ordersummary()
+    OrderServices.sellerOngoingOrders()
       .then((response) => {
+        console.log('orders',response);
         setOrderSummary(response);
       })
       .catch((e) => {
@@ -336,67 +247,36 @@ const OngoingOrderManagement = () => {
   return (
     <div className='ongoing ordmangemnt'>
       <h3>Ongoing Orders</h3>
-      {ordersummary.length > 0 ? (
-        <>
-        {ordersummary.map((ordersumm, index) => {
-          return(
+      
+  {ordersummary && ordersummary.data && ordersummary.data.map((order, index) => (
             <>
-             <div className='row align-items-center' key={ordersumm.order.orderid}>
+             <div className='row align-items-center' key={index}>
               <div className='col-lg-8'>
                 <div className='product-image'>
                   <div className='image'>
                       <img  src={Prdimage3} alt="Product" />
                   </div>
                   <div className='prd-details'>
-                    <h5>Order # : <b>{ordersumm.order.orderid}</b></h5>
-                    <h3>{ordersumm.product.name}</h3>
-                    <h6 style={{ color: "#0688FF" }}>{ordersumm.order.status}</h6>
+                    <h5>Order # : <b>{order.orderid}</b></h5>
+                    <h3>{order.fullname}</h3>
+                    <h6 style={{ color: "#0688FF" }}>{order.status}</h6>
                   </div>
                 </div>
               </div>
               <div className='col-lg-4'>
                 <div className='rightarrow viedeails'>
-                  <button onClick={() => handleViewDetails(ordersumm.order.id)}>
-                    View Details
-                  </button>
+                <button onClick={() => handleViewDetails(order)}>
+  View Details
+</button>
                 </div>
               </div>
               <hr />
              </div>
             </>
-          )
-        })}
-        </>
-      ):('No Order Exists')}
-      {/* {ordersData.map((order, index) => (
-        <div className='row align-items-center' key={order.orderNumber}>
-          <div className='col-lg-8'>
-            <div className='product-image'>
-              <div className='image'>
-                {order.images.map((image, imgIndex) => (
-                  <img key={imgIndex} src={image} alt={`Product ${imgIndex + 1}`} />
-                ))}
-              </div>
-              <div className='prd-details'>
-                <h5>Order # : <b>{order.orderNumber}</b></h5>
-                <h3>{order.productName}</h3>
-                <h6 style={{ color: "#0688FF" }}>{order.status}</h6>
-              </div>
-            </div>
-            
-          </div>
 
-          <div className='col-lg-4'>
-            <div className='rightarrow viedeails'>
-              <button onClick={() => handleViewDetails(index)}>
-                View Details
-              </button>
-            </div>
-          </div>
-          <hr />
-        </div>
-        
-      ))} */}
+        ))}
+      
+     
     </div>
   );
 };

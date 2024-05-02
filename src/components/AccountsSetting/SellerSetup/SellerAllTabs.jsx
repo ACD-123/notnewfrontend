@@ -58,13 +58,13 @@ const SellerAllTabs = (props) => {
         return null;
       case 'sellings1':
         // return <OngoingOrderManagement />;
-        return <NotFound/>
+        return <OngoingOrderManagement/>
         case 'sellings2':
-          return <NotFound/> 
+          return <CompleteOrderManagement/> 
           // return <CompleteOrderManagement />;
           case 'sellings3':
-          // return <RefundManagement />; 
-          return <NotFound/> 
+          return <RefundManagement />; 
+          // return <NotFound/> 
       case 'selling4':
         // return <BidsNoffers />;
         return <NotFound/> 

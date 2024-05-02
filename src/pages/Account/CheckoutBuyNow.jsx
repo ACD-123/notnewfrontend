@@ -75,11 +75,11 @@ const CheckoutBuyNow = () => {
         console.log('res',res)
         setProductData(res.data);
         setProductShopData(res.data.shop);
-        let tags = JSON.parse(JSON.parse(res.data.tags));
+        let tags = JSON.parse(res.data.tags);
         let allTags = [];
-        {
-          tags.map((tag, index) => allTags.push(tag.tag));
-        }
+        // {
+        //   tags.map((tag, index) => allTags.push(tag.tag));
+        // }
         setTags(allTags);
       })
       .finally(() => {

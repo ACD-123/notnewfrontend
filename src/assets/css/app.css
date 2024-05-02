@@ -1431,10 +1431,11 @@ padding: 15px 0px 15px 30px;
   height: 99px;
   margin: 5px;
   cursor: pointer;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 10px;
   display: block;
-  width: auto !important;
+  width: 100% !important;
+  background: white;
 }
 .gallery-images img {
   border-radius: 10px;
@@ -1873,8 +1874,8 @@ section#purchasehistory .tab-buttons {
   margin: 20px 0;
 }
 .ongoing .product-image .image img {
-  width: 150px;
-  height: 150px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
   border-radius: 10px;
 }

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Prdimage from "../../assets/Images/Seller/Refundimages/1.png";
 import Prdimage1 from "../../assets/Images/Seller/Refundimages/2.png";
 import Prdimage2 from "../../assets/Images/Seller/Refundimages/3.png";
-import Prdimage3 from "../../assets/Images/Seller/Refundimages/4.png";
+import Prdimage3 from "../../assets/Images/icons/refund.png";
 import Redundimage1 from "../../assets/Images/Refundreasonimages/1.png";
 import Redundimage2 from "../../assets/Images/Refundreasonimages/2.png";
 import Redundimage3 from "../../assets/Images/Refundreasonimages/3.png";
@@ -14,6 +14,8 @@ import icon2 from "../../assets/Images/icons/2.png";
 import icon3 from "../../assets/Images/icons/3.png";
 import { Link } from "react-router-dom";
 import objction from "../../assets/Images/objection.png";
+import OrderServices from "../../services/API/OrderServices";
+import { toast } from "react-toastify";
 // DetailedProductInfo component to display details of a single product
 const DetailedProductInfo = ({ product }) => {
   // Modify this component to display detailed product information as per your needs
@@ -137,123 +139,23 @@ const RefundManagement = () => {
     setSelectedProduct(index);
   };
 
-  const ordersData = [
-    {
-      orderNumber: "753525",
-      productName: "Stride in Style: Urban Chic Sneakers",
-      images: [Prdimage],
-      galleryImages: [Redundimage1, Redundimage3, Redundimage5, Redundimage2],
-      status: "Refund Requested",
-      address: "2438 6th Ave, Ketchikan, Alaska 99901, USA",
-      phone: "02184548845",
-      name: "Slim Shady",
-      deliveryStatus: "Tue, Dec 15 -Wed, Dec 16",
-      price: "28.00",
-      quantity: "4",
-      size: "2.9",
-      color: "Red, GREEN",
-      subTotal: "58.88",
-      item: "2",
-      shipping: "56.00",
-      discount: "-30",
-      orderTotal: "98.00",
-      adminApproval: "Pending",
-      sellerApproval: "Approved",
-      refundReason:
-        "The shoes received didnt match the size ordered, causing discomfort or inconvenience.",
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
-    },
-    {
-      orderNumber: "57463",
-      productName: "Elevate Every Step: Classic Leather Loafers",
-      images: [Prdimage1],
-      galleryImages: [
-        Redundimage1,
-        Redundimage2,
-        Redundimage3,
-        Redundimage4,
-        Redundimage5,
-      ],
-      status: "Pending",
-      address: "2438 6th Ave, Ketchikan, Alaska 99901, USA",
-      phone: "02184548845",
-      name: "Slim Shady",
-      deliveryStatus: "Tue, Dec 15 -Wed, Dec 16",
-      price: "38.00",
-      quantity: "3",
-      size: "2.9",
-      color: "Red, GREEN",
-      subTotal: "58.88",
-      item: "2",
-      shipping: "56.00",
-      discount: "-30",
-      orderTotal: "98.00",
-      adminApproval: "Approved",
-      sellerApproval: "Pending",
-      refundReason:
-        "Significant defects like torn seams, detached soles, or material issues affecting wearability.",
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
-    },
-    {
-      orderNumber: "414324",
-      productName: "Adventurer's Choice: Trailblazer Hiking Boots",
-      images: [Prdimage2],
-      galleryImages: [Redundimage4, Redundimage5, Redundimage1, Redundimage2],
-      status: "Pending",
-      address: "2438 6th Ave, Ketchikan, Alaska 99901, USA",
-      phone: "02184548845",
-      name: "Slim Shady",
-      deliveryStatus: "Tue, Dec 12 -Wed, Dec 16",
-      price: "38.00",
-      quantity: "3",
-      size: "2.9",
-      color: "Red, White",
-      subTotal: "58.88",
-      item: "2",
-      shipping: "56.00",
-      discount: "-30",
-      orderTotal: "98.00",
-      adminApproval: "Pending",
-      sellerApproval: "Approved",
-      refundReason:
-        "The product received differed significantly from its online description or images.",
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
-    },
-    {
-      orderNumber: "636363",
-      productName: "Sleek Sophistication: Formal Oxford Collection",
-      images: [Prdimage3],
-      galleryImages: [
-        Redundimage4,
-        Redundimage1,
-        Redundimage2,
-        Redundimage3,
-        Redundimage5,
-      ],
-      status: "Approved",
-      address: "2438 6th Ave, Ketchikan, Alaska 99901, USA",
-      phone: "02184548845",
-      name: "John Doe",
-      deliveryStatus: "Tue, Dec 23 -Wed, Dec 16",
-      price: "38.00",
-      quantity: "3",
-      size: "2.9",
-      color: "Red, Black",
-      subTotal: "58.88",
-      item: "2",
-      shipping: "56.00",
-      discount: "-30",
-      orderTotal: "98.00",
-      adminApproval: "Pending",
-      sellerApproval: "Pending",
-      refundReason:
-        "Despite the correct size, the shoes are uncomfortable or cause discomfort when worn.",
-      note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.',
-    },
-  ];
+  const getOrderSummary = () => {
+    OrderServices.sellerRefundOrders()
+      .then((response) => {
+        console.log('ordersRefund',response);
+        setSelectedProduct(response);
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  };
 
-  if (selectedProduct !== null && ordersData[selectedProduct]) {
-    const selectedOrder = ordersData[selectedProduct];
+  useEffect(() => {
+    getOrderSummary();
+  }, []);
+
+  if (selectedProduct !== null && selectedProduct[selectedProduct]) {
+    const selectedOrder = selectedProduct[selectedProduct];
 
     return (
       <div className="detailed-view">
@@ -268,22 +170,23 @@ const RefundManagement = () => {
   return (
     <div className="ongoing ordmangemnt">
       <h3>Refund Orders</h3>
-      {ordersData.map((order, index) => (
-        <div className="row align-items-center" key={order.orderNumber}>
+      {selectedProduct && selectedProduct.data && selectedProduct.data.map((order, index) => (
+        <div className="row align-items-center" key={index}>
           <div className="col-lg-10">
             <div className="product-image">
               <div className="image">
-                {order.images.map((image, imgIndex) => (
+                {/* {order.images.map((image, imgIndex) => (
                   <img
                     key={imgIndex}
                     src={image}
                     alt={`Product ${imgIndex + 1}`}
                   />
-                ))}
+                ))} */}
+                <img  src={Prdimage3} alt="Product" />
               </div>
               <div className="prd-details">
                 <h5>
-                  Order # : <b>{order.orderNumber}</b>
+                  Order # : <b>{order.orderid}</b>
                 </h5>
                 <h3>{order.productName}</h3>
                 <div className="admin-seller-order-status">
@@ -305,7 +208,7 @@ const RefundManagement = () => {
                   </div>
                   <div>
                     <h6>
-                      <span>Admin Approval</span>:{" "}
+                      <span>Refund Approval</span>:{" "}
                       <em
                         style={{
                           color:
@@ -320,7 +223,7 @@ const RefundManagement = () => {
                       </em>
                     </h6>
                   </div>
-                  <div>
+                  {/* <div>
                     <h6>
                       <span>Seller Approval</span>:{" "}
                       <em
@@ -336,7 +239,7 @@ const RefundManagement = () => {
                         {order.sellerApproval}
                       </em>
                     </h6>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

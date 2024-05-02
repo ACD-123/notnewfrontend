@@ -8,8 +8,9 @@ import Search from "../../Elements/FilterAttributes/Search"
 import PriceRange from "../../Elements/FilterAttributes/PriceRange"
 import SizeToggle from "../../Elements/FilterAttributes/Size"
 import ProductServices from '../../../services/API/ProductServices'; //~/services/API/ProductServices
+import AllProductListing from '../../Elements/AllProductListing';
 
-const AllProducts = () => {
+const AllNewProducts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(6); // Change this value to adjust items per page
   const [products, setProductData] = useState([]);
@@ -33,7 +34,7 @@ const AllProducts = () => {
     // return currentCards.map((product) => {
       return(
         <>
-        <ProductCard  />
+        <AllProductListing  />
         </>
       )
     // }
@@ -154,4 +155,4 @@ const AllProducts = () => {
   );
 };
 
-export default AllProducts;
+export default AllNewProducts;

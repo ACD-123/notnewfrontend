@@ -10,168 +10,166 @@ import { toast } from "react-toastify";
 import { BASE_URL } from "../../services/Constant";
 
 const ProductListing = (props) => {
-  const [loading, setLoading] = useState(true);
-  const [product, setProduct] = useState({});
-  const [error, setError] = useState(null);
-  let products = "";
-  if(props.product){
-    products = props.product;
-  }
-  const getProduct = () =>{
-    if(props.product){
-      setLoading(false);  
-      setProduct(props.product)
-    }
-  }
-
+ 
+  const [productData, setProductData] = useState([]);
+  const fetchProductData = async () => {      
+    ProductServices.recent()
+    .then((res) => {
+      console.log('resodddd',res)
+      setProductData(res); // Limit to the first 5 products
+    }).catch(error => console.log(error));
+  };
   useEffect(() => {
-      try {
-         setLoading(true);
-         getProduct();
-      }catch (error) {
-        console.error('Error fetching product data:', error);
-        setError('Error fetching product data. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-
+    fetchProductData();
   }, []);
   return (
     <>
       <section id='productcard' style={{ padding: "10px 0px" }}>
-        <div className='container'>
-          {products ? (
-            <>
-            {loading ? (
-            <p>Loading...</p>
-          ) : error ? (
-            <p>{error}</p>
-          ) : (
-            <div className='row'>
-              <div className='col col-lg-3' key={products.id}>
+        <div className='row'>
+          
+      {productData.map((product) => (
+        <div className='col col-lg-3' key={product.products?.guid}>
                 <div className='productlist'>
-                {products.auction ? (
-                    <Link to={`/auctionproduct/${products?.guid}`}>
-                      {product.media.length > 0 ? (
+                  {product?.auctioned ? (
+                    <>
+                      {/* {product.products?.name} */}
+                      <Link to={`/auctionproduct/${product.products?.guid}`}>
+                      {product.products?.media[0].name? (
                         <>
-                          <img src={`${BASE_URL}/image/product/${product.media[0].name}`} alt={ProductImage1} />
+                          <img src={`${product.products?.media[0].name}`} alt="" />
                         </>
-                      ):("")}
-                    </Link>
-                  ) : (
-                    <Link to={`/singleproduct/${products.guid}`}>
-                    {product.media.length > 0 ? (
+                      ):(
                         <>
-                          <img src={`${BASE_URL}/image/product/${product.media[0].name}`} alt={ProductImage1} />
+                          <h1>null</h1>
                         </>
-                      ):("")}
-                    </Link>
-                )}
-                {products.auction && <span className='auction-badge'>Auction</span>}
-                <div className='px-2'>
-                      {products.auction ? (
-                          <Link to={`/auctionproduct`}>
-                            <h3>{product.name.substring(0, 10)}...</h3>
-                            <h4>{products.description.substring(0, 30)}...</h4>
-                            <h4>Condition: {products.condition}</h4>
-                          </Link>
-                        ) : (
-                          <Link to={`/singleproduct/${products.guid}`}>
-                            <h3>{product.name.substring(0, 10)}...</h3>
-                            <h4>{products.description.substring(0, 30)}...</h4>
-                            <h4>Condition: {products.condition}</h4>
-                          </Link>
-                        )}
-                        <p> 
-                        <ul>
-                          {products.sale_price !== null || products.sale_price !== 0 && (
-                            <li className='price'>${products.sale_price}</li>
-                          )}
-                          {products.price !== null && products.sale_price !== null || products.sale_price !== 0 && (
-                            <li className='sale'>
-                              <del>${products.price}</del>
-                            </li>
-                          )}
-                          {products.price !== null && products.sale_price !== null || products.sale_price !== 0 && (
-                            <li className='discount'>
-                              {((products.price - products.sale_price) / products.price * 100).toFixed(2)}% OFF
-                            </li>
-                          )}
-                          {products.price !== null  && (
-                            <li className='price'>
-                              ${products.price}
-                            </li>
-                          )}
-                        </ul>
-                      </p>
-                </div>
-                </div>
-              </div>
-            </div>
-          )}
-            </>
-          ):(<>
-          {loading ? (
-            <p>Loading...</p>
-          ) : error ? (
-            <p>{error}</p>
-          ) : (
-            <div className='row'>
-              <div className='col col-lg-3' key={product.id}>
-                <div className='productlist'>
-                {product.auction ? (
-                      <Link to={`/auctionproduct`}>
-                        <img src={ProductImage1} alt={ProductImage1} />
+                      ) }
+                        {/* <img src={product.cover_image} alt={product.name} /> */}
                       </Link>
+                    </>
                   ) : (
-                    <Link to={`/singleproduct/${product.guid}`}>
-                      <img src={ProductImage1} alt={ProductImage1} />
-                    </Link>
-                )}
-                {product.auction && <span className='auction-badge'>Auction</span>}
-                <div className='px-2'>
-                      {product.auction ? (
-                          <Link to={`/auctionproduct`}>
-                            <h3>{product.name}</h3>
-                            <h4>{product.description}</h4>
-                            <h4>{product.condition}</h4>
-                          </Link>
-                        ) : (
-                          <Link to={`/singleproduct/${product.guid}`}>
-                            <h3>{product.name}</h3>
-                            <h4>{product.description}</h4>
-                            <h4>{product.condition}</h4>
-                          </Link>
-                        )}
-                        <p> 
-                        <ul>
-                          {product.sale_price !== null || product.sale_price !== 0 && (
-                            <li className='price'>${product.sale_price}</li>
+                    <>
+                    <Link to={`/singleproduct/${product.products?.guid}`}>
+                      {product.products?.media[0].name ? (
+                        <>
+                        {/* https://notnewbackend.testingwebsitelink.com/image/product/aa.jpg */}
+                          <img src={`${product.products?.media[0].name}`} alt="" />
+                        </>
+                      ):(
+                        <>
+                         <h2>null</h2>
+                        </>
+                      ) }
+                        {/* <img src={product.cover_image} alt={product.name} /> */}
+                      </Link>
+                    </>
+                  )}
+                  {product.products?.auctioned ?(<span className='auction-badge'>Auction</span>) : ('')}
+                  <div className='px-2'>
+                    {product?.auctioned ? (
+                      <Link to={`/auctionproduct/${product.products?.guid}`}>
+                        <h3>{product.products?.name.substring(0, 20)}...</h3>
+                        <h4>{product.products?.description.substring(0, 40)}...</h4>
+                      </Link>
+                    ) : (
+                      <Link to={`/singleproduct/${product.guid}`}>
+                      <h3>{product.products?.name.substring(0, 20)}...</h3>
+                      <h4>{product.products?.description.substring(0, 40)}...</h4>
+                      </Link>
+                    )}
+                    <p>
+                      <p>
+                      {product.products?.auctioned ? (
+                                <>
+                                  <ul>
+                                    <li className="sale">
+                                      <p>
+                                        <b>Bids: </b>$ {product.products?.bids}
+                                      </p>
+                                    </li>
+                                    {(product.products?.price !== null &&
+                                      product.products?.sale_price !== null) ||
+                                      (product.products?.sale_price !== 0 && (
+                                        <li className="sale">
+                                          <del>${product.products?.price}</del>
+                                        </li>
+                                      ))}
+                                    {(product.products?.price !== null &&
+                                      product.products?.sale_price !== null) ||
+                                      (product.products?.sale_price !== 0 && (
+                                        <li className="discount">
+                                          {(
+                                            ((product.products?.price -
+                                              product.products?.sale_price) /
+                                              product.products?.price) *
+                                            100
+                                          ).toFixed(2)}
+                                          % OFF
+                                        </li>
+                                      ))}
+                                  </ul>
+                                </>
+                              ) : (
+                                <>
+                                  <ul>
+                                    <li className="sale">
+                                      <p>
+                                        <b>Price: </b>$ {product.products?.price}
+                                      </p>
+                                    </li>
+                                    {(product.products?.price !== null &&
+                                      product.products?.sale_price !== null) ||
+                                      (product.products?.sale_price !== 0 && (
+                                        <li className="sale">
+                                          <del>${product.products?.price}</del>
+                                        </li>
+                                      ))}
+                                    {(product.products?.price !== null &&
+                                      product.products?.sale_price !== null) ||
+                                      (product.products?.sale_price !== 0 && (
+                                        <li className="discount">
+                                          {(
+                                            ((product.products?.price -
+                                              product.products?.sale_price) /
+                                              product.products?.price) *
+                                            100
+                                          ).toFixed(2)}
+                                          % OFF
+                                        </li>
+                                      ))}
+                                  </ul>
+                                </>
+                              )}
+                      {/* {product.products?.auctioned ? (
+                      <ul>
+                      {product.products?.bids !== null && (
+                        <li className='price'> Maximum Bid: ${product.products?.bids}</li>
+                      )}
+                    </ul>
+                    ) : (
+                      <ul>
+                          {product.products?.price !== null && (
+                            <li className='price'>${product.products?.price}</li>
                           )}
-                          {product.price !== null && product.sale_price !== null || product.sale_price !== 0 && (
+                          {product.products?.price !== null && product.products?.sale_price !== null && (
                             <li className='sale'>
-                              <del>${product.price}</del>
+                              <del>${product.products?.price}</del>
                             </li>
                           )}
-                          {product.price !== null && product.sale_price !== null || product.sale_price !== 0 && (
+                          {product.products?.price !== null && product.products?.sale_price !== null && (
                             <li className='discount'>
-                              {((product.price - product.sale_price) / product.price * 100).toFixed(2)}% OFF
-                            </li>
-                          )}
-                          {product.price !== null  && (
-                            <li className='price'>
-                              ${product.price}
+                              {((product.products?.price - product.products?.sale_price) / product.products?.price * 100).toFixed(2)}% OFF
                             </li>
                           )}
                         </ul>
+                    )} */}
+                        
                       </p>
-                </div>
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-          </>)}
-        </div>
+            ))}
+       </div>
       </section>
     </>
   );

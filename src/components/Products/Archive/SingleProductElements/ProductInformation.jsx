@@ -54,11 +54,11 @@ const ProductInformation = () => {
     ProductServices.get(id)
       .then((res) => {
         setProductData(res.data);
-        let tags = JSON.parse(JSON.parse(res.data.tags));
+        let tags = JSON.parse(res.data.tags);
         let allTags = [];
-        {
-          tags.map((tag, index) => allTags.push(tag.tag));
-        }
+        // {
+        //   tags.map((tag, index) => allTags.push(tag.tag));
+        // }
         setTags(allTags);
       })
       .finally(() => {
@@ -272,8 +272,8 @@ const ProductInformation = () => {
             </>
           )}
 
-          <br />
-          <h3>Tags</h3>
+          {/* <br /> */}
+          {/* <h3>Tags</h3>
           <ul className="tagsList">
             {gettags.map((tag) => {
               return (
@@ -282,7 +282,7 @@ const ProductInformation = () => {
                 </>
               );
             })}
-          </ul>
+          </ul> */}
           <br />
           <br />
           <h3>Descriptions</h3>

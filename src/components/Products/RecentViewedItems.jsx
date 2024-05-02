@@ -26,7 +26,7 @@ const RecentViewedItems = () => {
         <div className='container'>
             <div className='row'>
                 <div className='headings'>
-                <h3>Recently Viewed <span><Link to="/notFound">View More</Link></span></h3>
+                <h3>Recently Viewed <span><Link to="/AllProducts">View More</Link></span></h3>
                 </div>
             </div>
         </div>

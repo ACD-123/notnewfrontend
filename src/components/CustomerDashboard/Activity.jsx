@@ -55,8 +55,8 @@ const Activity = () => {
         // return <Wishlist /> ;
         return <NotFound_/>
       case 'componentD':
-        // return <MainPurchase />;
-        return <NotFound_/>
+        return <MainPurchase />;
+        // return <NotFound_/>
       case 'componentE':
         // return <BuyAgain />;
         return <NotFound_/>
