@@ -33,6 +33,7 @@ import ProductUpload from "../components/Products/ProductUpload"
 import NotFound from "../pages/NotFound"
 import CheckoutBuyNow from "../pages/Account/CheckoutBuyNow"
 import AllNewProducts from "../components/Products/Archive/AllNewProducts"
+import Refund from "../components/PurchaseHistory/Refund"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -78,6 +79,7 @@ const PublicRoutes = () => {
 					<Route path="/searchhistory" element={<SearchHistory />} />
 					<Route path="/ongoingorder/:guid" element={<OngoingOrderManagement/>} />
 					<Route path="/completedorder/:guid" element={<CompleteOrderManagement/>} />
+					<Route path="/refund/:guid" element={<Refund/>} />
 					<Route path="/transactions" element={<MyTransactions/>} />
 					<Route path="/instock" element={<InStock/>} />
 					<Route path="/outstock" element={<OutStock/>} />

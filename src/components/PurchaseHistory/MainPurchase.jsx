@@ -12,7 +12,7 @@ const MainPurchase = () => {
     <>
     <section id='purchasehistory'>
         <div className='row'>
-            <h3>Purchase history </h3>
+            <h3>Order Track </h3>
             <div>
       <div className="tab-buttons">
         <button onClick={() => handleTabClick('history1')} className={activeTab === 'history1' ? 'active' : ''}>

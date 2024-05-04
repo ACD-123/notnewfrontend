@@ -51,7 +51,7 @@ const RefundProductCart = (props) => {
           <section id="cart-details" style={{ padding: "30px 0px" }}>
             <div className="container">
               <div className="row align-items-center">
-                {/* <h3 id="storetitle">Seller: NOT NEW_Official store</h3> */}
+                <h3 id="storetitle">Seller: NOT NEW_Official store</h3>
                 <div className="col-lg-7">
                   <div className="order-details">
                     <div className="row">

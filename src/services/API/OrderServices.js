@@ -102,6 +102,14 @@ function ordersummary(params = {}) {
     method: 'GET',
   })
 }
+function orderRefund(formData) {
+  return request({
+    url: `${baseApi}refund/add`,
+    method: 'POST',
+    data: formData, // Send the form data containing order_id, product_id, reason, and images
+  });
+}
+
 function getSingleOrderSummary(id) {
   return request({
     url: `${baseApi}ordersummary/${id}`,
@@ -124,7 +132,7 @@ function getuserbidscount(params = {}) {
 }
 function getbyid(id) {
   return request({
-    url: `${baseUrl}/getById/${id}`,
+    url: `${baseUrl}/getById_/${id}`,
     method: 'GET',
   })
 }
@@ -209,6 +217,7 @@ const OrderServices = {
   customerOngoingOrders,
   customerCompletedOrders,
   customerRefundOrders,
+  orderRefund,
   customerBuyAgainOrders,
   getbyid,
   getuserbidscount,

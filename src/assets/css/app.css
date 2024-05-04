@@ -1828,7 +1828,10 @@ section#activity-main-dashboard .left-menu ul li.active {
   text-decoration: inherit;
 }
 .rightarrow {
+  display: flex;
   text-align: right;
+  gap: 10px;
+  align-items: center;
 }
 section#activity-main-dashboard .left-menu ul li {
   list-style: none;
@@ -3664,6 +3667,7 @@ button.rviews {
 }
 .ongoing .viedeails button {
   padding: 10px 32px;
+  margin: auto;
   border: 0;
   color: #fff;
   border-radius: 10px;

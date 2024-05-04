@@ -1,79 +1,98 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import RightArrow from '../../assets/Images/rightarrow.png';
 import Prdimage from '../../assets/Images/Singleproduct/prdimage.png';
-import OrderServices from '../../services/API/OrderServices';
-import { toast } from 'react-toastify';
+import Prdimage1 from '../../assets/Images/Singleproduct/Product1.png';
+import Prdimage2 from '../../assets/Images/Singleproduct/Product2.png';
 
-const CompleteOrders = () => {
-  const [customerOrders, setCustomerOrders] = useState([]);
-
-  const getCustomerOrder = () => {
-    OrderServices.customerRefundOrders()
-      .then((response) => {
-        console.log("refund", response);
-        setCustomerOrders(response.data); // Assuming response.data contains the array of orders
-      })
-      .catch((error) => {
-        toast.error(error.message);
-      });
-  };
-
-  const renderOrderBlock = (order) => {
-    return (
-      <div className='row align-items-center' key={order.id}>
-        <div className='col-lg-8'>
+const Refunds = () => {
+    // ... (existing code)
+  
+    const renderOrderBlock = (orderData) => {
+      const { orderNumber, productName, images, refundStatus } = orderData;
+  
+      // Function to determine the CSS class based on refund status
+      const getRefundStatusClass = () => {
+        if (refundStatus === 'In Process') {
+          return 'inprocess'; // CSS class for approved status (green)
+        } else if (refundStatus === 'Refunded') {
+          return 'refunded'; // CSS class for rejected status (red)
+        } else {
+          return 'hold'; // CSS class for other statuses (default color)
+        }
+      };
+  
+      return (
+        <div className={`row align-items-center ${getRefundStatusClass()}`} key={orderNumber}>
+          <div className='col-lg-8'>
           <div className='product-image'>
             <div className='image'>
-              <img src={Prdimage} alt={`Product`} />
+              {images.map((image, index) => (
+                <img key={index} src={image} alt={`Product ${index + 1}`} />
+              ))}
             </div>
             <div className='prd-details'>
-              <h5>Order # : <b>{order.orderid}</b></h5>
-              <h3>{order.fullname}</h3>
+              <h5>Order # : <b>{orderNumber}</b></h5>
+              <h3>{productName}</h3>
             </div>
           </div>
         </div>
 
         <div className='col-lg-2'>
-          <div className='delivery-bttn'>
-            <Link to=''>
-              {order.status == "Refund" ? (
-                <>
-                  <span style={{ color: "green" }}>Refund Order</span>
-                </>
-              ) : (
-                ""
-              )}
-            </Link>
+          {/* <div className='delivery-bttn'>
+            <Link to=''>Delivery in Process</Link>
+          </div> */}
+        </div>
+          <div className='col-lg-2'>
+            <div className='refund-approval'>
+              <h4>Refund Approval</h4>
+              <h6 className={`refundstatus ${getRefundStatusClass()}`}>{refundStatus}</h6>
+            </div>
           </div>
         </div>
-        <div className='col-lg-2'>
-          <div className='rightarrow'>
-            <Link to='/singleproduct'>
-              <img src={RightArrow} alt='Right Arrow' />
-            </Link>
+      );
+    };
+  
+    const ordersData = [
+        {
+          orderNumber: '15s5d8e1',
+          productName: "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
+          images: [
+            Prdimage,
+          ],
+          refundStatus: 'In Process',
+        },
+        {
+            orderNumber: '15s5d8e2',
+            productName: "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
+            images: [
+              Prdimage1,
+            ],
+            refundStatus: 'Refunded',
+        },
+        {
+            orderNumber: '15s5d8e2',
+            productName: "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
+            images: [
+              Prdimage2, // Add more image URLs here for the first order
+              // Add more image URLs for the first order as needed
+            ],
+            refundStatus: 'Hold',
+        },
+    
+      ];
+    
+      return (
+        <>
+          <div className='ongoing'>
+            {ordersData.map((order, index) => (
+              <React.Fragment key={index}>
+                {renderOrderBlock(order)}
+                {index !== ordersData.length - 1 && <hr />}
+              </React.Fragment>
+            ))}
           </div>
-        </div>
-      </div>
-    );
+        </>
+      );
   };
-
-  useEffect(() => {
-    getCustomerOrder();
-  }, []);
-
-  return (
-    <>
-      <div className='ongoing'>
-        {customerOrders.map((order, index) => (
-          <React.Fragment key={index}>
-            {renderOrderBlock(order)}
-            {index !== customerOrders.length - 1 && <hr />}
-          </React.Fragment>
-        ))}
-      </div>
-    </>
-  );
-};
-
-export default CompleteOrders;
+export default Refunds;

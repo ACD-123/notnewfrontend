@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import objction from "../../assets/Images/objection.png";
 import OrderServices from "../../services/API/OrderServices";
 import { toast } from "react-toastify";
+import { Spinner } from "react-bootstrap";
 // DetailedProductInfo component to display details of a single product
 const DetailedProductInfo = ({ product }) => {
   // Modify this component to display detailed product information as per your needs
@@ -134,6 +135,7 @@ const DetailedProductInfo = ({ product }) => {
 
 const RefundManagement = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
 
   const handleViewDetails = (index) => {
     setSelectedProduct(index);
@@ -144,9 +146,11 @@ const RefundManagement = () => {
       .then((response) => {
         console.log('ordersRefund',response);
         setSelectedProduct(response);
+        setIsLoading(false)
       })
       .catch((e) => {
         toast.error(e.message);
+        setIsLoading(false)
       });
   };
 
@@ -170,6 +174,14 @@ const RefundManagement = () => {
   return (
     <div className="ongoing ordmangemnt">
       <h3>Refund Orders</h3>
+      {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status">
+            {/* <span className="sr-only">Loading...</span> */}
+          </Spinner>
+        </div>
+      ) : (
+        <>
       {selectedProduct && selectedProduct.data && selectedProduct.data.map((order, index) => (
         <div className="row align-items-center" key={index}>
           <div className="col-lg-10">
@@ -258,6 +270,8 @@ const RefundManagement = () => {
           <hr />
         </div>
       ))}
+      </>
+      )}
     </div>
   );
 };

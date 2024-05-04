@@ -11,6 +11,7 @@ import icon3 from '../../assets/Images/icons/3.png'
 import { Link } from 'react-router-dom';
 import OrderServices from "../../services/API/OrderServices"; //~/services/API/OrderServices
 import { toast } from "react-toastify";
+import { Spinner } from 'react-bootstrap';
 
 // DetailedProductInfo component to display details of a single order
 const DetailedProductInfo = ({ order }) => {
@@ -213,6 +214,7 @@ const handleSubmit = (e) => {
 const OngoingOrderManagement = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [ordersummary, setOrderSummary] = useState({});
+  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
 
   const handleViewDetails = (order) => {
     setSelectedProduct(order);
@@ -222,9 +224,11 @@ const OngoingOrderManagement = () => {
       .then((response) => {
         console.log('orders',response);
         setOrderSummary(response);
+        setIsLoading(false)
       })
       .catch((e) => {
         toast.error(e.message);
+        setIsLoading(false)
       });
   };
 
@@ -247,7 +251,14 @@ const OngoingOrderManagement = () => {
   return (
     <div className='ongoing ordmangemnt'>
       <h3>Ongoing Orders</h3>
-      
+      {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status">
+            {/* <span className="sr-only">Loading...</span> */}
+          </Spinner>
+        </div>
+      ) : (
+        <>
   {ordersummary && ordersummary.data && ordersummary.data.map((order, index) => (
             <>
              <div className='row align-items-center' key={index}>
@@ -275,6 +286,8 @@ const OngoingOrderManagement = () => {
             </>
 
         ))}
+        </>
+      )}
       
      
     </div>

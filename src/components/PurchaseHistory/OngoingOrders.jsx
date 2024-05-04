@@ -4,18 +4,22 @@ import RightArrow from '../../assets/Images/rightarrow.png';
 import Prdimage from '../../assets/Images/Singleproduct/prdimage.png';
 import OrderServices from '../../services/API/OrderServices';
 import { toast } from 'react-toastify';
+import { Spinner } from 'react-bootstrap';
 
 const OngoingOrders = () => {
   const [customerOrders, setCustomerOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
 
   const getCustomerOrder = () => {
     OrderServices.customerOngoingOrders()
       .then((response) => {
         console.log("customer", response);
         setCustomerOrders(response.data); // Assuming response.data contains the array of orders
+        setIsLoading(false); // Set isLoading to false when data is fetched
       })
       .catch((error) => {
         toast.error(error.message);
+        setIsLoading(false); // Set isLoading to false even if there's an error
       });
   };
 
@@ -41,9 +45,9 @@ const OngoingOrders = () => {
         </div>
         <div className='col-lg-2'>
           <div className='rightarrow'>
-            <Link to='/singleproduct'>
+            {/* <Link to='/singleproduct'> */}
               <img src={RightArrow} alt='Right Arrow' />
-            </Link>
+            {/* </Link> */}
           </div>
         </div>
       </div>
@@ -57,12 +61,22 @@ const OngoingOrders = () => {
   return (
     <>
       <div className='ongoing'>
+      {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status">
+            {/* <span className="sr-only">Loading...</span> */}
+          </Spinner>
+        </div>
+      ) : (
+        <>
         {customerOrders.map((order, index) => (
           <React.Fragment key={index}>
             {renderOrderBlock(order)}
             {index !== customerOrders.length - 1 && <hr />}
           </React.Fragment>
         ))}
+        </>
+      )}
       </div>
     </>
   );
