@@ -85,12 +85,19 @@ function setBank(data) {
     })
   }
 
-  function getShopDetails() {
+  function getShopHeader(guid) {
     return request({
-      url: `${baseUrl}getshopdetails`,
+      url: `${baseUrl}getShopDetailHeader/${guid}`, // Modify the endpoint to include the GUID
       method: 'GET',
     })
   }
+  function getShopDetailProducts(guid) {
+    return request({
+      url: `${baseUrl}getShopDetailProducts/${guid}`, // Modify the endpoint to include the GUID
+      method: 'GET',
+    })
+  }
+  
   function getStore(data) {
     return request({
       url: `${baseUrl}getshops/${data}`,
@@ -138,7 +145,12 @@ function setBank(data) {
       method: 'POST',
     })
   }
-  
+  function getShopDetails() {
+    return request({
+      url: `${baseUrl}getshopdetails`,
+      method: 'GET',
+    })
+  }
 
 const SellerServices = {
   all,
@@ -154,8 +166,10 @@ const SellerServices = {
   save,
   getBanks,
   setBank,
-  getShopDetails,
+  getShopHeader,
+  getShopDetailProducts,
   getStore,
+  getShopDetails,
   saveSeller,
   updateBank,
   getBankDetails,

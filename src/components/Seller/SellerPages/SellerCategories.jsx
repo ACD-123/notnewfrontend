@@ -1,40 +1,115 @@
-import React from 'react';
-import Cat1 from '../../../assets/Images/SellerShop/cat1.png';
-import Cat2 from '../../../assets/Images/SellerShop/cat2.png';
-import Cat3 from '../../../assets/Images/SellerShop/cat3.png';
-import Cat4 from '../../../assets/Images/SellerShop/cat4.png';
+import React, { useEffect, useState } from 'react';
 import ProductCard from '../../Elements/ProductCard';
-import SellerProductListing from '../../Elements/SellerElements/SellerProductListing';
-
+import SellerServices from '../../../services/API/SellerServices';
+import { Link } from 'react-router-dom';
+import blank from "../../../assets/Images/Productcard/blank.jpg";
 
 
 const SellerCategories = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [cardsPerPage] = useState(6);
+  const [productData, setProductData] = useState([]);
+  const [isLoading, setIsLoading] = useState(0);
+
+  const { pathname } = window.location;
+  const id = pathname.split("/").pop();
+
+
+  const getProduct = () => {
+    SellerServices.getShopDetailProducts(id)
+      .then((res) => {
+        console.log('Shop Products',res.data.products);
+        setProductData(res.data.products);
+        // let tags = JSON.parse(res.data.tags);
+        // let allTags = [];
+        // {
+        //   tags.map((tag, index) => allTags.push(tag.tag));
+        // }
+        // setTags(allTags);
+      })
+      .finally(() => {
+        // Set isLoading to false once data fetching is complete
+        setIsLoading(false);
+      });
+  };
+  // Mock data for products (replace this with your actual data)
+  useEffect(() => {
+    getProduct();
+    // getTrending();
+  }, []);
+
+  // Logic to paginate product cards
+  const indexOfLastCard = currentPage * cardsPerPage;
+  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
+  const currentCards = productData.slice(indexOfFirstCard, indexOfLastCard);
+
+  const renderProductCards = () => {
+    if (!Array.isArray(productData)) {
+      return <p>No products found.</p>;
+    }
+  
+    return productData.map((product) => (
+      <ProductCard key={product.guid} productData={product} />
+    ));
+  };
+  
+
+  // Logic to handle page changes
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // Calculate total number of pages
+  const totalPages = Math.ceil(productData.length / cardsPerPage);
+
   return (
     <>
-    <div className='caategory'>
-      <h2>Top Categories</h2>
-      <div className="row">
-              <div className="col-md-3">
-                <img src={Cat1} className="d-block w-100" alt="..." />
-                <h4>Electronics</h4>
-              </div>
-              <div className="col-md-3">
-                <img src={Cat3} className="d-block w-100" alt="..." />
-                <h4>Boxing Accessories</h4>
-              </div>
-              <div className="col-md-3">
-                <img src={Cat4} className="d-block w-100" alt="..." />
-                <h4>Men Clothing</h4>
-              </div>
-              <div className="col-md-3">
-                <img src={Cat2} className="d-block w-100" alt="..." />
-                <h4>Casual Shoes</h4>
-              </div>
+   
+
+      <section id='singlecategory'
+      style={{
+        padding:"30px 0px"
+      }}
+      >
+        <div className='container'>
+            <div className='row'>
+                <div className='col-lg-6'>
+                <h2>All Listed Products</h2>
+                </div>
+                <div className='col-lg-6'>
+                    <div className='sorting-sellerapge'>
+                        <div className='title'>
+                        Sort by:
+                        </div>
+                        <div className='sorting'>
+                            <select>
+                                <option>Ascending</option>
+                                <option>
+                                    Deascending
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </div>
-            <div className='product-listing-seller'>
-                <SellerProductListing />
-            </div>
+          
+
+          <div className='row'>
+              {renderProductCards()}
+              {/* Pagination */}
+              <ul className="pagination">
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
+                    <button onClick={() => paginate(index + 1)} className="page-link">
+                      {index + 1}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              {/* Pagination */}
+            
+          </div>
+        </div>
+      </section>
+
     </>
   );
 };

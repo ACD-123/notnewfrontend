@@ -11,47 +11,56 @@ import SellerServices from "../../../../services/API/SellerServices"; //~/servic
 import Home from "../../../../services/API/Home"; //~/services/API/Home
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../../../services/Constant";
+import { FaHeart, FaRegHeart } from 'react-icons/fa'
+import UserServices from "../../../../services/API/UserServices"; //~/services/API/AuthService
+import { setUserDetails, isLoggedin, getUserDetails } from "../../../../services/Auth"; // ~/services/Auth
 
 const SingleProductSidebar = () => {
+    const { pathname } = window.location;
+    const id = pathname.split("/").pop();
+  
     const [productData, setProductData] = useState([]);
     const [shopData, setShopData] = useState([]);
-    const [trendingProduct, setTrendingProduct] = useState(0);
+    const [shopGuid, setShopGuid] = useState([]);
+    // console.log('shopdata',shopData)
+    // const [trendingProduct, setTrendingProduct] = useState(0);
+    const [isLoading, setIsLoading] = useState(0);
     const [savedseller, setSavedSeller] = useState("");
+    const [favData, setFavData] = useState([]);
+    const [user, setUser] = useState({});
+    
     let loggedIn = localStorage.getItem("user_details");
     let logedIn;
     if(loggedIn){
         logedIn = JSON.parse(loggedIn);
     }
 
-    const { pathname } = window.location;
-    const id = pathname.split("/").pop();
     const getProduct = () => {
-        ProductServices.get(id).then((res) => {
-            setProductData(res);
-            getSellerSavedData(res?.shop_id);
-            Home.getshopData(res?.shop_id)
-            .then((response) => {
-                if(response.status){
-                    setShopData(response.data)
-                }
-            }).catch((e) => {
-                console.log(e)
-            }); 
-        }).catch((e) => {
-            console.log(e)
-        });;
-    };
-    const getTrending = () => {
-        ProductServices.getTrendingProduct(id).then((res) => {
-            setTrendingProduct(res)
-        });
-    };
-      
-     const handleDropdownItemClick = (componentName) => {
-        // Here, you can navigate to the 'Activity' component and pass the selected component name as a query parameter or state
-        // For example, using query parameter
-        window.location.href = `/customerdashboard?component=${componentName}`;
+        ProductServices.get(id)
+          .then((res) => {
+              setShopData(res.data.seller);
+              console.log('shop guidr',res.data.shop);
+              setProductData(res.data);
+              setShopGuid(res.data.shop);
+              console.log('shopdata',res.data.seller);
+            let tags = JSON.parse(res.data.tags);
+            let allTags = [];
+            // {
+            //   tags.map((tag, index) => allTags.push(tag.tag));
+            // }
+            // setTags(allTags);
+          })
+          .finally(() => {
+            // Set isLoading to false once data fetching is complete
+            setIsLoading(false);
+          });
       };
+    // const getTrending = () => {
+    //     ProductServices.getTrendingProduct(id).then((res) => {
+    //         setTrendingProduct(res)
+    //     });
+    // };
+      
       const handleSellerServices = (e) =>{
         e.preventDefault();
         if(logedIn){
@@ -77,28 +86,54 @@ const SingleProductSidebar = () => {
             console.log(e)
         }); 
       }
+      const getUser = () => {
+        UserServices.detail()
+          .then((response) => {
+          console.log('login',response.id);
+          setUserDetails(response);
+          setUser(response.id);
+          localStorage.setItem('user_details', JSON.parse(response));
+          })
+          .catch((e) => {
+          console.log('error', e)
+          // toast.error(e.message);
+          });
+        };
+      const addToFavorites = async (productId) => {
+        try {
+            const data = {
+                favourite_against_id: productId,
+                user_id: user,
+                type: "2"
+            };
+            console.log('hit',data)
+            const res = await ProductServices.isFavorite(data);
+            if (res.status) {
+                // Optionally, update UI or show a success message
+                toast.success("Product added to favorites!");
+                // Update favorites data if necessary
+                setFavData(res.data);
+            }
+        } catch (error) {
+            console.error("Error adding to favorites:", error);
+            toast.error("Failed to add product to favorites.");
+        }
+    };
       useEffect(() => {
         getProduct();
-        getTrending();
+        // getTrending();
       }, []);
+      useEffect(() => {
+        if (isLoggedin()) {
+          getUser();
+          // let cartItems = localStorage.getItem('cupon');
+        }
+        }, []);
   return (
    <>
    <div className='singleproduct-sidebar'>
     
-    <div className='secure'>
-        {trendingProduct ? (
-            <>  
-                <div className='image'>
-                    <img src={Secureimage1} />
-                </div>
-                <div className='text-secure'>
-                    <h4>Trending Product</h4>
-                    <p>{trendingProduct} Products has been Sold.</p>
-                </div>
-            </>
-        ):('')}
-    </div>
-
+   
     <div className='secure'>
         <div className='image'>
             <img src={Secureimage2} />
@@ -129,30 +164,31 @@ const SingleProductSidebar = () => {
         </div>
     </div>
     <hr />
-    {shopData ? (<>
         <div className='store'>
     
-    <img width="150" height="100" src={`${BASE_URL}/${shopData.cover_image}`} />
+    <img width="150" height="100" src={`${shopData.sellerImage}`} />
     
-    <h2>{shopData.fullname}</h2>
+    <h2>{productData.fullname}</h2>
     </div>
-    <div className='storecontactdetails'>
-        <ul>
-            {/* <li onClick={() => handleDropdownItemClick('componentH')}><Link><img src={Heart} /> Save this Seller</Link></li> */}
-            {savedseller ? (
-                <>
-                <li ><Link><img src={Heart} /> Seller has been Saved!</Link></li>
-                </>
-            ) :(<>
-                <li onClick={(e) => handleSellerServices(e)}><Link><img src={Heart} /> Save this Seller</Link></li>
-            </>)}
+        <div className='storecontactdetails'>
+            <ul>
+                {/* <li onClick={() => handleDropdownItemClick('componentH')}><Link><img src={Heart} /> Save this Seller</Link></li> */}
             
-            <li><a href={`tel:${shopData.phone}`} >{shopData.phone}</a></li>
-            <li><Link to={`/sellershop/${shopData.guid}`}>Visit Seller Shop</Link></li>
-            <li><Link to="#">View Other Products</Link></li>
-        </ul>
-    </div>
-    </>):(<></>)}
+                    <li> <div onClick={() => addToFavorites(productData.guid)} >
+                                                        {shopData.is_favourite === true ? (
+                                                            <FaHeart/>
+                                                        ) : (
+                                                            <FaRegHeart/>
+                                                        )
+                                                        }
+                                                        </div>Save this Seller</li>
+            
+                {/* {productData.id} */}
+                <li><a href={`tel:${shopData.phone}`} >{shopData.phone}</a></li>
+                <li><Link to={`/sellershop/${shopGuid.guid}`}>Visit Seller Shop</Link></li>
+                <li><Link to="#">View Other Products</Link></li>
+            </ul>
+        </div>
     
     
    </div>

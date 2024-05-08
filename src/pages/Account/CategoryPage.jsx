@@ -17,11 +17,14 @@ import blank from "../../assets/Images/Productcard/blank.jpg";
 import Footer from '../../components/Footer'
 import Home from "../../services/API/Home"; //~/services/API/Home
 import { BASE_URL } from "../../services/Constant";
+import { Spinner } from 'react-bootstrap';
 const CategoryPage = () => {
   const [categories, setCategoryData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Set initial value to true
   const getCategory = () => {
     Home.getrecursive()
     .then((res) => {
+      setIsLoading(false);
       console.log('category data', res.length)
       setCategoryData(res)
     })
@@ -221,18 +224,21 @@ const CategoryPage = () => {
                 <div className='col-lg-9'>
                     <div className='all-catergylisting'>
                       <div className='row'>
+                      {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container">
+          <Spinner animation="border" role="status">
+          </Spinner>
+        </div>
+      ) : (
+        <>
+        
                         {categories.length > 0 ?(
                           <>
                             {categories?.map((product) => (
                                 <div className='col' key={product.id}>
-                                  <div className='productlist'>
-                                  <h3
-                                  style={{
-                                    width: '100%',
-                                    height: '70px'
-                                  }}
-                                  >{product.name}</h3>
-                                  <hr />
+                                  <div className='productlist gradient'>
+                                  <h3>{product.name}</h3>
+                                  {/* <hr /> */}
                                   {product.media.length > 0 ?(
                                       <>
                                       {product.media?.map((media) => {
@@ -259,6 +265,8 @@ const CategoryPage = () => {
                               ))}
                           </>
                         ):('')}
+                        </>
+                        )}
                       </div>
                     </div>
                 </div>

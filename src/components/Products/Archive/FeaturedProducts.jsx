@@ -37,7 +37,7 @@ const FeaturedProducts = () => {
                             </h3>
                         </div>
                         <div className='row render'>
-                            <ProductCard />
+                            {/* <ProductCard /> */}
                         </div>
                         <div className='row'>
                             <Link to="/notFound" style={{textDecoration: "unset"}}>

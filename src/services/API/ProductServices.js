@@ -2,6 +2,7 @@ import request from '../request'
 import { BASE_API } from '../Constant'
 // @todo this file name should be product service
 const baseUrl = `${BASE_API}products`
+const baseApi = `${BASE_API}`
 function all(params = {}) {
   return request({
     url: `${baseUrl}/`,
@@ -12,6 +13,13 @@ function all(params = {}) {
 function save(data) {
   return request({
     url: `${baseUrl}/add`,
+    data,
+    method: 'POST',
+  })
+}
+function isFavorite(data) {
+  return request({
+    url: `${baseApi}favourites/save`,
     data,
     method: 'POST',
   })
@@ -334,6 +342,7 @@ const ProductServices = {
   destroy,
   Imgupload,
   uploadImages,
+  isFavorite,
   images,
   userRating,
   checkRating,

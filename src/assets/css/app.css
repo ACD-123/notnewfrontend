@@ -1833,6 +1833,28 @@ section#activity-main-dashboard .left-menu ul li.active {
   gap: 10px;
   align-items: center;
 }
+.favoriteImg img{
+  width: 100% !important;
+  object-fit: fill !important;
+  height: 100% !important;
+}
+.favoriteImg{
+  position: absolute;
+  z-index: 9999;
+  bottom: 69px;
+  right: 0px;
+}
+.favoriteImg svg {
+  font-size: 26px;
+}
+/* .productlist.gradient h3{
+  color: white;
+} */
+.productlist.gradient {
+  background: linear-gradient(186deg, #0293d140, #965abc4a);
+  padding: 5px 18px;
+  border-radius: 9px;
+}
 section#activity-main-dashboard .left-menu ul li {
   list-style: none;
   font-size: 14px;

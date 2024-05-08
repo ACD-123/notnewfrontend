@@ -6,18 +6,68 @@ import { Link } from "react-router-dom";
 import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../services/Constant";
+import { setUserDetails, isLoggedin, getUserDetails } from "../../services/Auth"; // ~/services/Auth
+import UserServices from "../../services/API/UserServices"; //~/services/API/AuthService
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 const RecentViewedItems = () => {
-    const [productData, setProductData] = useState([]);
+  
+  const [productData, setProductData] = useState([]);
+    const [favData, setFavData] = useState([]);
+    const [user, setUser] = useState({});
+
     const fetchProductData = async () => {      
       ProductServices.recent()
       .then((res) => {
-        setProductData(res.slice(0, 6)); // Limit to the first 5 products
+        setProductData(res.slice(0, 4)); // Limit to the first 5 products
       }).catch(error => console.log(error));
     };
+
+
+    const getUser = () => {
+      UserServices.detail()
+        .then((response) => {
+        console.log('login',response.id);
+        setUserDetails(response);
+        setUser(response.id);
+        localStorage.setItem('user_details', JSON.parse(response));
+        })
+        .catch((e) => {
+        console.log('error', e)
+        // toast.error(e.message);
+        });
+      };
+    useEffect(() => {
+      if (isLoggedin()) {
+        getUser();
+        // let cartItems = localStorage.getItem('cupon');
+      }
+      }, []);
+    const addToFavorites = async (productId) => {
+        try {
+            const data = {
+                favourite_against_id: productId,
+                user_id: user,
+                type: "1"
+            };
+            console.log('hit',data)
+            const res = await ProductServices.isFavorite(data);
+            if (res.status) {
+                // Optionally, update UI or show a success message
+                toast.success("Product added to favorites!");
+                // Update favorites data if necessary
+                setFavData(res.data);
+            }
+        } catch (error) {
+            console.error("Error adding to favorites:", error);
+            toast.error("Failed to add product to favorites.");
+        }
+    };
+
     useEffect(() => {
       fetchProductData();
     }, []);
+
   return (
     <>
     <section id='product-recents-viewed'>
@@ -34,7 +84,7 @@ const RecentViewedItems = () => {
         <div className='container'>
           <div className='row'>
               {productData.map((product) => (
-              <div className='col col-lg-2' key={product.products?.guid}>
+              <div className='col col-lg-3' key={product.products?.guid}>
                 <div className='productlist'>
                   {product?.auctioned ? (
                     <>
@@ -77,10 +127,20 @@ const RecentViewedItems = () => {
                         <h4>{product.products?.description.substring(0, 40)}...</h4>
                       </Link>
                     ) : (
+                      <>
                       <Link to={`/singleproduct/${product.guid}`}>
                       <h3>{product.products?.name.substring(0, 20)}...</h3>
                       <h4>{product.products?.description.substring(0, 40)}...</h4>
                       </Link>
+                        <div onClick={() => addToFavorites(product.guid)} className='favoriteImg'>
+                          {product.products.is_favourite === true ? (
+                            <FaHeart/>
+                          ) : (
+                            <FaRegHeart/>
+                          )
+                          }
+                          </div>
+                      </>
                     )}
                     <p>
                       <p>

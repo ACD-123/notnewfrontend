@@ -15,24 +15,12 @@ const SellerShop = () => {
   const [shopdata, setShopData] = useState([]);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
-
-  const getShopData = () => {
-    SellerServices.getStore(id)
-      .then((response) => {
-        if (response.status) {
-          setShopData(response.data);
-        }
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
-  };
+console.log('id',id)
+  
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-  useEffect(() => {
-    getShopData();
-  }, []);
+  
   return (
     <>
       {/* HEADER */}
@@ -41,7 +29,7 @@ const SellerShop = () => {
       <section id="sellershop">
         <div className="container">
           <div className="row">
-            <SellerProfileDetails shopdata={shopdata} />
+            <SellerProfileDetails />
           </div>
           <div className="row">
             <div className="category-shop-about">
