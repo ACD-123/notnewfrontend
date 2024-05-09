@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Profileimage from '../../assets/Images/Seller/profileimage.png'
 import Profileimage1 from '../../assets/Images/Seller/1.png'
 import Profileimage2 from '../../assets/Images/Seller/2.png'
+import blankuser from '../../assets/Images/User/blankuser.jpg'
+import SellerServices from '../../services/API/SellerServices';
 
 const SellerFeedback = () => {
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   // Sample data for seller feedback
   const feedbackData = [
     {
@@ -59,24 +63,57 @@ const SellerFeedback = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = feedbackData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = feedbacks.slice(indexOfFirstItem, indexOfLastItem);
 
-  const totalPages = Math.ceil(feedbackData.length / itemsPerPage);
+  const totalPages = Math.ceil(feedbacks.length / itemsPerPage);
 
   const changePage = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
+
+  const { pathname } = window.location;
+  const id = pathname.split("/").pop();
+
+
+  const getFeedbacks = () => {
+    SellerServices.getShopDetailFeedback(id)
+      .then((res) => {
+        console.log('Feedbacks',res.data.feedback);
+        setFeedbacks(res.data.feedback);
+        setIsLoading(false);
+        // let tags = JSON.parse(res.data.tags);
+        // let allTags = [];
+        // {
+        //   tags.map((tag, index) => allTags.push(tag.tag));
+        // }
+        // setTags(allTags);
+      })
+      .finally(() => {
+        // Set isLoading to false once data fetching is complete
+        setIsLoading(false);
+      });
+  };
+  // Mock data for products (replace this with your actual data)
+  useEffect(() => {
+    getFeedbacks();
+    // getTrending();
+  }, []);
   return (
     <div className="seller-feedback">
       <h2>Seller Feedback</h2>
       <div className="feedback-container">
         {currentItems.map((feedback) => (
-          <div key={feedback.id} className="feedback-item">
-            <img src={feedback.imageUrl} alt={feedback.title} />
+          <div className="feedback-item">
+            {feedback.user.profile_image === null ? (
+              <img src={blankuser} alt='NULL' />
+            ) : (
+              <img src={feedback.user.profile_image} alt={feedback.title} />
+            )
+            }
             <div className="feedback-content">
-              <h3>{feedback.title}</h3>
-              <p>{feedback.comment}</p>
+              <h3>{feedback.user.name}</h3>
+              <p>{feedback.comments}</p>
             </div>
           </div>
         ))}

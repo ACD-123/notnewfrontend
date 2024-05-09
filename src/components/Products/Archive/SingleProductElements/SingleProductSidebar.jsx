@@ -14,6 +14,7 @@ import { BASE_URL } from "../../../../services/Constant";
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import UserServices from "../../../../services/API/UserServices"; //~/services/API/AuthService
 import { setUserDetails, isLoggedin, getUserDetails } from "../../../../services/Auth"; // ~/services/Auth
+import { Spinner } from 'react-bootstrap'
 
 const SingleProductSidebar = () => {
     const { pathname } = window.location;
@@ -24,7 +25,7 @@ const SingleProductSidebar = () => {
     const [shopGuid, setShopGuid] = useState([]);
     // console.log('shopdata',shopData)
     // const [trendingProduct, setTrendingProduct] = useState(0);
-    const [isLoading, setIsLoading] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
     const [savedseller, setSavedSeller] = useState("");
     const [favData, setFavData] = useState([]);
     const [user, setUser] = useState({});
@@ -43,6 +44,7 @@ const SingleProductSidebar = () => {
               setProductData(res.data);
               setShopGuid(res.data.shop);
               console.log('shopdata',res.data.seller);
+              setIsLoading(false);
             let tags = JSON.parse(res.data.tags);
             let allTags = [];
             // {
@@ -131,6 +133,13 @@ const SingleProductSidebar = () => {
         }, []);
   return (
    <>
+   {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status">
+            {/* <span className="sr-only">Loading...</span> */}
+          </Spinner>
+        </div>
+      ) : (
    <div className='singleproduct-sidebar'>
     
    
@@ -174,14 +183,18 @@ const SingleProductSidebar = () => {
             <ul>
                 {/* <li onClick={() => handleDropdownItemClick('componentH')}><Link><img src={Heart} /> Save this Seller</Link></li> */}
             
-                    <li> <div onClick={() => addToFavorites(productData.guid)} >
+                    <li> <div onClick={() => addToFavorites(productData.guid)} className='textersaveSeller'>
                                                         {shopData.is_favourite === true ? (
-                                                            <FaHeart/>
+                                                            <>
+                                                            <FaHeart/> Save this Seller
+                                                            </>
                                                         ) : (
-                                                            <FaRegHeart/>
+                                                            <>
+                                                            <FaRegHeart/> Save this Seller
+                                                            </>
                                                         )
                                                         }
-                                                        </div>Save this Seller</li>
+                                                        </div></li>
             
                 {/* {productData.id} */}
                 <li><a href={`tel:${shopData.phone}`} >{shopData.phone}</a></li>
@@ -192,6 +205,7 @@ const SingleProductSidebar = () => {
     
     
    </div>
+      )}
    </>
   )
 }

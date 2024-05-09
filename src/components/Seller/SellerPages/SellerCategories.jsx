@@ -3,13 +3,14 @@ import ProductCard from '../../Elements/ProductCard';
 import SellerServices from '../../../services/API/SellerServices';
 import { Link } from 'react-router-dom';
 import blank from "../../../assets/Images/Productcard/blank.jpg";
+import { Spinner } from 'react-bootstrap';
 
 
 const SellerCategories = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(6);
   const [productData, setProductData] = useState([]);
-  const [isLoading, setIsLoading] = useState(0);
+  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
 
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
@@ -20,6 +21,7 @@ const SellerCategories = () => {
       .then((res) => {
         console.log('Shop Products',res.data.products);
         setProductData(res.data.products);
+        setIsLoading(false)
         // let tags = JSON.parse(res.data.tags);
         // let allTags = [];
         // {
@@ -49,7 +51,11 @@ const SellerCategories = () => {
     }
   
     return productData.map((product) => (
+      <>
+      
       <ProductCard key={product.guid} productData={product} />
+      </>
+     
     ));
   };
   
@@ -93,7 +99,17 @@ const SellerCategories = () => {
           
 
           <div className='row'>
+          {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status">
+            {/* <span className="sr-only">Loading...</span> */}
+          </Spinner>
+        </div>
+      ) : (
+          <>
               {renderProductCards()}
+              </>
+      )}
               {/* Pagination */}
               <ul className="pagination">
                 {Array.from({ length: totalPages }, (_, index) => (

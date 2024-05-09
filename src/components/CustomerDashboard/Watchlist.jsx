@@ -1,138 +1,63 @@
-import React, { useState } from "react";
-import Wishlistimage1 from "../../assets/Images/Categorylisting/1.png";
-import Wishlistimage2 from "../../assets/Images/Categorylisting/2.png";
-import Wishlistimage3 from "../../assets/Images/Categorylisting/3.png";
-import Wishlistimage4 from "../../assets/Images/Categorylisting/4.png";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ProductServices from "../../services/API/ProductServices";
+import UserServices from "../../services/API/UserServices";
+import { Spinner } from "react-bootstrap";
 
 const Watchlist = () => {
-  const initialProducts = [
-    {
-      id: 1,
-      image: Wishlistimage1,
-      title: "adidas Adizero SL Running Shoes Mens",
-      size: "M",
-      price: "221.1",
-      saleprice: "219.99",
-      color: "Red",
-      quantity: 1,
-      shipping: "Free",
-      selected: false,
-      showDropdown: false,
-      category: "Laptops & Netbooks",
-      shippingname: "International Shipping from United Kingdom",
-      shippingprice: "663.12",
-    },
-    {
-      id: 2,
-      image: Wishlistimage2,
-      title: "adidas Adizero SL Running Shoes Mens",
-      size: "L",
-      price: "621.2",
-      saleprice: "229.99",
-      color: "Yellow",
-      quantity: 2,
-      shipping: "Standard",
-      selected: false,
-      showDropdown: false,
-      category: "Fitness, Running & Yoga",
-      shippingname: "International Shipping from United Kingdom",
-      shippingprice: "123.12",
-    },
-    {
-      id: 3,
-      image: Wishlistimage3,
-      title: "adidas Adizero SL Running Shoes Mens",
-      size: "S",
-      price: "322.3",
-      saleprice: "269.99",
-      color: "White",
-      quantity: 3,
-      shipping: "Express",
-      selected: false,
-      showDropdown: false,
-      category: "Laptops & Netbooks",
-      shippingname: "International Shipping from United Kingdom",
-      shippingprice: "423.12",
-    },
-    {
-      id: 4,
-      image: Wishlistimage4,
-      title: "adidas Adizero SL Running Shoes Mens",
-      size: "XL",
-      price: "112.1",
-      saleprice: "269.99",
-      color: "Black",
-      quantity: 1,
-      shipping: "Free",
-      selected: false,
-      showDropdown: false,
-      category: "Laptops & Netbooks",
-      shippingname: "International Shipping from United Kingdom",
-      shippingprice: "6643.12",
-    },
-  ];
+  const [user, setUser] = useState({});
+  const [watchlistInstock, setWatchlistInstock] = useState([]);
+  const [watchlistOutstock, setWatchlistOutstock] = useState([]);
+  const [watchlistAll, setWatchlistAll] = useState([]);
+  const [selectedTab, setSelectedTab] = useState("inStock");
+  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
 
-  const [products, setProducts] = useState(initialProducts);
-  const [showNote, setShowNote] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const response = await UserServices.detail();
+        setUser(response);
+        localStorage.setItem('user_details', JSON.stringify(response));
+        setIsLoading(false); // Set isLoading to false when data is fetched
 
-  const toggleNote = () => {
-    setShowNote(!showNote);
-  };
+      } catch (error) {
+        console.log('error', error);
+        setIsLoading(false); // Set isLoading to false even if there's an error
+        // Handle error
+      }
+    };
 
-  const toggleProductSelection = (productId) => {
-    const updatedProducts = products.map((product) =>
-      product.id === productId
-        ? { ...product, selected: !product.selected }
-        : product
-    );
-    setProducts(updatedProducts);
-  };
+    getUser();
+  }, []);
 
-  const deleteSelectedProducts = () => {
-    const updatedProducts = products.filter((product) => !product.selected);
-    setProducts(updatedProducts);
-  };
+  useEffect(() => {
+    const getWishlist = async () => {
+      try {
+        const response = await ProductServices.getWishList(user.id);
+        setWatchlistAll(response.data);
+        setWatchlistInstock(response.data.in_stock_products);
+        console.log(response.data.in_stock_products);
+        setWatchlistOutstock(response.data.out_of_stock_products);
+      } catch (error) {
+        console.log('error', error);
+        // Handle error
+      }
+    };
 
-  const buyNow = (productId) => {
-    // Logic for 'Buy Now' functionality
-    console.log(`Buy Now: Product ID ${productId}`);
-  };
-
-  const makeOffer = (productId) => {
-    // Logic for 'Make Offer' functionality
-    console.log(`Make Offer: Product ID ${productId}`);
-  };
-
-  const moreActions = (productId) => {
-    const updatedProducts = products.map((product) =>
-      product.id === productId
-        ? { ...product, showDropdown: !product.showDropdown }
-        : { ...product, showDropdown: false }
-    );
-    setProducts(updatedProducts);
-  };
-
-  const filterProductsByCategory = (category) => {
-    setSelectedCategory(category);
-    let filteredProducts = initialProducts;
-    if (category !== "All Categories") {
-      filteredProducts = initialProducts.filter(
-        (product) => product.category.toLowerCase() === category.toLowerCase()
-      );
+    if (user.id) {
+      getWishlist();
     }
-    setProducts(filteredProducts);
-  };
+  }, [user.id]);
+
 
   return (
     <section id="wishlist-dashboard">
       <h3>Watchlist</h3>
       <div className="row wishlist align-items-center">
         <div className="col-lg-6">
-          <div className="deleted-button">
+          {/* <div className="deleted-button">
             <button onClick={deleteSelectedProducts}>Delete Selected</button>
-          </div>
+          </div> */}
         </div>
         <div className="col-lg-6">
           <div className="sort-wishlist">
@@ -161,33 +86,85 @@ const Watchlist = () => {
       </div>
       <div className="wishlist-categories-list">
         <ul>
-          <li className="allcategory">
-            <button onClick={() => filterProductsByCategory("All Categories")}>
+          {/* <li className="allcategory">
+            <button onClick={() => setSelectedTab("allProducts")}>
               All Categories
             </button>
-          </li>
-          <li>
+          </li> */}
+          <li className={selectedTab === 'inStock' && 'allcategory'}>
             <button
-              onClick={() => filterProductsByCategory("Laptops & Netbooks")}
+              onClick={() => setSelectedTab("inStock")}
             >
-              Laptops & Netbooks (1)
+              In Stock
             </button>
           </li>
-          <li>
+          <li className={selectedTab === 'outOfStock' && 'allcategory'}>
             <button
-              onClick={() =>
-                filterProductsByCategory("Fitness, Running & Yoga")
-              }
+              onClick={() => setSelectedTab("outOfStock")}
             >
-              Fitness, Running & Yoga (1)
+              Out Of Stock
             </button>
           </li>
           {/* Add more categories here */}
         </ul>
       </div>
-      <div className="wishlist">
-        {products.map((product) => (
-          <div key={product.id} className="product">
+      {/* <div className="tabs">
+        <button onClick={() => setSelectedTab("inStock")}>In Stock</button>
+        <button onClick={() => setSelectedTab("outOfStock")}>Out of Stock</button>
+      </div> */}
+      {selectedTab === "inStock" && (
+        <div className="wishlist">
+           {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status">
+            {/* <span className="sr-only">Loading...</span> */}
+          </Spinner>
+        </div>
+      ) : (
+          <>
+          {watchlistInstock.map((product) => (
+            <ProductItem key={product.id} product={product} />
+          ))}
+          </>
+        )}
+        </div>
+      )}
+      {selectedTab === "outOfStock" && (
+        <div className="wishlist">
+           {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status">
+            {/* <span className="sr-only">Loading...</span> */}
+          </Spinner>
+        </div>
+      ) : (
+          <>
+          {watchlistOutstock.map((product) => (
+            <ProductItem key={product.id} product={product} />
+          ))}
+          </>
+      )}
+        </div>
+      )}
+      {/* {selectedTab === "allProducts" && (
+        <div className="wishlist">
+          {watchlistAll.map((product) => (
+            <ProductItem key={product.id} product={product} />
+          ))}
+        </div>
+      )} */}
+    </section>
+  );
+};
+
+const ProductItem = ({ product }) => {
+  const [showNote, setShowNote] = useState(false);
+  const toggleNote = () => {
+    setShowNote(!showNote);
+  };
+
+  return (
+    <div key={product.id} className="product">
             {/* START ROW */}
             <div className="row">
               <div className="col-lg-7">
@@ -196,21 +173,24 @@ const Watchlist = () => {
                     <input
                       type="checkbox"
                       checked={product.selected}
-                      onChange={() => toggleProductSelection(product.id)}
+                      // onChange={() => toggleProductSelection(product.id)}
                     />
                   </div>
                   <div>
-                    <img src={product.image} alt={product.title} />
+                                <img
+                                  src={`${product.media[0].name}`}
+                                  alt={product.media[0].name}
+                                />
                   </div>
                   <div>
-                    <h3>{product.title}</h3>
+                    <h3>{product.name}</h3>
                     <p>
-                      Size: {product.size}, Color: {product.color}{" "}
+                      <b>Size:</b> {product.size}, Color: {product.available_colors}{" "}
                     </p>
 
-                    <p>Quantity: {product.quantity}</p>
-                    <p>Shipping: {product.shipping}</p>
-                    <p className="shipingname">{product.shippingname}</p>
+                    <p><b>Quantity:</b> {product.stockcapacity},</p>
+                    <p><b>Description:</b> {product.description},</p>
+                    {/* <p className="shipingname">{product.shippingname}</p> */}
                   </div>
                 </div>
               </div>
@@ -218,21 +198,20 @@ const Watchlist = () => {
               <div className="col-lg-2">
                 <div className="wishlistprice-detials">
                   <h3>US ${product.price}</h3>
-                  <p>+US ${product.saleprice}</p>
+                  <p>+US ${product.shipping_price}</p>
                   <p>Shipping cost 10% off {product.shippingprice}</p>
                 </div>
               </div>
 
               <div className="col-lg-3 wishlist-buttonss">
-                <Link to="/checkout">
+                <Link to={`/checkout-buynow/${product.guid}`}>
                   <button
                     className="buynow-wishlist"
-                    onClick={() => buyNow(product.id)}
                   >
                     Buy It Now
                   </button>
                 </Link>
-                <button className="offer" onClick={() => makeOffer(product.id)}>
+                <button className="offer">
                   Make Best Offer
                 </button>
                 <select className="offer">
@@ -251,11 +230,7 @@ const Watchlist = () => {
               </div>
               <hr />
             </div>
-            {/* END ROW */}
           </div>
-        ))}
-      </div>
-    </section>
   );
 };
 

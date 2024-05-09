@@ -37,22 +37,22 @@ console.log('id',id)
                 className="main-dasboard-tabs seller-shop"
                 style={{ padding: "30px 0px" }}
               >
-                <div className="whatyouthink">
+                {/* <div className="whatyouthink">
                   <Search />
-                </div>
+                </div> */}
                 <div className="tab-buttons">
                   <button
                     onClick={() => handleTabClick("seller1")}
                     className={activeTab === "seller1" ? "active" : ""}
                   >
-                    <img src={Nav} /> Categories
+                    <img src={Nav} /> Products
                   </button>
-                  <button
+                  {/* <button
                     onClick={() => handleTabClick("seller2")}
                     className={activeTab === "seller2" ? "active" : ""}
                   >
                     Shop
-                  </button>
+                  </button> */}
                   <button
                     onClick={() => handleTabClick("seller3")}
                     className={activeTab === "seller3" ? "active" : ""}
@@ -72,17 +72,17 @@ console.log('id',id)
                       <SellerCategories />
                     </div>
                   )}
-                  {activeTab === "seller2" && (
+                  {/* {activeTab === "seller2" && (
                     <div>
                       <SellerCategoryShop />
                     </div>
-                  )}
+                  )} */}
                   {activeTab === "seller3" && (
                     <div>
                       <SellerAbout />
                     </div>
                   )}
-                  {/* {activeTab === 'seller4' && <div><SellerFeedbackNew /></div>} */}
+                  {activeTab === 'seller4' && <div><SellerFeedbackNew /></div>}
                 </div>
               </div>
             </div>

@@ -72,8 +72,8 @@ const Activity = () => {
         // return <Chat />;
         return<NotFound_/>
       case 'componentJ':
-        // return <Watchlist/>
-        return <NotFound_/>
+        return <Watchlist/>
+        // return <NotFound_/>
       default:
         return ; // Default to Test component if no matching menu item is found
     }

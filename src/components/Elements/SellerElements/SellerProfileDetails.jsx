@@ -84,7 +84,7 @@ const SellerProfileDetails = () => {
                         <div className='col-lg-7'>
                             <div className='profile-seller-shop'>
                                 <div className='image'>
-                                    <img src={`${BASE_URL}/${shopData.main_image}`} alt="Shop Main Image" />
+                                    <img src={`${BASE_URL}/${shopData.cover_image}`} alt="Shop Main Image" />
                                 </div>
                                 <div className='details-seller'>
                                     <h2>{shopData.fullname}</h2>

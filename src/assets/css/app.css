@@ -1543,6 +1543,11 @@ padding: 15px 0px 15px 30px;
 .storecontactdetails ul li {
   list-style: none;
 }
+.textersaveSeller{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
 .storecontactdetails ul {
   margin: 0;
   padding: 0;
@@ -2218,7 +2223,7 @@ button.addntee {
 .wishlistproduct-detail img {
   width: 140px;
   height: 140px;
-  object-fit: cover;
+  object-fit: fill;
   border-radius: 10px;
 }
 .wishlistproduct-detail {
@@ -2692,8 +2697,12 @@ section#sellershop .sellerdetails .details-seller ul {
 .profile-seller-shop img {
   width: 100px;
   height: 80px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 10px;
+}
+.singleproduct-sidebar .store img{
+  object-fit: contain;
+  width: 100%;
 }
 .profile-seller-shop {
   display: flex;

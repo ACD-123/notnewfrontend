@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import SellerServices from "../../../services/API/SellerServices";
+import { Spinner } from "react-bootstrap";
 
 const sellersData = [
   { id: 1, name: "Seller 1", joinedSince: "2022-05-10", location: "New York" },
@@ -6,39 +8,71 @@ const sellersData = [
 ];
 
 const SellerAbout = () => {
+  const [details, setDetails] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { pathname } = window.location;
+  const id = pathname.split("/").pop();
+
+
+  const getAbout = () => {
+    SellerServices.getShopDetailAbout(id)
+      .then((res) => {
+        console.log('About',res.data);
+        setDetails(res.data);
+        setIsLoading(false);
+        // let tags = JSON.parse(res.data.tags);
+        // let allTags = [];
+        // {
+        //   tags.map((tag, index) => allTags.push(tag.tag));
+        // }
+        // setTags(allTags);
+      })
+      .finally(() => {
+        // Set isLoading to false once data fetching is complete
+        setIsLoading(false);
+      });
+  };
+  // Mock data for products (replace this with your actual data)
+  useEffect(() => {
+    getAbout();
+    // getTrending();
+  }, []);
   return (
     <>
+    {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status">
+            {/* <span className="sr-only">Loading...</span> */}
+          </Spinner>
+        </div>
+      ) : (
+        <>
       <div className="row">
         <h3>About us</h3>
         <p>
-          This book is a treatise on the theory of ethics, very popular during
-          the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit
-          amet..", comes from a line in section 1.10.32. The standard chunk of
-          Lorem Ipsum used since the 1500s is reproduced below for those
-          interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et
-          Malorum" by Cicero are also reproduced in their exact original form,
-          accompanied by English versions from the 1914 translation by H.
-          Rackham.
+          {details.description}
+        </p>
+        <br/>
+        <h3>Email</h3>
+        <p>
+          {details.email}
         </p>
       </div>
       <div className="seller-joining-details">
-        {sellersData.map((seller) => (
-          <div className="row" key={seller.id}>
+        {/* {sellersData.map((seller) => ( */}
+          <div className="row">
             <ul>
-              <li>Seller: <span>{seller.name}</span></li>
-              <li>Joined Since: <span>{seller.joinedSince}</span></li>
-              <li>Location: <span>{seller.location}</span></li>
+              <li>Seller: <span>{details.name}</span></li>
+              <li>Joined Since: <span>{details.joined}</span></li>
+              <li>Location: <span>{details.location}</span></li>
+              <li>Phone: <span>{details.phone}</span></li>
             </ul>
           </div>
-        ))}
+        {/* ))} */}
       </div>
-      <div className="row" style={{padding:"20PX 0PX"}}>
-        <h3>Our Top Rated Seller</h3>
-        <p>
-        This book is a treatise on the theory of ethics, very popular during the Renaissance.<br />
-        The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-        </p>
-      </div>
+      </>
+      )}
     </>
   );
 };

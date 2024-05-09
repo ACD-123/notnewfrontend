@@ -289,6 +289,12 @@ function getSizes() {
     method: 'GET',
   })
 }
+function getWishList(id) {
+  return request({
+    url: `${baseApi}wishlist/get?user_id=${id}`,
+    method: 'GET',
+  })
+}
 
 function getbycategory(id){
   return request({
@@ -365,6 +371,7 @@ const ProductServices = {
   checkUserProductOffer,
   flexefee,
   getSizes,
+  getWishList,
   getSavedAddress,
   recent,
   selfValue,

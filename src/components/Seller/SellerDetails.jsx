@@ -13,6 +13,7 @@ import { BASE_URL } from "../../services/Constant";
 const SellerDetails = () => {
     const [shopData, setShopData] = useState([]);
     const [productData, setProductData] = useState([]);
+    const [feedbacks, setFeedbacks] = useState([]);
     const [trendingProduct, setTrendingProduct] = useState(0);
     const { pathname } = window.location;
     const id = pathname.split("/").pop();
@@ -24,10 +25,12 @@ const SellerDetails = () => {
       const getProduct = () => {
         ProductServices.get(id).then((res) => {
           setProductData(res);
+          console.log('feedback',res.data.shop);
+          setFeedbacks(res.data.seller.feedback.feedbacks);
           Home.getshopData(res?.shop_id)
             .then((response) => {
                 if(response.status){
-                    console.log('shop', response.data)
+                    console.log('shopData', response)
                     setShopData(response.data)
                 }
             }).catch((e) => {
@@ -45,6 +48,17 @@ useEffect(() => {
     getProduct();
     // getItemSold();
 }, []);
+const itemsPerPage = 4; // Number of items to display per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = feedbacks.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(feedbacks.length / itemsPerPage);
+
+  const changePage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   return (
     <div className='sellerdetails' style={{padding: "50px 0px"}}>
         {shopData ? (
@@ -85,7 +99,31 @@ useEffect(() => {
                             <PopularProductSearch shopId={shopData.id} />
                             </div>
                             <div className='col-lg-6'>
-                            <SellerFeedback />
+                            <div className="seller-feedback">
+      <h2>Seller Feedback</h2>
+      <div className="feedback-container">
+        {currentItems.map((feedback) => (
+          <div key={feedback.id} className="feedback-item">
+            <img src={`${BASE_URL}/${feedback.user.image}`} alt='user image' />
+            <div className="feedback-content">
+              <h3>{feedback.user.name}</h3>
+              <p>{feedback.comments}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="pagination">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => changePage(index + 1)}
+            className={currentPage === index + 1 ? 'active' : ''}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
+    </div>
                             </div>
                         </div>
                         {/* SECOND ROW */}

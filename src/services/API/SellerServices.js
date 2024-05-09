@@ -97,6 +97,12 @@ function setBank(data) {
       method: 'GET',
     })
   }
+  function getShopDetailAbout(guid) {
+    return request({
+      url: `${baseUrl}getShopDetailAbout/${guid}`, // Modify the endpoint to include the GUID
+      method: 'GET',
+    })
+  }
   
   function getStore(data) {
     return request({
@@ -138,6 +144,12 @@ function setBank(data) {
       method: 'GET'
     })
   }
+  function getShopDetailFeedback(id) {
+    return request({
+      url: `${baseUrl}getShopDetailFeedback/${id}`,
+      method: 'GET'
+    })
+  }
   function createRecent(data) {
     return request({
       url: `${baseUrl}createRecents`,
@@ -168,6 +180,8 @@ const SellerServices = {
   setBank,
   getShopHeader,
   getShopDetailProducts,
+  getShopDetailFeedback,
+  getShopDetailAbout,
   getStore,
   getShopDetails,
   saveSeller,
