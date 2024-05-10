@@ -122,9 +122,17 @@ const Watchlist = () => {
         </div>
       ) : (
           <>
+          {watchlistInstock.length === 0 ? (
+            <div>
+              In Stock Products Available 
+            </div>
+          ) : (
+<>
           {watchlistInstock.map((product) => (
             <ProductItem key={product.id} product={product} />
           ))}
+          </>
+          )}
           </>
         )}
         </div>
@@ -139,9 +147,17 @@ const Watchlist = () => {
         </div>
       ) : (
           <>
+          {watchlistOutstock.length === 0 ? (
+            <div>
+              No Products Available in Out of stock
+            </div>
+          ) : (
+<>
           {watchlistOutstock.map((product) => (
             <ProductItem key={product.id} product={product} />
           ))}
+          </>
+          )}
           </>
       )}
         </div>

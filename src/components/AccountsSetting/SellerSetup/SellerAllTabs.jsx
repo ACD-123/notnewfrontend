@@ -14,6 +14,8 @@ import EditProfileSetup from './EditProfileSetup';
 import SetupSellerAccount from './SetupSellerAccount';
 import MyTransactions from '../SellerSetup/MyTransactions';
 import NotFound from "../../../pages/NotFound_"
+import DiscountAndCoupens from './DiscountAndCoupens';
+import SellerFeedback from '../../Seller/SellerFeedback';
 
 const SellerAllTabs = (props) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('selling1');
@@ -66,15 +68,15 @@ const SellerAllTabs = (props) => {
           return <RefundManagement />; 
           // return <NotFound/> 
       case 'selling4':
-        // return <BidsNoffers />;
-        return <NotFound/> 
+        return <BidsNoffers />;
+        // return <NotFound/> 
       case 'selling5':
         // return <Chat />;
         return <NotFound/> 
       case 'selling6':
-        return <NotFound/>  // You can add the component for Feedbacks here
+        return <SellerFeedback/>  // You can add the component for Feedbacks here
       case 'selling7':
-        return <NotFound/> // You can add the component for Discounts & coupons here
+        return <DiscountAndCoupens/> // You can add the component for Discounts & coupons here
       case 'selling8':
         // return <MyTransactions/>; // You can add the component for Transactions here
         return <NotFound/>

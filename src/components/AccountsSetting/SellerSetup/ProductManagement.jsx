@@ -3,16 +3,13 @@ import ProductCard from '../../Elements/ProductCard';
 import Chat from '../../CustomerDashboard/Chat';
 import Addresses from '../PersonalInfoAllPages/Addresses'
 import ListingForm from './ListingForm';
-import SellingDashboard from './SellingDashboard';
-
+import InActiveProducts from '../../Elements/InActiveProducts';
 const ProductManagement = () => {
   const [selectedOption, setSelectedOption] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [activeTab, setActiveTab] = useState('active');
-  const [productguid, setProductGuid] = useState("");
-  let loggedIn = localStorage.getItem('user_details');
-  let loggedUser = JSON.parse(loggedIn)
+
   const handleOptionChange = (event) => {
     setSelectedOption(event.target.value);
     setSubmitted(false); // Reset submitted state when a new option is selected
@@ -21,34 +18,21 @@ const ProductManagement = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // console.log("Selected option:", selectedOption);
-    localStorage.setItem('product_condition', selectedOption);
+    console.log("Selected option:", selectedOption);
     setSubmitted(true);
     setShowPopup(false);
   };
-  const  handleCallback = (childData) => {
-    setSelectedOption(childData)
-    setSubmitted(false);
-  }
-  const  handleParentCallback = (childData, guid) => {
-    setSelectedOption(childData);
-    setSubmitted(true); 
-    setActiveTab('active');
-    setProductGuid(guid);
-  }
-  
+
   const renderSelectedComponent = () => {
     switch (selectedOption) {
-      case 'Edit':
-        return submitted ? <ListingForm edit="edit" guid={productguid} parentCallback={handleCallback} /> : null;
       case 'BrandNew':
-        return submitted ? <ListingForm parentCallback={handleCallback} /> : null;
+        return submitted ? <ListingForm /> : null;
       case 'Used':
-        return submitted ? <ListingForm parentCallback={handleCallback} /> : null;
+        return submitted ? <ListingForm /> : null;
       case 'Refurbished':
-        return submitted ? <ListingForm parentCallback={handleCallback} /> : null;
+        return submitted ? <ListingForm /> : null;
       case 'Vintage':
-        return submitted ? <ListingForm parentCallback={handleCallback} /> : null;
+        return submitted ? <ListingForm /> : null;
       default:
         return null;
     }
@@ -62,8 +46,6 @@ const ProductManagement = () => {
   return (
     <>
       {renderSelectedComponent() || ( // Render component or the product-management section
-      <>
-      {loggedUser.isTrustedSeller ? (<>
         <section id='product-management'>
           <div className='row align-items-center'>
             <div className='col-lg-7'>
@@ -134,20 +116,16 @@ const ProductManagement = () => {
             <ul className='active-inactive-schedule'>
               <li className={activeTab === 'active' ? 'active' : ''} onClick={() => setActiveTab('active')}>Active products</li>
               <li className={activeTab === 'inactive' ? 'active' : ''} onClick={() => setActiveTab('inactive')}>Inactive products</li>
-              <li className={activeTab === 'scheduled' ? 'active' : ''} onClick={() => setActiveTab('scheduled')}>Scheduled</li>
+              {/* <li className={activeTab === 'scheduled' ? 'active' : ''} onClick={() => setActiveTab('scheduled')}>Scheduled</li> */}
             </ul>
           </div>
           <div className='row'>
             {/* Render different content based on activeTab */}
-            {activeTab === 'active' && !submitted && <ProductCard edit="edit" parentCallback={handleParentCallback} status='active' />}
-            {activeTab === 'inactive' && !submitted && <ProductCard edit="edit" parentCallback={handleParentCallback} status='inactive' />}
-            {activeTab === 'scheduled' && !submitted && <ProductCard edit="edit" parentCallback={handleParentCallback} status='scheduled' />}
+            {activeTab === 'active' && !submitted && <ProductCard />}
+            {activeTab === 'inactive' && !submitted && <InActiveProducts />}
+            {/* {activeTab === 'scheduled' && !submitted && <ProductCard />} */}
           </div>
         </section>
-      </>):(<>
-      <SellingDashboard/></>)}
-        
-        </>
       )}
     </>
   );

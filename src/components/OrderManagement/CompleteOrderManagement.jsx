@@ -205,6 +205,10 @@ const CompleteOrderManagement = () => {
         </div>
       ) : (
         <>
+         {selectedProduct.data.length === 0 ? (
+           <div>No Completed Products</div>
+          ) : (
+          <>
       {selectedProduct && selectedProduct.data && selectedProduct.data.map((order, index) => (
         <div className="row align-items-center" key={index}>
           <div className="col-lg-8">
@@ -239,6 +243,8 @@ const CompleteOrderManagement = () => {
           <hr />
         </div>
       ))}
+      </>
+          )}
       </>
       )}
     </div>

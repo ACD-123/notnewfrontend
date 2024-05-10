@@ -71,7 +71,7 @@ const RecentViewedItems = () => {
   return (
     <>
     <section id='product-recents-viewed'>
-    {productData.length > 0 ?(
+    {productData.length === 0 ?(
               <>
         <div className='container'>
             <div className='row'>

@@ -21,6 +21,7 @@ import icon3 from "../../../assets/Images/icons/3.png";
 import StarRating from "../../OrderManagement/StarRating";
 import Location from "../../../assets/Images/map.png";
 import { Spinner } from "react-bootstrap";
+import ProductCard from "../../Elements/ProductCard";
 const products = [
   {
     id: 1,
@@ -297,7 +298,8 @@ const SellingDetailsDashBoard = (props) => {
     console.log('offers')
     OrderServices.getuserbidscount()
       .then((res) => {
-          setOfferCount(res); 
+          setOfferCount(res.data); 
+          console.log('count',res.data)
       })
       .catch((e) => {
         console.log(e.message);
@@ -376,7 +378,7 @@ const SellingDetailsDashBoard = (props) => {
               <div className="col-lg-4 col">
                 <div className="dabb">
                   <h4>Completed Orders</h4>
-                  <h1>{ordercount}</h1>
+                  <h1>{orderoffer.completed_orders_count}</h1>
                   <select style={{ width: "100%" }}>
                     <option value="">Select Year</option>
                     <option value="2024">2024</option>
@@ -405,7 +407,7 @@ const SellingDetailsDashBoard = (props) => {
               <div className="col-lg-4 col">
                 <div className="dabb">
                   <h4>Offers</h4>
-                  <h1>{orderoffer}</h1>
+                  <h1>{orderoffer.offers}</h1>
                   <select style={{ width: "100%" }}>
                     <option value="">Select Year</option>
                     <option value="2024">2024</option>
@@ -434,7 +436,7 @@ const SellingDetailsDashBoard = (props) => {
               <div className="col-lg-4 col">
                 <div className="dabb">
                   <h4>Earnings</h4>
-                  <h1>$ {transaction}</h1>
+                  <h1>$ {orderoffer.earnings}</h1>
                   <button>Withdraw</button>
                 </div>
               </div>
@@ -442,50 +444,7 @@ const SellingDetailsDashBoard = (props) => {
             <div className="order-feeds">
               <h3>Orders Feed</h3>
               {/* Secondrow */}
-              {ordersummary.length > 0 ? (
-                <>
-                  {ordersummary.map((summary) => {
-                    return (
-                      <>
-                        <div className="row" key={summary.id}>
-                          <div className="product-item">
-                            <div className="detaildashbritemdetail">
-                              <div className="img-title">
-                                {/* <div>
-                                  <img
-                                    src={SellerProductImage1}
-                                    alt={summary?.product.name}
-                                  />
-                                </div> */}
-                                <div>
-                                  <p>ORDER#{summary.order.orderid}</p>
-                                  <h4>{summary?.product.name}</h4>
-                                  <p>{summary.order.status}</p>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="dropdown">
-                              <a
-                                href="#"
-                                onClick={(e) =>
-                                  orderDetails(e, summary?.order.id)
-                                }
-                              >
-                                {/* <Link to={`/completedorder/${summary.order.orderid}`}> */}
-                                <button>View Detail</button>
-                              </a>
-                              {/* </Link> */}
-                            </div>
-                          </div>
-                          {/* <hr /> */}
-                        </div>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                "No Order Exists"
-              )}
+              <ProductCard/>
             </div>
           </section>
         </>

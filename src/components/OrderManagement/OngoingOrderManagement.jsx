@@ -259,6 +259,10 @@ const OngoingOrderManagement = () => {
         </div>
       ) : (
         <>
+         {ordersummary.data.length === 0 ? (
+           <div>No On Going Products</div>
+          ) : (
+          <>
   {ordersummary && ordersummary.data && ordersummary.data.map((order, index) => (
             <>
              <div className='row align-items-center' key={index}>
@@ -284,8 +288,9 @@ const OngoingOrderManagement = () => {
               <hr />
              </div>
             </>
-
         ))}
+        </>
+          )}
         </>
       )}
       

@@ -18,7 +18,7 @@ const OngoingOrders = () => {
         setIsLoading(false); // Set isLoading to false when data is fetched
       })
       .catch((error) => {
-        toast.error(error.message);
+        console.log(error.message);
         setIsLoading(false); // Set isLoading to false even if there's an error
       });
   };
@@ -69,12 +69,18 @@ const OngoingOrders = () => {
         </div>
       ) : (
         <>
+        {customerOrders.length === 0 ? ( // Check if customerOrders array is empty
+            <div>No orders available</div>
+          ) : (
+            <>
         {customerOrders.map((order, index) => (
           <React.Fragment key={index}>
             {renderOrderBlock(order)}
             {index !== customerOrders.length - 1 && <hr />}
           </React.Fragment>
         ))}
+        </>
+          )}
         </>
       )}
       </div>

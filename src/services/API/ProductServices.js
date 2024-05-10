@@ -9,6 +9,18 @@ function all(params = {}) {
     params,
   })
 }
+function sellerActiveProducts(params = {}) {
+  return request({
+    url: `${baseUrl}/active`,
+    params,
+  })
+}
+function sellerInActiveProducts(params = {}) {
+  return request({
+    url: `${baseUrl}/inactive`,
+    params,
+  })
+}
 
 function save(data) {
   return request({
@@ -375,6 +387,8 @@ const ProductServices = {
   getSavedAddress,
   recent,
   selfValue,
+  sellerActiveProducts,
+  sellerInActiveProducts,
   storeProduct,
 }
 

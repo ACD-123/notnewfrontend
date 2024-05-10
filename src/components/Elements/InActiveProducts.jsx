@@ -4,21 +4,23 @@ import blank from '../../assets/Images/Productcard/blank.jpg';
 import ProductServices from '../../services/API/ProductServices';
 import { Spinner } from 'react-bootstrap';
 
-const ProductCard = () => {
+const InActiveProducts = () => {
   const [activeProducts, setActiveProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const activeProductData = async () => {
     try {
-      const res = await ProductServices.sellerActiveProducts();
+      const res = await ProductServices.sellerInActiveProducts();
       if (res.status) {
         setActiveProducts(res.data); // Limit to the first 5 products
         setIsLoading(false)
+
         console.log("activeProducts", res.data);
       }
     } catch (error) {
-      setIsLoading(false)
       console.error("Error fetching product data:", error);
+      setIsLoading(false)
+
     }
   };
   useEffect(() => {
@@ -37,8 +39,8 @@ const ProductCard = () => {
         </div>
       ) : (
         <>
-        {activeProducts.length === 0 ? (
-           <div>No Active Products</div>
+         {activeProducts.length === 0 ? (
+           <div>No Inactive Products</div>
           ) : (
           <>
           {activeProducts.map((product) => (
@@ -55,15 +57,17 @@ const ProductCard = () => {
         </Link>
       )}
       {product.auction && <span className='auction-badge'>Auction</span>}
+      {product.recurring === 0 && <span className='auction-sold'>Sold Out</span>}
+      {product.recurring === 1 && <span className='auction-sold'>Out Of Stock</span>}
       <div className='px-2'>
         {/* Conditional rendering of Link based on auction property */}
         {product.auction ? (
           <Link to={`/auctionproduct/${product.guid}`}>
-            <h4>{product.name}</h4>
+            <h4>{product.title}</h4>
           </Link>
         ) : (
           <Link to={`/singleproduct/${product.guid}`}>
-            <h4>{product.name}</h4>
+            <h4>{product.title}</h4>
           </Link>
         )}
         <p>
@@ -78,7 +82,7 @@ const ProductCard = () => {
   </div>
 ))}
 </>
-          )}
+)}
 </>
       )}
 
@@ -88,4 +92,4 @@ const ProductCard = () => {
   );
 };
 
-export default ProductCard;
+export default InActiveProducts;

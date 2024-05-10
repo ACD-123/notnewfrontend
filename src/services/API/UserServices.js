@@ -193,6 +193,19 @@ function getSellerActiveBid(){
     method: "GET"
   })
 }
+function couponsDiscount(id){
+  return request({
+    url: `${BASE_API}coupons/get?user_id=${id}`,
+    method: "GET"
+  })
+}
+function addCoupons(data){
+  return request({
+    url: `${BASE_API}coupons/save`,
+    data,
+    method: "POST"
+  })
+}
 function resendOtp(data) {
   return request({
     url: `${baseUrl}resendOtp`,
@@ -213,6 +226,7 @@ const UserService = {
   resendOtp,
   resendForgetOtp,
   getSellerActiveBid,
+  couponsDiscount,
   deleteRecentUser,
   detail,
   upload,
@@ -235,7 +249,8 @@ const UserService = {
   fbAccount,
   recentUserView,
   updateAddress,
-  getBid
+  getBid,
+  addCoupons,
   // depositfund,
 }
 

@@ -141,9 +141,9 @@ const RecentViewedItems = () => {
                           </>
                         )}
                         {/* Auction badge */}
-                        {product?.auctioned && (
+                        {/* {product?.auctioned && (
                           <span className="auction-badge">Auction</span>
-                        )}
+                        )} */}
                         <div className="px-2">
                           {/* Product details */}
                           {isLoggedin() ? (
@@ -156,9 +156,9 @@ const RecentViewedItems = () => {
                                 }
                               >
                                 <h3>{product.name.substring(0, 10)}...</h3>${" "}
-                                {/* {product?.auctioned
+                                {product?.auctioned
                                   ? product.bids
-                                  : product.price} */}
+                                  : product.price}
                                 <h4>
                                   {product?.description.substring(0, 15)}...
                                 </h4>
@@ -168,9 +168,9 @@ const RecentViewedItems = () => {
                             <>
                               <Link to="/signin">
                                 <h3>{product.name.substring(0, 10)}...</h3>${" "}
-                                {/* {product?.auctioned
+                                {product?.auctioned
                                   ? product.bids
-                                  : product.price} */}
+                                  : product.price}
                                 <h4>
                                   {product?.description.substring(0, 15)}...
                                 </h4>

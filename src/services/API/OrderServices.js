@@ -125,7 +125,7 @@ function getusercompletedcount(params = {}) {
 }
 function getuserbidscount(params = {}) {
   return request({
-    url: `${baseUrl}/offers/counts`,
+    url: `${ordersApi}/seller/dashboard`,
     params,
     method: 'GET',
   })
