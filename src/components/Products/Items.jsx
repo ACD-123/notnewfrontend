@@ -18,23 +18,11 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 const RecentViewedItems = () => {
   const [productData, setProductData] = useState([]);
   const [favData, setFavData] = useState([]);
-  const [user, setUser] = useState({});
-
-  const fetchProductData = async () => {
-    try {
-      const res = await ProductServices.all();
-      if (res.status) {
-        setProductData(res.data.slice(0, 4)); // Limit to the first 5 products
-        console.log("setProductData", res.data);
-      }
-    } catch (error) {
-      console.error("Error fetching product data:", error);
-    }
-  };
+  const [user, setUser] = useState();
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
-        console.log("login", response.id);
+        console.log("login12", response.id);
         setUserDetails(response);
         setUser(response.id);
         localStorage.setItem("user_details", JSON.parse(response));
@@ -44,6 +32,19 @@ const RecentViewedItems = () => {
         // toast.error(e.message);
       });
   };
+  const fetchProductData = async () => {
+    try {
+      const res = await ProductServices.all(user);
+      console.log('api',res)
+      if (res.status) {
+        setProductData(res.data.slice(0, 4)); // Limit to the first 5 products
+        console.log("setProductData", res.data);
+      }
+    } catch (error) {
+      console.error("Error fetching product data:", error);
+    }
+  };
+  
   useEffect(() => {
     if (isLoggedin()) {
       getUser();
@@ -72,8 +73,10 @@ const RecentViewedItems = () => {
   };
 
   useEffect(() => {
-    fetchProductData();
-  }, []);
+    if (user) {
+      fetchProductData();
+    }
+  }, [user]);
 
   return (
     <>

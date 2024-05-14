@@ -33,22 +33,24 @@ const DiscountAndCoupens = () => {
 
     const getSellerBid = () => {
         if (user && user.id) {
-            UserServices.couponsDiscount(user.id)
-                .then((response) => {
-                    setIsLoading(false);
-                    if (response) {
-                        console.log('data Coupons', response.data);
-                        setActiveCoupons(response.data.active_coupons);
-                        setExpiredCoupons(response.data.expired_coupons);
-                        setCountCopons(response.data);
-                    }
-                })
-                .catch((error) => {
-                    setIsLoading(false);
-                    console.error('Error fetching coupons:', error);
-                });
+          const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
+          UserServices.couponsDiscount(user.id, currentDate) // Pass user.id and current date to the function
+            .then((response) => {
+              setIsLoading(false);
+              if (response) {
+                console.log('data Coupons', response.data);
+                setActiveCoupons(response.data.active_coupons);
+                setExpiredCoupons(response.data.expired_coupons);
+                setCountCopons(response.data);
+              }
+            })
+            .catch((error) => {
+              setIsLoading(false);
+              console.error('Error fetching coupons:', error);
+            });
         }
-    };
+      };
+      
 
     const getSellerGuid = () => {
         SellerServices.getShopDetails()

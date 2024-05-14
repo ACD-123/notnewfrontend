@@ -136,6 +136,12 @@ function getbyid(id) {
     method: 'GET',
   })
 }
+function getOrderDetailsbyid(id) {
+  return request({
+    url: `${baseUrl}/getById/${id}`,
+    method: 'GET',
+  })
+}
 function updateSeller(id, data) {
   return request({
     url: `${baseUrl}/updateSeller/${id}`,
@@ -239,6 +245,7 @@ const OrderServices = {
   getTrsutedUserData,
   vendorDelivered,
   vendorNotDelivered,
+  getOrderDetailsbyid,
   updateSeller
 }
 

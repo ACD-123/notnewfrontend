@@ -3,10 +3,10 @@ import { BASE_API } from '../Constant'
 // @todo this file name should be product service
 const baseUrl = `${BASE_API}products`
 const baseApi = `${BASE_API}`
-function all(params = {}) {
+function all(id) {
   return request({
-    url: `${baseUrl}/`,
-    params,
+    url: `${baseUrl}?user_id=${id}`,
+    method: 'GET',
   })
 }
 function sellerActiveProducts(params = {}) {

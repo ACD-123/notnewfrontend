@@ -299,7 +299,7 @@ const SellingDetailsDashBoard = (props) => {
     OrderServices.getuserbidscount()
       .then((res) => {
           setOfferCount(res.data); 
-          console.log('count',res.data)
+          console.log('count',res)
       })
       .catch((e) => {
         console.log(e.message);

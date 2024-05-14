@@ -8,26 +8,73 @@ import {Link} from 'react-router-dom'
 import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../services/Constant";
+import UserServices from "../../services/API/UserServices"; //~/services/API/AuthService
+import {
+  setUserDetails,
+  isLoggedin,
+  getUserDetails,
+} from "../../services/Auth";
+import { Spinner } from 'react-bootstrap';
 
 const AllProductListing = (props) => {
-    const [productData, setProductData] = useState([]);
-    const fetchProductData = async () => {
-        ProductServices.all()
-        .then((res) => {
-            console.log('resodddd',res)
-          if(res.status){
-            setProductData(res.data); // Limit to the first 5 products
-          }
-      }) .catch(error => console.log(error));
+  const [productData, setProductData] = useState([]);
+  const [user, setUser] = useState();
+  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
+
+    const getUser = () => {
+      UserServices.detail()
+        .then((response) => {
+          console.log("login12", response.id);
+          setUserDetails(response);
+          setUser(response.id);
+          localStorage.setItem("user_details", JSON.parse(response));
+          setIsLoading(false); // Set isLoading to false when data is fetched
+
+        })
+        .catch((e) => {
+          console.log("error", e);
+          // toast.error(e.message);
+          setIsLoading(false); // Set isLoading to false when data is fetched
+
+        });
     };
+    
+    const fetchProductData = async () => {
+      try {
+        const res = await ProductServices.all(user);
+        console.log('api',res)
+        if (res.status) {
+          setProductData(res.data); // Limit to the first 5 products
+          console.log("setProductData", res.data);
+        }
+      } catch (error) {
+        console.error("Error fetching product data:", error);
+      }
+    };
+   
+    
     useEffect(() => {
-      fetchProductData();
-    }, []);
+      if (isLoggedin()) {
+        getUser();
+        // let cartItems = localStorage.getItem('cupon');
+      }
+      if (user) {
+        fetchProductData();
+      }
+    }, [user]);
+    
   return (
     <>
       <section id='productcard' style={{ padding: "10px 0px" }}>
         <div className='row'>
-          
+        {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status">
+            {/* <span className="sr-only">Loading...</span> */}
+          </Spinner>
+        </div>
+      ) : (
+          <>
       {productData.map((product) => (
         <div className='col col-lg-3' key={product?.guid}>
         <div className='productlist'>
@@ -95,6 +142,8 @@ const AllProductListing = (props) => {
         </div>
       </div>
             ))}
+            </>  
+      )}
        </div>
       </section>
     </>

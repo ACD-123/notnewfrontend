@@ -692,7 +692,7 @@ section#productcard .col img {
 section#productcard .col .productlist img {
   height: 163px;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 4px;
 }
 section#productcard .col p ul li {
@@ -1847,7 +1847,7 @@ section#activity-main-dashboard .left-menu ul li.active {
 .favoriteImg{
   position: absolute;
   z-index: 9999;
-  bottom: 69px;
+  bottom: 60px;
   right: 0px;
 }
 .favoriteImg svg {

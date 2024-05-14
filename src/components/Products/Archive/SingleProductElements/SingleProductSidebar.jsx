@@ -83,6 +83,7 @@ const SingleProductSidebar = () => {
     UserServices.detail()
       .then((response) => {
         setUserDetails(response);
+        console.log('user_details',response);
         setUser(response.id);
         localStorage.setItem("user_details", JSON.stringify(response));
       })

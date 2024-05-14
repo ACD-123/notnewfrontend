@@ -66,8 +66,8 @@ const Activity = () => {
         // return <SavedSearches />;
         return <NotFound_/>
       case 'componentH':
-        // return <SavedSellers />;
-        return <NotFound_ />
+        return <SavedSellers />;
+        // return <NotFound_ />
       case 'componentI':
         // return <Chat />;
         return<NotFound_/>

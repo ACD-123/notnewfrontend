@@ -193,10 +193,16 @@ function getSellerActiveBid(){
     method: "GET"
   })
 }
-function couponsDiscount(id){
+function couponsDiscount(id, date){
   return request({
-    url: `${BASE_API}coupons/get?user_id=${id}`,
+    url: `${BASE_API}coupons/get?user_id=${id}&user_date=${date}`,
     method: "GET"
+  })
+}
+function getSavedSeller(id) {
+  return request({
+    url: `${BASE_API}favourites/get?type=2&user_id=${id}`,
+    method: 'GET'
   })
 }
 function addCoupons(data){
@@ -251,6 +257,7 @@ const UserService = {
   updateAddress,
   getBid,
   addCoupons,
+  getSavedSeller,
   // depositfund,
 }
 
