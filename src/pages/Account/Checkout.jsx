@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import Productimage from '../../assets/Images/Categorylisting/1.png';
-import { Modal, Button, Spinner } from 'react-bootstrap';
-import Payment from "../../assets/Images/Shoppingcart/payment.png"
-import Checkpay from "../../assets/Images/check-pay.png"
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import Header from "../../components/Header";
+import Footer from "../../components/Footer";
+import Productimage from "../../assets/Images/Categorylisting/1.png";
+import { Modal, Button, Spinner } from "react-bootstrap";
+import Payment from "../../assets/Images/Shoppingcart/payment.png";
+import Checkpay from "../../assets/Images/check-pay.png";
+import { Link } from "react-router-dom";
 import CheckoutServices from "../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
 import UserServices from "../../services/API/UserServices";
-import { setUserDetails, isLoggedin, getUserDetails } from "../../services/Auth"; // ~/services/Auth
-import { Carousel } from 'react-carousel-minimal'; // Import Carousel from react-carousel-minimal
+import {
+  setUserDetails,
+  isLoggedin,
+  getUserDetails,
+} from "../../services/Auth"; // ~/services/Auth
+import { Carousel } from "react-carousel-minimal"; // Import Carousel from react-carousel-minimal
 import { BASE_URL } from "../../services/Constant";
 import { STRIPE_PUBLISHABLE_KEY } from "../../services/Constant";
 import { loadStripe } from "@stripe/stripe-js";
@@ -19,10 +23,10 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import Stripe from './Stripe';
-import CartServices from '../../services/API/CartServices';
-import SaveLaterServices from '../../services/API/SaveLaterServices';
-import { toast } from 'react-toastify';
+import Stripe from "./Stripe";
+import CartServices from "../../services/API/CartServices";
+import SaveLaterServices from "../../services/API/SaveLaterServices";
+import { toast } from "react-toastify";
 
 const Checkout = () => {
   const [userDetails, setUserDetails] = useState(null); // State to store user details
@@ -73,21 +77,21 @@ const Checkout = () => {
     const fetchUserDetails = async () => {
       try {
         const response = await UserServices.detail();
-        console.log('user Data:', response); // Log the checkout data
+        console.log("user Data:", response); // Log the checkout data
         setUserDetails(response);
       } catch (error) {
-        console.error('Error fetching user details:', error);
+        console.error("Error fetching user details:", error);
       }
     };
-    
+
     // Fetch checkout data when the component mounts
     const fetchCheckoutData = async () => {
       try {
         const response = await CheckoutServices.self();
-        console.log('Checkout Data:', response.data); // Log the checkout data
+        console.log("Checkout Data:", response.data); // Log the checkout data
         setCheckoutData(response.data); // Set the checkout data in state
       } catch (error) {
-        console.error('Error fetching checkout data:', error);
+        console.error("Error fetching checkout data:", error);
       }
     };
 
@@ -105,60 +109,62 @@ const Checkout = () => {
     setOtherAddress(childData);
   };
   const [cart, setCart] = useState([]);
-  
+
   const getCart = () => {
-    var bidProduct = localStorage.getItem('bid_product');
+    var bidProduct = localStorage.getItem("bid_product");
 
     setIsLoading(true); // Start loading
-    if(bidProduct){
-      console.log('bidProduct', JSON.parse(bidProduct))
-      setBidCartImage(JSON.parse(bidProduct).media)
+    if (bidProduct) {
+      console.log("bidProduct", JSON.parse(bidProduct));
+      setBidCartImage(JSON.parse(bidProduct).media);
       setBidCart(JSON.parse(bidProduct));
       setQuantity(1);
-      let prices = JSON.parse(bidProduct).bids + JSON.parse(bidProduct).shipping_price
-      setAmountAddingPrices(prices)
-      setShippingPrice(JSON.parse(bidProduct).shipping_price)
+      let prices =
+        JSON.parse(bidProduct).bids + JSON.parse(bidProduct).shipping_price;
+      setAmountAddingPrices(prices);
+      setShippingPrice(JSON.parse(bidProduct).shipping_price);
       setsubTotal(JSON.parse(bidProduct).bids);
-      setOrderType("bids")
+      setOrderType("bids");
       // console.log('.attribute', JSON.parse(bidProduct.attribute))
       // setBidCartAttributes(JSON.parse(bidProduct.attribute))
-      }else{
-    CartServices.self().then((res) => {
-      setCart(res);
-      setIsLoading(false); // Stop loading when data is fetched
-      var cartPrice = [];
-      var shippingPrice = [];
-      var allPrices = [];
-      if (res.length > 0) {
-        res.map((cat) => {
-          cartPrice.push(cat.price);
-          shippingPrice.push(cat.products.shipping_price);
-        });
-      }
-      let discountPrice = 0;
-      if (prices.length > 0) {
-        prices.map((price) => {
-          if (price.name !== "Discount") {
-            allPrices.push(price.value);
-          } else if (price.name === "Discount") {
-            setDiscountPrices(price.value);
-            discountPrice = price.value
-          }
-        });
-      }
-      let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
-      let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
-      setsubTotal(subttal);
-      setShippingPrice(shippingprice);
-      let adminPric = allPrices.reduce((a, v) => (a = a + v), 0)
-      setAdminPrices(adminPric);
-      setOrderType("Cart")
-      var amountAfterDiscount = subttal - discountPrice;
-      var amountbyaddingprices = amountAfterDiscount + adminPric + shippingprice;
-      // var amountbyaddingprices = subttal + shippingprice;
-      setAmountAddingPrices(amountbyaddingprices);
-    })
-    };
+    } else {
+      CartServices.self().then((res) => {
+        setCart(res);
+        setIsLoading(false); // Stop loading when data is fetched
+        var cartPrice = [];
+        var shippingPrice = [];
+        var allPrices = [];
+        if (res.length > 0) {
+          res.map((cat) => {
+            cartPrice.push(cat.price);
+            shippingPrice.push(cat.products.shipping_price);
+          });
+        }
+        let discountPrice = 0;
+        if (prices.length > 0) {
+          prices.map((price) => {
+            if (price.name !== "Discount") {
+              allPrices.push(price.value);
+            } else if (price.name === "Discount") {
+              setDiscountPrices(price.value);
+              discountPrice = price.value;
+            }
+          });
+        }
+        let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
+        let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
+        setsubTotal(subttal);
+        setShippingPrice(shippingprice);
+        let adminPric = allPrices.reduce((a, v) => (a = a + v), 0);
+        setAdminPrices(adminPric);
+        setOrderType("Cart");
+        var amountAfterDiscount = subttal - discountPrice;
+        var amountbyaddingprices =
+          amountAfterDiscount + adminPric + shippingprice;
+        // var amountbyaddingprices = subttal + shippingprice;
+        setAmountAddingPrices(amountbyaddingprices);
+      });
+    }
   };
   const handleCheckOut = (e) => {
     e.preventDefault();
@@ -172,7 +178,7 @@ const Checkout = () => {
     // };
     // CheckoutServices.save(data).then((response) => {
     //   if (response.success) {
-        window.location.href = "/checkout";
+    window.location.href = "/checkout";
     //   }
     // });
   };
@@ -187,7 +193,7 @@ const Checkout = () => {
   };
 
   const handleSaveLater = (e, cartId) => {
-    console.log('cart',cartId);
+    console.log("cart", cartId);
     // return;
     e.preventDefault();
     let data = {
@@ -232,24 +238,22 @@ const Checkout = () => {
     cartCount();
     getCart();
   }, []);
-  
+
   return (
     <>
-    <Header />
-    {isLoading ? ( // Render loader if isLoading is true
-        <div className='py-2 container'>Loading...</div>
+      <Header />
+      {isLoading ? ( // Render loader if isLoading is true
+        <div className="py-2 container">Loading...</div>
       ) : (
-      <>
-    {userDetails && (
-      
-    <section id="cart-details">
-        <div class="container">
-            <h1>Checkout</h1>
-            {/* {userDetails.address} */}
-            <div class="row">
-                
-                <div class="col-lg-8">
-                {/* <div class="order-details" id="order-detailsid">
+        <>
+          {userDetails && (
+            <section id="cart-details">
+              <div class="container">
+                <h1>Checkout</h1>
+                {/* {userDetails.address} */}
+                <div class="row">
+                  <div class="col-lg-8">
+                    {/* <div class="order-details" id="order-detailsid">
                 <h3>Shipping Details</h3>
                 <div class="shipping-details">
                   <table style={{ width: "100%" }}>
@@ -321,19 +325,23 @@ const Checkout = () => {
                   </table>
                 </div>
               </div> */}
-                <div class="order-details" id="order-detailsid">
-                <h3>Pay with</h3>
-                <h6>Credit or Debit card</h6>
-                <span>
-                  Your payements are secured, Your Details are confedentials
-                </span>
-                
-                {userDetails?.address ? (<>
-                  <p>Billing Address</p>
-                <span class="tabstop">{userDetails?.address}</span>
+                    <div class="order-details" id="order-detailsid">
+                      <h3>Pay with</h3>
+                      <h6>Credit or Debit card</h6>
+                      <span>
+                        Your payements are secured, Your Details are
+                        confedentials
+                      </span>
 
-                </>):(<></>)}
-                {/* <div class="tabs-check">
+                      {userDetails?.address ? (
+                        <>
+                          <p>Billing Address</p>
+                          <span class="tabstop">{userDetails?.address}</span>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                      {/* <div class="tabs-check">
                  
                 <Elements stripe={stripePromise} options={options}>
                     <Stripe
@@ -354,230 +362,248 @@ const Checkout = () => {
                     />
                   </Elements>
                 </div> */}
-              </div>
-                    <div class="order-details" id="order-detailsid">
-                        <h3>Shipping Details</h3>
-                        <div class="shipping-details">
-                       
-                        <table style={{width: "100%"}}>
-                            <tr>
-                              <th class="boldthtotallight">Full Name :</th>
-                              <td class="boldthtotallight">{userDetails.name}</td>
-                            </tr>
-                            <tr>
-                              <th class="boldthtotallight">Phone :</th>
-                              <td>{userDetails.phone}</td>
-                            </tr>
-                            <tr>
-                              <th class="boldthtotallight">Address :</th>
-                              {changeAdds ? (
-                        <>
-                          <td>
-                            <textarea
-                              class="form-control"
-                              onChange={handleChngeAdd}
-                            ></textarea>
-                            
-                          </td>
-                          <td>
-                            <p
-                              class="gradienttextcolor"
-                              style={{ cursor: "pointer" }}
-                              onClick={(e) => changeAddress(e, false)}
-                            >
-                              Cancel
-                            </p>
-                          </td>
-                        </>
-                      ) : (
-                        <>
-                          <td style={{width:'60%'}}>{userDetails?.address}</td>
-                          <td>
-                            <p
-                              class="gradienttextcolor"
-                              style={{ cursor: "pointer" }}
-                              onClick={(e) => changeAddress(e, true)}
-                            >
-                              Change Address
-                            </p>
-                          </td>
-                        </>
-                      )}
-                            </tr>
-                            {changeAdds ? (
-                      <>
-                        <tr>
-                          <th class="boldthtotallight">Zip :</th>
-                          <td>
-                            <input
-                              type="text"
-                              name="zip"
-                              class="form-control"
-                              onChange={handleZip}
-                              id="zip"
-                            />
-                            
-                          </td>
-                          <td>&nbsp;</td>
-                        </tr>
-                      </>
-                    ) : (
-                      ""
-                    )}
-                          </table>
-                          {/* <p class="gradienttextcolor">Change Address</p> */}
-                        </div>
                     </div>
-                    {checkoutData && checkoutData.map((order, orderIndex) => (
-                      
-  <div key={orderIndex} className='divider'>
-    <h3 id="storetitle">{order.storename}</h3>
-    {order.products.map((product, productIndex) => {
-  const isSaved = cartids.includes(product.cartid); // Correct variable name
-  console.log('cartid', product.cartid)
-  return (
-    <div key={productIndex} className="order-details">
-      <div className="row">
-        <div className="col-lg-9">
-          <div className="product-detail">
-            <div className="product-image" style={{ width: '35%' }}>
-              <img src={product.media[0].name} alt="" style={{ width: '100%', objectFit: 'contain' }} />
-            </div>
-            <div className="product-order-details">
-              <h5>{product.name}</h5>
-              <span>Size: {product.size}, Color: {product.color}</span>
-              <div className="quantitypadding">
-                <p><b><span>QTY: {product.cartquantity}</span></b></p>
-              </div>
-              <span className="unter">{product.postal_address}</span>
-            </div>
-          </div>
-        </div>
-        <div className="col-lg-3">
-          <div className="prices-order-details">
-            <h4>US $ {product.cartprice}</h4>
-            {/* <span>+US $29.99</span> */}
-          </div>
-        </div>
-      </div>
-      <hr className="dashed" />
-      <div className="buttonright">
-        {isSaved ? (
-          <button
-            className="btn btn-info btn-lg transparent"
-            type="button"
-          >
-            Saved for later
-          </button>
-        ) : (
-          <button
-            className="btn btn-info btn-lg transparent"
-            type="button"
-            onClick={(e) => handleSaveLater(e, product.cartid)}
-          >
-            Save for later
-          </button>
-        )}
-      </div>
-    </div>
-  );
-})}
-  </div>
-))}
-
-                </div>
-                <div class="col-lg-4">
-                {cart.length > 0 ? (
-                <>
-                  <div className="order-details" id="totalordervalue">
-                    <h3>Order Total</h3>
-                    <table style={{ width: "100%" }}>
-                      <tr>
-                        <th className="boldthtotal">
-                          Subtotal ( {cartitem} items )
-                        </th>
-                        <td className="boldthtotal">$ {subTotal}</td>
-                      </tr>
-                      <tr>
-                        <th>Shipping</th>
-                        <td>$ {shippingprice}</td>
-                      </tr>
-                      {/* <tr>
+                    <div class="order-details" id="order-detailsid">
+                      <h3>Shipping Details</h3>
+                      <div class="shipping-details">
+                        <table style={{ width: "100%" }}>
+                          <tr>
+                            <th class="boldthtotallight">Full Name :</th>
+                            <td class="boldthtotallight">{userDetails.name}</td>
+                          </tr>
+                          <tr>
+                            <th class="boldthtotallight">Phone :</th>
+                            <td>{userDetails.phone}</td>
+                          </tr>
+                          <tr>
+                            <th class="boldthtotallight">Address :</th>
+                            {changeAdds ? (
+                              <>
+                                <td>
+                                  <textarea
+                                    class="form-control"
+                                    onChange={handleChngeAdd}
+                                  ></textarea>
+                                </td>
+                                <td>
+                                  <p
+                                    class="gradienttextcolor"
+                                    style={{ cursor: "pointer" }}
+                                    onClick={(e) => changeAddress(e, false)}
+                                  >
+                                    Cancel
+                                  </p>
+                                </td>
+                              </>
+                            ) : (
+                              <>
+                                <td style={{ width: "60%" }}>
+                                  {userDetails?.address}
+                                </td>
+                                <td>
+                                  <p
+                                    class="gradienttextcolor"
+                                    style={{ cursor: "pointer" }}
+                                    onClick={(e) => changeAddress(e, true)}
+                                  >
+                                    Change Address
+                                  </p>
+                                </td>
+                              </>
+                            )}
+                          </tr>
+                          {changeAdds ? (
+                            <>
+                              <tr>
+                                <th class="boldthtotallight">Zip :</th>
+                                <td>
+                                  <input
+                                    type="text"
+                                    name="zip"
+                                    class="form-control"
+                                    onChange={handleZip}
+                                    id="zip"
+                                  />
+                                </td>
+                                <td>&nbsp;</td>
+                              </tr>
+                            </>
+                          ) : (
+                            ""
+                          )}
+                        </table>
+                        {/* <p class="gradienttextcolor">Change Address</p> */}
+                      </div>
+                    </div>
+                    {checkoutData &&
+                      checkoutData.map((order, orderIndex) => (
+                        <div key={orderIndex} className="divider">
+                          <h3 id="storetitle">{order.storename}</h3>
+                          {order.products.map((product, productIndex) => {
+                            const isSaved = cartids.includes(product.cartid); // Correct variable name
+                            console.log("cartid", product.cartid);
+                            return (
+                              <div key={productIndex} className="order-details">
+                                <div className="row">
+                                  <div className="col-lg-9">
+                                    <div className="product-detail">
+                                      <div
+                                        className="product-image"
+                                        style={{ width: "35%" }}
+                                      >
+                                        <img
+                                          src={product.media[0].name}
+                                          alt=""
+                                          style={{
+                                            width: "100%",
+                                            objectFit: "contain",
+                                          }}
+                                        />
+                                      </div>
+                                      <div className="product-order-details">
+                                        <h5>{product.name}</h5>
+                                        <span>
+                                          Size: {product.size}, Color:{" "}
+                                          {product.color}
+                                        </span>
+                                        <div className="quantitypadding">
+                                          <p>
+                                            <b>
+                                              <span>
+                                                QTY: {product.cartquantity}
+                                              </span>
+                                            </b>
+                                          </p>
+                                        </div>
+                                        <span className="unter">
+                                          {product.postal_address}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="col-lg-3">
+                                    <div className="prices-order-details">
+                                      <h4>US $ {product.cartprice}</h4>
+                                      {/* <span>+US $29.99</span> */}
+                                    </div>
+                                  </div>
+                                </div>
+                                <hr className="dashed" />
+                                <div className="buttonright">
+                                  {isSaved ? (
+                                    <button
+                                      className="btn btn-info btn-lg transparent"
+                                      type="button"
+                                    >
+                                      Saved for later
+                                    </button>
+                                  ) : (
+                                    <button
+                                      className="btn btn-info btn-lg transparent"
+                                      type="button"
+                                      onClick={(e) =>
+                                        handleSaveLater(e, product.cartid)
+                                      }
+                                    >
+                                      Save for later
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ))}
+                  </div>
+                  <div class="col-lg-4">
+                    {cart.length > 0 ? (
+                      <>
+                        <div className="order-details" id="totalordervalue">
+                          <h3>Order Total</h3>
+                          <table style={{ width: "100%" }}>
+                            <tr>
+                              <th className="boldthtotal">
+                                Subtotal ( {cartitem} items )
+                              </th>
+                              <td className="boldthtotal">$ {subTotal}</td>
+                            </tr>
+                            <tr>
+                              <th>Shipping</th>
+                              <td>$ {shippingprice}</td>
+                            </tr>
+                            {/* <tr>
                             <th>Income Tax</th>
                             <td>$ 4.0</td>
                           </tr> */}
 
-                      {prices.length > 0 ? (
-                        <>
-                          {prices.map((price, index) => {
-                            return (
+                            {prices.length > 0 ? (
                               <>
-                                <tr>
-                                  <th>{price.name}</th>
-                                  <td>
-                                    ${" "}
-                                    {price.name == "Discount" ? (
-                                      <>- {price.value}</>
-                                    ) : (
-                                      price.value
-                                    )}
-                                  </td>
-                                </tr>
+                                {prices.map((price, index) => {
+                                  return (
+                                    <>
+                                      <tr>
+                                        <th>{price.name}</th>
+                                        <td>
+                                          ${" "}
+                                          {price.name == "Discount" ? (
+                                            <>- {price.value}</>
+                                          ) : (
+                                            price.value
+                                          )}
+                                        </td>
+                                      </tr>
+                                    </>
+                                  );
+                                })}
                               </>
-                            );
-                          })}
-                        </>
-                      ) : (
-                        ""
-                      )}
-                      <tr>
-                        <th className="totalthtextbold">Order Total</th>
-                        <td className="totalthtextbold">
-                          $ {amountaddingprices}
-                        </td>
-                      </tr>
-                    </table>
-                    {/* <div class="imgtoop">
+                            ) : (
+                              ""
+                            )}
+                            <tr>
+                              <th className="totalthtextbold">Order Total</th>
+                              <td className="totalthtextbold">
+                                $ {amountaddingprices}
+                              </td>
+                            </tr>
+                          </table>
+                          {/* <div class="imgtoop">
           <img src={Payment} alt="" />
           <button class="btn btn-info btn-lg gradientbtncolor" type="button">
             Confirm & Pay
           </button>
         </div> */}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="order-details" id="totalordervalue">
+                          <h3>Order Total</h3>
+                          <table style={{ width: "100%" }}>
+                            <tr>
+                              <th className="boldthtotal">Subtotal</th>
+                              <td className="boldthtotal">$00.00</td>
+                            </tr>
+                            <tr>
+                              <th className="totalthtextbold">Order Total</th>
+                              <td className="totalthtextbold">$ 00.00</td>
+                            </tr>
+                          </table>
+                          <div className="imgtoop">
+                            <img src={Payment} alt="" />
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
-                </>
-              ) : (
-                <>
-                  <div className="order-details" id="totalordervalue">
-                    <h3>Order Total</h3>
-                    <table style={{ width: "100%" }}>
-                      <tr>
-                        <th className="boldthtotal">Subtotal</th>
-                        <td className="boldthtotal">$00.00</td>
-                      </tr>
-                      <tr>
-                        <th className="totalthtextbold">Order Total</th>
-                        <td className="totalthtextbold">$ 00.00</td>
-                      </tr>
-                    </table>
-                    <div className="imgtoop">
-                      <img src={Payment} alt="" />
-                    </div>
-                  </div>
-                </>
-              )}
-            </div> 
-         
-        </div>
-        
-            </div>
-           
-    </section>
-    )}
+                </div>
+              </div>
+            </section>
+          )}
+        </>
+      )}
+      <Footer />
     </>
-    )}
-    <Footer />
-    </>
-  )
-}
+  );
+};
 
-export default Checkout
+export default Checkout;

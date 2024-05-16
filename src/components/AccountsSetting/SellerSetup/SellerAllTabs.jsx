@@ -16,6 +16,7 @@ import MyTransactions from '../SellerSetup/MyTransactions';
 import NotFound from "../../../pages/NotFound_"
 import DiscountAndCoupens from './DiscountAndCoupens';
 import SellerFeedback from '../../Seller/SellerFeedback';
+import PendingOrderManagement from '../../OrderManagement/PendingOrderManagement';
 
 const SellerAllTabs = (props) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('selling1');
@@ -58,6 +59,8 @@ const SellerAllTabs = (props) => {
         return <ProductManagement />;
       case 'selling3':
         return null;
+      case 'pending':
+        return <PendingOrderManagement/>;
       case 'sellings1':
         // return <OngoingOrderManagement />;
         return <OngoingOrderManagement/>
@@ -125,6 +128,9 @@ const SellerAllTabs = (props) => {
                   {isOrderManagementOpen && (
                     <div className='dropp'>
                       <ul>
+                        <li className={selectedMenuItem === 'pending' ? 'active' : ''} onClick={() => handleMenuItemClick('pending')}>
+                          Pending Orders
+                        </li>
                         <li className={selectedMenuItem === 'sellings1' ? 'active' : ''} onClick={() => handleMenuItemClick('sellings1')}>
                           Ongoing Orders
                         </li>

@@ -75,6 +75,13 @@ function validateAddress(data){
     method: 'POST',
   })
 }
+function updateOrderStatus(data){
+  return request({
+    url: ordersApi+'/updateOrderStatus',
+    data,
+    method: 'POST',
+  })
+}
 function getTrsutedUserData(id){
   return request({
     url: baseUrl+'/getTrsutedUserData/'+ id,
@@ -240,6 +247,7 @@ const OrderServices = {
   tracking,
   packed,
   rateCalculator,
+  updateOrderStatus,
   validatePostalCode,
   validateAddress,
   getTrsutedUserData,
