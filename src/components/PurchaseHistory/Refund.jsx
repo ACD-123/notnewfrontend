@@ -25,7 +25,7 @@ const Refunds = () => {
         setIsLoading(false); // Set isLoading to false when data is fetched
       })
       .catch((error) => {
-        toast.error(error.message);
+        // toast.error(error.message);
         setIsLoading(false); // Set isLoading to false even if there's an error
       });
   };
@@ -155,7 +155,7 @@ const Refunds = () => {
         ) : (
           <>
           {customerOrders.length === 0 ? ( // Check if customerOrders array is empty
-            <div>No orders available</div>
+            <div>Orders Not  Found</div>
           ) : (
             <>
             {customerOrders.map((order, index) => (

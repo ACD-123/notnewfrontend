@@ -235,7 +235,7 @@ const ShoppingCart = () => {
                     }
                     return (
                       <>
-                        <div className="order-details" id="sectionToRemove">
+                        <div className="order-details" id="sectionToRemove" key={index}>
                         <div className='py-3'>
                           <h3 id="storetitle"> {cat.shop?.fullname}</h3>
                           </div>

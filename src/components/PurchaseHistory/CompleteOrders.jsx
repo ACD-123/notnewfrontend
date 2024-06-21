@@ -155,7 +155,7 @@ const CompleteOrders = () => {
         ) : (
           <>
           {customerOrders.length === 0 ? ( // Check if customerOrders array is empty
-            <div>No orders available</div>
+            <div>Orders Not  Found</div>
           ) : (
           <>
             {customerOrders.map((order, index) => (

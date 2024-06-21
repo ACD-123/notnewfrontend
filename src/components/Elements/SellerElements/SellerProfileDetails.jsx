@@ -106,7 +106,7 @@ const SellerProfileDetails = () => {
                                                         ) : (
                                                             <FaRegHeart onClick={() => addToFavorites(shopData.guid)}/>
                                                         )
-                                                        }Save this Seller</li>
+                                                        } Save this Seller</li>
                                 </ul>
                             </div>
                         </div>

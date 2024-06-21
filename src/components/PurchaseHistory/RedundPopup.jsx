@@ -85,6 +85,7 @@ const RefundPopup = (props) => {
     OrderServices.orderRefund(formData)
       .then((response) => {
         console.log('Refund request submitted successfully:', response);
+        window.location.reload()
         // Reset states or perform any other necessary actions after successful submission
       })
       .catch((error) => {
@@ -174,7 +175,10 @@ const RefundPopup = (props) => {
   onChange={handleReasonChange}
 ></textarea>
           <p>Make sure the reason you give should be genuine otherwise your refund will be rejected</p>
-          <button onClick={handleSubmit}>Submit Refund Request</button>
+          <button className='sendrefunddetails' onClick={handleSubmit}>
+        Send
+      </button>
+          {/* <button onClick={handleSubmit}>Submit Refund Request</button> */}
         </>
       )}
     </div>

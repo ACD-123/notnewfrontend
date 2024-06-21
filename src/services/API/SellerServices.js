@@ -157,9 +157,9 @@ function setBank(data) {
       method: 'POST',
     })
   }
-  function getShopDetails() {
+  function getShopDetails(id) {
     return request({
-      url: `${baseUrl}getshopdetails`,
+      url: `${baseUrl}getshopdetails/${id}`,
       method: 'GET',
     })
   }

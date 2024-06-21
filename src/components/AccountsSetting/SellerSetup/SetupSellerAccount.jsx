@@ -51,30 +51,37 @@ const SetupSellerAccount = () => {
   let token = localStorage.getItem("access_token");
   
   const handlePlaceChanged = () => { 
-    const [ place ] = inputRef.current.getPlaces();
-    if(place) { 
-        setAddress(place.formatted_address)
-        setLatitude(place.geometry.location.lat())
-        setLongitude(place.geometry.location.lng())
-        for (var i = 0; i < place.address_components.length; i++) {
-          for (var j = 0; j < place.address_components[i].types.length; j++) {
-            if (place.address_components[i].types[j] == "postal_code") {
-                setZip(place.address_components[i].long_name)
-            // document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
+    const places = inputRef.current.getPlaces();
+    if (places && places.length > 0) {
+        const place = places[0];
+        setAddress(place.formatted_address);
+        setLatitude(place.geometry.location.lat());
+        setLongitude(place.geometry.location.lng());
+        
+        place.address_components.forEach(component => {
+            const componentType = component.types[0];
+            switch (componentType) {
+                case "postal_code":
+                    setZip(component.long_name);
+                    break;
+                case "locality":
+                    setCity(component.long_name);
+                    break;
+                case "administrative_area_level_1":
+                    setState(component.long_name);
+                    break;
+                case "country":
+                    setCountry(component.long_name);
+                    break;
+                default:
+                    break;
             }
-            if (place.address_components[i].types[0] == "locality") {
-                  setCity(place.address_components[i].long_name);
-                }
-            if (place.address_components[i].types[0] == "administrative_area_level_1") {
-                  setState(place.address_components[i].long_name);
-                }
-            if (place.address_components[i].types[0] == "country") {
-                  setCountry(place.address_components[i].long_name);
-              }
-          }
-        }
-    } 
-}
+        });
+    } else {
+        console.log("No places returned");
+    }
+};
+
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
@@ -395,21 +402,20 @@ const SetupSellerAccount = () => {
                       onChange={handleChange}
                       placeholder="Enter your street address"
                     /> */}
-                        {isLoaded
-                          &&
-                          <StandaloneSearchBox
-                            onLoad={ref => inputRef.current = ref}
-                            onPlacesChanged={handlePlaceChanged}
-                          >
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder={`${address}`}
-                            />
-                        </StandaloneSearchBox>}
+                         {isLoaded && (
+      <StandaloneSearchBox
+        onLoad={ref => inputRef.current = ref}
+        onPlacesChanged={handlePlaceChanged}
+      >
+        <input
+          type="text"
+          className="form-control"
+          placeholder={address ? address : "Enter your address"}
+        />
+      </StandaloneSearchBox>
+    )}
+    {!isLoaded && <p>Loading...</p>}
                      
-                      <br />
-                      <br />
                   </div>
                   {errors.address && <p className="error">{errors.address}</p>}
                   <div class="mb-3">

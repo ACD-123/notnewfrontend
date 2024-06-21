@@ -98,7 +98,7 @@ const SavedSellers = () => {
         <div class="row align-items-center">
           <div class="col-lg-6">
             <h3>Saved sellers</h3>
-            <p>3 Saved sellers</p>
+            <p>{saveSeller.length} Saved sellers</p>
           </div>
           <div class="col-lg-6">
             <div class="sorting">
@@ -123,7 +123,7 @@ const SavedSellers = () => {
         </div>
       ) : (
           <>
-          {saveSeller.length === 0 ? ( // Check if customerOrders array is empty
+          {saveSeller.length == 0 ? ( // Check if customerOrders array is empty
             <div>You Could Not save any Seller</div>
           ) : (
           <>

@@ -11,16 +11,16 @@ const SellerFeedback = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sellerShopId, setSellerShopId] = useState(null); // Changed initial state to null
+  const { pathname } = window.location;
+  const shopId = pathname.split("/").pop();
 
   useEffect(() => {
     getUserOffersCount(); // Fetch seller shop ID first
   }, []);
 
   useEffect(() => {
-    if (sellerShopId) { // Fetch feedbacks only if sellerShopId is truthy
-      getFeedbacks(sellerShopId);
-    }
-  }, [sellerShopId]); // Run useEffect whenever sellerShopId changes
+      getFeedbacks();
+  }, []); // Run useEffect whenever sellerShopId changes
 
   const getUserOffersCount = () => {
     OrderServices.getuserbidscount()
@@ -34,7 +34,9 @@ const SellerFeedback = () => {
       });
   };
 
-  const getFeedbacks = (shopId) => {
+  const getFeedbacks = () => {
+    const shopId = pathname.split("/").pop();
+
     SellerServices.getShopDetailFeedback(shopId)
       .then((res) => {
         setIsLoading(false);
@@ -54,6 +56,12 @@ const SellerFeedback = () => {
       ) : (
         <>
           <div className="feedback-container">
+          {feedbacks.length === 0 ? (
+            <>
+            <div>Feedbacks Not Found</div>
+            </>
+          ) : (
+            <>
             {feedbacks.map((feedback) => (
               <div className="feedback-item" key={feedback.id}>
                 {feedback.user.profile_image === null ? (
@@ -67,6 +75,8 @@ const SellerFeedback = () => {
                 </div>
               </div>
             ))}
+            </>
+          )}
           </div>
         </>
       )}

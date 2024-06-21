@@ -341,7 +341,7 @@ const Checkout = () => {
                       ) : (
                         <></>
                       )}
-                      {/* <div class="tabs-check">
+                      <div class="tabs-check">
                  
                 <Elements stripe={stripePromise} options={options}>
                     <Stripe
@@ -361,7 +361,7 @@ const Checkout = () => {
                       address={userDetails?.street_address}
                     />
                   </Elements>
-                </div> */}
+                </div>
                     </div>
                     <div class="order-details" id="order-detailsid">
                       <h3>Shipping Details</h3>

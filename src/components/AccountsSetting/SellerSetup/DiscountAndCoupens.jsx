@@ -200,7 +200,7 @@ const DiscountAndCoupens = () => {
                             <div>
                                 <div className='ongoing ordmangemnt'>
                                 {activeCoupons.length === 0 ? ( // Check if customerOrders array is empty
-            <div>No orders available</div>
+            <div>Orders Not  Found</div>
           ) : (
             <>
                                     {activeCoupons.map((order, index) => (
@@ -233,7 +233,7 @@ const DiscountAndCoupens = () => {
                             <div>
                                 <div className='ongoing ordmangemnt'>
                                 {expiredCoupons.length === 0 ? ( // Check if customerOrders array is empty
-            <div>No orders available</div>
+            <div>Orders Not  Found</div>
           ) : (
             <>
                                     {expiredCoupons.map((order, index) => (
