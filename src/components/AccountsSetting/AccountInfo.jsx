@@ -32,7 +32,7 @@ const AccountInfo = () => {
         return (
           <div>
             {/* Content for Personal Information */}
-            <h3>Personal Info</h3>
+            <h3 className='main-tab-title'>Personal Info</h3>
             <ProfileInformationTabs selectedMenuItem={value} />
             <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button>
           </div>
@@ -41,7 +41,7 @@ const AccountInfo = () => {
         return (
           <div>
             {/* Content for Selling */}
-            <h3>Selling Hub</h3>
+            <h3 className='main-tab-title'>Selling Hub</h3>
             <SellerAllTabs />
             <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button>
           </div>

@@ -5,7 +5,7 @@ import Productimage from "../../assets/Images/Categorylisting/1.png";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import Payment from "../../assets/Images/Shoppingcart/payment.png";
 import Checkpay from "../../assets/Images/check-pay.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CheckoutServices from "../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
 import UserServices from "../../services/API/UserServices";
 import {
@@ -62,7 +62,7 @@ const Checkout = () => {
   const [bidcartimage, setBidCartImage] = useState([]);
   const [bidcart, setBidCart] = useState({});
   const [bidquantity, setQuantity] = useState(0);
-
+  const navigate = useNavigate()
   const changeAddress = (e, change) => {
     e.preventDefault();
     setchangeAdds(change);
@@ -178,7 +178,7 @@ const Checkout = () => {
     // };
     // CheckoutServices.save(data).then((response) => {
     //   if (response.success) {
-    window.location.href = "/checkout";
+      navigate("/checkout")
     //   }
     // });
   };
@@ -342,26 +342,26 @@ const Checkout = () => {
                         <></>
                       )}
                       <div class="tabs-check">
-                 
-                <Elements stripe={stripePromise} options={options}>
-                    <Stripe
-                      changeAdds={changeAdds}
-                      parentCallback={handleCallback}
-                      zip={zip}
-                      subtotal={subTotal}
-                      secondAddress={secondaddress}
-                      cart={cart}
-                      bidcart={bidcart}
-                      orderType={ordertype}
-                      adminprices={adminprices}
-                      shippingprice={shippingprice}
-                      total={amountaddingprices}
-                      changeaddress={changeAdds}
-                      ordertype={ordertyp}
-                      address={userDetails?.street_address}
-                    />
-                  </Elements>
-                </div>
+
+                        <Elements stripe={stripePromise} options={options}>
+                          <Stripe
+                            changeAdds={changeAdds}
+                            parentCallback={handleCallback}
+                            zip={zip}
+                            subtotal={subTotal}
+                            secondAddress={secondaddress}
+                            cart={cart}
+                            bidcart={bidcart}
+                            orderType={ordertype}
+                            adminprices={adminprices}
+                            shippingprice={shippingprice}
+                            total={amountaddingprices}
+                            changeaddress={changeAdds}
+                            ordertype={ordertyp}
+                            address={userDetails?.street_address}
+                          />
+                        </Elements>
+                      </div>
                     </div>
                     <div class="order-details" id="order-detailsid">
                       <h3>Shipping Details</h3>

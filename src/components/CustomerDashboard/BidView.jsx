@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ProductCard from "../Elements/ProductCard";
 import Header from "../Header";
 import Footer from "../Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import WinningBidProduct from "../WinnigBidProduct";
 import BidPlacement from "../Elements/BidPlacement";
 import ReviewBid from "../Elements/ReviewBid";
@@ -35,7 +35,7 @@ const BidView = () => {
   const [productData, setProductData] = useState([]);
   const [hour, setHour] = useState("");
   const [minutes, setMinutes] = useState("");
-
+  const navigate = useNavigate()
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
 
@@ -174,7 +174,6 @@ const BidView = () => {
 
   const handleCloseAdditionalPopup = () => {
     setAdditionalPopupVisible(false); // Close additional popup
-    // window.location.href = "/bidwin"; // Redirect to '/bidView' when the button is clicked
   };
   const handleConfirmBidClick = () => {
     // let data ={
@@ -197,9 +196,7 @@ const BidView = () => {
     // });
   };
   const handleDropdownItemClick = (componentName) => {
-    // Here, you can navigate to the 'Activity' component and pass the selected component name as a query parameter or state
-    // For example, using query parameter
-    window.location.href = `/customerdashboard?component=${componentName}`;
+    navigate(`/customerdashboard?component=${componentName}`)
   };
   const getUserProductBids = () => {
     UserServices.getBid(id).then((response) => {

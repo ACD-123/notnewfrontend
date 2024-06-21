@@ -4,6 +4,7 @@ import Logo from "../../assets/Images/logo.png";
 import Line from "../../assets/Images/Accountimages/line.png";
 import { toast } from "react-toastify";
 import AuthServices from "../../services/API/AuthService"; //~/services/API/AuthService
+import { useNavigate } from "react-router-dom";
 var Emailverifybg = {
   backgroundImage: `url(${Emailverifyimagebg})`,
   backgroundSize: "cover",
@@ -17,6 +18,7 @@ const ResetPassword = () => {
   const [enabled, setEnabled] = useState(false);
   const { pathname } = window.location;
   const email = pathname.split("/").pop();
+  const navigate = useNavigate()
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -46,7 +48,7 @@ const ResetPassword = () => {
         .then((response) => {
           toast.success(response.message);
           setTimeout(() => {
-            window.location.href = "/signin";
+            navigate("/signin")
           }, 1500);
         })
         .catch((e) => {

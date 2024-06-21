@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Category from "../../components/Products/Archive/Category";
 import Arrowright from "../../assets/Images/Shoppingcart/arrowright.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CartServices from "../../services/API/CartServices"; //~/services/API/CartServices
 import SaveLaterServices from "../../services/API/SaveLaterServices"; //~/services/API/SaveLaterServices
 import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
@@ -41,7 +41,7 @@ const ShoppingCart = () => {
   const [amountaddingprices, setAmountAddingPrices] = useState(0);
   const [coverpicture, setCoverPicture] = useState("");
   const [cartids, setCartIds] = useState([]);
-
+  const navigate = useNavigate()
   let cart_ids = [];
   const toggleDiscountField = () => {
     setShowDiscountField(!showDiscountField);
@@ -96,7 +96,7 @@ const ShoppingCart = () => {
     // };
     // CheckoutServices.save(data).then((response) => {
     //   if (response.success) {
-        window.location.href = "/checkout";
+      navigate("/checkout")
     //   }
     // });
   };

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import ProductServices from "../../services/API/ProductServices";
 import UserServices from "../../services/API/UserServices";
 import { Spinner } from "react-bootstrap";
+import NoDataFound from '../../assets/Images/do-data-found.png';
 
 const Watchlist = () => {
   const [user, setUser] = useState({});
@@ -52,37 +53,39 @@ const Watchlist = () => {
 
   return (
     <section id="wishlist-dashboard">
-      <h3>Watchlist</h3>
-      <div className="row wishlist align-items-center">
-        <div className="col-lg-6">
-          {/* <div className="deleted-button">
+      <div className="wishlist-dashboard-one">
+        <div className="row">
+          <div className="col-lg-6">
+            {/* <div className="deleted-button">
             <button onClick={deleteSelectedProducts}>Delete Selected</button>
           </div> */}
-        </div>
-        <div className="col-lg-6">
-          <div className="sort-wishlist">
-            <div className="status">
-              <h4>
-                Status:{" "}
-                <select>
-                  <option>All</option>
-                  <option>All 1</option>
-                  <option>All 2</option>
-                </select>
-              </h4>
-            </div>
-            <div className="timeleft">
-              <h4>
-                Time Left:{" "}
-                <select>
-                  <option>Ending soonest</option>
-                  <option>Recent Added</option>
-                </select>
-              </h4>
+            <h3>Watchlistt</h3>
+          </div>
+          <div className="col-lg-6">
+            <div className="sort-wishlist">
+              <div className="status">
+                <h4>
+                  Status:{" "}
+                  <select>
+                    <option>All</option>
+                    <option>All 1</option>
+                    <option>All 2</option>
+                  </select>
+                </h4>
+              </div>
+              <div className="timeleft">
+                <h4>
+                  Time Left:{" "}
+                  <select>
+                    <option>Ending soonest</option>
+                    <option>Recent Added</option>
+                  </select>
+                </h4>
+              </div>
             </div>
           </div>
+          <hr style={{ marginTop: "20px" }} />
         </div>
-        <hr style={{ marginTop: "20px" }} />
       </div>
       <div className="wishlist-categories-list">
         <ul>
@@ -114,52 +117,53 @@ const Watchlist = () => {
       </div> */}
       {selectedTab === "inStock" && (
         <div className="wishlist">
-           {isLoading ? ( // Render loader if isLoading is true
-        <div className="loader-container text-center">
-          <Spinner animation="border" role="status">
-            {/* <span className="sr-only">Loading...</span> */}
-          </Spinner>
-        </div>
-      ) : (
-          <>
-          {watchlistInstock.length === 0 ? (
-            <div>
-              In Stock Products Available 
+          {isLoading ? ( // Render loader if isLoading is true
+            <div className="loader-container text-center">
+              <Spinner animation="border" role="status">
+                {/* <span className="sr-only">Loading...</span> */}
+              </Spinner>
             </div>
           ) : (
-<>
-          {watchlistInstock.map((product) => (
-            <ProductItem key={product.id} product={product} />
-          ))}
-          </>
+            <>
+              {watchlistInstock.length === 0 ? (
+                <div className='no-data-found'>
+                  <img src={NoDataFound} alt="" />
+                  <p>In Stock Products Available</p>
+                </div>
+              ) : (
+                <>
+                  {watchlistInstock.map((product) => (
+                    <ProductItem key={product.id} product={product} />
+                  ))}
+                </>
+              )}
+            </>
           )}
-          </>
-        )}
         </div>
       )}
       {selectedTab === "outOfStock" && (
         <div className="wishlist">
-           {isLoading ? ( // Render loader if isLoading is true
-        <div className="loader-container text-center">
-          <Spinner animation="border" role="status">
-            {/* <span className="sr-only">Loading...</span> */}
-          </Spinner>
-        </div>
-      ) : (
-          <>
-          {watchlistOutstock.length === 0 ? (
-            <div>
-              No Products Available in Out of stock
+          {isLoading ? ( // Render loader if isLoading is true
+            <div className="loader-container text-center">
+              <Spinner animation="border" role="status">
+                {/* <span className="sr-only">Loading...</span> */}
+              </Spinner>
             </div>
           ) : (
-<>
-          {watchlistOutstock.map((product) => (
-            <ProductItem key={product.id} product={product} />
-          ))}
-          </>
+            <>
+              {watchlistOutstock.length === 0 ? (
+                <div>
+                  No Products Available in Out of stock
+                </div>
+              ) : (
+                <>
+                  {watchlistOutstock.map((product) => (
+                    <ProductItem key={product.id} product={product} />
+                  ))}
+                </>
+              )}
+            </>
           )}
-          </>
-      )}
         </div>
       )}
       {/* {selectedTab === "allProducts" && (
@@ -181,72 +185,72 @@ const ProductItem = ({ product }) => {
 
   return (
     <div key={product.id} className="product">
-            {/* START ROW */}
-            <div className="row">
-              <div className="col-lg-7">
-                <div className="wishlistproduct-detail">
-                  <div>
-                    <input
-                      type="checkbox"
-                      checked={product.selected}
-                      // onChange={() => toggleProductSelection(product.id)}
-                    />
-                  </div>
-                  <div>
-                                <img
-                                  src={`${product.media[0].name}`}
-                                  alt={product.media[0].name}
-                                />
-                  </div>
-                  <div>
-                    <h3>{product.name}</h3>
-                    <p>
-                      <b>Size:</b> {product.size}, Color: {product.available_colors}{" "}
-                    </p>
+      {/* START ROW */}
+      <div className="row">
+        <div className="col-lg-7">
+          <div className="wishlistproduct-detail">
+            <div>
+              <input
+                type="checkbox"
+                checked={product.selected}
+              // onChange={() => toggleProductSelection(product.id)}
+              />
+            </div>
+            <div>
+              <img
+                src={`${product.media[0].name}`}
+                alt={product.media[0].name}
+              />
+            </div>
+            <div>
+              <h3>{product.name}</h3>
+              <p>
+                <b>Size:</b> {product.size}, Color: {product.available_colors}{" "}
+              </p>
 
-                    <p><b>Quantity:</b> {product.stockcapacity},</p>
-                    <p><b>Description:</b> {product.description},</p>
-                    {/* <p className="shipingname">{product.shippingname}</p> */}
-                  </div>
-                </div>
-              </div>
-
-              <div className="col-lg-2">
-                <div className="wishlistprice-detials">
-                  <h3>US ${product.price}</h3>
-                  <p>+US ${product.shipping_price}</p>
-                  <p>Shipping cost 10% off {product.shippingprice}</p>
-                </div>
-              </div>
-
-              <div className="col-lg-3 wishlist-buttonss">
-                <Link to={`/checkout-buynow/${product.guid}`}>
-                  <button
-                    className="buynow-wishlist"
-                  >
-                    Buy It Now
-                  </button>
-                </Link>
-                <button className="offer">
-                  Make Best Offer
-                </button>
-                <select className="offer">
-                  <option>More actions</option>
-                  <option>View Similar Items</option>
-                  <option>Contact Seller</option>
-                </select>
-                <button className="addntee" onClick={toggleNote}>
-                  Add Note
-                </button>
-                {showNote && (
-                  <div className="note">
-                    <textarea placeholder="Write your note here..." />
-                  </div>
-                )}
-              </div>
-              <hr />
+              <p><b>Quantity:</b> {product.stockcapacity},</p>
+              <p><b>Description:</b> {product.description},</p>
+              {/* <p className="shipingname">{product.shippingname}</p> */}
             </div>
           </div>
+        </div>
+
+        <div className="col-lg-2">
+          <div className="wishlistprice-detials">
+            <h3>US ${product.price}</h3>
+            <p>+US ${product.shipping_price}</p>
+            <p>Shipping cost 10% off {product.shippingprice}</p>
+          </div>
+        </div>
+
+        <div className="col-lg-3 wishlist-buttonss">
+          <Link to={`/checkout-buynow/${product.guid}`}>
+            <button
+              className="buynow-wishlist"
+            >
+              Buy It Now
+            </button>
+          </Link>
+          <button className="offer">
+            Make Best Offer
+          </button>
+          <select className="offer">
+            <option>More actions</option>
+            <option>View Similar Items</option>
+            <option>Contact Seller</option>
+          </select>
+          <button className="addntee" onClick={toggleNote}>
+            Add Note
+          </button>
+          {showNote && (
+            <div className="note">
+              <textarea placeholder="Write your note here..." />
+            </div>
+          )}
+        </div>
+        <hr />
+      </div>
+    </div>
   );
 };
 

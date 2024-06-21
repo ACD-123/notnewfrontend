@@ -8,8 +8,8 @@ import State from "../../services/API/State"; //~/services/API/State
 import City from "../../services/API/City"; //~/services/API/City
 import AuthService from "../../services/API/AuthService"; //~/services/API/CountryServices
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
-import {GOOGLE_LOCATION_KEY} from '../../services/Constant'
-import {BASE_URL} from "../../services/Constant"
+import { GOOGLE_LOCATION_KEY } from '../../services/Constant'
+import { BASE_URL } from "../../services/Constant"
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -32,8 +32,8 @@ const SignUp = () => {
     address: "",
     phone: "",
     country: "",
-    state:"",
-    city:"",
+    state: "",
+    city: "",
     zip: "",
     password: "",
     password_confirmation: "",
@@ -52,46 +52,46 @@ const SignUp = () => {
   const [zip, setZip] = useState("");
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
-      libraries
+    libraries
   });
-  const handlePlaceChanged = () => { 
+  const handlePlaceChanged = () => {
     const places = inputRef.current.getPlaces();
     if (places && places.length > 0) {
-        const place = places[0];
-        setAddress(place.formatted_address);
-        setLatitude(place.geometry.location.lat());
-        setLongitude(place.geometry.location.lng());
-        
-        place.address_components.forEach(component => {
-            const componentType = component.types[0];
-            switch (componentType) {
-                case "postal_code":
-                    setZip(component.long_name);
-                    break;
-                case "locality":
-                    setCity(component.long_name);
-                    break;
-                case "administrative_area_level_1":
-                    setState(component.long_name);
-                    break;
-                case "country":
-                    setCountry(component.long_name);
-                    break;
-                default:
-                    break;
-            }
-        });
+      const place = places[0];
+      setAddress(place.formatted_address);
+      setLatitude(place.geometry.location.lat());
+      setLongitude(place.geometry.location.lng());
+
+      place.address_components.forEach(component => {
+        const componentType = component.types[0];
+        switch (componentType) {
+          case "postal_code":
+            setZip(component.long_name);
+            break;
+          case "locality":
+            setCity(component.long_name);
+            break;
+          case "administrative_area_level_1":
+            setState(component.long_name);
+            break;
+          case "country":
+            setCountry(component.long_name);
+            break;
+          default:
+            break;
+        }
+      });
     } else {
-        console.log("No places returned");
+      console.log("No places returned");
     }
-};
+  };
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
     // Perform validations or modifications if needed
     setProfilePic(selectedFile);
   };
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -106,7 +106,7 @@ const SignUp = () => {
     if (!formData.firstname) {
       newErrors.name = "User First Name is required";
     }
-    if(!formData.lastname){
+    if (!formData.lastname) {
       newErrors.lastname = "User Last Name is required";
     }
     if (!formData.email) {
@@ -141,7 +141,7 @@ const SignUp = () => {
     }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-      
+
       formData.address = address;
       formData.country = country;
       formData.state = states;
@@ -164,7 +164,7 @@ const SignUp = () => {
       fd.append("password_confirmation", formData.password_confirmation);
       fd.append("latitude", formData.latitude);
       fd.append("longitude", formData.longitude);
-      if(profilePic){
+      if (profilePic) {
         fd.append("file", profilePic);
       }
       // profilePic.forEach((image_file) => {
@@ -176,42 +176,42 @@ const SignUp = () => {
       setIsLoading(true);
       setEnabled(true);
       AuthService.register(fd)
-      .then((response) => {
-        console.log('status',response.status)
-        if(response.status === "email"){
-          toast.error(response.message);  
-          setIsLoading(false);
-          setEnabled(false);
-        }else if(response.status === "registered"){
-          toast.success(response.message);
-          setIsLoading(false);
-          setEnabled(false);
-          navigate(`/emailverification/${formData.email}`);
+        .then((response) => {
+          console.log('status', response.status)
+          if (response.status === "email") {
+            toast.error(response.message);
+            setIsLoading(false);
+            setEnabled(false);
+          } else if (response.status === "registered") {
+            toast.success(response.message);
+            setIsLoading(false);
+            setEnabled(false);
+            navigate(`/emailverification/${formData.email}`);
 
-        }else if(response.status === "fails"){
-          toast.error(response.message);
-          setIsLoading(false);
-          setEnabled(false);
-        }else if(response.status === "username"){
-          toast.error(response.message);
-          setIsLoading(false);
-          setEnabled(false);
-        }
-      })
-      .catch((e) => {
-          if(e.response.status == "409"){
+          } else if (response.status === "fails") {
+            toast.error(response.message);
+            setIsLoading(false);
+            setEnabled(false);
+          } else if (response.status === "username") {
+            toast.error(response.message);
+            setIsLoading(false);
+            setEnabled(false);
+          }
+        })
+        .catch((e) => {
+          if (e.response.status == "409") {
             toast.error("Email Already Exists");
             // toast.error(e.response?.data.message);
-          }else{
+          } else {
             console.log(e.message)
           }
-        setIsLoading(false);
-        setEnabled(false);
-      })
-      .then(() => {
-        setIsLoading(false);
-        setEnabled(false);
-      });
+          setIsLoading(false);
+          setEnabled(false);
+        })
+        .then(() => {
+          setIsLoading(false);
+          setEnabled(false);
+        });
     }
   };
   useEffect(() => {
@@ -253,7 +253,7 @@ const SignUp = () => {
                   <div className="mb-3">
                     <div className="profile-pic-wrapper">
                       <div className="pic-holder">
-                        
+
                         <img
                           id="profilePic"
                           className="pic"
@@ -287,114 +287,109 @@ const SignUp = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="fullname"
-                      name="firstname"
-                      value={formData.firstname}
-                      onChange={handleChange}
-                      placeholder="Enter your full name"
-                    />
+                  <div className="d-flex statesfield">
+                    <div className="mb-3">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="fullname"
+                        name="firstname"
+                        value={formData.firstname}
+                        onChange={handleChange}
+                        placeholder="Enter your full name"
+                      />
+                      {errors.name && (
+                        <p className="error">{errors.name}</p>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="lastname"
+                        name="lastname"
+                        value={formData.lastname}
+                        onChange={handleChange}
+                        placeholder="Enter your Last name"
+                      />
+                      {errors.lastname && (
+                        <p className="error">{errors.lastname}</p>
+                      )}
+                    </div>
                   </div>
-                  {errors.name && (
-                    <p className="error">{errors.name}</p>
-                  )}
-                  <div className="mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="lastname"
-                      name="lastname"
-                      value={formData.lastname}
-                      onChange={handleChange}
-                      placeholder="Enter your Last name"
-                    />
+                  <div className="d-flex statesfield">
+                    <div className="mb-3">
+                      <input
+                        type="email"
+                        className="form-control"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="Enter your email"
+                      />
+                      {errors.email && (
+                        <p className="error">{errors.email}</p>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <input
+                        type="tel"
+                        className="form-control"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="Enter your phone number"
+                      />
+                      {errors.phone && (
+                        <p className="error">{errors.phone}</p>
+                      )}
+                    </div>
                   </div>
-                  {errors.lastname && (
-                    <p className="error">{errors.lastname}</p>
-                  )}
-                  <div className="mb-3">
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Enter your email"
-                    />
+
+                  <div className="d-flex statesfield">
+                    <div className="mb-3">
+                      {isLoaded && (
+                        <StandaloneSearchBox
+                          onLoad={ref => inputRef.current = ref}
+                          onPlacesChanged={handlePlaceChanged}
+                        >
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder={address ? address : "Enter your address"}
+                          />
+                        </StandaloneSearchBox>
+                      )}
+                      {!isLoaded && <p>Loading...</p>}
+                      {errors.address && (
+                        <p className="error">{errors.address}</p>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="zip"
+                        name="zip"
+                        value={zip}
+                        onChange={handleChange}
+                        placeholder="Enter your zip code"
+                      />
+                      {errors.zip && (
+                        <p className="error">{errors.zip}</p>
+                      )}
+                    </div>
                   </div>
-                  {errors.email && (
-                    <p className="error">{errors.email}</p>
-                  )}
-                  <div className="mb-3">
-                    <input
-                      type="tel"
-                      className="form-control"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="Enter your phone number"
-                    />
-                  </div>
-                  {errors.phone && (
-                    <p className="error">{errors.phone}</p>
-                  )}
-                  <div className="mb-3">
-                    {/* <input
-                      type="text"
-                      className="form-control"
-                      id="address"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      placeholder="Enter your street address"
-                    /> */}
-                     {isLoaded && (
-      <StandaloneSearchBox
-        onLoad={ref => inputRef.current = ref}
-        onPlacesChanged={handlePlaceChanged}
-      >
-        <input
-          type="text"
-          className="form-control"
-          placeholder={address ? address : "Enter your address"}
-        />
-      </StandaloneSearchBox>
-    )}
-    {!isLoaded && <p>Loading...</p>}
-                  </div>
-                  {errors.address && (
-                    <p className="error">{errors.address}</p>
-                  )}
                   <div className="d-flex statesfield">
                     <div className="mb-3">
                       <label className="form-control">
-                      {country}
+                        {country}
                       </label>
-                      {/* <select 
-                        className="form-select"
-                        name="country"
-                        value={formData.country}
-                        onChange={handleCountryChange} 
-                        id="country">
-                        <option value="">Select Country</option>
-                        {countries.length > 0 ? (
-                          <>
-                            {countries?.map(country => {
-                              return (
-                                <option key={country.id} value={country.id}>{country.name}</option>
-                              )
-                            } )}
-                          </>
-                        ) : ('')}
-                      </select> */}
                       {errors.country && (
-                      <p className="error">{errors.country}</p>
-                    )}
+                        <p className="error">{errors.country}</p>
+                      )}
                     </div>
                     <div className="mb-3">
                       <label className="form-control">
@@ -418,8 +413,8 @@ const SignUp = () => {
                         ):('')}
                       </select> */}
                       {errors.state && (
-                      <p className="error">{errors.state}</p>
-                    )}
+                        <p className="error">{errors.state}</p>
+                      )}
                     </div>
                     <div className="mb-3">
                       <label className="form-control">
@@ -448,50 +443,38 @@ const SignUp = () => {
                       )}
                     </div>
                   </div>
-                  <div className="mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="zip"
-                      name="zip"
-                      value={zip}
-                      onChange={handleChange} 
-                      placeholder="Enter your zip code"
-                    />
+                  <div className="d-flex statesfield">
+                    <div className="mb-3">
+                      <input
+                        type="password"
+                        className="form-control"
+                        id="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        placeholder="Enter your password"
+                      />
+                      {errors.password && (
+                        <p className="error">{errors.password}</p>
+                      )}
+                    </div>
+                    <div className="mb-3">
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="password_confirmation"
+                        value={formData.password_confirmation}
+                        onChange={handleChange}
+                        id="password_confirmation"
+                        placeholder="Confirm your password"
+                      />
+                      {errors.password_confirmation && (
+                        <p className="error">{errors.password_confirmation}</p>
+                      )}
+                    </div>
                   </div>
-                  {errors.zip && (
-                    <p className="error">{errors.zip}</p>
-                  )}
-                  <div className="mb-3">
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      placeholder="Enter your password"
-                    />
-                  </div>
-                  {errors.password && (
-                    <p className="error">{errors.password}</p>
-                  )}
-                  <div className="mb-3">
-                    <input
-                      type="password"
-                      className="form-control"
-                      name="password_confirmation"
-                      value={formData.password_confirmation}
-                      onChange={handleChange}
-                      id="password_confirmation"
-                      placeholder="Confirm your password"
-                    />
-                  </div>
-                  {errors.password_confirmation && (
-                    <p className="error">{errors.password_confirmation}</p>
-                  )}
                   <button className="btn btn-primary" disabled={enabled} type="submit">
-                  {isLoading ? "loading.." : "Submit"}
+                    {isLoading ? "loading.." : "Submit"}
                   </button>
                 </form>
               </div>

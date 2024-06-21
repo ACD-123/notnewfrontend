@@ -27,17 +27,19 @@ h1 {
   font-size: 37px;
   font-weight: 700;
   line-height: 47px;
+  margin: 0;
 }
 h2 {
   font-size: 28px;
   font-weight: 700;
   line-height: 38px;
+  margin: 0;
 }
 h3 {
   font-size: 24px;
   font-weight: 700;
   line-height: 34px;
-  
+  margin: 0;
   color: #282828;
 }
 h4 {
@@ -45,13 +47,14 @@ font-size: 14px;
 font-weight: 400;
 line-height: 17px;
 text-align: left;
-
+margin: 0;
 }
 h5 {
   font-size: 20px;
   font-weight: 600;
   line-height: 37px;
   color: #000;
+  margin: 0;
 }
 h1,h2,h3,h4,h5,h6 {
   font-family: Cairo;
@@ -99,6 +102,8 @@ text-decoration: auto;
 /* SIGNUP */
 #singup {
   min-height: 100vh;
+  display: flex;
+  align-items: center;
 }
 .welcome-registration h1 {
   color: #fff;
@@ -106,11 +111,12 @@ text-decoration: auto;
 }
 .welcome-registration p {
   color: #fff;
+  width: 90%;
 }
-#singup .fffsa {
+#singup .signup-form-fields {
   background: #00000042;
-  border-radius: 30px 30px 0px 0px;
-  padding: 20px 30px;
+  border-radius: 30px;
+  padding: 30px;
 }
 #singup .signup-form-fields .topbuttons ul li a {
   text-decoration: unset;
@@ -310,14 +316,15 @@ section#singup .register form button.btn.btn-primary {
 }
 
 /* EMail Verification */
-#emailverification .col-lg-7 {
+#emailverification .email-verifyfields {
   background: #00000042;
-  border-radius: 30px 30px 0px 0px;
-  padding: 20px 30px;
-  min-height: 100vh;
+  border-radius: 30px;
+  padding:30px;
 }
 section#emailverification {
   min-height: 100vh;
+  display: flex;
+  align-items: center;
 }
 section#emailverification .email-verifyfields h1 {
   color: #fff;
@@ -391,12 +398,13 @@ section#emailverification .emailresend-recieve li.resend a {
 /* Sign In css */
 section#signin {
   min-height: 100vh;
+  display: flex;
+  align-items: center;
 }
-#signin .dsa {
+#signin .signup-form-fields {
   background: #00000042;
-  border-radius: 30px 30px 0px 0px;
+  border-radius: 30px;
   padding: 20px 30px;
-  min-height: 100vh;
 }
 
 #signin .topbuttons ul li a {
@@ -1782,7 +1790,7 @@ padding: 15px 0px 15px 30px;
   display: flex;
   gap: 50px;
   border-bottom: 2px solid #D6D6D6;
-  margin-bottom: 11px;
+  /* margin-bottom: 11px; */
 }
 .whatyouthink a:hover {
   color: #000;
@@ -1822,6 +1830,7 @@ section#activity-main-dashboard .left-menu ul {
 }
 .left-menu {
   display: block;
+  margin-top: 20px;
 }
 .mobile-menu-toggle {
   display: none;
@@ -2773,7 +2782,7 @@ section#sellershop .sellerdetails {
   text-align: right;
 }
 .messages-cont {
-  height: 100%;
+  /* height: 100%; */
   padding: 10px 20px;
 }
 .no-chat-selected h3 {
@@ -2893,23 +2902,31 @@ section#sellershop .sellerdetails {
   margin: 0;
   color: #fff;
 }
-.chat-container .col-lg-4 ul li p {
+.chat-container ul li p {
   margin: 0;
 }
 .chat-container .conversation {
   background: #f4f4f482;
   border-radius: 10px;
-  height: 100%;
+  height: 600px;
 }
-.chat-container .col-lg-4 ul {
+.chat-container ul {
   margin: 0;
   padding: 0;
+  height: 480px;
 }
-.chat-container .chatlist .chhh {
+.chat-container .chatlist .sidebar {
   background: #8269a124;
   padding: 10px 20px;
   border-radius: 10px;
+  height: 600px;
 }
+
+.chat-container .chatlist .sidebar .chat-listing-wrap{
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.chat-container .chatlist .sidebar .chat-listing-wrap{}
 /* chats end */
 /* Account info */
 .personal-info-links ul a {
@@ -4005,6 +4022,65 @@ section#letsconnectbank form button.savee {
   padding: 14px 27px;
   border-radius: 10px;
 }
+
+.loader-container{
+  height: 418px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.loader-container .spinner-border{
+  color: #0096d3;
+}
+
+.no-data-found{
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-data-found img{}
+.no-data-found p{
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.main-content{
+  margin-top: 20px;
+}
+
+.no-access-for-nonseller{
+  background: linear-gradient(115.46deg, #8B2CA0 -11.54%, #03BFC8 137.87%);
+  color: #fff;
+  margin-inline: 10px;
+  font-weight: 700;
+  font-size: 18px !important;
+  text-align: center;
+  padding: 10px !important;
+  position: relative;
+  margin-top: 5px;
+}
+
+.no-access-for-nonseller::before{
+  content: '';
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(115.46deg, #8B2CA0 -11.54%, #03BFC8 137.87%);
+  display: inline-block;
+  border-radius: 5px;
+  transform: rotate(45deg);
+  position: absolute;
+  top: -5px;
+  z-index: -1;
+  left: 45%;
+}
+
+.main-tab-title{
+  margin-top: 20px;
+}
 /* Mobile responsive */
 @media (max-width: 1366px) {
   section#productcard .col .productlist h5 {
@@ -4120,7 +4196,7 @@ section#emailverification .email-verifyfields .emailfields .myemailfields {
   margin: 0 0 20px 0;
   gap: 10px;
 }
-  #emailverification .col-lg-7 {
+  #emailverification .email-verifyfields {
     min-height: auto;
 }
   section#emailverification .email-verifyfields img {

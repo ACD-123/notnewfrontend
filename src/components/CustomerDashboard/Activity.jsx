@@ -12,12 +12,14 @@ import Dashboard from './Dashboard'
 import BuyAgain from './BuyAgain';
 import BidsOffer from './BidsOffer';
 import NotFound_ from '../../pages/NotFound_'
+import { useNavigate } from 'react-router-dom';
 
 import Chat from './Chat';
 const Activity = () => {
-  const [selectedMenuItem, setSelectedMenuItem] = useState('component'); // Initial menu selection
+  const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard'); // Initial menu selection
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Extract the component name from the query parameter or state passed from the Header component
@@ -30,6 +32,7 @@ const Activity = () => {
   }, [location.search]);
   // Function to handle menu item clicks
   const handleMenuItemClick = (menu) => {
+    navigate(`/customerdashboard?component=${menu}`);
     setSelectedMenuItem(menu);
     // Close the menu after selecting an item (for mobile view)
     setIsMenuOpen(false);
@@ -43,35 +46,35 @@ const Activity = () => {
   // Render the component based on the selected menu item
   const renderComponent = () => {
     switch (selectedMenuItem) {
-      case 'component':
+      case 'dashboard':
         return <Dashboard />;
-      case 'componentA':
+      case 'recently-viewed':
         // return <RecentlyViewed />;
         return <NotFound_/>
-      case 'componentB':
+      case 'bids-offers':
         // return <BidsOffer /> ;
         return <NotFound_/>
-      case 'componentC':
+      case 'wishlist':
         // return <Wishlist /> ;
         return <NotFound_/>
-      case 'componentD':
+      case 'order-track':
         return <MainPurchase />;
         // return <NotFound_/>
-      case 'componentE':
+      case 'buy-again':
         // return <BuyAgain />;
         return <NotFound_/>
-      case 'componentF':
+      case 'selling':
         return <NotFound_/>;
-      case 'componentG':
+      case 'saved-searches':
         // return <SavedSearches />;
         return <NotFound_/>
-      case 'componentH':
+      case 'saved-sellers':
         return <SavedSellers />;
         // return <NotFound_ />
-      case 'componentI':
+      case 'messages':
         // return <Chat />;
         return<NotFound_/>
-      case 'componentJ':
+      case 'watchlist':
         return <Watchlist/>
         // return <NotFound_/>
       default:
@@ -91,37 +94,37 @@ const Activity = () => {
         {/* Left Menu (including toggle for mobile view) */}
         <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
           <ul>
-            <li className={selectedMenuItem === 'component' ? 'active' : ''} onClick={() => handleMenuItemClick('component')}>
+            <li className={selectedMenuItem === 'dashboard' ? 'active' : ''} onClick={() => handleMenuItemClick('dashboard')}>
               Dashboard
             </li>
-            <li className={selectedMenuItem === 'componentA' ? 'active' : ''} onClick={() => handleMenuItemClick('componentA')}>
+            <li className={selectedMenuItem === 'recently-viewed' ? 'active' : ''} onClick={() => handleMenuItemClick('recently-viewed')}>
               Recently viewed
             </li>
-            <li className={selectedMenuItem === 'componentB' ? 'active' : ''} onClick={() => handleMenuItemClick('componentB')}>
+            <li className={selectedMenuItem === 'bids-offers' ? 'active' : ''} onClick={() => handleMenuItemClick('bids-offers')}>
             bids/Offers
             </li>
-            <li className={selectedMenuItem === 'componentC' ? 'active' : ''} onClick={() => handleMenuItemClick('componentC')}>
+            <li className={selectedMenuItem === 'wishlist' ? 'active' : ''} onClick={() => handleMenuItemClick('wishlist')}>
             Wishlist
             </li>
-            <li className={selectedMenuItem === 'componentJ' ? 'active' : ''} onClick={() => handleMenuItemClick('componentJ')}>
+            <li className={selectedMenuItem === 'watchlist' ? 'active' : ''} onClick={() => handleMenuItemClick('watchlist')}>
             Watchlist
             </li>
-            <li className={selectedMenuItem === 'componentD' ? 'active' : ''} onClick={() => handleMenuItemClick('componentD')}>
+            <li className={selectedMenuItem === 'order-track' ? 'active' : ''} onClick={() => handleMenuItemClick('order-track')}>
             Order Track
             </li>
-            <li className={selectedMenuItem === 'componentE' ? 'active' : ''} onClick={() => handleMenuItemClick('componentE')}>
+            <li className={selectedMenuItem === 'buy-again' ? 'active' : ''} onClick={() => handleMenuItemClick('buy-again')}>
             buy again
             </li>
-            <li className={selectedMenuItem === 'componentF' ? 'active' : ''} onClick={() => handleMenuItemClick('componentF')}>
+            <li className={selectedMenuItem === 'selling' ? 'active' : ''} onClick={() => handleMenuItemClick('selling')}>
             selling
             </li>
-            <li className={selectedMenuItem === 'componentG' ? 'active' : ''} onClick={() => handleMenuItemClick('componentG')}>
+            <li className={selectedMenuItem === 'saved-searches' ? 'active' : ''} onClick={() => handleMenuItemClick('saved-searches')}>
             saved searches
             </li>
-            <li className={selectedMenuItem === 'componentH' ? 'active' : ''} onClick={() => handleMenuItemClick('componentH')}>
+            <li className={selectedMenuItem === 'saved-sellers' ? 'active' : ''} onClick={() => handleMenuItemClick('saved-sellers')}>
             saved sellers
             </li>
-            <li className={selectedMenuItem === 'componentI' ? 'active' : ''} onClick={() => handleMenuItemClick('componentI')}>
+            <li className={selectedMenuItem === 'messages' ? 'active' : ''} onClick={() => handleMenuItemClick('messages')}>
             messages
             </li>
           </ul>

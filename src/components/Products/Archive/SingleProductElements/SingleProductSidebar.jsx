@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Secureimage1 from "../../../../assets/Images/Singleproduct/Sidebar/1.png";
 import Secureimage2 from "../../../../assets/Images/Singleproduct/Sidebar/2.png";
 import Secureimage3 from "../../../../assets/Images/Singleproduct/Sidebar/3.png";
@@ -29,7 +29,7 @@ const SingleProductSidebar = () => {
   const [savedseller, setSavedSeller] = useState("");
   const [favData, setFavData] = useState([]);
   const [user, setUser] = useState({});
-
+  const navigate = useNavigate()
   let loggedIn = localStorage.getItem("user_details");
   let logedIn;
   if (loggedIn) {
@@ -65,7 +65,7 @@ const SingleProductSidebar = () => {
           console.log("Error:", e);
         });
     } else {
-      window.location.href = "/signin";
+      navigate("/signin")
     }
   };
 

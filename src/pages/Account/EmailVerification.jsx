@@ -5,7 +5,7 @@ import Line from "../../assets/Images/Accountimages/line.png"
 import AuthServices from "../../services/API/AuthService"; //~/services/API/AuthService
 import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 var Emailverifybg = {
   backgroundImage: `url(${Emailverifyimagebg})`,
@@ -19,9 +19,8 @@ const EmailVerification = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const params = useParams(); // Initialize the useParams hook
-  
   const [resendCountdown, setResendCountdown] = useState(60); // Initial countdown value
-
+  const navigate = useNavigate()
   useEffect(() => {
     let countdownInterval;
 
@@ -67,7 +66,7 @@ const EmailVerification = () => {
       .then((response) => {
         toast.success(response.message);
         setTimeout(() => {
-          window.location.href = "/signin";
+          navigate("/signin")
         }, 1500);
       })
       .catch((e) => {

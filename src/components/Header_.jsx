@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth"; // ~/services/Auth
 import AuthServices from "../services/API/AuthService"; //~/services/API/AuthService
 import CartServices from "../services/API/CartServices"; //~/services/API/CartServices
+import { useNavigate } from "react-router-dom";
 
 const Header_ = () => {
   const items = useSelector(state => state.cupon.cupon);
@@ -18,13 +19,13 @@ const Header_ = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [user, setUser] = useState({});
   const [cartitems, setCartItems] = useState(0);
+  const navigate = useNavigate()
   let token = localStorage.getItem("access_token");
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
   const handleDropdownItemClick = (componentName) => {
-    window.location.href = `/customerdashboard?component=${componentName}`;
-    // window.location.href = `/sellerdashboard?component=${componentName}`;
+    navigate(`/customerdashboard?component=${componentName}`)
   };
   const getUser = () => {
     UserServices.detail()
@@ -35,14 +36,9 @@ const Header_ = () => {
       })
       .catch((e) => {
         console.log('error', e)
-        // toast.error(e.message);
       });
   };
   const getItems =() =>{
-    /**
-     * In case of calling api
-     * use following code
-     */
     CartServices.count()
     .then((response) => {
       setCartItems(response);
@@ -55,12 +51,11 @@ const Header_ = () => {
     e.preventDefault();
     const user_details = getUserDetails();
     localStorage.clear();
-    window.location.href = "/";
+    navigate('/')
   };
   useEffect(() => {
     if (isLoggedin()) {
       getUser();
-      // let cartItems = localStorage.getItem('cupon');
       getItems();
     }
   }, []);
@@ -101,70 +96,70 @@ const Header_ = () => {
                           <ul>
                             <li
                               onClick={() =>
-                                handleDropdownItemClick("component")
+                                handleDropdownItemClick("dashboard")
                               }
                             >
                               Dashboard
                             </li>
                             <li
                               onClick={() =>
-                                handleDropdownItemClick("componentA")
+                                handleDropdownItemClick("recently-viewed")
                               }
                             >
                               Recently viewed
                             </li>
                             <li
                               onClick={() =>
-                                handleDropdownItemClick("componentB")
+                                handleDropdownItemClick("bids-offers")
                               }
                             >
                               Bids/Offers
                             </li>
                             <li
                               onClick={() =>
-                                handleDropdownItemClick("componentC")
+                                handleDropdownItemClick("wishlist")
                               }
                             >
                               Wishlist
                             </li>
                             <li
                               onClick={() =>
-                                handleDropdownItemClick("componentD")
+                                handleDropdownItemClick("purchase-history")
                               }
                             >
                               purchase history
                             </li>
                             <li
                               onClick={() =>
-                                handleDropdownItemClick("componentE")
+                                handleDropdownItemClick("buy-again")
                               }
                             >
                               buy again
                             </li>
                             <li
                               onClick={() =>
-                                handleDropdownItemClick("componentF")
+                                handleDropdownItemClick("selling-hub")
                               }
                             >
                               selling Hub
                             </li>
                             <li
                               onClick={() =>
-                                handleDropdownItemClick("componentG")
+                                handleDropdownItemClick("saved-searches")
                               }
                             >
-                              saved searches{" "}
+                              saved searches
                             </li>
                             <li
                               onClick={() =>
-                                handleDropdownItemClick("componentH")
+                                handleDropdownItemClick("saved-sellers")
                               }
                             >
                               saved sellers
                             </li>
                             <li
                               onClick={() =>
-                                handleDropdownItemClick("componentI")
+                                handleDropdownItemClick("messages")
                               }
                             >
                               messages
@@ -216,69 +211,69 @@ const Header_ = () => {
                       <div className="dropdown-content">
                         <ul>
                           <li
-                            onClick={() => handleDropdownItemClick("component")}
+                            onClick={() => handleDropdownItemClick("dashboard")}
                           >
                             Dashboard
                           </li>
                           <li
                             onClick={() =>
-                              handleDropdownItemClick("componentA")
+                              handleDropdownItemClick("recently-viewed")
                             }
                           >
                             Recently viewed
                           </li>
                           <li
                             onClick={() =>
-                              handleDropdownItemClick("componentB")
+                              handleDropdownItemClick("bids-offers")
                             }
                           >
                             Bids/Offers
                           </li>
                           <li
                             onClick={() =>
-                              handleDropdownItemClick("componentC")
+                              handleDropdownItemClick("wishlist")
                             }
                           >
                             Wishlist
                           </li>
                           <li
                             onClick={() =>
-                              handleDropdownItemClick("componentD")
+                              handleDropdownItemClick("purchase-history")
                             }
                           >
                             purchase history
                           </li>
                           <li
                             onClick={() =>
-                              handleDropdownItemClick("componentE")
+                              handleDropdownItemClick("buy-again")
                             }
                           >
                             buy again
                           </li>
                           <li
                             onClick={() =>
-                              handleDropdownItemClick("componentF")
+                              handleDropdownItemClick("selling-hub")
                             }
                           >
                             selling Hub
                           </li>
                           <li
                             onClick={() =>
-                              handleDropdownItemClick("componentG")
+                              handleDropdownItemClick("saved-searches")
                             }
                           >
-                            saved searches{" "}
+                            saved searches
                           </li>
                           <li
                             onClick={() =>
-                              handleDropdownItemClick("componentH")
+                              handleDropdownItemClick("saved-sellers")
                             }
                           >
                             saved sellers
                           </li>
                           <li
                             onClick={() =>
-                              handleDropdownItemClick("componentI")
+                              handleDropdownItemClick("messages")
                             }
                           >
                             messages

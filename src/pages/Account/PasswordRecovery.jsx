@@ -4,6 +4,7 @@ import Logo from "../../assets/Images/logo.png";
 import Line from "../../assets/Images/Accountimages/line.png";
 import AuthServices from "../../services/API/AuthService"; //~/services/API/AuthService
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 var Emailverifybg = {
   backgroundImage: `url(${Emailverifyimagebg})`,
   backgroundSize: "cover",
@@ -16,6 +17,7 @@ const PasswordRecovery = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const emailRef = useRef(null);
+  const navigate = useNavigate()
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -41,7 +43,7 @@ const PasswordRecovery = () => {
       AuthServices.forgetPassword(formData)
         .then((response) => {
           if (response.success) {
-            window.location.href = "/forgotverification/" + formData.email;
+            navigate("/forgotverification/" + formData.email)
           }
         })
         .catch((e) => {
@@ -53,8 +55,6 @@ const PasswordRecovery = () => {
           setIsLoading(false);
           setEnabled(false);
         });
-      // Redirect to another page (e.g., home page '/')
-      // window.location.href = '/forgotverification'; // Change the URL to the desired redirection
     }
   };
 
@@ -63,7 +63,7 @@ const PasswordRecovery = () => {
       <section id="emailverification" style={Emailverifybg}>
         <div className="container">
           <div className="row align-items-center">
-            <div className="col-lg-5">
+            <div className="col-lg-6">
               <div className="welcome-registration">
                 <a href="/">
                   <img src={Logo} width="auto" height="100%" alt="Logo" />
@@ -77,7 +77,7 @@ const PasswordRecovery = () => {
                 </p>
               </div>
             </div>
-            <div className="col-lg-7 recovery">
+            <div className="col-lg-6 recovery">
               <div className="email-verifyfields passwordrecovery">
                 <h1>Forgot Password</h1>
                 <img src={Line} alt="Line" />

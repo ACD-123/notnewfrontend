@@ -4,7 +4,7 @@ import Signinbgs from "../../assets/Images/Accountimages/signinbg.png";
 import Logo from "../../assets/Images/logo.png";
 import Google from "../../assets/Images/Accountimages/google.png";
 import Facebook from "../../assets/Images/Accountimages/facebook.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useGoogleLogin } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
@@ -37,16 +37,13 @@ const SignIn = () => {
   const [logins, setLogin] = useState(false);
   const [data, setData] = useState({});
   const [picture, setPicture] = useState('');
+  const navigate = useNavigate()
   const responseFacebook = (response) => {
     console.log('fb_response', response);
     if(response.status !== "unknown"){
           AuthServices.facebookLogin(response)
               .then(
                   response => {
-                      console.log('responce from back end', response)
-                      // localStorage.setItem('user', JSON.stringify(response.data.data))
-                      // localStorage.setItem('token', JSON.stringify(response.data.token))
-                      // window.location.replace('/');
                   })
               .catch(error => {
                       console.log(error.response);
@@ -78,7 +75,7 @@ const SignIn = () => {
             "access_token",
             res.token
           );
-          window.location.replace("/");
+          navigate('/')
         })
         .catch((error) => {
           console.log("ERROR:: ", error.response);
@@ -108,7 +105,7 @@ const SignIn = () => {
   };
   const checkLogin = () => {
     if (user.length > 0) {
-        window.location.replace("/");
+      navigate('/')
     }
   };
   const fbInit = (response) => {
@@ -167,7 +164,7 @@ const SignIn = () => {
               localStorage.removeItem("user_details");
             }
             setTimeout(() => {
-              window.location.href = "/";
+              navigate("/")
             }, 1500);
             setAccessToken(response.token);
           }
@@ -241,7 +238,7 @@ const SignIn = () => {
                                   "access_token",
                                   res.token
                                 );
-                                window.location.replace("/");
+                                navigate('/')
                               })
                               .catch((error) => {
                                 console.log("ERROR:: ", error.response);
@@ -305,7 +302,7 @@ const SignIn = () => {
                       <label htmlFor="rememberMe">Remember me</label>
                     </div>
                     <div className="remm">
-                      <Link to="/passwordrecovery">Forgot Password</Link>
+                      <Link to="/forget-password">Forgot Password</Link>
                     </div>
                   </div>
                   {/* <input type="submit" value="Sign In" /> */}

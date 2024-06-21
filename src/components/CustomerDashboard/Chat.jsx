@@ -18,9 +18,10 @@ function Chat() {
   let senders;
   let reciepnt;
   const getUserChat = () => {
-    UserServices.conversations()
+    UserServices.conversations(loggedInUser?.id)
       .then((response) => {
-        setChatList(response);
+        console.log(response?.data, 'chat');
+        setChatList(response?.data);
       })
       .catch((e) => {
         console.log("error", e);
@@ -56,22 +57,22 @@ function Chat() {
     // Add more chats as needed
   ];
 
-  const handleChatSelection = (reciptId, senderId) => {
+  const handleChatSelection = (reciptId, senderId, index) => {
     setSelectedChat(null);
     setMessages(null);
-    UserServices.messages(senderId)
+    UserServices.getMessagesById(reciptId)
       .then((response) => {
         let data;
         let messages = [];
-        response.map((message) => {
-            data = {
-              id: message.recipient_id,
-              text: message.data,
-              sender: message.sender_id,
-            };
-            messages.push(data);
+        response?.data?.map((message) => {
+          data = {
+            id: message.from_id,
+            text: message.message,
+            sender: message.from_id,
+          };
+          messages.push(data);
         });
-        setSelectedChat(reciptId);
+        setSelectedChat(index);
         setMessages(messages);
       })
       .catch((e) => {
@@ -136,27 +137,27 @@ function Chat() {
         sender_id: senders
       };
       MessagesServices.saveAssociated(newMassage)
-      .then((response) => {
-        if(response.status){
-          setMessages([...messages, newMsg]);
-          setNewMessage("");
-        }
-      })
-      .catch((e) => {
-        console.log("error", e);
-      });
+        .then((response) => {
+          if (response.status) {
+            setMessages([...messages, newMsg]);
+            setNewMessage("");
+          }
+        })
+        .catch((e) => {
+          console.log("error", e);
+        });
     }
   };
 
   const filterChat = () => {
-    return chatList.filter((chat) =>
-      chat.name.toLowerCase().includes(searchTerm.toLowerCase())
+    return chatList?.filter((chat) =>
+      chat?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
     );
   };
   const filterChats = () => {
-    return chatLists.filter(
+    return chatLists?.filter(
       (chat) =>
-        chat.recipient_name.toLowerCase().includes(searchTerm.toLowerCase())
+        chat?.receiver_name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
       // chat.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   };
@@ -189,35 +190,37 @@ function Chat() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <ul>
-              {filterChats().map((chat) => {
-                return (
-                  <li
-                    key={chat.id}
-                    onClick={() => handleChatSelection(chat.recipient_id, chat.sender_id)}
-                    className={
-                      selectedChat === chat.recipient_id ? "active-chat" : ""
-                    }
-                  >
-                    <div className="list-image-chat">
-                      {/* <img src={chat.images ? chat.images[0] : ''} alt={chat.name} /> */}
-                      <img
-                        src={
-                          chat.recipient_image ? chat.recipient_image : blank
-                        }
-                        style={{ borderRadius: "40px" }}
-                        width="40"
-                        height="40"
-                        alt={chat.recipient_name}
-                      />
-                      <strong>{chat.recipient_name}</strong>
-                      {/* <strong>{chat.name}</strong> */}
-                      <p>{chat.data.substring(0, 10)}...</p>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+            <div className="chat-listing-wrap">
+              <ul>
+                {filterChats().map((chat, index) => {
+                  return (
+                    <li
+                      key={index}
+                      onClick={() => handleChatSelection(chat?.id, loggedInUser?.id, index)}
+                      className={
+                        selectedChat === chat?.participants ? "active-chat" : ""
+                      }
+                    >
+                      <div className="list-image-chat">
+                        {/* <img src={chat.images ? chat.images[0] : ''} alt={chat.name} /> */}
+                        <img
+                          src={
+                            chat?.receiver_profile_image ? chat?.receiver_profile_image : blank
+                          }
+                          style={{ borderRadius: "40px" }}
+                          width="40"
+                          height="40"
+                          alt={chat?.receiver_name}
+                        />
+                        <strong>{chat?.receiver_name}</strong>
+                        {/* <strong>{chat.name}</strong> */}
+                        <p>{chat?.message?.substring(0, 10)}...</p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
           </div>
         </div>
         <div className="col-lg-8">
@@ -225,44 +228,33 @@ function Chat() {
             {selectedChat ? (
               <div className="messages-container">
                 <div className="chat-header">
-                  {/* {chatLists.map((chat) => {
-                  console.log()
-                  if(chat === selectedChat){
-                    console.log('chat', chat)
-                  }else{
-                    console.log('chatss')
-                  }
-                  return(
-                    <></>
-                  )
-                })} */}
-                  {/* {chatLists[selectedChat].image ? (
-                  <>
-                    <img src={chatLists[selectedChat].image} alt={chatLists[selectedChat].recipient_name}  />
-                  </>
-                ):(
-                  <> 
-                  <img src={blank} alt="blank"  width="50" height="50" />
-                   </>
-                )} */}
-                  {/* {chatLists[selectedChat].sender_id} */}
-                  {/* <h3>{chatLists[selectedChat].recipient_name}</h3> */}
-                  {/* <h3>{chatLists.recipient_name}</h3> */}
+                  {chatLists?.[selectedChat]?.image ? (
+                    <>
+                      <img src={chatLists?.[selectedChat]?.image} alt={chatLists?.[selectedChat]?.receiver_name} />
+                    </>
+                  ) : (
+                    <>
+                      <img src={blank} alt="blank" width="50" height="50" />
+                    </>
+                  )}
+                  {chatLists?.[selectedChat]?.sender_id}
+                  <h3>{chatLists?.[selectedChat]?.receiver_name}</h3>
+                  <h3>{chatLists?.receiver_name}</h3>
                 </div>
                 <div className="messages-cont">
                   {messages.map((msg) => {
-                    if (msg.sender === loggedInUser.id) {
-                      senders = msg.id
+                    if (msg?.sender === loggedInUser?.id) {
+                      senders = msg?.id
                       return (
-                        <div key={msg.id} className="sent-message">
-                          {msg.text}
+                        <div key={msg?.id} className="sent-message">
+                          {msg?.text}
                         </div>
                       );
                     } else {
-                      reciepnt = msg.id
+                      reciepnt = msg?.id
                       return (
-                        <div key={msg.id} className="received-message">
-                          {msg.text}
+                        <div key={msg?.id} className="received-message">
+                          {msg?.text}
                         </div>
                       );
                     }

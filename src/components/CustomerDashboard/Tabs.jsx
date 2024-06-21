@@ -5,34 +5,34 @@ import Chat from './Chat';
 import AccountInfo from '../AccountsSetting/AccountInfo';
 import NotFound_ from '../../pages/NotFound_'
 const Tabs = () => {
-  const [activeTab, setActiveTab] = useState('tab1');
+  const [activeTab, setActiveTab] = useState(0);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
 
   return (
-    <div className='main-dasboard-tabs' 
-    style={{padding: "30px 0px"}}
+    <div className='main-dasboard-tabs'
+      style={{ padding: "30px 0px" }}
     >
-        <div className='whatyouthink'>
-            <Link to="">Tell us what you Think</Link>
-        </div>
+      <div className='whatyouthink'>
+        <Link to="">Tell us what you Think</Link>
+      </div>
       <div className="tab-buttons">
-        <button onClick={() => handleTabClick('tab1')} className={activeTab === 'tab1' ? 'active' : ''}>
-        Activity
+        <button onClick={() => handleTabClick(0)} className={activeTab === 0 ? 'active' : ''}>
+          Activity
         </button>
-        <button onClick={() => handleTabClick('tab2')} className={activeTab === 'tab2' ? 'active' : ''}>
-        Messages
+        <button onClick={() => handleTabClick(1)} className={activeTab === 1 ? 'active' : ''}>
+          Messages
         </button>
-        <button onClick={() => handleTabClick('tab3')} className={activeTab === 'tab3' ? 'active' : ''}>
-        Account
+        <button onClick={() => handleTabClick(2)} className={activeTab === 2 ? 'active' : ''}>
+          Account
         </button>
       </div>
       <div className="tab-content">
-        {activeTab === 'tab1' && <div><Activity /></div>}
-        {activeTab === 'tab2' && <div><NotFound_ /></div>}
-        {activeTab === 'tab3' && <div><AccountInfo /></div>}
+        {activeTab === 0 && <div><Activity /></div>}
+        {activeTab === 1 && <div><NotFound_ /></div>}
+        {activeTab === 2 && <div><AccountInfo /></div>}
       </div>
     </div>
   );

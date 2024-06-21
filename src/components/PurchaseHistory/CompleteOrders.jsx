@@ -9,6 +9,7 @@ import RefundPopup from "./RedundPopup";
 import OrderServices from "../../services/API/OrderServices";
 import { toast } from "react-toastify";
 import { Spinner } from "react-bootstrap";
+import NoDataFound from '../../assets/Images/do-data-found.png';
 
 const CompleteOrders = () => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
@@ -155,7 +156,10 @@ const CompleteOrders = () => {
         ) : (
           <>
           {customerOrders.length === 0 ? ( // Check if customerOrders array is empty
-            <div>Orders Not  Found</div>
+            <div className='no-data-found'>
+            <img src={NoDataFound} alt="" />
+            <p>Orders Not  Found</p>
+          </div>
           ) : (
           <>
             {customerOrders.map((order, index) => (

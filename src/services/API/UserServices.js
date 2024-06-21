@@ -2,6 +2,7 @@ import request from '../request'
 import { BASE_API } from '../Constant'
 
 const baseUrl = `${BASE_API}user/`
+const baseUrlChat = `${BASE_API}`
 
 function all(params = {}) {
   return request({
@@ -39,15 +40,15 @@ function upload(data) {
   })
 }
 
-function conversations() {
+function conversations(user_id) {
   return request({
-    url: `${baseUrl}conversations`,
+    url: `${baseUrlChat}chat/getChatListBUid?id=${user_id}`,
   })
 }
 
-function messages(id, params = {}) {
+function getMessagesById(id, params = {}) {
   return request({
-    url: `${baseUrl}${id}/messages`,
+    url: `${baseUrlChat}chat/getById?room_id=${id}`,
     params,
   })
 }
@@ -236,7 +237,7 @@ const UserService = {
   deleteRecentUser,
   detail,
   upload,
-  messages,
+  getMessagesById,
   secretQuestion,
   conversations,
   sendMessage,

@@ -6,6 +6,7 @@ import AuthServices from "../../services/API/AuthService"; //~/services/API/Auth
 import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
 
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 var Emailverifybg = {
   backgroundImage: `url(${Emailverifyimagebg})`,
   backgroundSize: "cover",
@@ -14,7 +15,7 @@ var Emailverifybg = {
 
 
 const ForgotVerification = () => {
-  
+  const navigate = useNavigate()
   const [resendCountdown, setResendCountdown] = useState(60); // Initial countdown value
 
   useEffect(() => {
@@ -64,7 +65,7 @@ const ForgotVerification = () => {
       .then((response) => {
         toast.success(response.message);
         setTimeout(() => {
-          window.location.href = "/resetpassword/"+email;
+          navigate("/resetpassword/"+email)
         }, 1500);
       })
       .catch((e) => {
