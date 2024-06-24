@@ -105,7 +105,7 @@ const RefundPopup = (props) => {
       ) : (
         <>
           {order && (
-            <section id='cart-details' style={{ padding: '30px 0px' }}>
+            <section id='cart-details'>
               <div className='container'>
                 <h5>Order # : <b>{order.orderid}</b></h5>
                 {order.stores.map((store) => (

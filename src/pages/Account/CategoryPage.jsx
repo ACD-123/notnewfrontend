@@ -15,14 +15,14 @@ import Categorylistimage12 from "../../assets/Images/Categorylist/12.png"
 import Header from '../../components/Header'
 import blank from "../../assets/Images/Productcard/blank.jpg";
 import Footer from '../../components/Footer'
-import Home from "../../services/API/Home"; //~/services/API/Home
+import HomeService from "../../services/API/HomeService"; //~/services/API/Home
 import { BASE_URL } from "../../services/Constant";
 import { Spinner } from 'react-bootstrap';
 const CategoryPage = () => {
   const [categories, setCategoryData] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Set initial value to true
   const getCategory = () => {
-    Home.getrecursive()
+    HomeService.getrecursive()
     .then((res) => {
       setIsLoading(false);
       console.log('category data', res.length)
@@ -195,9 +195,7 @@ const CategoryPage = () => {
     <Header />
     <section id='category-page-main'>
         <div className='container'>
-            <div className='row'
-            style={{padding:"30px 0px"}}
-            >
+            <div className='row'>
                 <div className='col-lg-3'>
                     <div className='all-ct'>
                         <h3>All Categories</h3>

@@ -35,9 +35,9 @@ const SellerFeedback = () => {
   };
 
   const getFeedbacks = () => {
-    const shopId = pathname.split("/").pop();
+    const seller_guid = localStorage.getItem('seller_guid')
 
-    SellerServices.getShopDetailFeedback(shopId)
+    SellerServices.getShopDetailFeedback(seller_guid)
       .then((res) => {
         setIsLoading(false);
         setFeedbacks(res.data.feedback);

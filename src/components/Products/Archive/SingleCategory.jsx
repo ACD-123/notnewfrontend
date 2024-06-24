@@ -49,11 +49,7 @@ const SingleCategory = () => {
       <Header />
       {/* Header */}
 
-      <section id='singlecategory'
-      style={{
-        padding:"30px 0px"
-      }}
-      >
+      <section id='singlecategory'>
         <div className='container'>
           <h2>Men Running Shoes</h2>
           <div className='row'>

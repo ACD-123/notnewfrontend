@@ -109,11 +109,7 @@ const AllProducts = () => {
       <Header />
       {/* Header */}
 
-      <section id='AllProducts'
-      style={{
-        padding:"30px 0px"
-      }}
-      >
+      <section id='AllProducts'>
         <div className='container'>
           <div className='row'>
             

@@ -140,9 +140,7 @@ const DiscountAndCoupens = () => {
                     </div>
                 </div>
             </div>
-            <div className='bid-offer-tabs'
-                style={{ padding: "30px 0px" }}
-            >
+            <div className='bid-offer-tabs'>
                 <button className='AddCoupon' onClick={toggleAddCouponPopup}>Add Coupon</button>
                 <Modal show={showAddCouponPopup} onHide={toggleAddCouponPopup}>
                     <Modal.Header closeButton>
@@ -238,9 +236,9 @@ const DiscountAndCoupens = () => {
                                 <div className='ongoing ordmangemnt'>
                                     {expiredCoupons.length === 0 ? ( // Check if customerOrders array is empty
                                         <div className='no-data-found'>
-                                        <img src={NoDataFound} alt="" />
-                                        <p>Orders Not  Found</p>
-                                      </div>
+                                            <img src={NoDataFound} alt="" />
+                                            <p>Orders Not  Found</p>
+                                        </div>
                                     ) : (
                                         <>
                                             {expiredCoupons.map((order, index) => (

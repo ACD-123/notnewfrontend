@@ -34,9 +34,7 @@ console.log('id',id)
           <div className="row">
             <div className="category-shop-about">
               <div
-                className="main-dasboard-tabs seller-shop"
-                style={{ padding: "30px 0px" }}
-              >
+                className="main-dasboard-tabs seller-shop">
                 {/* <div className="whatyouthink">
                   <Search />
                 </div> */}

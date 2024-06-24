@@ -30,6 +30,12 @@ function recursiveCategories(params = {}) {
       method: 'GET',
     })
   }
+  function  getTopSelling(){
+    return request({
+      url: `${baseUrl}products/getTopSelling`,
+      method: 'GET',
+    })
+  }
   function removeDuplicates(arr) {
     let unique = [];
     for (let i = 0; i < arr.length; i++) {
@@ -39,13 +45,14 @@ function recursiveCategories(params = {}) {
     }
     return unique;
 }
-  const Home = {
+  const HomeService = {
     recursiveCategories,
     getshopData,
     removeDuplicates,
     getCompanies,
     getbrands,
-    getrecursive
+    getrecursive,
+    getTopSelling
   }
   
-  export default Home
+  export default HomeService

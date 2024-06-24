@@ -21,7 +21,7 @@ const NavBar = () => {
           >
             <Link className='nav-link' to="/">Home</Link>
             <Link className='nav-link' to="/topcategory">Top Categories</Link>
-            <Link className='nav-link' to="/notFound">Auctions</Link>
+            <Link className='nav-link' to="/auctions">Auctions</Link>
             <Link className='nav-link' to="/notFound">Hot Deals</Link>
             <Link className='nav-link' to="/notFound">Top Sellers</Link>
             {/* <Nav.Link href="/categorykeyword">Electronics</Nav.Link>

@@ -10,7 +10,7 @@ import CountryServices from "../../../services/API/CountryServices"; //~/service
 import State from "../../../services/API/State"; //~/services/API/State
 import City from "../../../services/API/City"; //~/services/API/City
 import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
-import Home from "../../../services/API/Home"; //~/services/API/Home
+import HomeService from "../../../services/API/HomeService"; //~/services/API/Home
 import ReturnShipping from "./ReturnShipping"; //~/services/API/Home
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
 import { toast } from "react-toastify";
@@ -1082,7 +1082,7 @@ const ListingForm = (props) => {
   //
   // }
   const getCompany = () => {
-    Home.getCompanies()
+    HomeService.getCompanies()
       .then((res) => {
         if (res.status) {
           setdeliveryCompany(res.data);
@@ -1093,7 +1093,7 @@ const ListingForm = (props) => {
       });
   };
   const getBrands = () => {
-    Home.getbrands()
+    HomeService.getbrands()
       .then((res) => {
         setBrands(res); // if (res.status) {
         //   // setdeliveryCompany(res.data);

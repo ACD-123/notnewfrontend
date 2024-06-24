@@ -11,9 +11,7 @@ var Getsurprised = {
 const GetSurprisedBanner = () => {
   return (
    <>
-   <section id='getsurpriseprice'
-   style={{padding: "0px 0px 30px 0px"}}
-   >
+   <section id='getsurpriseprice'>
     <div className='container'>
         <div className='row'
         style={Getsurprised}

@@ -1,38 +1,71 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Activity from './Activity'
 import Chat from './Chat';
 import AccountInfo from '../AccountsSetting/AccountInfo';
 import NotFound_ from '../../pages/NotFound_'
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState('activity');
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const componentName = searchParams.get('tab');
+
+    if (componentName) {
+      setSelectedTab(componentName);
+    }
+  }, [location.search]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
 
+  const renderComponent = () => {
+    switch (selectedTab) {
+      case 'activity':
+        return <Activity />;
+      case 'messages':
+        // return <RecentlyViewed />;
+        return <NotFound_/>
+      case 'account':
+        // return <BidsOffer /> ;
+        return <AccountInfo/>
+      default:
+        return ; // Default to Test component if no matching menu item is found
+    }
+  };
+
+  const handleMenuItemClick = (tab) => {
+    if(tab === 'activity'){
+      navigate(`/customerdashboard?tab=${tab}&component=dashboard`);
+      setSelectedTab(tab);
+    }else{
+      navigate(`/customerdashboard?tab=${tab}`);
+      setSelectedTab(tab);
+    }
+  };
+
   return (
-    <div className='main-dasboard-tabs'
-      style={{ padding: "30px 0px" }}
-    >
+    <div className='main-dasboard-tabs'>
       <div className='whatyouthink'>
         <Link to="">Tell us what you Think</Link>
       </div>
       <div className="tab-buttons">
-        <button onClick={() => handleTabClick(0)} className={activeTab === 0 ? 'active' : ''}>
+        <button onClick={() => handleMenuItemClick('activity')} className={selectedTab === 'activity' ? 'active' : ''}>
           Activity
         </button>
-        <button onClick={() => handleTabClick(1)} className={activeTab === 1 ? 'active' : ''}>
+        <button onClick={() => handleMenuItemClick('messages')} className={selectedTab === 'messages' ? 'active' : ''}>
           Messages
         </button>
-        <button onClick={() => handleTabClick(2)} className={activeTab === 2 ? 'active' : ''}>
+        <button onClick={() => handleMenuItemClick('account')} className={selectedTab === 'account' ? 'active' : ''}>
           Account
         </button>
       </div>
       <div className="tab-content">
-        {activeTab === 0 && <div><Activity /></div>}
-        {activeTab === 1 && <div><NotFound_ /></div>}
-        {activeTab === 2 && <div><AccountInfo /></div>}
+        {renderComponent()}
       </div>
     </div>
   );

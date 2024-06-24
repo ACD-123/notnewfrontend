@@ -47,6 +47,7 @@ const Dashboard = () => {
   const getCustomerOrder = () => {
     OrderServices.customerOngoingOrders()
       .then((response) => {
+        console.log(response.data , 'customerOngoingOrders');
         setCustomerOrders(response.data);
         setIsLoading(false);
       })

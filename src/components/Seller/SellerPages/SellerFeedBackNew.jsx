@@ -8,9 +8,7 @@ const SellerFeedbackNew = () => {
   return (
    <>
    <div className='reviw-seller-page'>
-   <div className='row'
-   style={{padding: "30px 0px"}}
-   >
+   <div className='row'>
     <div className='col-lg-6'>
       <h3>Customer Feedback Stats</h3>
       <p>Last 12 months</p>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import ProductCard from "../Elements/ProductCard";
 import ProductImage1 from "../../assets/Images/Productcard/1.png";
@@ -15,30 +16,26 @@ import UserServices from "../../services/API/UserServices"; //~/services/API/Aut
 import { CiHeart } from "react-icons/ci";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 
-const RecentViewedItems = ({title}) => {
+const TopSellingProducts = ({data , title}) => {
   const [productData, setProductData] = useState([]);
   const [favData, setFavData] = useState([]);
   const [user, setUser] = useState();
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
-        console.log("login12", response.id);
         setUserDetails(response);
         setUser(response.id);
         localStorage.setItem("user_details", JSON.parse(response));
       })
       .catch((e) => {
         console.log("error", e);
-        // toast.error(e.message);
       });
   };
   const fetchProductData = async () => {
     try {
       const res = await ProductServices.all(user);
-      console.log('api',res)
       if (res.status) {
-        setProductData(res.data.slice(0, 4)); // Limit to the first 5 products
-        console.log("setProductData", res.data);
+        setProductData(res.data.slice(0, 4));
       }
     } catch (error) {
       console.error("Error fetching product data:", error);
@@ -48,7 +45,6 @@ const RecentViewedItems = ({title}) => {
   useEffect(() => {
     if (isLoggedin()) {
       getUser();
-      // let cartItems = localStorage.getItem('cupon');
     }
   }, []);
   const addToFavorites = async (productId) => {
@@ -58,16 +54,11 @@ const RecentViewedItems = ({title}) => {
         user_id: user,
         type: "1",
       };
-      console.log("hit", data);
       const res = await ProductServices.isFavorite(data);
       if (res.status) {
-        // Optionally, update UI or show a success message
-        toast.success("Product added to favorites!");
-        // Update favorites data if necessary
         setFavData(res.data);
       }
     } catch (error) {
-      console.error("Error adding to favorites:", error);
       toast.error("Failed to add product to favorites.");
     }
   };
@@ -80,8 +71,8 @@ const RecentViewedItems = ({title}) => {
 
   return (
     <>
-      <section id="product-recents-viewed">
-        {productData.length > 0 ? (
+      <section id="product-recents-viewed" className="top-selling-product">
+        {data?.products?.length > 0 ? (
           <>
             <div className="container">
               <div className="row">
@@ -98,28 +89,28 @@ const RecentViewedItems = ({title}) => {
             <section id="productcard">
               <div className="container">
                 <div className="row">
-                  {productData.map((product) => (
-                    <div className="col col-lg-3" key={product?.guid}>
+                  {data?.products?.map((item) => (
+                    <div className="col col-lg-3" key={item?.product_id}>
                       <div className="productlist">
                         {/* Product image */}
                         {isLoggedin() ? (
                           <>
                             <Link
                               to={
-                                product?.auctioned
-                                  ? `/auctionproduct/${product?.guid}`
-                                  : `/singleproduct/${product?.guid}`
+                                item?.auctioned
+                                  ? `/auctionproduct/${item?.product_id}`
+                                  : `/singleproduct/${item?.product_id}`
                               }
                             >
                               <img
                                 src={
-                                  product.media.length > 0
-                                    ? product.media[0].name
+                                  item?.product?.media?.length > 0
+                                    ? item?.product?.media?.[0]?.name
                                     : blank
                                 }
                                 alt={
-                                  product.media.length > 0
-                                    ? product.media[0].name
+                                  item?.product?.media?.length > 0
+                                    ? item?.product?.media?.[0]?.name
                                     : "blank"
                                 }
                               />
@@ -130,13 +121,13 @@ const RecentViewedItems = ({title}) => {
                             <Link to="/signin">
                               <img
                                 src={
-                                  product.media.length > 0
-                                    ? product.media[0].name
+                                  item?.product?.media?.length > 0
+                                    ? item?.product?.media?.[0]?.name
                                     : blank
                                 }
                                 alt={
-                                  product.media.length > 0
-                                    ? product.media[0].name
+                                  item?.product?.media?.length > 0
+                                    ? item?.product?.media?.[0]?.name
                                     : "blank"
                                 }
                               />
@@ -153,41 +144,41 @@ const RecentViewedItems = ({title}) => {
                             <>
                               <Link
                                 to={
-                                  product?.auctioned
-                                    ? `/auctionproduct/${product?.guid}`
-                                    : `/singleproduct/${product?.guid}`
+                                  item?.auctioned
+                                    ? `/auctionproduct/${item?.product_id}`
+                                    : `/singleproduct/${item?.product_id}`
                                 }
                               >
-                                <h3>{product.name.substring(0, 10)}...</h3>${" "}
-                                {product?.auctioned
-                                  ? product.bids
-                                  : product.price}
+                                <h3>{item?.product?.name.substring(0, 10)}...</h3>${" "}
+                                {item?.product?.auctioned
+                                  ? item?.product?.bids
+                                  : item?.product?.price}
                                 <h4>
-                                  {product?.description.substring(0, 15)}...
+                                  {item?.product?.description.substring(0, 15)}...
                                 </h4>
                               </Link>
                             </>
                           ) : (
                             <>
                               <Link to="/signin">
-                                <h3>{product.name.substring(0, 10)}...</h3>${" "}
-                                {product?.auctioned
-                                  ? product.bids
-                                  : product.price}
+                                <h3>{item?.product?.name.substring(0, 10)}...</h3>${" "}
+                                {item?.product?.auctioned
+                                  ? item?.product?.bids
+                                  : item?.product?.price}
                                 <h4>
-                                  {product?.description.substring(0, 15)}...
+                                  {item?.description.substring(0, 15)}...
                                 </h4>
                               </Link>
                             </>
                           )}
                           {isLoggedin() ? (
                             <>
-                              {!product?.auctioned && (
+                              {!item?.auctioned && (
                                 <div
-                                  onClick={() => addToFavorites(product.guid)}
+                                  onClick={() => addToFavorites(item?.product_id)}
                                   className="favoriteImg"
                                 >
-                                  {product.is_favourite === true ? (
+                                  {item?.product?.is_favourite === true ? (
                                     <FaHeart />
                                   ) : (
                                     <FaRegHeart />
@@ -197,7 +188,7 @@ const RecentViewedItems = ({title}) => {
                             </>
                           ) : (
                             <>
-                              {!product?.auctioned && (
+                              {!item?.product?.auctioned && (
                                 <Link to="/signin">
                                   <FaRegHeart />
                                 </Link>
@@ -207,31 +198,31 @@ const RecentViewedItems = ({title}) => {
                           {/* Product price */}
                           <p>
                             <ul>
-                              {product?.sale_price !== null ||
-                                (product?.sale_price !== 0 && (
+                              {item?.product?.sale_price !== null ||
+                                (item?.product?.sale_price !== 0 && (
                                   <li className="price">
                                     $
-                                    {product?.sale_price
-                                      ? product?.sale_price
+                                    {item?.product?.sale_price
+                                      ? item?.product?.sale_price
                                       : 0}
                                   </li>
                                 ))}
-                              {(product?.price !== null &&
-                                product?.sale_price !== null) ||
-                                (product?.sale_price !== 0 && (
+                              {(item?.product?.price !== null &&
+                                item?.product?.sale_price !== null) ||
+                                (item?.product?.sale_price !== 0 && (
                                   <li className="sale">
                                     <del>
-                                      ${product?.price ? product?.price : 0}
+                                      ${item?.product?.price ? item?.product?.price : 0}
                                     </del>
                                   </li>
                                 ))}
-                              {(product?.price !== null &&
-                                product?.sale_price !== null) ||
-                                (product?.sale_price !== 0 && (
+                              {(item?.product?.price !== null &&
+                                item?.product?.sale_price !== null) ||
+                                (item?.product?.sale_price !== 0 && (
                                   <li className="discount">
                                     {(
-                                      ((product?.price - product?.sale_price) /
-                                        product?.price) *
+                                      ((item?.product?.price - item?.product?.sale_price) /
+                                        item?.product?.price) *
                                       100
                                     ).toFixed(2)}
                                     % OFF
@@ -255,4 +246,4 @@ const RecentViewedItems = ({title}) => {
   );
 };
 
-export default RecentViewedItems;
+export default TopSellingProducts;

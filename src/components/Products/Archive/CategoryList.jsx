@@ -9,7 +9,7 @@ import Categoryimage7 from "../../../assets/Images/MainCategories/Category7.png"
 import blank from "../../../assets/Images/Productcard/blank.jpg";
 import { Link } from "react-router-dom";
 // import CategoryServicies from '../../../services/API/Category'; //~/services/API/Category
-import Home from '../../../services/API/Home'; //~/services/API/Home
+import Home from '../../../services/API/HomeService'; //~/services/API/Home
 import { BASE_URL } from "../../../services/Constant";
 const CategoryList = () => {
   const [categoryData, setCategoryData] = useState([]);
@@ -40,7 +40,7 @@ const CategoryList = () => {
   }, []);
   return (
    <>
-   <section id='product-recents-viewed'>
+   <section id='product-recents-viewed' className='explore-category'>
      {categoryData.length > 0 ? (
       <>
       <div className='container'>
@@ -50,7 +50,7 @@ const CategoryList = () => {
             </div>
           </div>
         </div>
-        <section id='productcard' style={{ padding: "30px 0px" }}>
+        <section id='productcard'>
           <div className='container'>
           <div className='row'>
             {loading ? (
@@ -64,8 +64,8 @@ const CategoryList = () => {
                   return (
                     <div className='col col-lg-2'>
                       <Link to={`/singlecategory/${category.guid}`}>
-                      <div className='productlist ctrrr' key={category.id}>
-                        <div style={{height: '140px',width: '100%'}}>
+                      <div className='category' key={category.id}>
+                        <div>
                           {category.media.length > 0 ?(
                             <>
                             {category.media?.map((media) => {

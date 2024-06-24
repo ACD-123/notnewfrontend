@@ -13,13 +13,13 @@ import Categorylistimage11 from "../../assets/Images/Categorylist/11.png";
 import Categorylistimage12 from "../../assets/Images/Categorylist/12.png";
 import Category from "../../services/API/Category"; //~/services/API/Category
 import { BASE_URL } from "../../services/Constant";
-import Home from "../../services/API/Home"; //~/services/API/Home
+import HomeService from "../../services/API/HomeService"; //~/services/API/Home
 
 const CategoriesListing = () => {
   const [categories, setCategoryData] = useState({});
   const [loadingDots, setLoadingDots] = useState("..."); // State to control loading dots
   const getCategory = () => {
-    Home.getrecursive().then((res) => {
+    HomeService.getrecursive().then((res) => {
       setCategoryData(res);
     });
   };
@@ -35,7 +35,7 @@ const CategoriesListing = () => {
   }, []);
   return (
     <>
-      <section id="categorylistings" style={{ padding: "30px 0px" }}>
+      <section id="categorylistings">
         <div className="container">
           <div className="row">
             <h1>Categories</h1>

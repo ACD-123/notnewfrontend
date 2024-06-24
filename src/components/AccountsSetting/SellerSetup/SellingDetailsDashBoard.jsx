@@ -261,6 +261,7 @@ const SellingDetailsDashBoard = (props) => {
   const getShopData=()=>{
     SellerServices.getShopDetails()
     .then((response) => {
+      console.log(response , 'user 2');
       if(response.status){
         setShopData(response.data);
       }
@@ -272,6 +273,7 @@ const SellingDetailsDashBoard = (props) => {
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
+        console.log(response , 'user 1');
         setUserDetails(response);
         setUser(response);
       })
@@ -282,9 +284,10 @@ const SellingDetailsDashBoard = (props) => {
 
   const getUserCompletedCount = () => {
     OrderServices.getusercompletedcount()
-      .then((res) => {
-        if(res.length > 0){
-          setOrderCount(res); 
+      .then((response) => {
+        console.log(response , 'user 3');
+        if(response.length > 0){
+          setOrderCount(response); 
         }else{
           setOrderCount(0); 
         }
@@ -297,9 +300,11 @@ const SellingDetailsDashBoard = (props) => {
   const getUserOffersCount = () => {
     console.log('offers')
     OrderServices.getuserbidscount()
-      .then((res) => {
-          setOfferCount(res.data); 
-          console.log('count',res)
+      .then((response) => {
+        console.log(response , 'user 4');
+          setOfferCount(response.data);
+          localStorage.setItem('seller_guid' , response?.data?.seller_guid)
+          console.log('count',response)
       })
       .catch((e) => {
         console.log(e.message);

@@ -50,11 +50,7 @@ const Auctions = () => {
       <Header />
       {/* Header */}
 
-      <section id='Auctions'
-      style={{
-        padding:"30px 0px"
-      }}
-      >
+      <section id='Auctions'>
         <div className='container'>
           <h2>Auctions Items</h2>
           <div className='row'>

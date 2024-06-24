@@ -7,21 +7,10 @@ import CategoriesListing from "../components/Elements/CategoriesListing"
 const TopCategory = () => {
   return (
     <>
-    {/* Header Include */}
-			<Header />
-	{/* Header Include */}
-
-    {/* Banner Include */}
-			<Banner />
-	{/* Banner Includer */}
-
-    {/* CategoriesListing */}
-    <CategoriesListing />
-    {/* CategoriesListing */}
-    
-    {/* FeaturedProducts Include */}
-			<Footer />
-	{/* FeaturedProducts Include */}
+      <Header />
+      <Banner />
+      <CategoriesListing />
+      <Footer />
     </>
   )
 }

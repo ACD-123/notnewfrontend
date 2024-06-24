@@ -41,11 +41,7 @@ const SellerProductListing = () => {
     <>
    
 
-      <section id='singlecategory'
-      style={{
-        padding:"30px 0px"
-      }}
-      >
+      <section id='singlecategory'>
         <div className='container'>
             <div className='row'>
                 <div className='col-lg-6'>

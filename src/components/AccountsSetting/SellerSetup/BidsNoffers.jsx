@@ -15,125 +15,125 @@ import { Link } from 'react-router-dom';
 import { toast } from "react-toastify";
 
 // DetailedProductInfo component to display details of a single product
-const DetailedProductInfo = ({bid, product }) => {
+const DetailedProductInfo = ({ bid, product }) => {
   // console.log('bid', bid)
-  const handleAccept = (e, id, proId) =>{
+  const handleAccept = (e, id, proId) => {
     e.preventDefault();
     let data = {
-      'user_id' : id,
+      'user_id': id,
       'product_id': proId
     }
     BidsServices.acceptBids(data)
-    .then((response) => {
-      if(response.status){
-        toast.success(response.data)
-      }
-    })
+      .then((response) => {
+        if (response.status) {
+          toast.success(response.data)
+        }
+      })
 
   }
-  const handleReject = (e, id, proId) =>{
+  const handleReject = (e, id, proId) => {
     e.preventDefault();
     let data = {
-      'user_id' : id,
+      'user_id': id,
       'product_id': proId
     }
     BidsServices.rejectBids(data)
-    .then((response) => {
-      if(response.status){
-        toast.success(response.data)
-      }
-    })
+      .then((response) => {
+        if (response.status) {
+          toast.success(response.data)
+        }
+      })
 
   }
   // Modify this component to display detailed product information as per your needs
   return (
     <>
-    {bid.length > 0 ?(
-      <>
-        <div className='detaild-product-infi'>
-      <h3>Auction Details</h3>
-      
-      <div className='row align-items-center'>
-        <div className='col-lg-4'>
-          <div className='prd-imgg'>
-            <div><img  src={`${BASE_URL}/image/product/${bid[0].product.media[0].name}`} alt={bid[0].product.media[0].name}  /></div>
-          </div>
-        </div>
-        <div className='col-lg-8'>
-        <h5>{bid[0].product.name}</h5>
-        <div className='bidders-results'>
-          <div>Ends In <br />
-          {bid[0].endsIn}
-          {/* {product.bidEnd} */}
-          </div>
-          <div>Current Bid <br /> $ {bid[0].currentbid.max_bids}
-          {/* {product.currentBid} */}
-          </div>
-          <div>Total Bids <br /> {bid[0].bidsno}</div>
-        </div>
-        </div>
-      </div>
-      {/* End Row */}
-      <div className='row biddata'>
-        <table>
-          <thead>
-          <tr>
-            <th>S.no</th>
-            <th>Bidders</th>
-            <th>Bids</th>
-            <th>Actions</th>
-          </tr>
-          </thead>
-          <tbody>
-          {bid[0].totalbids.length > 0 ? (
-            <>
-            {bid[0].totalbids?.map((bid, index) => {
-                let sno= 1;
-                console.log('bid product', bid)
-                return(
-                  <tr key={index}>
-                    <td>
-                      {sno++}
-                      {/* {bid.serialNo} */}
-                    </td>
-                    <td>
-                      {bid.user?.email}
-                      {/* {bid.email}  */}
-                      <br /> 
-                      {/* {bid.time} */}
-                      {bid.time_bids}
-                      </td>
-                    <td>$ {bid.max_bids}</td>
-                    <td>
-                      <a href="#"  onClick={(e) => handleAccept(e, bid.user?.id, bid.product?.id)} style={{ color: "green"}}>Accept</a>
-                       | 
-                      <a href="#" onClick={(e) => handleReject(e, bid.user?.id, bid.product?.id)} style={{ color: "red"}}>Reject</a>
-                    </td>
-                  </tr>
-                )
-              })}
+      {bid.length > 0 ? (
+        <>
+          <div className='detaild-product-infi'>
+            <h3>Auction Details</h3>
 
-            </>
-          ):(
-            <>
-            </>
-          )}
-          {/* {product.bidData.slice(0, 5).map((bid, index) => (
+            <div className='row align-items-center'>
+              <div className='col-lg-4'>
+                <div className='prd-imgg'>
+                  <div><img src={`${BASE_URL}/image/product/${bid[0].product.media[0].name}`} alt={bid[0].product.media[0].name} /></div>
+                </div>
+              </div>
+              <div className='col-lg-8'>
+                <h5>{bid[0].product.name}</h5>
+                <div className='bidders-results'>
+                  <div>Ends In <br />
+                    {bid[0].endsIn}
+                    {/* {product.bidEnd} */}
+                  </div>
+                  <div>Current Bid <br /> $ {bid[0].currentbid.max_bids}
+                    {/* {product.currentBid} */}
+                  </div>
+                  <div>Total Bids <br /> {bid[0].bidsno}</div>
+                </div>
+              </div>
+            </div>
+            {/* End Row */}
+            <div className='row biddata'>
+              <table>
+                <thead>
+                  <tr>
+                    <th>S.no</th>
+                    <th>Bidders</th>
+                    <th>Bids</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bid[0].totalbids.length > 0 ? (
+                    <>
+                      {bid[0].totalbids?.map((bid, index) => {
+                        let sno = 1;
+                        console.log('bid product', bid)
+                        return (
+                          <tr key={index}>
+                            <td>
+                              {sno++}
+                              {/* {bid.serialNo} */}
+                            </td>
+                            <td>
+                              {bid.user?.email}
+                              {/* {bid.email}  */}
+                              <br />
+                              {/* {bid.time} */}
+                              {bid.time_bids}
+                            </td>
+                            <td>$ {bid.max_bids}</td>
+                            <td>
+                              <a href="#" onClick={(e) => handleAccept(e, bid.user?.id, bid.product?.id)} style={{ color: "green" }}>Accept</a>
+                              |
+                              <a href="#" onClick={(e) => handleReject(e, bid.user?.id, bid.product?.id)} style={{ color: "red" }}>Reject</a>
+                            </td>
+                          </tr>
+                        )
+                      })}
+
+                    </>
+                  ) : (
+                    <>
+                    </>
+                  )}
+                  {/* {product.bidData.slice(0, 5).map((bid, index) => (
         <tr key={index}>
           <td>{bid.serialNo}</td>
           <td>{bid.email} <br /> {bid.time}pm</td>
           <td>${bid.bidPrice}</td>
         </tr>
       ))} */}
-          </tbody>
-        </table>
-      </div>
-    </div>
-      </>
-    ):(
-      <></>
-    )}
-    {/* <div className='detaild-product-infi'>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
+      {/* <div className='detaild-product-infi'>
       <h3>Auction Details</h3>
       
       <div className='row align-items-center'>
@@ -177,6 +177,7 @@ const DetailedProductInfo = ({bid, product }) => {
 };
 
 const BidsNoffers = () => {
+  let loggedInUser = JSON.parse(localStorage.getItem('user_details'));
   const [activeTab, setActiveTab] = useState('rr1');
 
   const handleTabClick = (tab) => {
@@ -239,7 +240,7 @@ const BidsNoffers = () => {
       note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
     },
     {
-       orderNumber: '53535',
+      orderNumber: '53535',
       productName: "Footwear Fusion: Find Your Perfect Fit",
       images: [
         Prdimage1,
@@ -287,7 +288,7 @@ const BidsNoffers = () => {
       note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
     },
     {
-        orderNumber: '414324',
+      orderNumber: '414324',
       productName: "Walk This Way: Shoe Chic Collection",
       images: [
         Prdimage2,
@@ -335,7 +336,7 @@ const BidsNoffers = () => {
       note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
     },
     {
-        orderNumber: '636363',
+      orderNumber: '636363',
       productName: "Stride Elegance: Your Ultimate Shoe Haven",
       images: [
         Prdimage3,
@@ -382,23 +383,26 @@ const BidsNoffers = () => {
       bidStatus: 'Lost',
       note: 'This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
     },
-    
+
 
   ];
   const [biddata, setBidData] = useState([]);
 
-  const getSellerBid = () =>{
-    UserServices.getSellerActiveBid()
-    .then((response) => {
-      if(response.status){
+  const getSellerBid = () => {
+    UserServices.getSellerActiveBid(loggedInUser?.id)
+      .then((response) => {
+        console.log(response.data, 'active');
+        if (response.status) {
           setBidData(response.data)
-      }
-    })
+        }
+      }).catch((error) => {
+
+      })
   }
   useEffect(() => {
     getSellerBid();
   }, []);
- 
+
   if (selectedProduct !== null && ordersData[selectedProduct]) {
     const selectedOrder = ordersData[selectedProduct];
     return (
@@ -407,89 +411,89 @@ const BidsNoffers = () => {
         <button className='bckkkkk' onClick={() => setSelectedProduct(null)}>Go Back</button>
       </div>
     );
-  }  
+  }
   return (
     <>
-    <h3>Bids & Offers</h3>
-    <div className='bid-offer-tabs' 
-    style={{padding: "30px 0px"}}
-    >
+      <h3>Bids & Offers</h3>
+      <div className='bid-offer-tabs'>
 
-      <div className="tab-buttons">
-        <button onClick={() => handleTabClick('rr1')} className={activeTab === 'rr1' ? 'active' : ''}>
-        Active auctions
-        </button>
-        <button onClick={() => handleTabClick('rr2')} className={activeTab === 'rr2' ? 'active' : ''}>
-        Ended auctions
-        </button>
+        <div className="tab-buttons">
+          <button onClick={() => handleTabClick('rr1')} className={activeTab === 'rr1' ? 'active' : ''}>
+            Active auctions
+          </button>
+          <button onClick={() => handleTabClick('rr2')} className={activeTab === 'rr2' ? 'active' : ''}>
+            Ended auctions
+          </button>
 
-      </div>
-      <div className="tab-content">
-        {activeTab === 'rr1' && <div><div className='ongoing ordmangemnt'>  
-        {biddata.length > 0 ?(
-          <>
-          {biddata.map((order, index) => {
-            let images = [];
-            order.product?.media.forEach((media) => {
-              images.push(media)
-            });
-            return(
-              <>
-               <div className='row align-items-center' key={index}>
-                <div className='col-lg-8'>
-                  <div className='product-image'>
-                    {images.length > 0 ?(
-                      <>
-                        <div className='image'>
-                          {images.map((image, imgIndex) => {
-                            if(imgIndex == 0){
-                              return(
-                                <>
-                                  <img key={imgIndex} src={`${BASE_URL}/image/product/${image.name}`} alt={image.name} />
-                                </>
-                                // 
-                              )
-                            }
-                          })}
-                        </div>
-                      </>
-                    ):(
-                      <>
-                        <img src={blank} alt='blank' width="150" height="150" />
-                      </>
-                    )}
-                    <div className='prd-details'>
-                      {/* <h5>Order # : <b>{order.orderNumber}</b></h5> */}
-                      <h3>{order.product.name}</h3>
-                      <h6 style={{fontWeight: "Bold", color: "#000"}}>Current Bid: $ 98</h6>
-                      <div className='bids-prd'>
-                      <div>{order.currentbid.max_bids} bids</div>
-                      <div style={{color: "red"}}>Ends in 16:23:12</div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                </div>
+        </div>
+        <div className="tab-content">
+          {activeTab === 'rr1' &&
+            <div>
+              <div className='ongoing ordmangemnt'>
+                {biddata.length > 0 ? (
+                  <>
+                    {biddata?.active.map((order, index) => {
+                      let images = [];
+                      order.product?.media.forEach((media) => {
+                        images.push(media)
+                      });
+                      return (
+                        <>
+                          <div className='row align-items-center' key={index}>
+                            <div className='col-lg-8'>
+                              <div className='product-image'>
+                                {images.length > 0 ? (
+                                  <>
+                                    <div className='image'>
+                                      {images.map((image, imgIndex) => {
+                                        if (imgIndex == 0) {
+                                          return (
+                                            <>
+                                              <img key={imgIndex} src={`${BASE_URL}/image/product/${image.name}`} alt={image.name} />
+                                            </>
+                                            // 
+                                          )
+                                        }
+                                      })}
+                                    </div>
+                                  </>
+                                ) : (
+                                  <>
+                                    <img src={blank} alt='blank' width="150" height="150" />
+                                  </>
+                                )}
+                                <div className='prd-details'>
+                                  {/* <h5>Order # : <b>{order.orderNumber}</b></h5> */}
+                                  <h3>{order.product.name}</h3>
+                                  <h6 style={{ fontWeight: "Bold", color: "#000" }}>Current Bid: $ 98</h6>
+                                  <div className='bids-prd'>
+                                    <div>{order.currentbid.max_bids} bids</div>
+                                    <div style={{ color: "red" }}>Ends in 16:23:12</div>
+                                  </div>
+                                </div>
+                              </div>
 
-                <div className='col-lg-4'>
-                  <div className='rightarrow viedeails'>
-                    <button onClick={() => handleViewDetails(index, order)}>
-                      View Details
-                    </button>
-                  </div>
-                </div>
-                <hr />
-              </div>
-              </>
-            )
-          })}
-          </>
-        ):(
-          <>
-            No Bids Exists!
-          </>
-        )}
-      {/* {ordersData.map((order, index) => (
+                            </div>
+
+                            <div className='col-lg-4'>
+                              <div className='rightarrow viedeails'>
+                                <button onClick={() => handleViewDetails(index, order)}>
+                                  View Details
+                                </button>
+                              </div>
+                            </div>
+                            <hr />
+                          </div>
+                        </>
+                      )
+                    })}
+                  </>
+                ) : (
+                  <>
+                    No Bids Exists!
+                  </>
+                )}
+                {/* {ordersData.map((order, index) => (
         <div className='row align-items-center' key={order.orderNumber}>
           <div className='col-lg-8'>
             <div className='product-image'>
@@ -522,135 +526,135 @@ const BidsNoffers = () => {
         </div>
         
       ))} */}
-    </div></div>}
-        {activeTab === 'rr2' && <div><div className='ongoing ordmangemnt'>
-        {biddata.length > 0 ?(
-          <>
-          {biddata.map((order, index) => {
-            let images = [];
-            order.product?.media.forEach((media) => {
-              images.push(media)
-            });
-            return(
+              </div></div>}
+          {activeTab === 'rr2' && <div><div className='ongoing ordmangemnt'>
+            {biddata.length > 0 ? (
               <>
-               <div className='row align-items-center' key={index}>
-                <div className='col-lg-8'>
-                  <div className='product-image'>
-                    {images.length > 0 ?(
-                      <>
-                        <div className='image'>
-                          {images.map((image, imgIndex) => {
-                            if(imgIndex == 0){
-                              return(
-                                <>
-                                  <img key={imgIndex} src={`${BASE_URL}/image/product/${image.name}`} alt={image.name} />
-                                </>
-                                // 
-                              )
-                            }
-                          })}
+                {biddata?.inactive.map((order, index) => {
+                  let images = [];
+                  order.product?.media.forEach((media) => {
+                    images.push(media)
+                  });
+                  return (
+                    <>
+                      <div className='row align-items-center' key={index}>
+                        <div className='col-lg-8'>
+                          <div className='product-image'>
+                            {images.length > 0 ? (
+                              <>
+                                <div className='image'>
+                                  {images.map((image, imgIndex) => {
+                                    if (imgIndex == 0) {
+                                      return (
+                                        <>
+                                          <img key={imgIndex} src={`${BASE_URL}/image/product/${image.name}`} alt={image.name} />
+                                        </>
+                                        // 
+                                      )
+                                    }
+                                  })}
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                <img src={blank} alt='blank' width="150" height="150" />
+                              </>
+                            )}
+                            <div className='prd-details'>
+                              {/* <h5>Order # : <b>{order.orderNumber}</b></h5> */}
+                              <h3>{order.product.name}</h3>
+                              <h6 style={{ fontWeight: "Bold", color: "#000" }}>Current Bid: $ 98</h6>
+                              <div className='bids-prd'>
+                                <div>{order.currentbid.max_bids} bids</div>
+                                <div style={{ color: "red" }}>Ends in 16:23:12</div>
+                              </div>
+                            </div>
+                          </div>
+
                         </div>
-                      </>
-                    ):(
-                      <>
-                        <img src={blank} alt='blank' width="150" height="150" />
-                      </>
-                    )}
-                    <div className='prd-details'>
-                      {/* <h5>Order # : <b>{order.orderNumber}</b></h5> */}
-                      <h3>{order.product.name}</h3>
-                      <h6 style={{fontWeight: "Bold", color: "#000"}}>Current Bid: $ 98</h6>
-                      <div className='bids-prd'>
-                      <div>{order.currentbid.max_bids} bids</div>
-                      <div style={{color: "red"}}>Ends in 16:23:12</div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                </div>
-                <div className='col-lg-4'>
-                  <div className='paymentstatus'>
-                    <h5>
-                      Status <br /> <span style={{
-                                  color:
-                                      order.currentbid.status === "Unpaid"
-                                      ? "#B01212"
-                                      : order.currentbid.status === "Paid"
+                        <div className='col-lg-4'>
+                          <div className='paymentstatus'>
+                            <h5>
+                              Status <br /> <span style={{
+                                color:
+                                  order.currentbid.status === "Unpaid"
+                                    ? "#B01212"
+                                    : order.currentbid.status === "Paid"
                                       ? "green"
                                       : order.currentbid.status === "pending"
-                                      ? "orange"
-                                      : "black",
-                                }}>{order.currentbid.status}</span>
-                    </h5>
-                  </div>
-                  </div>
-                {/* <div className='col-lg-4'>
+                                        ? "orange"
+                                        : "black",
+                              }}>{order.currentbid.status}</span>
+                            </h5>
+                          </div>
+                        </div>
+                        {/* <div className='col-lg-4'>
                   <div className='rightarrow viedeails'>
                     <button onClick={() => handleViewDetails(index)}>
                       View Details
                     </button>
                   </div>
                 </div> */}
-                <hr />
-              </div>
+                        <hr />
+                      </div>
+                    </>
+                  )
+                })}
               </>
-            )
-          })}
-          </>
-        ):(
-          <>
-            No Bids Exists!
-          </>
-        )}
-      {ordersData.map((order, index) => (
-        <div className='row align-items-center' key={order.orderNumber}>
-          <div className='col-lg-10'>
-            <div className='product-image'>
-              <div className='image'>
-                {order.images.map((image, imgIndex) => (
-                  <img key={imgIndex} src={image} alt={`Product ${imgIndex + 1}`} />
-                ))}
-              </div>
-              <div className='prd-details'>
-                <h5>Order # : <b>{order.orderNumber}</b></h5>
-                <h3>{order.productName}</h3>
-                <h6 style={{fontWeight: "Bold", color: "#000"}}>Current Bid: ${order.currentBid}</h6>
-                <h4 style={{
-                          color:
-                            order.bidStatus === "Winner"
-                              ? "#8b2ca0"
-                              : order.bidStatus === "Lost"
+            ) : (
+              <>
+                No Bids Exists!
+              </>
+            )}
+            {ordersData.map((order, index) => (
+              <div className='row align-items-center' key={order.orderNumber}>
+                <div className='col-lg-10'>
+                  <div className='product-image'>
+                    <div className='image'>
+                      {order.images.map((image, imgIndex) => (
+                        <img key={imgIndex} src={image} alt={`Product ${imgIndex + 1}`} />
+                      ))}
+                    </div>
+                    <div className='prd-details'>
+                      <h5>Order # : <b>{order.orderNumber}</b></h5>
+                      <h3>{order.productName}</h3>
+                      <h6 style={{ fontWeight: "Bold", color: "#000" }}>Current Bid: ${order.currentBid}</h6>
+                      <h4 style={{
+                        color:
+                          order.bidStatus === "Winner"
+                            ? "#8b2ca0"
+                            : order.bidStatus === "Lost"
                               ? "green"
                               : "black", fontWeight: "bold"
-                        }}>{order.bidStatus}</h4>
-              </div>
-            </div>
-            
-          </div>
+                      }}>{order.bidStatus}</h4>
+                    </div>
+                  </div>
 
-          <div className='col-lg-2'>
-          <div className='paymentstatus'>
-            <h5>
-              Status <br /> <span style={{
-                          color:
-                            order.paymentStatus === "Unpaid"
-                              ? "#B01212"
-                              : order.paymentStatus === "Paid"
+                </div>
+
+                <div className='col-lg-2'>
+                  <div className='paymentstatus'>
+                    <h5>
+                      Status <br /> <span style={{
+                        color:
+                          order.paymentStatus === "Unpaid"
+                            ? "#B01212"
+                            : order.paymentStatus === "Paid"
                               ? "green"
                               : "black",
-                        }}>{order.paymentStatus}</span>
-            </h5>
-          </div>
-          </div>
-          <hr />
+                      }}>{order.paymentStatus}</span>
+                    </h5>
+                  </div>
+                </div>
+                <hr />
+              </div>
+
+            ))}
+          </div></div>}
+
         </div>
-        
-      ))}
-    </div></div>}
-        
       </div>
-    </div>
-    
+
     </>
   );
 };

@@ -10,7 +10,7 @@ import CountryServices from "../../../services/API/CountryServices"; //~/service
 import State from "../../../services/API/State"; //~/services/API/State
 import City from "../../../services/API/City"; //~/services/API/City
 import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
-import Home from "../../../services/API/Home"; //~/services/API/Home
+import HomeService from "../../../services/API/HomeService"; //~/services/API/Home
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
 import { toast } from "react-toastify";
 import moment from "moment";

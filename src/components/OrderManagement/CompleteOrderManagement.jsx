@@ -60,7 +60,7 @@ const DetailedProductInfo = ({ product }) => {
           </select>
         </div>
       </div>
-      <div className="row align-items-center" style={{ padding: "30px 0px" }}>
+      <div className="row align-items-center">
         <h3>Order Items</h3>
         <div className="col-lg-9">
           <div className="product-image">

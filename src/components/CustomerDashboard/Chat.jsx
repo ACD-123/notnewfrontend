@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Dp from "../../assets/Images/Chat/list1.png";
 import Dp1 from "../../assets/Images/Chat/list2.png";
 import Convoimage from "../../assets/Images/Seller/sellerimage.png";
@@ -9,18 +9,14 @@ import blank from "../../assets/Images/User/blankuser.jpg";
 // getUserConversations
 function Chat() {
   const [selectedChat, setSelectedChat] = useState(null);
-  const [selectedSenderChat, setSelectedSenderChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [chatLists, setChatList] = useState([]);
   let loggedInUser = JSON.parse(localStorage.getItem('user_details'));
-  let senders;
-  let reciepnt;
   const getUserChat = () => {
     UserServices.conversations(loggedInUser?.id)
       .then((response) => {
-        console.log(response?.data, 'chat');
         setChatList(response?.data);
       })
       .catch((e) => {
@@ -57,23 +53,13 @@ function Chat() {
     // Add more chats as needed
   ];
 
-  const handleChatSelection = (reciptId, senderId, index) => {
-    setSelectedChat(null);
-    setMessages(null);
+  const handleChatSelection = (reciptId, senderId, chat) => {
     UserServices.getMessagesById(reciptId)
       .then((response) => {
-        let data;
-        let messages = [];
-        response?.data?.map((message) => {
-          data = {
-            id: message.from_id,
-            text: message.message,
-            sender: message.from_id,
-          };
-          messages.push(data);
-        });
-        setSelectedChat(index);
-        setMessages(messages);
+        console.log(chat, 'asdasda');
+        
+        setSelectedChat(chat);
+        setMessages(response?.data);
       })
       .catch((e) => {
         console.log("error", e);
@@ -81,21 +67,15 @@ function Chat() {
   };
 
   const getMessagesForChat = (chatId) => {
-    // console.log('getMessagesForChat id', chatId)
     UserServices.messages(chatId)
       .then((response) => {
-        // console.log('getMessagesForChat', response)
         response.map((message) => {
-          // console.log('message', message)
           return [
             {
               id: message.recipient_id,
               text: message.data,
               sender: message.sender_id
             },
-            //     { id: 2, text: 'Hi! How are you?', sender: 'user' },
-            //     { id: 3, text: 'Hi! How are you?', sender: 'user' },
-            //     { id: 4, text: 'Hi! How are you?', sender: 'user' },
           ];
         });
         // setChatList(response)
@@ -103,43 +83,25 @@ function Chat() {
       .catch((e) => {
         console.log("error", e);
       });
-
-    // messages
-    // Simulated messages for different chats (replace with your logic)
-    // if (chatId === 1) {
-    //   return [
-    //     { id: 1, text: 'Hey there!', sender: 'Friend 1' },
-    //     { id: 2, text: 'Hi! How are you?', sender: 'user' },
-    //     { id: 3, text: 'Hi! How are you?', sender: 'user' },
-    //     { id: 4, text: 'Hi! How are you?', sender: 'user' },
-    //   ];
-    // } else if (chatId === 2) {
-    //   return [
-    //     { id: 1, text: 'Hello!', sender: 'Friend 2' },
-    //     { id: 2, text: 'I am good, thanks!', sender: 'user' },
-    //     // Add more messages as needed
-    //   ];
-    // }
     return [];
   };
 
   const sendMessage = () => {
     if (newMessage.trim() !== "") {
-      const newMsg = {
-        id: messages.length + 1,
-        text: newMessage,
-        sender: loggedInUser.id,
-      };
       const newMassage = {
-        recipient_id: reciepnt,
-        product_id: "2a646db9-a644-471f-9e58-fef2d3bbe05a",
-        data: newMessage,
-        sender_id: senders
+        room_id: selectedChat?.id,
+        uid: selectedChat?.participants === loggedInUser?.id ? selectedChat?.uid : selectedChat?.participants,
+        from_id: loggedInUser?.id,
+        message_type: 0,
+        message: newMessage,
+        status: 1
       };
-      MessagesServices.saveAssociated(newMassage)
+      MessagesServices.sendChatMessage(newMassage)
         .then((response) => {
           if (response.status) {
-            setMessages([...messages, newMsg]);
+            // setMessages([...messages, newMsg]);
+            getUserChat();
+            handleChatSelection(selectedChat?.id, selectedChat?.participants, selectedChat)
             setNewMessage("");
           }
         })
@@ -158,26 +120,25 @@ function Chat() {
     return chatLists?.filter(
       (chat) =>
         chat?.receiver_name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-      // chat.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   };
   useEffect(() => {
     getUserChat();
-    // if (selectedChat !== null) {
-    // //   const receivedMsgs = [
-    // //     { id: messages.length + 1, text: 'First dummy received message', sender: `Friend ${selectedChat}` },
-    // //     { id: messages.length + 2, text: 'Second dummy received message', sender: `Friend ${selectedChat}` },
-    // //     { id: messages.length + 3, text: 'Third dummy received message', sender: `Friend ${selectedChat}` },
-    // //   ];
-    // //   // Simulate delayed reception of messages
-    // //   const delay = setTimeout(() => {
-    // //     setMessages([...messages, ...receivedMsgs]);
-    // //   }, 500); // Change the delay time as needed (in milliseconds)
-
-    // //   return () => clearTimeout(delay); // Clear timeout on component unmount
-    // }
-    // }, [selectedChat]);
   }, []);
+
+  const chatContainerRef = useRef(null);
+
+  // Function to scroll the chat container to the bottom
+  const scrollToBottom = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
+
+  // Scroll to bottom on initial render and whenever messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
   return (
     <div className="chat-container">
       <div className="row chatlist">
@@ -196,25 +157,26 @@ function Chat() {
                   return (
                     <li
                       key={index}
-                      onClick={() => handleChatSelection(chat?.id, loggedInUser?.id, index)}
-                      className={
-                        selectedChat === chat?.participants ? "active-chat" : ""
-                      }
-                    >
+                      onClick={() => handleChatSelection(chat?.id, loggedInUser?.id, chat)}
+                      className={selectedChat === chat?.participants ? "active-chat" : ""}>
                       <div className="list-image-chat">
-                        {/* <img src={chat.images ? chat.images[0] : ''} alt={chat.name} /> */}
-                        <img
-                          src={
-                            chat?.receiver_profile_image ? chat?.receiver_profile_image : blank
-                          }
-                          style={{ borderRadius: "40px" }}
-                          width="40"
-                          height="40"
-                          alt={chat?.receiver_name}
-                        />
-                        <strong>{chat?.receiver_name}</strong>
-                        {/* <strong>{chat.name}</strong> */}
-                        <p>{chat?.message?.substring(0, 10)}...</p>
+                        <div>
+                          {chat?.receiver_profile_image?.includes('google') ?
+                          <img
+                            src={chat?.receiver_profile_image}
+                            style={{ borderRadius: "40px" }} width="40" height="40"
+                          />
+                          :
+                          <img
+                            src={chat?.receiver_profile_image ? "https://notnewbackend.testingwebsitelink.com/"+chat?.receiver_profile_image : blank}
+                            style={{ borderRadius: "40px" }} width="40" height="40"
+                          />
+                        }
+                        </div>
+                        <div>
+                          <strong>{chat?.receiver_name}</strong>
+                          <p>{chat?.message?.substring(0, 10)}...</p>
+                        </div>
                       </div>
                     </li>
                   );
@@ -225,40 +187,47 @@ function Chat() {
         </div>
         <div className="col-lg-8">
           <div className="conversation">
-            {selectedChat ? (
+            {messages?.length > 0 ? (
               <div className="messages-container">
                 <div className="chat-header">
-                  {chatLists?.[selectedChat]?.image ? (
+                  {selectedChat?.receiver_profile_image ? (
                     <>
-                      <img src={chatLists?.[selectedChat]?.image} alt={chatLists?.[selectedChat]?.receiver_name} />
+                    {selectedChat?.receiver_profile_image.includes('google') ?
+                    <img src={selectedChat?.receiver_profile_image} />
+                    :
+                    <img src={"https://notnewbackend.testingwebsitelink.com/"+selectedChat?.receiver_profile_image} />
+                  }
                     </>
                   ) : (
                     <>
-                      <img src={blank} alt="blank" width="50" height="50" />
+                      <img src={blank} alt="blank"/>
                     </>
                   )}
-                  {chatLists?.[selectedChat]?.sender_id}
-                  <h3>{chatLists?.[selectedChat]?.receiver_name}</h3>
-                  <h3>{chatLists?.receiver_name}</h3>
+                  {selectedChat?.sender_id}
+                  <h3>{selectedChat?.receiver_name}</h3>
                 </div>
-                <div className="messages-cont">
-                  {messages.map((msg) => {
-                    if (msg?.sender === loggedInUser?.id) {
-                      senders = msg?.id
-                      return (
-                        <div key={msg?.id} className="sent-message">
-                          {msg?.text}
-                        </div>
-                      );
-                    } else {
-                      reciepnt = msg?.id
-                      return (
-                        <div key={msg?.id} className="received-message">
-                          {msg?.text}
-                        </div>
-                      );
-                    }
-                  })}
+                <div className="messages-cont" ref={chatContainerRef}>
+                  <div className="messages-cont-wrap">
+                    {messages?.map((msg, index) => {
+                      if (msg?.from_id === loggedInUser?.id) {
+                        return (
+                          <div key={msg?.from_id} className="sent-message">
+                            <p>
+                              {msg?.message}
+                            </p>
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div key={msg?.from_id} className="received-message">
+                            <p>
+                              {msg?.message}
+                            </p>
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
                 </div>
                 <div className="message-input">
                   <div className="row align-items-center">

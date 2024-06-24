@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { toast } from "react-toastify";
 import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
-import Home from '../../services/API/Home'; //~/services/API/Home
+import HomeService from '../../services/API/HomeService'; //~/services/API/Home
 
 // storeProduct
 const PopularProductSearch = (props) => {
@@ -19,7 +19,7 @@ const PopularProductSearch = (props) => {
             for(let j = 0; j < categoryLists.length; j++){
                 categorylist.push(categoryLists[j].text)
             }
-            let uniqueCategory  = Home.removeDuplicates(categorylist);
+            let uniqueCategory  = HomeService.removeDuplicates(categorylist);
             if(uniqueCategory.length > 0){
               setCategoryList(uniqueCategory);
             }

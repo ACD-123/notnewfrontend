@@ -27,48 +27,54 @@ const OngoingOrders = ({ isLoading, setIsLoading }) => {
 
   return (
     <>
-      <div className='ongoing'>
-        {customerOrders?.length === 0 ? (
-          <div className='no-data-found'>
-          <img src={NoDataFound} alt="" />
-          <p>Orders Not  Found</p>
+      {isLoading ? ( // Render loader if isLoading is true
+        <div className="loader-container text-center">
+          <Spinner animation="border" role="status"></Spinner>
         </div>
-        ) : (
-          <>
-            {customerOrders.map((order, index) => (
-              <>
-                <div className='row align-items-center' key={order?.id}>
-                  <div className='col-lg-8'>
-                    <div className='product-image'>
-                      <div className='image'>
-                        <img src={Prdimage} alt={`Product`} />
-                      </div>
-                      <div className='prd-details'>
-                        <h5>Order # : <b>{order?.orderid}</b></h5>
-                        <h3>{order?.fullname}</h3>
+      ) : (
+        <div className='ongoing'>
+          {customerOrders?.length === 0 ? (
+            <div className='no-data-found'>
+              <img src={NoDataFound} alt="" />
+              <p>Orders Not  Found</p>
+            </div>
+          ) : (
+            <>
+              {customerOrders.map((order, index) => (
+                <>
+                  <div className='row align-items-center' key={order?.id}>
+                    <div className='col-lg-8'>
+                      <div className='product-image'>
+                        <div className='image'>
+                          <img src={Prdimage} alt={`Product`} />
+                        </div>
+                        <div className='prd-details'>
+                          <h5>Order # : <b>{order?.orderid}</b></h5>
+                          <h3>{order?.fullname}</h3>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className='col-lg-2'>
-                    <div className='delivery-bttn'>
-                      <Link to=''>Delivery in Process</Link>
+                    <div className='col-lg-2'>
+                      <div className='delivery-bttn'>
+                        <Link to=''>Delivery in Process</Link>
+                      </div>
+                    </div>
+                    <div className='col-lg-2'>
+                      <div className='rightarrow'>
+                        {/* <Link to='/singleproduct'> */}
+                        <img src={RightArrow} alt='Right Arrow' />
+                        {/* </Link> */}
+                      </div>
                     </div>
                   </div>
-                  <div className='col-lg-2'>
-                    <div className='rightarrow'>
-                      {/* <Link to='/singleproduct'> */}
-                      <img src={RightArrow} alt='Right Arrow' />
-                      {/* </Link> */}
-                    </div>
-                  </div>
-                </div>
-                {index !== customerOrders?.length - 1 && <hr />}
-              </>
-            ))}
-          </>
-        )}
-      </div>
+                  {index !== customerOrders?.length - 1 && <hr />}
+                </>
+              ))}
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 };

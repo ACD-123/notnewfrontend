@@ -31,7 +31,7 @@ const ShippingPolicyData = () => {
     {isLoading ? ( // Show loader if data is loading
           <div>Loading...</div>
         ) : (
-      <div className="shippingpolicy" style={{ padding: "30px 0px" }}>
+      <div className="shippingpolicy">
         <h4>Shipping:</h4>
         <p>
           US ${productData.shipping_price ? productData.shipping_price : 0} Expedited International Shipping. See details for shipping

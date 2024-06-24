@@ -1,7 +1,8 @@
 import request from '../request'
 import { BASE_API } from './../Constant'
 // @todo this file name should be product service
-const baseUrl = `${BASE_API}message`
+const baseUrl = `${BASE_API}message`;
+const baseUrlChat = `${BASE_API}`
 
 function all(params = {}) {
   return request({
@@ -55,9 +56,9 @@ function getUserConversations(params = {}) {
   })
 }
 
-function saveAssociated(data) {
+function sendChatMessage(data) {
   return request({
-    url: `${baseUrl}/saveAssociated`,
+    url: `${baseUrlChat}chat/sendMessage`,
     data,
     method: 'POST',
   })
@@ -70,7 +71,7 @@ const MessagesServices = {
   save,
   update,
   destroy,
-  saveAssociated,
+  sendChatMessage,
   getUserConversations
 }
 

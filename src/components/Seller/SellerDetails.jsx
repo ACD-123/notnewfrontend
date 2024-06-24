@@ -5,7 +5,7 @@ import ReviewSection from './ReviewSection'
 import PopularProductSearch from './PopularProductSearch'
 import SellerFeedback from './SellerFeedback'
 import { useState, useEffect } from 'react'
-import Home from "../../services/API/Home"; //~/services/API/Home
+import HomeService from "../../services/API/HomeService"; //~/services/API/Home
 import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../services/Constant";
@@ -41,7 +41,7 @@ const SellerDetails = () => {
       setShopGuid(res.data.shop);
       setShopGuidSave(res.data.shop.guid);
       setIsLoading(false);
-      Home.getshopData(res?.shop_id)
+      HomeService.getshopData(res?.shop_id)
         .then((response) => {
           if (response.status) {
             console.log('shopData', response)

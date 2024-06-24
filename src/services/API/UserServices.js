@@ -188,9 +188,9 @@ function deleteRecentUser() {
     method: "DELETE"
   })
 }
-function getSellerActiveBid(){
+function getSellerActiveBid(user_id){
   return request({
-    url: `${baseUrl}getselleractivebid`,
+    url: `${baseUrlChat}bidding/getactiveinactive?user_id=${user_id}`,
     method: "GET"
   })
 }
