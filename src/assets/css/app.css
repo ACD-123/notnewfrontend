@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 p {
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
   font-size: 15px;
   font-weight: 400;
   line-height: 25px;
@@ -16,7 +19,7 @@ body {
 }
 
 ::placeholder {
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
   font-size: 15px;
   font-weight: 500;
   line-height: 28px;
@@ -70,7 +73,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
   letter-spacing: 0em;
   text-transform: capitalize;
 }
@@ -79,7 +82,7 @@ button {
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   box-shadow: 0px 5px 11px 0px #0000003B;
   padding: 20px 20px;
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
   font-size: 13px;
   font-weight: 500;
   line-height: 25px;
@@ -89,7 +92,7 @@ button {
 button.dark {
   background: linear-gradient(93.48deg, #141414 -12.34%, #383838 98.05%);
   padding: 20px 20px;
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
   font-size: 13px;
   font-weight: 500;
   line-height: 25px;
@@ -100,7 +103,7 @@ button.dark {
 }
 
 a {
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
   font-size: 18px;
   font-weight: 700;
   line-height: 28px;
@@ -427,7 +430,7 @@ section#emailverification .email-verifyfields .emailfields button {
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   box-shadow: 0px 5px 11px 0px #0000003B;
   padding: 11px 20px;
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
   line-height: 25px;
   letter-spacing: 0em;
   border: 0;
@@ -542,7 +545,7 @@ section#signin form#loginForm button {
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   box-shadow: 0px 5px 11px 0px #0000003B;
   padding: 11px 20px;
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
   line-height: 25px;
   letter-spacing: 0em;
   border: 0;
@@ -747,7 +750,7 @@ section#banners .banner-text-button button.dark {
   transition: .9s;
   background: linear-gradient(93.48deg, #141414 -12.34%, #383838 98.05%);
   padding: 20px 20px;
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
   font-size: 13px;
   font-weight: 500;
   line-height: 25px;
@@ -790,6 +793,12 @@ section#banners div#carouselExampleIndicators .carousel-indicators button.active
   height: 16.86px;
 }
 
+#carouselExampleIndicators .react-skeleton-load {
+  width: 100% !important;
+  height: 431px !important;
+  border-radius: 0px !important;
+}
+
 /* Recent Viewed Products */
 section#product-recents-viewed .headings h3 span a {
   background: -webkit-linear-gradient(#8B2CA0, #00C3C9);
@@ -824,7 +833,35 @@ section#productcard .productlist h3 {
   line-height: 17.21px;
   text-align: left;
   color: #000;
-  margin-bottom: 6px;
+}
+
+section#productcard .productlist h2 {
+  font-family: 'Cairo';
+  text-align: left;
+  color: #000;
+  font-size: 19.9px;
+  font-weight: 700;
+  line-height: 37.29px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+section#productcard .productlist h2 .circle{
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 100%;
+  background-color: #8B2CA0;
+}
+section#productcard .productlist h2 .sale-price{
+  font-family: 'Cairo';
+font-size: 14px;
+font-weight: 400;
+line-height: 22px;
+text-align: left;
+text-decoration: line-through;
+color: #757474;
 }
 
 section#productcard .productlist h4 {
@@ -894,13 +931,21 @@ section#productcard .col .productlist {
 
 span.auction-badge {
   position: absolute;
-  left: 0;
   background: #FFA149;
   color: #fff;
-  padding: 3px 10px 3px 30px;
-  left: 3px;
-  top: 4px;
-  border-radius: 0 10px 10px 0px;
+  width: 70px;
+  height: 19px;
+  left: 0px;
+  top: 19px;
+  border-radius: 0 5px 5px 0px;
+  font-family: "Lato", sans-serif;
+  font-size: 10.94px;
+  font-weight: 400;
+  line-height: 13.13px;
+  text-align: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .btnFeature {
@@ -918,15 +963,19 @@ span.auction-badge {
 /* Get Surprised */
 section#getsurpriseprice .text-button h1 {
   font-family: "Kumbh Sans";
-  font-size: 42px;
-  line-height: 52px;
+  font-size: 62px;
+  line-height: 72px;
   font-weight: 900;
-  margin-bottom: 21px;
+  margin-bottom: 50px;
 }
 
 section#getsurpriseprice .text-button {
-  padding: 50px 30px;
+  padding: 50px 57px;
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
 }
 
 section#getsurpriseprice .text-button button.dark:hover {
@@ -944,6 +993,19 @@ section#getsurpriseprice .text-button button.dark {
   font-size: 20px;
   padding: 17px 30px 17px 30px;
   transition: .9s;
+  width: 248px;
+  height: 69px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#getsurpriseprice {
+  padding-bottom: 100px;
+}
+
+#getsurpriseprice .text-button {
+  height: 481px;
 }
 
 section#featuredproduct {
@@ -959,7 +1021,7 @@ section#featuredproduct {
   background: -webkit-linear-gradient(#8B2CA0, #00C3C9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
   font-size: 16px;
   font-weight: 600;
   line-height: 23px;
@@ -979,7 +1041,7 @@ section#featuredproduct {
 .footer-widgets .nav-links-footer ul li a,
 .footer-widgets .nav-links-footer ul li span,
 .footer-widgets .intro-footer p {
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 20px;
@@ -1008,7 +1070,7 @@ footer {
   color: #707070;
   font-size: 14px;
   font-weight: 300;
-  font-family: Cairo;
+  font-family: "Cairo", sans-serif;
 }
 
 .nav-links-footer ul li em {
@@ -1021,55 +1083,10 @@ footer {
   color: #000;
 }
 
-section#categorylistings .productImageTopCat {
-  padding: 10px;
-  height: 100%;
-  border-radius: 20px;
-  border: 1px solid #ebebeb;
-}
 
-section#categorylistings img {
-  height: 100%;
-  object-fit: cover;
-  width: 100%;
-  /* border-radius: 20px; */
-  /* border: 1px solid #ebebeb; */
-}
-
-section#categorylistings {
-  flex: unset;
-  width: fit-content;
-}
-
-section#categorylistings .productlist h3 {
-  font-size: 20px;
-  color: #000;
-}
-
-section#categorylistings .productlist ul li a {
-  color: #515151;
-  font-size: 15px;
-  text-decoration: unset;
-  font-weight: 500;
-  line-height: 25px;
-}
-
-section#categorylistings .productlist ul li {
-  list-style: none;
-  margin-bottom: 5px;
-}
-
-section#categorylistings .productlist ul {
-  padding: 0;
-}
-
-/* section#categorylistings .productlist ul li:last-child a {
-  color: #00C3C9;
-  text-transform: capitalize;
-} */
 
 /* Single Category */
-section#singlecategory ul.pagination {
+#singlecategory ul.pagination {
   text-align: center;
   justify-content: center;
   gap: 20px;
@@ -2180,8 +2197,8 @@ section#activity-main-dashboard .left-menu ul li.active {
 .favoriteImg {
   position: absolute;
   z-index: 9999;
-  bottom: 60px;
-  right: 15px;
+  bottom: 50px;
+  right: 23px;
 }
 
 .favoriteImg svg {
@@ -4862,31 +4879,147 @@ th {
   margin-bottom: 48px;
 }
 
-.explore-category{
+.explore-category {
   padding-top: 90px;
-  
+  padding-bottom: 100px;
+
 }
+
 .hot-selling-product,
-.top-selling-product{
+.top-selling-product {
   padding-top: 90px;
 }
 
-#productcard{}
-#productcard .category{}
-#productcard .category div{}
-#productcard .category div img{
+#productcard {}
+
+#productcard .category {}
+
+#productcard .category div {}
+
+#productcard .category div img {
   width: 182px;
   height: 182px;
   border-radius: 100%;
 }
-#productcard .category h5{
+
+#productcard .category h5 {
   font-family: 'Cairo';
-font-size: 20px;
-font-weight: 600;
-line-height: 37.48px;
-text-align: left;
-color: #000;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 37.48px;
+  text-align: left;
+  color: #000;
 }
+
+.product-skeleton-loader {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-skeleton-loader span:nth-child(1) .react-skeleton-load {
+  width: 100% !important;
+  border-radius: 0 !important;
+  height: 180px !important;
+}
+
+.product-skeleton-loader span:nth-child(2) .react-skeleton-load {
+  width: 100% !important;
+  border-radius: 0 !important;
+  height: 30px !important;
+  margin-top: 20px;
+}
+
+.product-skeleton-loader span:nth-child(3) .react-skeleton-load {
+  width: 100% !important;
+  border-radius: 0 !important;
+  height: 30px !important;
+}
+
+.product-skeleton-loader span:nth-child(4) .react-skeleton-load {
+  width: 100% !important;
+  border-radius: 0 !important;
+  height: 30px !important;
+}
+
+.top-category-listings {}
+
+.top-category-listings .top-category-listings-wrap {}
+
+.top-category-listings .top-category-listings-wrap .title {
+  font-family: 'Cairo';
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 52px;
+  text-align: left;
+  color: #1D1D1D;
+  margin-top: 60px;
+  margin-bottom: 80px;
+  padding: 0;
+}
+
+.top-category-listings .top-category-listings-wrap .title {}
+
+.Top-category-card {}
+
+.Top-category-card .Top-category-card-wrap {}
+
+.Top-category-card .Top-category-card-wrap .Top-category-card-img {
+  padding: 10px;
+  border-radius: 22px;
+  border: 0.92px solid #E3E3E3;
+  background-color: #FAFAFA;
+}
+
+.Top-category-card .Top-category-card-wrap .Top-category-card-img img {
+  width: 100%;
+  border-radius: 22px;
+}
+
+.Top-category-card .Top-category-card-wrap h3 {
+  font-family: "Roboto", sans-serif;
+  font-size: 29.46px;
+  font-weight: 600;
+  line-height: 30.11px;
+  text-align: left;
+  color: #000;
+  margin-top: 50px;
+  margin-bottom: 17px;
+}
+
+.Top-category-card .Top-category-card-wrap ul {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+.Top-category-card .Top-category-card-wrap ul li {
+  list-style: none;
+}
+
+.Top-category-card .Top-category-card-wrap ul li a {
+  font-family: "Roboto", sans-serif;
+  font-size: 18.41px;
+  font-weight: 500;
+  line-height: 41px;
+  text-align: left;
+  color: #515151;
+}
+
+.Top-category-card .Top-category-card-wrap .see-all-category {
+  font-family: "Roboto", sans-serif;
+  font-size: 18.41px;
+  font-weight: 700;
+  line-height: 41px;
+  text-align: left;
+  color: #00C3C9;
+
+}
+
+.top-category {
+  padding-bottom: 200px;
+}
+
+.top-category .top-category-wrap {}
 
 /* Mobile responsive */
 @media (max-width: 1366px) {
@@ -5656,10 +5789,6 @@ color: #000;
 
   .footer-widgets h6 {
     margin-top: 10px;
-  }
-
-  section#categorylistings .row .col {
-    flex: 1 0 50%;
   }
 
   section#productcard .row .col {

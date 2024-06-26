@@ -14,113 +14,101 @@ import {
 import UserServices from "../../services/API/UserServices"; //~/services/API/AuthService
 import { CiHeart } from "react-icons/ci";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
 
-const RecentViewedItems = ({title}) => {
+const RecentViewedItems = ({ title }) => {
   const [productData, setProductData] = useState([]);
   const [favData, setFavData] = useState([]);
-  const [user, setUser] = useState();
-  const getUser = () => {
-    UserServices.detail()
-      .then((response) => {
-        console.log("login12", response.id);
-        setUserDetails(response);
-        setUser(response.id);
-        localStorage.setItem("user_details", JSON.parse(response));
-      })
-      .catch((e) => {
-        console.log("error", e);
-        // toast.error(e.message);
-      });
+  const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+  const isLoggedin = localStorage.getItem("access_token");
+  const [loading, setLoading] = useState(true);
+
+  const handleToggleFavourite = (index) => {
+    console.log('calling');
+    const updatedProducts = [...productData];
+    updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
+    setProductData(updatedProducts);
   };
+
   const fetchProductData = async () => {
     try {
-      const res = await ProductServices.all(user);
-      console.log('api',res)
+      const res = await ProductServices.all(loggedInUser?.id);
       if (res.status) {
-        setProductData(res.data.slice(0, 4)); // Limit to the first 5 products
-        console.log("setProductData", res.data);
+        setProductData(res.data.slice(0, 4));
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000);
       }
     } catch (error) {
       console.error("Error fetching product data:", error);
     }
   };
-  
-  useEffect(() => {
-    if (isLoggedin()) {
-      getUser();
-      // let cartItems = localStorage.getItem('cupon');
-    }
-  }, []);
-  const addToFavorites = async (productId) => {
+
+
+  const addToFavorites = async (productId, index) => {
+    handleToggleFavourite(index)
     try {
       const data = {
         favourite_against_id: productId,
-        user_id: user,
+        user_id: loggedInUser?.id,
         type: "1",
       };
-      console.log("hit", data);
       const res = await ProductServices.isFavorite(data);
-      if (res.status) {
-        // Optionally, update UI or show a success message
+      if (res.success) {
         toast.success("Product added to favorites!");
-        // Update favorites data if necessary
-        setFavData(res.data);
       }
     } catch (error) {
-      console.error("Error adding to favorites:", error);
       toast.error("Failed to add product to favorites.");
     }
   };
 
   useEffect(() => {
-    if (user) {
-      fetchProductData();
-    }
-  }, [user]);
+    fetchProductData();
+  }, []);
 
   return (
     <>
       <section id="product-recents-viewed">
-        {productData.length > 0 ? (
-          <>
-            <div className="container">
-              <div className="row">
-                <div className="headings">
-                  <h3>
-                    {title}
-                    <span>
-                      <Link to="/AllNewProducts">View More</Link>
-                    </span>
-                  </h3>
-                </div>
+        <>
+          <div className="container">
+            <div className="row">
+              <div className="headings">
+                <h3>{title}
+                  <span><Link to="/AllNewProducts">View More</Link></span>
+                </h3>
               </div>
             </div>
-            <section id="productcard">
-              <div className="container">
-                <div className="row">
-                  {productData.map((product) => (
+          </div>
+          <section id="productcard">
+            <div className="container">
+              <div className="row">
+                {loading ?
+                  <>
+                    <div className="col-lg-3">
+                      <ProductSkeletonLoader />
+                    </div>
+                    <div className="col-lg-3">
+                      <ProductSkeletonLoader />
+                    </div>
+                    <div className="col-lg-3">
+                      <ProductSkeletonLoader />
+                    </div>
+                    <div className="col-lg-3">
+                      <ProductSkeletonLoader />
+                    </div>
+                  </>
+                  :
+                  productData.map((product, index) => (
                     <div className="col col-lg-3" key={product?.guid}>
                       <div className="productlist">
-                        {/* Product image */}
-                        {isLoggedin() ? (
+                        {isLoggedin ? (
                           <>
                             <Link
-                              to={
-                                product?.auctioned
-                                  ? `/auctionproduct/${product?.guid}`
-                                  : `/singleproduct/${product?.guid}`
-                              }
-                            >
+                              to={product?.auctioned ? `/auctionproduct/${product?.guid}` : `/singleproduct/${product?.guid}`}>
                               <img
-                                src={
-                                  product.media.length > 0
-                                    ? product.media[0].name
-                                    : blank
+                                src={product.media.length > 0 ? product.media[0].name : blank
                                 }
-                                alt={
-                                  product.media.length > 0
-                                    ? product.media[0].name
-                                    : "blank"
+                                alt={product.media.length > 0 ? product.media[0].name : "blank"
                                 }
                               />
                             </Link>
@@ -129,27 +117,15 @@ const RecentViewedItems = ({title}) => {
                           <>
                             <Link to="/signin">
                               <img
-                                src={
-                                  product.media.length > 0
-                                    ? product.media[0].name
-                                    : blank
-                                }
-                                alt={
-                                  product.media.length > 0
-                                    ? product.media[0].name
-                                    : "blank"
-                                }
+                                src={product.media.length > 0 ? product.media[0].name : blank}
+                                alt={product.media.length > 0 ? product.media[0].name : "no image"}
                               />
                             </Link>
                           </>
                         )}
-                        {/* Auction badge */}
-                        {/* {product?.auctioned && (
-                          <span className="auction-badge">Auction</span>
-                        )} */}
+                        {product?.auctioned ? (<span className="auction-badge">Auction</span>) : null}
                         <div className="px-2">
-                          {/* Product details */}
-                          {isLoggedin() ? (
+                          {isLoggedin ? (
                             <>
                               <Link
                                 to={
@@ -158,54 +134,65 @@ const RecentViewedItems = ({title}) => {
                                     : `/singleproduct/${product?.guid}`
                                 }
                               >
-                                <h3>{product.name.substring(0, 10)}...</h3>${" "}
-                                {product?.auctioned
-                                  ? product.bids
-                                  : product.price}
-                                <h4>
-                                  {product?.description.substring(0, 15)}...
-                                </h4>
+                                <h3>{product.name.substring(0, 20)}...</h3>
+                                {product?.auctioned ?
+                                  <h2>${product?.bids}</h2>
+                                  :
+                                  <h2>${product?.price}
+                                    {product?.sale_price > 0 ?
+                                      <>
+                                        <div className="circle"></div>
+                                        <div className="sale-price">${product?.sale_price}</div>
+                                      </>
+                                      :
+                                      null
+                                    }
+                                  </h2>
+                                }
+                                <h4>{product?.description.substring(0, 15)}...</h4>
                               </Link>
                             </>
                           ) : (
                             <>
                               <Link to="/signin">
-                                <h3>{product.name.substring(0, 10)}...</h3>${" "}
-                                {product?.auctioned
-                                  ? product.bids
-                                  : product.price}
-                                <h4>
-                                  {product?.description.substring(0, 15)}...
-                                </h4>
+                                <h3>{product.name.substring(0, 50)}...</h3>
+                                {product?.auctioned ?
+                                  <h2>${product?.bids}</h2>
+                                  :
+                                  <h2>${product?.price}
+                                    {product?.sale_price > 0 ?
+                                      <>
+                                        <div className="circle"></div>
+                                        <div className="sale-price">${product?.sale_price}</div>
+                                      </>
+                                      :
+                                      null
+                                    }
+                                  </h2>
+                                }
+                                <h4>{product?.description.substring(0, 50)}...</h4>
                               </Link>
                             </>
                           )}
-                          {isLoggedin() ? (
+                          {isLoggedin ? (
                             <>
                               {!product?.auctioned && (
-                                <div
-                                  onClick={() => addToFavorites(product.guid)}
-                                  className="favoriteImg"
-                                >
-                                  {product.is_favourite === true ? (
-                                    <FaHeart />
-                                  ) : (
-                                    <FaRegHeart />
-                                  )}
+                                <div onClick={() => addToFavorites(product.guid, index)} className="favoriteImg">
+                                  {product.is_favourite === true ? (<FaHeart />) : (<FaRegHeart />)}
                                 </div>
                               )}
                             </>
                           ) : (
                             <>
-                              {!product?.auctioned && (
-                                <Link to="/signin">
+                              <Link to="/signin">
+                                <div  className="favoriteImg">
                                   <FaRegHeart />
-                                </Link>
-                              )}
+                                </div>
+                              </Link>
                             </>
                           )}
                           {/* Product price */}
-                          <p>
+                          {/* <p>
                             <ul>
                               {product?.sale_price !== null ||
                                 (product?.sale_price !== 0 && (
@@ -238,18 +225,16 @@ const RecentViewedItems = ({title}) => {
                                   </li>
                                 ))}
                             </ul>
-                          </p>
+                          </p> */}
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  ))
+                }
               </div>
-            </section>
-          </>
-        ) : (
-          ""
-        )}
+            </div>
+          </section>
+        </>
       </section>
     </>
   );

@@ -261,7 +261,7 @@ const BidView = () => {
               <h3>
                 {product.category?.name}{" "}
                 <span>
-                  <Link to="/singlecategory">View More</Link>
+                  <Link to="/category">View More</Link>
                 </span>
               </h3>
             </div>

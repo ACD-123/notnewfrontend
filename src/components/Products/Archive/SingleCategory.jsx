@@ -45,23 +45,20 @@ const SingleCategory = () => {
 
   return (
     <>
-      {/* Header */}
       <Header />
-      {/* Header */}
-
       <section id='singlecategory'>
         <div className='container'>
           <h2>Men Running Shoes</h2>
           <div className='row'>
-            
+
             <div className='col-lg-3'>
-                <div id='all-filters'>
-                    <h3 style={{color: "#000"}}>Filters</h3>
-                    <SubcategoriesList />
-                    <Search />
-                    <PriceRange />
-                    <SizeToggle />
-                </div>
+              <div id='all-filters'>
+                <h3 style={{ color: "#000" }}>Filters</h3>
+                <SubcategoriesList />
+                <Search />
+                <PriceRange />
+                <SizeToggle />
+              </div>
             </div>
             <div className='col-lg-9'>
               {renderProductCards()}
@@ -80,12 +77,13 @@ const SingleCategory = () => {
           </div>
         </div>
       </section>
-      {/* GetSurprisedBanner */}
+      <div className="main-category">
+        <div className="main-category-wrap">
+
+        </div>
+      </div>
       <GetSurprisedBanner />
-      {/* GetSurprisedBanner */}
-      {/* Footer */}
       <Footer />
-      {/* Footer */}
     </>
   );
 };

@@ -34,6 +34,7 @@ import NotFound from "../pages/NotFound"
 import CheckoutBuyNow from "../pages/Account/CheckoutBuyNow"
 import AllNewProducts from "../components/Products/Archive/AllNewProducts"
 import Refund from "../components/PurchaseHistory/Refund"
+import SubCategory from "../components/Products/Archive/SubCategory"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -56,8 +57,9 @@ const PublicRoutes = () => {
 					{/* <Route path="/emailverification/:id/:guid/:expires/:email" element={<EmailVerification />} /> */}
 					<Route path="/emailverification/:email" element={<EmailVerification />} />
 					<Route path="/signin" element={<SignIn />} />
-					<Route path="/topcategory" element={<TopCategory />} />
-					<Route path="/singlecategory/:guid" element={<SingleCategory />} />
+					<Route path="/top-category" element={<TopCategory />} />
+					<Route path="/category" element={<SingleCategory />} />
+					<Route path="/sub-category" element={<SubCategory />} />
 					<Route path="/auctions" element={<Auctions />} />
 					<Route path="/AllProducts" element={<AllProducts />} />
 					<Route path="/AllNewProducts" element={<AllNewProducts/>} />

@@ -17,28 +17,21 @@ import HotSellingProducts from "../components/Products/HotSellingProducts";
 const Home = () => {
 	const [user, setUser] = useState({});
 	const [data, setData] = useState([]);
+	const [banners, setBanners] = useState([]);
+	const [topSellingProducts, setTopSellingProducts] = useState([]);
+	const [hotProducts, setHotProducts] = useState([]);
 	const [topSelling, setTopSelling] = useState([]);
-	const getUser = () => {
-		UserServices.detail()
-			.then((response) => {
-				setUserDetails(response);
-				setUser(response);
-				localStorage.setItem('user_details', JSON.parse(response));
-			})
-			.catch((e) => {
-				console.log('error', e)
-			});
-	};
-	useEffect(() => {
-		if (isLoggedin()) {
-			getUser();
-		}
-	}, []);
+	const [loading, setLoading] = useState(true);
 
 	const getTopSelling = () => {
 		HomeService.getTopSelling()
 			.then((response) => {
-				setData(response?.data)
+				setBanners(response?.data?.banners)
+				setTopSellingProducts(response?.data?.products)
+				setHotProducts(response?.data?.hot)
+				setTimeout(() => {
+					setLoading(false)
+				}, 1000);
 			})
 			.catch((e) => {
 				console.log('error', e)
@@ -52,22 +45,12 @@ const Home = () => {
 	return (
 		<>
 			<Header />
-			{/* top banner */}
-			<Banner data={data} />
-			{/* new items */}
-			<Items data={data} title={'New Items'}/>
-			{/* top selling products */}
-			<TopSellingProducts data={data} title={'Top Selling Products'}/>
-			{/* hot daily deals */}
-			<HotSellingProducts data={data} title={'Hot Selling Products'}/>
-			{/* Explore Known Categories */}
-			{/* {isLoggedin() ? (<RecentViewedItems />) : (null)} */}
-			
-			{/* <Category /> */}
+			<Banner data={banners} loading={loading} />
+			<Items title={'New Items'} />
+			<TopSellingProducts loading={loading} data={topSellingProducts} setTopSellingProducts={setTopSellingProducts} title={'Top Selling Products'} />
+			<HotSellingProducts loading={loading} data={hotProducts} setHotProducts={setHotProducts} title={'Hot Selling Products'} />
 			<CategoryList />
 			<GetSurprisedBanner />
-			{/* <Category /> */}
-			{/* <FeaturedProducts /> */}
 			<Footer />
 
 		</>

@@ -77,9 +77,9 @@ const BidWin = () => {
           <div className="row">
             <div className="headings">
               <h3>
-                Antique Auctions{" "}
+                Antique Auctions
                 <span>
-                  <Link to="/singlecategory">View More</Link>
+                  <Link to="/category">View More</Link>
                 </span>
               </h3>
             </div>

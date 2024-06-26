@@ -63,7 +63,7 @@ const CategoryList = () => {
                 {categoryData.map((category) => {
                   return (
                     <div className='col col-lg-2'>
-                      <Link to={`/singlecategory/${category.guid}`}>
+                      <Link to={`/category/${category.id}`}>
                       <div className='category' key={category.id}>
                         <div>
                           {category.media.length > 0 ?(

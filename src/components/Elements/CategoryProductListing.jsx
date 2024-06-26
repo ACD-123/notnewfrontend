@@ -81,7 +81,7 @@ const CategoryProductListing = () => {
       <div className='container'>
             <div className='row'>
                 <div className='headings'>
-                <h3>Cell Phones & Smart  Phones <span><Link to="/singlecategory">View More</Link></span></h3>
+                <h3>Cell Phones & Smart  Phones <span><Link to="/category">View More</Link></span></h3>
                     
                 </div>
             </div>

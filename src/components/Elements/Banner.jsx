@@ -1,29 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Bannerimage from '../../assets/Images/Elements/banner.png'
 import Bannerimage1 from '../../assets/Images/Elements/banner2.png'
 import Arrow from '../../assets/Images/Elements/arrow.png'
 import notFound from '../../pages/NotFound'
 import { Link } from 'react-router-dom'
+import Skeleton from 'react-skeleton-loader';
 
-var Bannerbg = {
-  backgroundImage: `url(${Bannerimage})`,
-  backgroundSize: `cover`
-};
-var Bannerbgs = {
-  backgroundImage: `url(${Bannerimage1})`,
-  backgroundSize: `cover`
-};
+const Banner = ({ data, loading}) => {
 
-const Banner = ({ data }) => {
   return (
     <>
       <section id='banners'>
         <div className='container'>
           <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+            {loading ?
+            <Skeleton/>
+          :
+          <>
             <div class="carousel-inner">
-              {data?.banners?.map((item, index) => {
+              {data?.map((item, index) => {
                 return (
-                  <div class={`carousel-item ${index === 0 ? 'active' : '' }`}
+                  <div class={`carousel-item ${index === 0 ? 'active' : ''}`}
                     style={{
                       backgroundImage: `url(${item?.image})`,
                       backgroundSize: `cover`
@@ -40,12 +37,14 @@ const Banner = ({ data }) => {
             </div>
 
             <div class="carousel-indicators">
-            {data?.banners?.map((item, index) => {
+              {data?.map((item, index) => {
                 return (
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={index} class={`${index === 0 ? 'active' : ''}`} aria-current="true" aria-label={`Slide ${index+1}"`}></button>
+                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={index} class={`${index === 0 ? 'active' : ''}`} aria-current="true" aria-label={`Slide ${index + 1}"`}></button>
                 )
               })}
             </div>
+          </>  
+          }
           </div>
         </div>
       </section>

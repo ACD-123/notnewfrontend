@@ -73,7 +73,7 @@ const SellerCategoryShop = () => {
   return (
     <>
    
-      <section id='singlecategory'>
+      <section id='single-category'>
         <div className='container'>
           <h2>Men Running Shoes</h2>
           <div className='row'>

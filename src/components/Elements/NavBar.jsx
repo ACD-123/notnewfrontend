@@ -20,7 +20,7 @@ const NavBar = () => {
             navbarScroll
           >
             <Link className='nav-link' to="/">Home</Link>
-            <Link className='nav-link' to="/topcategory">Top Categories</Link>
+            <Link className='nav-link' to="/top-category">Top Categories</Link>
             <Link className='nav-link' to="/auctions">Auctions</Link>
             <Link className='nav-link' to="/notFound">Hot Deals</Link>
             <Link className='nav-link' to="/notFound">Top Sellers</Link>
