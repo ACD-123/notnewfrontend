@@ -1,7 +1,7 @@
 import request from '../request'
 import { BASE_API } from '../Constant'
 
-const baseUrl = `${BASE_API}seller/`
+const baseUrl = `${BASE_API}`
 
 function all(params = {}) {
   return request({
@@ -12,7 +12,7 @@ function all(params = {}) {
 
 function getFeatured(params = {}) {
   return request({
-    url: `${baseUrl}getfeatured`,
+    url: `${baseUrl}seller/getfeatured`,
     params,
     method: 'GET',
   })
@@ -20,7 +20,7 @@ function getFeatured(params = {}) {
 
 function save(data) {
     return request({
-      url: `${baseUrl}add`,
+      url: `${baseUrl}seller/add`,
       data,
       method: 'POST',
     })
@@ -28,21 +28,21 @@ function save(data) {
   
 function detail(params = {}) {
   return request({
-    url: `${baseUrl}detail`,
+    url: `${baseUrl}seller/detail`,
     params,
   })
 }
 
 function detailById(id, params = {}) {
   return request({
-    url: `${baseUrl}detail/${id}`,
+    url: `${baseUrl}seller/detail/${id}`,
     params,
   })
 }
 
 function upload(data) {
   return request({
-    url: `${baseUrl}upload`,
+    url: `${baseUrl}seller/upload`,
     data,
     method: 'POST',
   })
@@ -50,7 +50,7 @@ function upload(data) {
 
 function update(data) {
   return request({
-    url: `${baseUrl}update`,
+    url: `${baseUrl}seller/update`,
     data,
     method: 'POST',
   })
@@ -58,14 +58,14 @@ function update(data) {
 
 function deleteAccount(id){
   return request({
-    url: `${baseUrl}deleteAccount/${id}`,
+    url: `${baseUrl}seller/deleteAccount/${id}`,
     method: 'POST',
   })
 }
 
 function cancelDelete(id){
   return request({
-    url: `${baseUrl}cancelDelete/${id}`,
+    url: `${baseUrl}seller/cancelDelete/${id}`,
     method: 'POST',
   })
 }
@@ -79,7 +79,7 @@ function getBanks(params = {}) {
 
 function setBank(data) {
     return request({
-      url: `${baseUrl}setbank`,
+      url: `${baseUrl}seller/setbank`,
       data,
       method: 'POST',
     })
@@ -87,79 +87,85 @@ function setBank(data) {
 
   function getShopHeader(guid) {
     return request({
-      url: `${baseUrl}getShopDetailHeader/${guid}`, // Modify the endpoint to include the GUID
+      url: `${baseUrl}seller/getShopDetailHeader/${guid}`, // Modify the endpoint to include the GUID
       method: 'GET',
     })
   }
   function getShopDetailProducts(guid) {
     return request({
-      url: `${baseUrl}getShopDetailProducts/${guid}`, // Modify the endpoint to include the GUID
+      url: `${baseUrl}seller/getShopDetailProducts/${guid}`, // Modify the endpoint to include the GUID
       method: 'GET',
     })
   }
   function getShopDetailAbout(guid) {
     return request({
-      url: `${baseUrl}getShopDetailAbout/${guid}`, // Modify the endpoint to include the GUID
+      url: `${baseUrl}seller/getShopDetailAbout/${guid}`, // Modify the endpoint to include the GUID
       method: 'GET',
     })
   }
   
   function getStore(data) {
     return request({
-      url: `${baseUrl}getshops/${data}`,
+      url: `${baseUrl}seller/getshops/${data}`,
       data,
       method: 'GET',
     })
   }
   function saveSeller(data) {
     return request({
-      url: `${baseUrl}saveSeller`,
+      url: `${baseUrl}seller/saveSeller`,
       data,
       method: 'POST',
     })
   }
   function updateBank(data) {
     return request({
-      url: `${baseUrl}updateBank`,
+      url: `${baseUrl}seller/updateBank`,
       data,
       method: 'POST',
     })
   }
   function getBankDetails(params = {}) {
     return request({
-      url: `${baseUrl}getBankDetails`,
+      url: `${baseUrl}seller/getBankDetails`,
       params
     })
   }
   function getUserSaveSeller(params = {}) {
     return request({
-      url: `${baseUrl}getusersaveseller`,
+      url: `${baseUrl}seller/getusersaveseller`,
       params
     })
   }
 
   function getFeedBack(id) {
     return request({
-      url: `${baseUrl}feedback/${id}`,
+      url: `${baseUrl}seller/feedback/${id}`,
       method: 'GET'
     })
   }
   function getShopDetailFeedback(id) {
     return request({
-      url: `${baseUrl}getShopDetailFeedback/${id}`,
+      url: `${baseUrl}seller/getShopDetailFeedback/${id}`,
+      method: 'GET'
+    })
+  }
+  function getTopSellers(id) {
+    return request({
+      url: `${baseUrl}products/getTopSellers?user_id=${id}`,
       method: 'GET'
     })
   }
   function createRecent(data) {
     return request({
-      url: `${baseUrl}createRecents`,
+      url: `${baseUrl}seller/createRecents`,
       data,
       method: 'POST',
     })
   }
   function getShopDetails(id) {
     return request({
-      url: `${baseUrl}getshopdetails/${id}`,
+      url: `${baseUrl}seller/getshopdetails/${id}`,
       method: 'GET',
     })
   }
@@ -188,6 +194,7 @@ const SellerServices = {
   updateBank,
   getBankDetails,
   createRecent,
+  getTopSellers
 }
 
 export default SellerServices

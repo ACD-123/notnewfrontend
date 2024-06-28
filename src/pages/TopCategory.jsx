@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import Banner from "../components/Elements/Banner"
 import CategoriesListing from "../components/Elements/CategoriesListing"
 import HomeService from '../services/API/HomeService';
+import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 
 const TopCategory = () => {
   const [banners, setBanners] = useState([]);
@@ -35,6 +36,7 @@ const TopCategory = () => {
               <div className="col-lg-12">
                 <Banner data={banners} loading={loading}/>
                 <CategoriesListing />
+                <GetSurprisedBanner />
               </div>
             </div>
           </div>

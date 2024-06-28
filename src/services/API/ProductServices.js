@@ -21,6 +21,11 @@ function sellerInActiveProducts(params = {}) {
     params,
   })
 }
+function getAuctionsProducts(id) {
+  return request({
+    url: `${baseUrl}/auctioned?user_id=${id};`,
+  })
+}
 
 function save(data) {
   return request({
