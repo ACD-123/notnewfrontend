@@ -346,6 +346,14 @@ function getSavedSellerDetails(id) {
   })
 }
 
+function createSellerProduct(body){
+  return request({
+    url: `${baseUrl}/add`, // Assuming saveseller endpoint with seller id in the URL
+    method: 'POST',
+    data: body, // Data containing seller details to be sent in the request body
+  });
+}
+
 const ProductServices = {
   all,
   getProductByPrice,
@@ -395,6 +403,7 @@ const ProductServices = {
   sellerActiveProducts,
   sellerInActiveProducts,
   storeProduct,
+  createSellerProduct
 }
 
 export default ProductServices

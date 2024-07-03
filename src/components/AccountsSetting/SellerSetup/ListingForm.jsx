@@ -19,9 +19,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import axios from "axios";
 import { PRODUCT_ID } from "../../../services/Constant";
 import { Spinner } from "react-bootstrap";
+import Select from 'react-select';
+import { MdDelete } from "react-icons/md";
+
 const libraries = ["places"];
-const ListingForm = (props) => {
-  const inputRef = useRef();
+
+const ListingForm = ({ setSubmitted, props }) => {
+
   const [editaddress, setEditAddress] = useState(true);
   const [showPopup, setShowPopup] = useState(false);
   const [showEditPopup, setShowEditPopup] = useState(false);
@@ -59,7 +63,6 @@ const ListingForm = (props) => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
-  const [categories, setCategories] = useState({});
   const [category, setCategory] = useState({});
   const [auctions, setAuctions] = useState(false);
   const [shops, setShops] = useState({});
@@ -123,10 +126,6 @@ const ListingForm = (props) => {
     hours: "",
     action: "add",
   });
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
-    libraries,
-  });
   let imagesFiles = [];
   let loggedInUser = localStorage.getItem("user_details");
   const loggedInUsers = JSON.parse(loggedInUser);
@@ -178,42 +177,51 @@ const ListingForm = (props) => {
     product.deliverdinternational = true;
     setInternational(!international);
   };
+
   const handleDeliverCompany = (e) => {
     product.deliverycompany = e.target.value;
     setDeliverCompany(e.target.value);
   };
+
   const handleToggle = (e) => {
     product.sellingNow = e.target.value;
     setIsToggled(!isToggled);
   };
+
   const handleAuctions = (e) => {
     product.auctions = true;
     product.sellingNow = false;
     setAuctions(!auctions);
     setBuyNow(false);
   };
+
   const handleBitChange = (e) => {
     product.bids = e.target.value;
     setBids(e.target.value);
   };
+
   const handleDurationChange = (e) => {
     product.shipingdurations = e.target.value;
     setDuration(e.target.value);
   };
+
   const handleDurations = (e) => {
     // durations
     setDurations(e.target.value);
     product.durations = e.target.value;
   };
+
   const handleHours = (e) => {
     product.hours = e.target.value;
     setHours(e.target.value);
   };
+
   const handleAuctionStartDate = (e) => {
     product.auctionListing = e.target.value;
     // product.auctionListing = moment(date).format("DD-MM-YYYY");
     setAuctionStartDate(e.target.value);
   };
+
   const handleAuctionEndDate = (e) => {
     product.auctionEndListing = e.target.value;
     // product.auctionEndListing = moment(date).format("DD-MM-YYYY");
@@ -223,12 +231,14 @@ const ListingForm = (props) => {
   const handleToggle1 = () => {
     setIsToggled1(!isToggled1);
   };
+
   const handleBuynow = (e) => {
     product.sellingNow = true;
     product.auctioned = false;
     setAuctions(false);
     setBuyNow(!buyNow);
   };
+
   const handleLisitng = (e) => {
     product.listing = e.target.value;
     setListing(!listing);
@@ -257,10 +267,12 @@ const ListingForm = (props) => {
         console.log(error);
       });
   };
+
   const handleShop = (e) => {
     product.store = e.target.value;
     setShop(e.target.value);
   };
+
   const removeAttributes = (e, color) => {
     e.preventDefault();
     product.sizes?.map((attr, index) => {
@@ -274,42 +286,8 @@ const ListingForm = (props) => {
       console.log("product.sizes", product.sizes);
     });
   };
- 
 
-  const handlePlaceChanged = () => {
-    const [place] = inputRef.current.getPlaces();
-    console.log('place:', place); // Add this line to check the value of place
-    if (place) {
-      setAddress(place.formatted_address);
-      setLatitude(place.geometry.location.lat());
-      setLongitude(place.geometry.location.lng());
-      let political, administrative_area_level_1, postalCode;
-  
-      for (let i = 0; i < place.address_components.length; i++) {
-        console.log('Address component:', place.address_components[i]);
-  
-        const component = place.address_components[i];
-        for (let j = 0; j < component.types.length; j++) {
-          if (component.types[j] === 'country') {
-            political = component.long_name;
-          } else if (component.types[j] === 'administrative_area_level_1') {
-            administrative_area_level_1 = component.long_name;
-          } else if (component.types[j] === 'postal_code') {
-            postalCode = component.long_name;
-          }
-        }
-      }
-  
-      console.log('state:', administrative_area_level_1);
-      console.log('country:', political);
-      console.log('postal Code:', postalCode);
-  
-      setState(administrative_area_level_1);
-      setCity(place.name); // or setCity(place.vicinity);
-      setZip(postalCode);
-    }
-  };
-  
+
 
   const handleAddAddress = () => {
     setEditAddress(false);
@@ -408,7 +386,7 @@ const ListingForm = (props) => {
       localStorage.setItem("attributes", JSON.stringify(finalArray));
     }
   };
-  const handleFileChange = (e) => {};
+  const handleFileChange = (e) => { };
 
   const handleCheckboxChange = (e) => {
     const { name, value } = e.target;
@@ -571,12 +549,10 @@ const ListingForm = (props) => {
       setFiles([...files, e.target.files]);
     }
   };
-  
-  
   const handleImageUpload = (e) => {
     const newBlobs = [];
     const newFiles = [];
-    
+
     // Loop through each uploaded file
     for (let i = 0; i < e.target.files.length; i++) {
       // Check if the total number of images exceeds the limit
@@ -591,7 +567,7 @@ const ListingForm = (props) => {
         newFiles.push(e.target.files[i]);
       }
     }
-  
+
     // Update state with the new blobs and files
     setBolbs([...blobs, ...newBlobs]);
     setFiles([...files, ...newFiles]);
@@ -651,7 +627,7 @@ const ListingForm = (props) => {
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
       setEnabled(true);
-      if (props.guid) {
+      if (props?.guid) {
         product.country = country;
         product.city = city;
         product.state = state;
@@ -722,7 +698,7 @@ const ListingForm = (props) => {
           },
         };
         axios
-          .post(`http://localhost:8000/api/products/${props.guid}`, fD, config)
+          .post(`http://localhost:8000/api/products/${props?.guid}`, fD, config)
           .then((response) => {
             setShowEditPopup(true);
             setIsLoading(false);
@@ -919,15 +895,7 @@ const ListingForm = (props) => {
   const addMoreLocation = () => {
     setLocations([...locations, { country: "", state: "", city: "" }]);
   };
-  const fetchCategory = () => {
-    Category.all()
-      .then((response) => {
-        setCategories(response);
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      });
-  };
+
   const fetchCountries = () => {
     CountryServices.all()
       .then((response) => {
@@ -959,12 +927,12 @@ const ListingForm = (props) => {
       });
   };
   const getProduct = () => {
-    if (props.guid) {
+    if (props?.guid) {
       product.action = "edit";
     }
     setEditProduct(true);
     setIsLoading(true);
-    ProductServices.get(props.guid).then((response) => {
+    ProductServices.get(props?.guid).then((response) => {
       // console.log("edit product", response);
       setCategory(response.category_id);
       let productData = {
@@ -1064,12 +1032,7 @@ const ListingForm = (props) => {
       }
     });
   };
-  const productCondition = [
-    { id: "BrandNew", name: "BrandNew" },
-    { id: "Used", name: "Used" },
-    { id: "Refurbished", name: "Refurbished" },
-    { id: "Vintage", name: "Vintage" },
-  ];
+
   const removeThumbnail = (e, val) => {
     e.preventDefault();
     const index = blobs.indexOf(val);
@@ -1078,9 +1041,6 @@ const ListingForm = (props) => {
     }
     setBolbs([...blobs]);
   };
-  // const fetchCompanies = () =>{
-  //
-  // }
   const getCompany = () => {
     HomeService.getCompanies()
       .then((res) => {
@@ -1092,1229 +1052,782 @@ const ListingForm = (props) => {
         console.log(e.message);
       });
   };
+
+  useEffect(() => {
+    // fetchCategory();
+    // fetchCountries();
+    // fetchStores();
+    getCompany();
+    // getBrands();
+    // fetchCompanies();
+    if (props?.guid) {
+      getProduct();
+    }
+  }, []);
+
+  // Ali monis
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [inputError, setInputError] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [categorieAddons, setCategorieAddons] = useState([]);
+  const fileInputRef = useRef(null);
+  const inputRef = useRef(null);
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
+    libraries,
+  });
+  const productCondition = [
+    { id: "BrandNew", name: "BrandNew" },
+    { id: "Used", name: "Used" },
+    { id: "Refurbished", name: "Refurbished" },
+    { id: "Vintage", name: "Vintage" },
+  ];
+
+  const [productManagment, setProductManagments] = useState({
+    file: [],
+    condition: "",
+    attributes: [],
+    termsdescription: "",
+    title: "",
+    category: null,
+    stockCapacity: "",
+    brand_id: null,
+    model: "",
+    description: "",
+    tags: ['girls', 'boys'],
+    saleprice: "",
+    sellingNow: false,
+    listing: "",
+    price: "",
+    minpurchase: "",
+    auctioned: false,
+    bids: "",
+    durations: 0,
+    hours: "",
+    auctionListing: "",
+    end_listing: "",
+    deliverddomestic: false,
+    deliverdinternational: false,
+    deliverycompany: "asd",
+    address: "",
+    latitude: "",
+    longitude: "",
+    country: "",
+    state: "",
+    city: "",
+    zip: "",
+    shippingprice: "",
+    shipingdurations: "",
+    returnshippingprice: "",
+    returndurationlimit: "",
+    returnshippingpaidby: "",
+    returnshippinglocation: "asds",
+    returncountry: "asdasd",
+    returnstate: "returnstate",
+    returncity: "dsasd",
+    returnzip: "000",
+    weight: "12.0",
+    height: "200.0",
+    length: "2",
+    width: "1.00"
+  })
+
+
+
+  const handleUploadClick = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleImageFileChange = (e) => {
+    const maxAllowedFiles = 5;
+    const selectedFiles = Array.from(e.target.files);
+
+    setProductManagments(prev => ({ ...prev, file: [...prev.file, ...selectedFiles] }));
+  };
+
+  const handleDeleteImage = (index) => {
+    const updatedFiles = [...productManagment.file];
+    updatedFiles.splice(index, 1);
+    setProductManagments(prev => ({ ...prev, file: updatedFiles }));
+  };
+
+  const fetchCategory = () => {
+    Category.all()
+      .then((response) => {
+        console.log(response, 'category');
+        let tempCategoryArray = []
+        for (let i = 0; i < response.length; i++) {
+          tempCategoryArray.push({ value: response[i].id, label: response[i].name })
+        }
+        setCategories(tempCategoryArray);
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  };
+
   const getBrands = () => {
     HomeService.getbrands()
-      .then((res) => {
-        setBrands(res); // if (res.status) {
-        //   // setdeliveryCompany(res.data);
-        // }
+      .then((response) => {
+        console.log(response, 'category');
+        let tempCategoryArray = []
+        for (let i = 0; i < response.length; i++) {
+          tempCategoryArray.push({ value: response[i].id, label: response[i].name })
+        }
+        setBrands(tempCategoryArray);
       })
       .catch((e) => {
         console.log(e.message);
       });
   };
-  useEffect(() => {
-    fetchCategory();
-    // fetchCountries();
-    // fetchStores();
-    getCompany();
-    getBrands();
-    // fetchCompanies();
-    if (props.guid) {
-      getProduct();
+
+  const handelCategoryChange = (data) => {
+    setProductManagments({ ...productManagment, category: data, selectToSend: [] }); // Initialize selectToSend as an empty array
+    Category.productAttributes(data.value)
+      .then((res) => {
+        console.log(res?.data?.length, 'setAttribnutes');
+        if (res?.data?.length > 0) {
+          const categoryAddons = res?.data?.map(category => ({
+            name: category.key,
+            selected: null,
+            options: category.options.map((option, index) => ({
+              value: index + 1,
+              label: option
+            })),
+            selectToSend: [] // Initialize selectToSend inside categoryAddons as an empty array
+          }));
+          setProductManagments(prev => ({ ...prev, attributes: categoryAddons }));
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const handelAddonsChange = (e, data, index) => {
+    console.log(e, data);
+    const updatedArray = [...productManagment.attributes];
+    // Create an array of e.label values
+    const labelsArray = e.map(option => option.label);
+
+    updatedArray[index] = {
+      name: data.name,
+      selected: e,
+      options: data?.options,
+      selectToSend: labelsArray // Array of e.label values
+    };
+
+    setProductManagments(prev => ({ ...prev, attributes: updatedArray }));
+    // setCategorieAddons(updatedArray)
+  }
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    console.log(checked, 'checked');
+    if (type === 'checkbox') {
+      setProductManagments(prev => ({ ...prev, [name]: checked }));
+    } else {
+      setProductManagments(prev => ({ ...prev, [name]: value }));
     }
-  }, []);
+  };
+
+  const handlePlaceChanged = () => {
+    const [place] = inputRef.current.getPlaces();
+    if (place) {
+      setProductManagments(prev => ({
+        ...prev,
+        address: place.formatted_address,
+        latitude: place.geometry.location.lat(),
+        longitude: place.geometry.location.lng(),
+      }));
+      let political, administrative_area_level_1, postalCode;
+
+      for (let i = 0; i < place.address_components.length; i++) {
+        const component = place.address_components[i];
+        for (let j = 0; j < component.types.length; j++) {
+          if (component.types[j] === 'country') {
+            political = component.long_name;
+          } else if (component.types[j] === 'administrative_area_level_1') {
+            administrative_area_level_1 = component.long_name;
+          } else if (component.types[j] === 'postal_code') {
+            postalCode = component.long_name;
+          }
+        }
+      }
+      setProductManagments(prev => ({
+        ...prev,
+        country: political,
+        state: administrative_area_level_1,
+        city: place.name,
+        zip: postalCode,
+      }));
+    }
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setInputError(true)
+    console.log(productManagment, 'productManagment');
+    if (productManagment.file.length === 0 || productManagment.condition === "" || productManagment.attributes.length === 0 ||
+      productManagment.category === null || productManagment.stockCapacity === "" || productManagment.brand_id === null ||
+      productManagment.model === "" || productManagment.description === "" || productManagment.address === "" ||
+      productManagment.latitude === "" || productManagment.longitude === "" || productManagment.country === "" ||
+      productManagment.state === "" || productManagment.city === "" || productManagment.zip === "" ||
+      productManagment.shippingprice === "" || productManagment.shippingprice === 0 || productManagment.shipingdurations === "" ||
+      productManagment.shipingdurations === 0 || productManagment.returnshippingprice === "" || productManagment.returnshippingprice === 0 ||
+      productManagment.returndurationlimit === "" || productManagment.returndurationlimit === 0 || productManagment.returnshippingpaidby === "" ||
+      productManagment.returnshippingpaidby === 0) {
+      return false;
+    }
+
+    // SellingNow specific validations
+    if (productManagment.sellingNow) {
+      if (productManagment.saleprice === "" || productManagment.saleprice === 0 || productManagment.saleprice < 0 ||
+        productManagment.price === "" || productManagment.price === 0 || productManagment.price < 0 ||
+        productManagment.minpurchase === "" || productManagment.minpurchase === 0 || productManagment.minpurchase < 0 ||
+        productManagment.listing === "") {
+        return false;
+      }
+    }
+
+    // Auctioned specific validations
+    if (productManagment.auctioned) {
+      if (productManagment.bids === "" || productManagment.bids === 0 || productManagment.bids < 0 ||
+        productManagment.durations === "" || productManagment.durations === 0 || productManagment.durations < 0 ||
+        productManagment.hours === "" || productManagment.hours === 0 || productManagment.hours < 0 ||
+        productManagment.auctionListing === "" || productManagment.end_listing === "") {
+        return false;
+      }
+    }
+
+
+    // deliverddomestic: false,
+    // deliverdinternational: false,
+
+
+    const formData = new FormData();
+    productManagment.file.forEach((image_file) => {
+      formData.append("file[]", image_file);
+    });
+    formData.append("condition", productManagment.condition);
+    if (productManagment?.attributes?.length > 0) {
+      let attributes = [];
+      for (let i = 0; i < productManagment?.attributes?.length; i++) {
+        for (let j = 0; j < productManagment.attributes[i].selectToSend.length; j++) {
+          attributes.push({ key: productManagment.attributes[i].name, value: productManagment.attributes[i].selectToSend[j] })
+        }
+      }
+      formData.append('attributes', JSON.stringify(attributes));
+    }
+    formData.append("termsdescription", productManagment.termsdescription);
+    formData.append("title", productManagment.title);
+    formData.append("category", productManagment?.category?.value);
+    formData.append("stockCapacity", productManagment.stockCapacity);
+    formData.append("brand_id", productManagment.brand_id?.value);
+    formData.append("model", productManagment.model);
+    formData.append("description", productManagment.description);
+    formData.append("tags", JSON.stringify(productManagment.tags));
+    formData.append("saleprice", productManagment.saleprice);
+    formData.append("sellingNow", productManagment.sellingNow);
+    formData.append("listing", productManagment.listing);
+    formData.append("price", productManagment.price);
+    formData.append("minpurchase", productManagment.minpurchase);
+    formData.append("auctioned", productManagment.auctioned);
+    formData.append("bids", productManagment.bids);
+    formData.append("durations", productManagment.durations);
+    formData.append("hours", productManagment.hours);
+    formData.append("auctionListing", productManagment.auctionListing);
+    formData.append("end_listing", productManagment.end_listing);
+    formData.append("deliverddomestic", productManagment.deliverddomestic);
+    formData.append("deliverdinternational", productManagment.deliverdinternational);
+    formData.append("deliverycompany", productManagment.deliverycompany);
+    formData.append("address", productManagment.address);
+    formData.append("latitude", productManagment.latitude);
+    formData.append("longitude", productManagment.longitude);
+    formData.append("country", productManagment.country);
+    formData.append("state", productManagment.state);
+    formData.append("city", productManagment.city);
+    formData.append("zip", productManagment.zip);
+    formData.append("shippingprice", productManagment.shippingprice);
+    formData.append("shipingdurations", productManagment.shipingdurations);
+    formData.append("returnshippingprice", productManagment.returnshippingprice);
+    formData.append("returndurationlimit", productManagment.returndurationlimit);
+    formData.append("returnshippingpaidby", productManagment.returnshippingpaidby);
+    formData.append("returnshippinglocation", productManagment.returnshippinglocation);
+    formData.append("returncountry", productManagment.returncountry);
+    formData.append("returnstate", productManagment.returnstate);
+    formData.append("returncity", productManagment.returncity);
+    formData.append("returnzip", productManagment.returnzip);
+    formData.append("weight", productManagment.weight);
+    formData.append("height", productManagment.height);
+    formData.append("length", productManagment.length);
+    formData.append("width", productManagment.width);
+
+    ProductServices.createSellerProduct(formData)
+      .then((res) => {
+        console.log(res, 'setAttribnutes');
+        setSubmitted()
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  useEffect(() => {
+    fetchCategory()
+    getBrands()
+  }, [])
+
+
   return (
     <section id="listing-creating-form">
-      {isLoading ? ( // Render loader if isLoading is true
+      {isLoading ? (
         <div className="loader-container text-center">
-          <Spinner animation="border" role="status">
-            {/* <span className="sr-only">Loading...</span> */}
-          </Spinner>
+          <Spinner animation="border" role="status"></Spinner>
         </div>
       ) : (
-      <form
-        encType="multipart/form-data"
-        onSubmit={handleSubmit}
-        style={{ maxWidth: "90%", margin: "0 auto", overflow: "hidden" }}
-      >
-        {editproduct ? (
-          <>
-            <h3 style={{ color: "#000" }}>Edit Your Product</h3>
-          </>
-        ) : (
-          <>
-            <h3 style={{ color: "#000" }}>Describe Your Product</h3>
-          </>
-        )}
-        {props.edit ? (
-  <>
-    <input
-      type="file"
-      className="newInputUpload"
-      accept="image/png, image/jpeg"
-      multiple
-      onChange={handleEditImageUpload}
-    />
-    <div className="imgegallry">
-      {/* Render blobs */}
-      {blobs.length > 0 &&
-  blobs.map((blob, index) => (
-    <div key={index}>
-      <img
-        src={blob.name} 
-        alt={`Product ${index + 1}`}
-        style={{
-          width: "100px",
-          height: "100px",
-          objectFit: "cover",
-          margin: "5px",
-        }}
-      />
-      <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
-        X
-      </a>
-    </div>
-  ))}
-
-
-      {/* Render product images */}
-      {editBlobs.length > 0 &&
-  editBlobs.map((blob, index) => (
-    <div key={index}>
-      <img
-        src={blob}
-        alt={`Product ${index + 1}`}
-        style={{
-          width: "100px",
-          height: "100px",
-          objectFit: "cover",
-          margin: "5px",
-        }}
-      />
-      <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
-        X
-      </a>
-    </div>
-  ))}
-
-
-      {errors.editimages && (
-        <p className="error">{errors.editimages}</p>
-      )}
-      {product.images.length > 0 ? (
         <>
-          {product.images.map((imageUrl, index) => {
-            return (
-              <>
-                <img
-                  key={index}
-                  src={imageUrl}
-                  alt={`Product ${index + 1}`}
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    objectFit: "cover",
-                    margin: "5px",
-                  }}
-                />
-              </>
-            );
-          })}
-        </>
-      ) : (
-        <></>
-      )}
+          <form onSubmit={handleFormSubmit} className="p-m-f">
+            <div className="t-p-m">
+              Describe Your Product
             </div>
-          </>
-        ) : (
-          <>
-          <input
-            type="file"
-            className="newInputUpload"
-            accept="image/png, image/jpeg"
-            multiple
-            onChange={handleImageUpload}
-          />
-          <div className="imgegallry">
-            {/* Render blobs */}
-            {blobs.length > 0 &&
-              blobs.map((blob, index) => (
-                <div key={index}>
-                  <img
-                    src={blob}
-                    alt={`Product ${index + 1}`}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "cover",
-                      margin: "5px",
-                    }}
-                  />
-                  <a href="#" onClick={(e) => removeThumbnail(e, blob)}>
-                    X
-                  </a>
-                </div>
-              ))}
-            {/* Render product images */}
-            {product.images.length > 0 &&
-              product.images.map((imageUrl, index) => (
-                <div key={index}>
-                  <img
-                    src={imageUrl}
-                    alt={`Product ${index + 1}`}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "cover",
-                      margin: "5px",
-                    }}
-                  />
-                </div>
-              ))}
-            {errors.images && <p className="error">{errors.images}</p>}
-            {errors.editimages && <p className="error">{errors.editimages}</p>}
-          </div>
-        </>
-        )}
-
-        <p className="notify-images">
-          <img src={Objection} /> Add a minimum of 5 images covering all angles
-          of the item that describe it well.
-        </p>
-        <h4>ITEM SPECIFICS</h4>
-        {props.edit ? (
-          <>
-            <h5>Product Condition</h5>
-            <ul style={{ padding: "0px", margin: "0px", listStyle: "none" }}>
-              {productCondition?.map((condition) => {
-                return (
-                  <>
-                    <li>
-                      {conditions == condition.name ? (
-                        <>
-                          <input
-                            type="radio"
-                            name="condition"
-                            onChange={handleCondition}
-                            style={{ width: "20px" }}
-                            checked="true"
-                            value={condition.id}
-                          />{" "}
-                          {condition.name}
-                        </>
-                      ) : (
-                        <>
-                          <input
-                            type="radio"
-                            name="condition"
-                            onChange={handleCondition}
-                            style={{ width: "20px" }}
-                            value={condition.id}
-                          />{" "}
-                          {condition.name}
-                        </>
-                      )}
-                    </li>
-                  </>
-                );
-              })}
-            </ul>
-          </>
-        ) : (
-          <>
-            <h5>Product Condition</h5>
-            {/* <div className="productCondition">
-            {product_condition}            
-           </div> */}
-            <ul style={{ padding: "0px", margin: "0px", listStyle: "none" }}>
-              {productCondition?.map((condition) => {
-                return (
-                  <>
-                    <li>
-                      {product_condition == condition.name ? (
-                        <>
-                          <input
-                            type="radio"
-                            name="condition"
-                            onChange={handleCondition}
-                            style={{ width: "20px" }}
-                            checked="true"
-                            value={condition.id}
-                          />{" "}
-                          {condition.name}
-                        </>
-                      ) : (
-                        <>
-                          <input
-                            type="radio"
-                            name="condition"
-                            onChange={handleCondition}
-                            style={{ width: "20px" }}
-                            value={condition.id}
-                          />{" "}
-                          {condition.name}
-                        </>
-                      )}
-                    </li>
-                  </>
-                );
-              })}
-            </ul>
-          </>
-        )}
-        {/* <div className="listschedule1">
-          <div>Scheduled</div>
-          <div>
-            <label className="switch3">
-              <input
-                type="checkbox"
-                value={product.scheduled}
-                checked={product.scheduled}
-                onChange={handleScheduled}
-              />
-              <span className="slider3 round3"></span>
-            </label>
-          </div>
-        </div> */}
-        {/* <div className="delivery-company">
-          <div>Store</div>
-          <div>
-            <select style={{ width: "150px" }} value={product.store} name={product.store} onChange={handleShop}>
-              {shops ? (
-                  <>
-                    <option value={shops.id} selected="true">{shops.fullname}</option>
-                  </>
-              ) : (
-                ""
-              )}
-            </select>
-          </div>
-        </div> */}
-        {/* {errors.store && <p className="error">{errors.store}</p>} */}
-        <input
-          type="text"
-          placeholder="Product Title"
-          className="newInputUpload"
-          name="title"
-          value={product.title}
-          onChange={handleInputChange}
-        />
-        {errors.title && <p className="error">{errors.title}</p>}
-        <input
-          type="text"
-          className="newInputUpload"
-          placeholder="Item Model"
-          name="model"
-          value={product.model}
-          onChange={handleInputChange}
-        />
-        {errors.model && <p className="error">{errors.model}</p>}
-        <div className="delivery-company">
-          <div>Select Brand</div>
-          <div>
-            <select value={product.brand} onChange={handleBrands}>
-              <option>Select Brands</option>
-              {brands.length > 0 ? (
-                <>
-                  {brands?.map((brand) => {
-                    return (
-                      <>
-                        <option value={brand.id} key={brand.id}>
-                          {brand.name}
-                        </option>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                ""
-              )}
-            </select>
-          </div>
-        </div>
-        {errors.brand && <p className="error">{errors.brand}</p>}
-        <div className="delivery-company">
-          <div>Select Category</div>
-          <div>
-            <select value={category} onChange={handleCategory}>
-              <option value="">All Category</option>
-              {categories.length > 0 ? (
-                <>
-                  {categories?.map((cat) => {
-                    return (
-                      <>
-                        <option value={cat.id}>{cat.name}</option>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                ""
-              )}
-            </select>
-          </div>
-        </div>
-        {errors.category && <p className="error">{errors.category}</p>}
-        {attributes.length ? (
-          <>
-            <h4>ATTRIBUTES</h4>
-            {attributes?.map((attr, index) => {
-              if (attr.type === "SELECT") {
-                return (
-                  <>
-                    <br />
-                    <div className="delivery-company">
-                      <div>{attr.name}</div>
-                      <div>
-                        <select onChange={handleSelectChange} name={attr.type}>
-                          <option key={index}>Select {attr.name}</option>
-                          {attr.options?.map((att) => {
-                            return (
-                              <>
-                                <option value={att}>{att}</option>
-                              </>
-                            );
-                          })}
-                        </select>
+            <div className="p-m-p-c">
+              <h3>Select condition of your item</h3>
+              <h4>This book is a treatise on the theory of ethics, very popular during the Renaissance. </h4>
+              <ul>
+                {productCondition?.map((data, index) => {
+                  return (
+                    <li key={index} onClick={() => { setProductManagments((prev) => ({ ...prev, condition: data.id })) }}>
+                      <div className={`check ${productManagment?.condition === data.name ? 'active' : ''}`}>
+                        <div className="check-wrap"></div>
                       </div>
-                    </div>
-                  </>
-                );
-              }
-              if (attr.type === "RADIO_GROUP") {
-                return (
-                  <>
-                    <h3>{attr.name}</h3>
-                    {attr.options?.map((att, index) => {
+                      <p className={`${productManagment?.condition === data.name ? 'active' : ''}`}>{data.name}</p>
+                    </li>
+                  )
+                })}
+              </ul>
+              {inputError && productManagment.condition === '' && <div className="error-input">condition is required</div>}
+
+            </div>
+            <div className="p-m-i-u">
+              <div className="p-m-i-u-wrap">
+                <div className="upload-box" onClick={handleUploadClick}>
+                  <svg width="96" height="97" viewBox="0 0 96 97" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M29.8004 48.4615H66.1696M47.985 66.6462V30.2769M47.985 93.9231C72.9888 93.9231 93.4465 73.4654 93.4465 48.4615C93.4465 23.4577 72.9888 3 47.985 3C22.9811 3 2.52344 23.4577 2.52344 48.4615C2.52344 73.4654 22.9811 93.9231 47.985 93.9231Z" stroke="#BBBBBB" stroke-width="4.54615" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <span>Click here to upload images</span>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    onChange={handleImageFileChange}
+                    multiple  // Enable multiple file selection
+                  />
+                </div>
+              </div>
+              {productManagment.file.length === 0 && inputError && <div className="error-input">Atleast  one image is required</div>}
+              <p>
+                <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8.39744 6.53134H10.2635V4.66524H8.39744M9.33048 16.7949C5.21574 16.7949 1.8661 13.4452 1.8661 9.33048C1.8661 5.21574 5.21574 1.8661 9.33048 1.8661C13.4452 1.8661 16.7949 5.21574 16.7949 9.33048C16.7949 13.4452 13.4452 16.7949 9.33048 16.7949ZM9.33048 0C8.10519 0 6.89189 0.24134 5.75986 0.710241C4.62784 1.17914 3.59925 1.86642 2.73284 2.73284C0.98303 4.48264 0 6.85589 0 9.33048C0 11.8051 0.98303 14.1783 2.73284 15.9281C3.59925 16.7945 4.62784 17.4818 5.75986 17.9507C6.89189 18.4196 8.10519 18.661 9.33048 18.661C11.8051 18.661 14.1783 17.6779 15.9281 15.9281C17.6779 14.1783 18.661 11.8051 18.661 9.33048C18.661 8.10519 18.4196 6.89189 17.9507 5.75986C17.4818 4.62784 16.7945 3.59925 15.9281 2.73284C15.0617 1.86642 14.0331 1.17914 12.9011 0.710241C11.7691 0.24134 10.5558 0 9.33048 0ZM8.39744 13.9957H10.2635V8.39744H8.39744V13.9957Z" fill="#989595" />
+                </svg>
+                Add minimum 5 images covering all angles of the item that describes well
+              </p>
+              {productManagment.file.length > 0 ?
+                <div className="selected-images">
+                  <div className="row">
+                    {productManagment.file.map((image, index) => {
                       return (
-                        <>
-                          <div className="listschedule1">
-                            <div>{att}</div>
-                            <div>
-                              <label className="switch3">
-                                <input
-                                  type="radio"
-                                  id={`contactChoice${index}`}
-                                  key={index}
-                                  value={att}
-                                  // checked={domestic}
-                                  name={attr.type}
-                                  onChange={handleRadioGrpChange}
-                                />
-                                <span className="slider3 round3"></span>
-                              </label>
-                            </div>
+                        <div className="col-lg-2">
+                          <div className="selected-images-box" key={index}>
+                            <img src={URL.createObjectURL(image)} alt="" />
+                            <span onClick={() => { handleDeleteImage(index) }}><MdDelete /></span>
                           </div>
-                        </>
-                      );
+                        </div>
+                      )
                     })}
-                  </>
-                );
-              }
-              if (attr.type === "TEXT") {
-                return (
-                  <>
-                    <br />
-                    <input
-                    className="newInputUpload"
-                      onChange={handleTextChange}
-                      name={attr.type}
-                      type={attr.type}
-                      id={`text${index}`}
-                    />
-                  </>
-                );
-              }
-              if (attr.type === "CHECKBOX") {
-                return (
-                  <>
-                    <br />
-                    <input
-                      onChange={handleCheckboxChange}
-                      value={attr.name}
-                      name={attr.type}
-                      type={attr.type}
-                      id={`check${index}`}
-                    />
-                    {attr.name}
-                  </>
-                );
-              }
-              if (attr.type === "CHECKBOX_GROUP") {
-                return (
-                  <>
-                    <h3>{attr.name}</h3>
-                    {attr.options?.map((att, index) => {
-                      return (
-                        <>
-                          <div className="listschedule1">
-                            <div>{att}</div>
-                            <div>
-                              <label className="switch3">
-                                <input
-                                  type="checkbox"
-                                  id={`checkgrp${index}`}
-                                  key={index}
-                                  value={att}
-                                  name={attr.type}
-                                  onChange={handleCheckboxGrpChange}
-                                />
-                                <span className="slider3 round3"></span>
-                              </label>
-                            </div>
-                          </div>
-                        </>
-                      );
-                    })}
-                  </>
-                );
-              }
-              if (attr.type === "FILE") {
-                return (
-                  <>
-                    <br />
-                    <input
-                      type={attr.type}
-                      name={attr.type}
-                      onChange={handleFileChange}
-                    />
-                  </>
-                );
-              }
-              if (attr.type === "COLOR_PICKER") {
-                return (
-                  <>
-                    <br />
-                    <input
-                      type="color"
-                      name={attr.type}
-                      onChange={handleColorChange}
-                      className="colr"
-                    />
-                  </>
-                );
-              }
-              if (attr.type === "RADIO") {
-                return (
-                  <>
-                    <br />
-                    <div className="listschedule1">
-                      <div>{attr.name}</div>
-                      <div>
+                  </div>
+                </div>
+                : null}
+
+            </div>
+            <div className="p-m-i-s">
+              <div className="title-line">
+                <h2>Product specifics</h2>
+                <div></div>
+              </div>
+              <div className="two-field">
+                <div className="two-field-left">
+                  <label>Product title</label>
+                  <input type="text" name="title" value={productManagment?.title} onChange={handleChange} placeholder="Enter product title" />
+                  {productManagment.title === '' && inputError &&
+                    <div className="error-input">Product title is required</div>
+                  }
+                </div>
+                <div className="two-field-left">
+                  <label>Category</label>
+                  <Select
+                    defaultValue={productManagment?.category}
+                    onChange={handelCategoryChange}
+                    options={categories}
+                    placeholder={'Select category'}
+                  />
+                  {productManagment.category === null && inputError &&
+                    <div className="error-input">Category is required</div>
+                  }
+                </div>
+              </div>
+              {productManagment?.attributes?.length > 0 ?
+                <div className="two-field">
+                  {productManagment?.attributes?.map((data, index) => {
+                    return (
+                      <>
+                        <div className="two-field-left">
+                          <label htmlFor="Price">{data?.name}</label>
+                          <Select
+                            defaultValue={data?.selected}
+                            onChange={(e) => { handelAddonsChange(e, data, index) }}
+                            options={data?.options}
+                            placeholder={`Select ${data?.name}`}
+                            isMulti={true}
+                          />
+                          {productManagment?.attributes?.[index]?.selectToSend?.length === 0 && inputError &&
+                            <div className="error-input">{data?.name} is required</div>
+                          }
+                        </div>
+                      </>
+                    )
+                  })}
+                </div>
+                : null}
+              <div className="two-field">
+                <div className="two-field-left">
+                  <label>Brand</label>
+                  <Select
+                    defaultValue={productManagment.brand_id}
+                    onChange={(e) => { setProductManagments({ ...productManagment, brand_id: e }) }}
+                    options={brands}
+                    placeholder={'Select brand'}
+                  />
+                  {productManagment.brand_id === null && inputError &&
+                    <div className="error-input">Brand is required</div>
+                  }
+                </div>
+                <div className="two-field-left">
+                  <label>Stock capacity (Quantity)</label>
+                  <input type="number" name="stockCapacity" value={productManagment?.stockCapacity} onChange={handleChange} placeholder="Enter quantity" />
+                  {productManagment.stockCapacity === "" && inputError &&
+                    <div className="error-input">Stock capacity is required</div>
+                  }
+                </div>
+              </div>
+              <div className="two-field">
+                <div className="two-field-left">
+                  <label>Item model</label>
+                  <input type="text" name="model" value={productManagment?.model} onChange={handleChange} placeholder="Enter item model" />
+                  {productManagment.model === "" && inputError &&
+                    <div className="error-input">Item model is required</div>
+                  }
+                </div>
+                <div className="two-field-left">
+                </div>
+              </div>
+              <div className="two-field">
+                <div className="two-field-left">
+                  <label>Description</label>
+                  <textarea type="text" name="description" value={productManagment?.description} onChange={handleChange} placeholder="Enter description" />
+                  {productManagment.description === "" && inputError &&
+                    <div className="error-input">Description is required</div>
+                  }
+                </div>
+              </div>
+            </div>
+            <div className="p-m-i-s">
+              <div className="title-line"><h2>Product pricings</h2><div></div></div>
+              <div className="two-field">
+                {productManagment?.auctioned === false &&
+                  <div className="two-field-left-left">
+                    <div className="two-field-left" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                      <label style={{ margin: '0px' }}>Sell it now</label>
+                      <div className="custom-switch">
                         <label className="switch3">
                           <input
                             type="radio"
-                            id={`radio${index}`}
-                            value={attr.name}
-                            name={attr.type}
-                            onChange={handleRadioChange}
+                            value={productManagment.sellingNow}
+                            checked={productManagment.sellingNow}
+                            onClick={() => {
+                              if (productManagment.sellingNow) {
+                                setProductManagments(prev => ({ ...prev, sellingNow: false }))
+                              } else {
+                                setProductManagments(prev => ({ ...prev, sellingNow: true }))
+                              }
+                            }}
                           />
                           <span className="slider3 round3"></span>
                         </label>
                       </div>
                     </div>
-                  </>
-                );
-              }
-            })}
-            <h4>&nbsp;</h4>
-          </>
-        ) : (
-          <></>
-        )}
+                    {!productManagment.auctioned && !productManagment.sellingNow && inputError &&
+                      <div className="error-input">Select Sell it now or Auction is required</div>
+                    }
+                  </div>
+                }
+                {productManagment?.sellingNow === false &&
+                  <div className="two-field-left-left">
+                    <div className="two-field-left" style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                      <label style={{ margin: '0px' }}>Auction</label>
+                      <div className="custom-switch">
+                        <label className="switch3">
+                          <input
+                            type="radio"
+                            value={productManagment.auctioned}
+                            checked={productManagment.auctioned}
+                            onClick={() => {
+                              if (productManagment.auctioned) {
+                                setProductManagments(prev => ({ ...prev, auctioned: false }))
+                              } else {
+                                setProductManagments(prev => ({ ...prev, auctioned: true }))
+                              }
+                            }}
+                          />
+                          <span className="slider3 round3"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
 
-        {/* <div className="stockcapa">
-          <label>
-            Stock Capacity
-            <input
-              type="number"
-              placeholder="Stock Capacity"
-              name="stockCapacity"
-              value={product.stockCapacity}
-              onChange={handleInputChange}
-            />
-          </label>
-          {errors.stockCapacity && (
-            <p className="error">{errors.stockCapacity}</p>
-          )}
-        </div> */}
-        {/* {props.guid ? (
-          <>
-            <table style={{ width: "100%"}}>
-          <thead>
-            <tr>
-              <th>
-                Size
-              </th>
-              <th>
-                Quanity
-              </th>
-              <th>
-                Color
-              </th>
-              <th>
-                Action
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {product.sizes ? (
-              <>
-              {product.sizes?.map((attr) => {
-                return(
-                  <>
-                   <tr>
-                  <td>{attr.size} meter</td>
-                  <td>{attr.quantity} pcs</td>
-                  <td>< div style={{ background: attr.color}}>&nbsp;</div></td>
-                  <td><a href="#" onClick={(e)=>removeAttributes(e,attr.color)}>Delete</a></td>
-                </tr>
-                  </>
-                )
-              })}
-              </>
-            ):(<></>)}
-           
-          </tbody>
-        </table>
-          </>
-        ):('')} */}
-
-        <textarea
-          placeholder="Description"
-          name="description"
-          value={product.description}
-          onChange={handleInputChange}
-        />
-        {errors.description && <p className="error">{errors.description}</p>}
-        {/* <div className="pricing">
-          <h4>Pricings</h4>
-          <li onClick={() => setShowContent(!showContent)}>
-            Buy it now <img src={Down} />
-          </li>
-          {showContent && (
-            <div className="main-pricng-switcher">
-              <div className="firstswitcher">
-                <div>Selling Now</div>
-                <div>
-                  <label className="switch1">
-                    <input
-                      type="radio"
-                      value={isToggled}
-                      checked={isToggled}
-                      name="sellingAution"
-                      onChange={handleToggle}
-                    />
-                    <span className="slider1 round1"></span>
-                  </label>
-                </div>
-              </div>
-              <div className="firstswitcher">
-                <div>Auction</div>
-                <div>
-                  <label className="switch1">
-                    <input
-                      type="radio"
-                      name="sellingAution"
-                      value={auctions}
-                      onChange={handleAuctions}
-                    />
-                    <span className="slider1 round1"></span>
-                  </label>
-                </div>
-              </div>
-            </div>
-          )}
-          {errors.buyitnow && <p className="error">{errors.buyitnow}</p>}
-        </div> */}
-        <div className="listschedule1">
-          <div>Sell it Now</div>
-          <div>
-            <label className="switch3">
-              <input
-                type="radio"
-                value={product.sellingNow}
-                checked={buyNow}
-                name="sellingAution"
-                onChange={handleBuynow}
-              />
-              <span className="slider3 round3"></span>
-            </label>
-          </div>
-        </div>
-
-        <div className="listschedule1">
-          <div>Auction</div>
-          <div>
-            <label className="switch3">
-              <input
-                type="radio"
-                name="sellingAution"
-                value={auctions}
-                checked={auctions}
-                onChange={handleAuctions}
-              />
-              <span className="slider3 round3"></span>
-            </label>
-          </div>
-        </div>
-        {auctions ? (
-          <>
-            <div className="set-price">
-              <div>Starting Bit</div>
-              <div>
-                <input
-                  type="number"
-                  min="1"
-                  placeholder="$"
-                  name={bids}
-                  value={product.bids}
-                  onChange={handleBitChange}
-                />
-              </div>
-            </div>
-            <div className="delivery-company">
-              <div>Durations</div>
-              <div>
-                <input
-                  type="number"
-                  min="1"
-                  placeholder="1"
-                  name={durations}
-                  value={product.durations}
-                  onChange={handleDurations}
-                />
-              </div>
-            </div>
-            <div className="delivery-company">
-              <div>Hours</div>
-              <div>
-                <select
-                  name={product.hours}
-                  value={product.hours}
-                  onChange={handleHours}
-                >
-                  <option value="0">Select Hours</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="1">12</option>
-                </select>
-              </div>
-            </div>
-            {/* <div className="set-price">
-              <div>Schedule your Listing Start Time</div>
-              <div>
-              <input
-                  type="datetime-local"
-                  name={product.auctionListing}
-                  value={auctionstartDate}
-                  onChange={(e) =>
-                    handleAuctionStartDate(e)
-                  }
-                /> */}
-            {/* <DatePicker
-                  selected={auctionstartDate}
-                  minDate={new Date()}
-                  onChange={(date) => handleAuctionStartDate(date)}
-                /> */}
-            {/* <label className="switch2">
-              <input
-                type="checkbox"
-                checked={listing}
-                value={listing}
-                onChange={handleLisitng}
-              />
-              <span className="slider2 round2"></span>
-            </label> */}
-            {/* </div>
-            </div> */}
-            {/* {errors.listing && <p className="error">{errors.listing}</p>} */}
-            {/* <div className="set-price">
-              <div>Schedule your Listing End Time</div>
-              <div>
-                <input
-                  type="datetime-local"
-                  name={product.auctionEndListing}
-                  value={auctionEndDate}
-                  onChange={(e) =>
-                    handleAuctionEndDate(e)
-                  }
-                />
-              </div>
-            </div>
-            {errors.duration && <p className="error">{errors.duration}</p>} */}
-          </>
-        ) : (
-          ""
-        )}
-        {buyNow ? (
-          <>
-            <div className="set-price">
-              <div>Set Price</div>
-              <div>
-                <input
-                  type="number"
-                  placeholder="$"
-                  min="1"
-                  name={product.price}
-                  value={product.price}
-                  onChange={handlePriceChange}
-                />
-              </div>
-            </div>
-            {errors.price && <p className="error">{errors.price}</p>}
-            {/* <div className="set-price">
-              <div>Set Sales Price</div>
-              <div>
-                <input
-                  type="text"
-                  placeholder="$"
-                  name={salesprice}
-                  value={product.saleprice}
-                  onChange={handleSalePriceChange}
-                />
-              </div>
-            </div>
-            {errors.saleprice && <p className="error">{errors.saleprice}</p>} */}
-            <div className="set-price">
-              <div>Minimum Purchase</div>
-              <div>
-                <input
-                  type="number"
-                  min="1"
-                  placeholder="1"
-                  name={product.minpurchase}
-                  value={product.minpurchase}
-                  onChange={handleMinPurchaseChange}
-                />
-              </div>
-            </div>
-            {errors.saleprice && <p className="error">{errors.saleprice}</p>}
-            <div className="listschedule">
-              <div>Schedule your Listing</div>
-              <div>
-                {/* <DatePicker
-                  selected={startDate}
-                  minDate={new Date()}
-                  onChange={(date) => handleStartDate(date)}
-                /> */}
-                <input
-                  type="date"
-                  placeholder="To"
-                  name="listing"
-                  value={product.listing}
-                  onChange={handleLisitng}
-                />
-                {/* <label className="switch2">
-                <input
-                  type="checkbox"
-                  checked={listing}
-                  value={listing}
-                  onChange={handleLisitng}
-                />
-                <span className="slider2 round2"></span>
-              </label> */}
-              </div>
-            </div>
-            {errors.listing && <p className="error">{errors.listing}</p>}
-          </>
-        ) : (
-          ""
-        )}
-        <h4>TAGS</h4>
-        <div className="sizequntycolr">
-          <div className="gridersys">
-  {product?.tags.map((tag, index) => (
-      <div>
-      <input
-      key={index}
-        type="text"
-        name="tag"
-        value={tag.tag}
-        onChange={(e) => handleTagChange(e, index)}
-      />
-      {index > 0 && ( // Only render delete button if index is greater than 0
-        <a href="#" onClick={(e) => removeTags(e, index)}>
-          Delete
-        </a>
-      )}
-      </div>
-  ))}
-    </div>
-</div>
-<div className="sizeaddmre">
-  <button type="button" onClick={handleAddTags}>
-    Add Tags
-  </button>
-  {errors.tags && <p className="error">{errors.tags}</p>}
-</div>
-
-        {/* {product?.tags.length > 0 ? (
-          <>
-            {product?.tags.map((tag, index) => {
-              return (
+              {productManagment?.sellingNow === true &&
                 <>
-                  <div className="sizequntycolr" key={index}>
-                    <input
-                      type="text"
-                      name="tags"
-                      value={tag}
-                      placeholder="Tags"
-                      onChange={(e) => handleTagChange(e, index)}
-                    />
-                    <>
-                      <a href="#" onClick={(e) => removeTags(e, tag)}>
-                        Delete
-                      </a>
-                    </>
+                  <div className="two-field">
+                    <div className="two-field-left">
+                      <label>Price</label>
+                      <input type="number" name="price" value={productManagment?.price} onChange={handleChange} placeholder="Enter price" />
+                      {(productManagment.price === "" && inputError && productManagment.sellingNow) &&
+                        <div className="error-input">Price is required</div>
+                      }
+                    </div>
+                    <div className="two-field-left">
+                      <label>Sale price</label>
+                      <input type="number" name="saleprice" value={productManagment?.saleprice} onChange={handleChange} placeholder="Enter sale price" />
+                      {(productManagment.saleprice === "" && inputError && productManagment.sellingNow) &&
+                        <div className="error-input">Sale price is required</div>
+                      }
+                    </div>
+                  </div>
+                  <div className="two-field">
+                    <div className="two-field-left">
+                      <label>Min purchase</label>
+                      <input type="number" name="minpurchase" value={productManagment?.minpurchase} onChange={handleChange} placeholder="Enter min purchase" />
+                      {(productManagment.minpurchase === "" && inputError && productManagment.sellingNow) &&
+                        <div className="error-input">Min purchase is required</div>
+                      }
+                    </div>
+                    <div className="two-field-left">
+                      <label>Schedule Your Listing</label>
+                      <input type="date" name="listing" value={productManagment?.listing} onChange={handleChange} />
+                      {(productManagment.listing === "" && inputError && productManagment.sellingNow) &&
+                        <div className="error-input">Schedule your listing is required</div>
+                      }
+                    </div>
                   </div>
                 </>
-              );
-            })}
-          </>
-        ) : (
-          ""
-        )} */}
-        {/* <div className="sizeaddmre"> */}
-        {/* <button type="button" onClick={handleAddTags}>
-            Add Tags
-          </button> */}
-        {/* {errors.tags && <p className="error">{errors.tags}</p>} */}
-        {/* </div> */}
-        {/* <div className="stockcapa">
-          <label>
-            <input
-              type="text"
-              placeholder="Tags"
-              name={product.tags}
-              value={product.tags}
-              onChange={handleTagChange}
-            />
-          </label>
-          <div className="sizeaddmre">
-              <button type="button" onClick={handleAddSize}>
-                Add tags
+              }
+              {productManagment?.auctioned === true &&
+                <>
+                  <div className="two-field">
+                    <div className="two-field-left">
+                      <label>Starting Bid</label>
+                      <input type="number" name="bids" value={productManagment?.bids} onChange={handleChange} placeholder="Enter bid" />
+                      {(productManagment.bids === "" && inputError && productManagment.auctioned) &&
+                        <div className="error-input">Starting bid is required</div>
+                      }
+                    </div>
+                    <div className="two-field-left">
+                      <label>Duration</label>
+                      <input type="number" name="durations" value={productManagment?.durations} onChange={handleChange} placeholder="Enter duration" />
+                      {(productManagment.durations === "" && inputError && productManagment.auctioned) &&
+                        <div className="error-input">Duration is required</div>
+                      }
+                    </div>
+                  </div>
+                  <div className="two-field">
+                    <div className="two-field-left">
+                      <label>Hours</label>
+                      <input type="number" name="hours" value={productManagment?.hours} onChange={handleChange} placeholder="min hours" />
+                      {(productManagment.hours === "" && inputError && productManagment.auctioned) &&
+                        <div className="error-input">Hours is required</div>
+                      }
+                    </div>
+                    <div className="two-field-left">
+                      <label>Schedule Your Listing</label>
+                      <input type="date" name="auctionListing" value={productManagment?.auctionListing} onChange={handleChange} />
+                      {(productManagment.auctionListing === "" && inputError && productManagment.auctioned) &&
+                        <div className="error-input">Schedule your listing is required</div>
+                      }
+                    </div>
+                  </div>
+                  <div className="two-field">
+                    <div className="two-field-left">
+                      <label>Schedule End Listing</label>
+                      <input type="date" name="end_listing" value={productManagment?.end_listing} onChange={handleChange} />
+                      {(productManagment.end_listing === "" && inputError && productManagment.auctioned) &&
+                        <div className="error-input">Schedule end listing is required</div>
+                      }
+                    </div>
+                    <div className="two-field-left">
+                    </div>
+                  </div>
+                </>
+              }
+            </div>
+            <div className="p-m-i-s">
+              <div className="title-line">
+                <h2>Delivery setup</h2>
+                <div></div>
+              </div>
+              <div className="two-field">
+                <div className="two-field-left" style={{ display: 'flex', alignItems: 'center', gap: '20px', flex: '1' }}>
+                  <label style={{ margin: '0px' }}>Deliver domestically</label>
+                  <div className="custom-switch">
+                    <label className="switch3">
+                      <input
+                        type="radio"
+                        value={productManagment.deliverddomestic}
+                        checked={productManagment.deliverddomestic}
+                        onClick={() => {
+                          if (productManagment.deliverddomestic) {
+                            setProductManagments(prev => ({ ...prev, deliverddomestic: false }))
+                          } else {
+                            setProductManagments(prev => ({ ...prev, deliverddomestic: true }))
+                          }
+                        }}
+                      />
+                      <span className="slider3 round3"></span>
+                    </label>
+                  </div>
+                </div>
+                <div className="two-field-left" style={{ display: 'flex', alignItems: 'center', gap: '20px', flex: '1' }}>
+                  <label style={{ margin: '0px' }}>Deliver International</label>
+                  <div className="custom-switch">
+                    <label className="switch3">
+                      <input
+                        type="radio"
+                        value={productManagment.deliverdinternational}
+                        checked={productManagment.deliverdinternational}
+                        onClick={() => {
+                          if (productManagment.deliverdinternational) {
+                            setProductManagments(prev => ({ ...prev, deliverdinternational: false }))
+                          } else {
+                            setProductManagments(prev => ({ ...prev, deliverdinternational: true }))
+                          }
+                        }}
+                      />
+                      <span className="slider3 round3"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div className="two-field">
+                <div className="two-field-left">
+                  <label>Address</label>
+                  <>
+                    {isLoaded && (
+                      <StandaloneSearchBox
+                        style={{ width: '100%' }}
+                        onLoad={(ref) => (inputRef.current = ref)}
+                        onPlacesChanged={handlePlaceChanged}
+                      >
+                        <input type="text" placeholder="Enter your street Address" />
+                      </StandaloneSearchBox>
+                    )}
+                  </>
+                  {productManagment.address === "" && inputError &&
+                    <div className="error-input">Address is required</div>
+                  }
+                  {/* <input type="text" name="stockCapacity" value={productManagment?.returnshippingpaidby} onChange={handleChange} placeholder="Enter address" /> */}
+                </div>
+                <div className="two-field-left">
+                  <label>Country</label>
+                  <input type="text" name="stockCapacity" value={productManagment?.country} onChange={handleChange} placeholder="Enter country" />
+                  {productManagment.country === "" && inputError &&
+                    <div className="error-input">Country is required</div>
+                  }
+                </div>
+              </div>
+              <div className="two-field">
+                <div className="two-field-left">
+                  <label>State</label>
+                  <input type="text" name="stockCapacity" value={productManagment?.state} onChange={handleChange} placeholder="Enter state" />
+                  {productManagment.state === "" && inputError &&
+                    <div className="error-input">State is required</div>
+                  }
+                </div>
+                <div className="two-field-left">
+                  <label>City</label>
+                  <input type="text" name="stockCapacity" value={productManagment?.city} onChange={handleChange} placeholder="Enter city" />
+                  {productManagment.city === "" && inputError &&
+                    <div className="error-input">City is required</div>
+                  }
+                </div>
+              </div>
+              <div className="two-field">
+                <div className="two-field-left">
+                  <label>Shipping price</label>
+                  <input type="number" name="shippingprice" value={productManagment?.shippingprice} onChange={handleChange} placeholder="Enter shipping price" />
+                  {productManagment.shippingprice === "" && inputError &&
+                    <div className="error-input">Shipping price is required</div>
+                  }
+                </div>
+                <div className="two-field-left">
+                  <label>Shipping duration</label>
+                  <input type="number" name="shipingdurations" value={productManagment?.shipingdurations} onChange={handleChange} placeholder="Enter shipping duration" />
+                  {productManagment.shipingdurations === "" && inputError &&
+                    <div className="error-input">Shipping duration is required</div>
+                  }
+                </div>
+              </div>
+              <div className="two-field">
+                <div className="two-field-left">
+                  <label >Return shipping price</label>
+                  <input type="number" name="returnshippingprice" value={productManagment?.returnshippingprice} onChange={handleChange} placeholder="Enter return shipping price" />
+                  {productManagment.returnshippingprice === "" && inputError &&
+                    <div className="error-input">Return shipping price is required</div>
+                  }
+
+                </div>
+                <div className="two-field-left">
+                  <label>Return duration limit</label>
+                  <input type="number" name="returndurationlimit" value={productManagment?.returndurationlimit} onChange={handleChange} placeholder="Enter return duration limit" />
+                  {(productManagment.returndurationlimit === "" && inputError) &&
+                    <div className="error-input">Return duration limit paid by is required</div>}
+                </div>
+              </div>
+              <div className="two-field">
+                <div className="two-field-left">
+                  <label>Return shipping price paid by</label>
+                  <input type="number" name="returnshippingpaidby" value={productManagment?.returnshippingpaidby} onChange={handleChange} placeholder="Enter return shipping price paid by" />
+                  {(productManagment.returnshippingpaidby === "" && inputError) &&
+                    <div className="error-input">Return shipping price paid by is required</div>}
+                </div>
+                <div className="two-field-left">
+                </div>
+              </div>
+            </div>
+            <div className="p-m-s-b">
+              <button
+                className="btn2"
+                style={{ marginTop: "10px" }}
+                disabled={enabled}
+                type="submit"
+              >
+                {isLoading ? "loading.." : "Preview Product"}
               </button>
             </div>
-        </div> */}
-        {/* {errors.buyitnow && <p className="error">{errors.buyitnow}</p>} */}
-        <div className="pricing">
-          <h4>SHIPPING</h4>
-          <div className="listschedule1">
-            <div>Deliver Domestically</div>
-            <div>
-              <label className="switch3">
-                <input
-                  type="radio"
-                  value={product.deliverddomestic}
-                  // checked={domestic}
-                  name="deliver"
-                  onChange={handleDomestic}
-                />
-                <span className="slider3 round3"></span>
-              </label>
-            </div>
-          </div>
-          <div className="listschedule1">
-            <div>Deliver Internationally</div>
-            <label className="switch3">
-              <input
-                type="radio"
-                name="deliver"
-                value={product.deliverdinternational}
-                // checked={international}
-                onChange={handleInternational}
-              />
-              <span className="slider3 round3"></span>
-            </label>
-          </div>
-        </div>
-        {errors.deliverdomestically && (
-          <p className="error">{errors.deliverdomestically}</p>
-        )}
-        <div className="delivery-company">
-          <div>Select Delivery Company</div>
-          <div>
-            <select
-              name={deliverCompany}
-              checked={deliverCompany}
-              value={product.deliverycompany}
-              onChange={handleDeliverCompany}
-            >
-              <option value="">Select Delivery Company</option>
-              {deliveryCompany.length > 0 ? (
-                <>
-                  {deliveryCompany.map((company) => (
-                    <option key={company.name} value={company.name}>
-                      {company.name}
-                    </option>
-                  ))}
-                </>
-              ) : (
-                <></>
-              )}
-            </select>
-          </div>
-        </div>
-        {errors.deliverycompany && (
-          <p className="error">{errors.deliverycompany}</p>
-        )}
-
-<div className="delivery-company" style={{ display: 'block', width: '100%' }}>
-  {props.guid ? (
-    <>
-      {isLoaded && (
-        <StandaloneSearchBox
-          onPlacesChanged={handlePlaceChanged}
-          style={{ width: '100%' }}
-        >
-          <input type="text" placeholder={`${address}`} />
-        </StandaloneSearchBox>
-      )}
-    </>
-  ) : (
-    <>
-      {isLoaded && (
-        <StandaloneSearchBox
-          style={{ width: '100%' }}
-          onLoad={(ref) => (inputRef.current = ref)}
-          onPlacesChanged={handlePlaceChanged}
-        >
-          <input type="text" placeholder="Enter your street Address" />
-        </StandaloneSearchBox>
-      )}
-    </>
-  )}
-</div>
-<div className="row">
-  <div className="col-lg-4">
-    <div className="delivery-company">
-      <label style={{ display: 'contents' }} className="switch3">{state}</label>
-    </div>
-    {errors.states && <p className="error">{errors.states}</p>}
-  </div>
-  <div className="col-lg-4">
-    <div className="delivery-company">
-      <label style={{ display: 'contents' }} className="switch3">{city}</label>
-    </div>
-    {errors.city && <p className="error">{errors.city}</p>}
-  </div>
-  <div className="col-lg-4">
-    <div className="delivery-company">{zip}</div>
-    {errors.city && <p className="error">{errors.city}</p>}
-  </div>
-</div>
-
-
-        <div className="set-price">
-          <div>Shipping Price</div>
-          <div>
-            <input
-              type="text"
-              placeholder="$"
-              name={shippingprices}
-              value={product.shippingprice}
-              onChange={handleShippingPriceChanges}
-            />
-          </div>
-        </div>
-        {errors.shippingprice && (
-          <p className="error">{errors.shippingprice}</p>
-        )}
-        {/* Add the Shipping Duration inputs */}
-        <div className="delivery-company">
-          <div>Shipping Duration</div>
-          <select
-            name={product.shipingdurations}
-            value={product.shipingdurations}
-            onChange={handleDurationChange}
-          >
-            <option>Select Duration</option>
-            <option value="7-10 Days">7-10 Days</option>
-          </select>
-
-          {/* <div>
-              <input
-                type="date"
-                placeholder="From"
-                value={shippingStart}
-                onChange={handleShippingStartChange}
-              />
-            </div> */}
-          {/* <div>
-              <span>-</span>
-            </div> */}
-          {/* <div>
-              <input
-                type="date"
-                placeholder="To"
-                value={shippingEnd}
-                onChange={handleShippingEndChange}
-              />
-            </div> */}
-        </div>
-        {errors.durations && <p className="error">{errors.durations}</p>}
-
-        <div className="set-price">
-          <div>Return Shipping Price</div>
-          <div>
-            <input
-              type="text"
-              placeholder="$"
-              value={product.returnshippingprice}
-              onChange={handleRefundprice}
-            />
-          </div>
-        </div>
-        {errors.returnshippingprice && (
-          <p className="error">{errors.returnshippingprice}</p>
-        )}
-        <div className="set-price">
-          <div>Return Duration limit</div>
-          <div>
-            <input
-              type="text"
-              placeholder="0 Days"
-              value={product.returndurationlimit}
-              onChange={handleReturnLimit}
-            />
-          </div>
-        </div>
-        {errors.returndurationlimit && (
-          <p className="error">{errors.returndurationlimit}</p>
-        )}
-        <div className="delivery-company">
-          <div>Return shipping price paid by</div>
-          <div>
-            <select
-              value={product.returnshippingpaidby}
-              onChange={handleReturnPaidBy}
-            >
-              <option value="">Select Paid By</option>
-              {paidBy.map((paid) => (
-                <option key={paid.id} value={paid.id}>
-                  {paid.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-        {errors.returnshippingpaidby && (
-          <p className="error">{errors.returnshippingpaidby}</p>
-        )}
-        {/* <div className="delivery-company">
-          <div>Return Shipping Location</div>
-          <div>
-          
-            
-          </div>
-        </div> */}
-        {/* {errors.returnshippinglocation && (
-          <p className="error">{errors.returnshippinglocation}</p>
-        )} */}
-        <div className="row actvtebuttns">
-          <div className="col-lg-6">
-            {props.guid ? (
-              <>
-                <Link
-                  to={`/singleproduct/${props.guid}`}
-                  style={{ textDecoration: "none" }}
-                >
-                  <button
-                    className="btn1"
-                    type="button"
-                    style={{ marginTop: "10px" }}
-                  >
-                    Preview Product
-                  </button>
-                </Link>
-              </>
-            ) : (
-              ""
-            )}
-          </div>
-          <div className="col-lg-6">
-            {/* <button className="btn2" onClick={handleActivateProduct} type="submit" style={{ marginTop: "10px" }}>
-         Activate Product
-          </button> */}
-            {/* <button
-              type="submit"
-              className="btn2"
-              style={{ marginTop: "10px" }}
-            >
-              Activate Product
-            </button> */}
-            {props.guid ? (
-              <>
-                <input
-                  type="hidden"
-                  name={product.action}
-                  id="action"
-                  value="edit"
-                />
-                {/* <button className="btn2" style={{ marginTop: "10px" }}  type="submit">
-                  Update Product
-                </button> */}
-                <button
-                  className="btn2"
-                  style={{ marginTop: "10px" }}
-                  disabled={enabled}
-                  type="submit"
-                >
-                  {isLoading ? "loading.." : "Update Product"}
-                </button>
-              </>
-            ) : (
-              <>
-                <input
-                  type="hidden"
-                  s
-                  name={product.action}
-                  id="action"
-                  value="add"
-                />
-                {/* <button className="btn2" style={{ marginTop: "10px" }}  type="submit">
-                  Activate Product
-                </button> */}
-                <button
-                  className="btn2"
-                  style={{ marginTop: "10px" }}
-                  disabled={enabled}
-                  type="submit"
-                >
-                  {isLoading ? "loading.." : "Activate Product"}
-                </button>
-              </>
-            )}
-          </div>
-        </div>
-        <div className="popup">
-          {/* Popup for successful product activation */}
-          {showPopup && (
-            <div className="listing-activated">
-              <div className="innerlisting-activated">
-                <img src={Checkimg} />
-                <h2>Product Listed Successfully</h2>
-                <p>We hope you enjoy selling on our platform</p>
-                <button onClick={() => setShowPopup(false)}>Close</button>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="popup">
-          {/* Popup for successful product activation */}
-          {showEditPopup && (
-            <div className="listing-activated">
-              <div className="innerlisting-activated">
-                <img src={Checkimg} />
-                <h2>Product Updated Successfully</h2>
-                <p>We hope you enjoy selling on our platform</p>
-                <button onClick={() => setShowPopup(false)}>Close</button>
-              </div>
-            </div>
-          )}
-        </div>
-      </form>
+          </form>
+        </>
       )}
     </section>
   );

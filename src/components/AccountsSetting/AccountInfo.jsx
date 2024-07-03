@@ -41,9 +41,9 @@ const AccountInfo = () => {
         return (
           <div>
             {/* Content for Selling */}
-            <h3 className='main-tab-title'>Selling Hub</h3>
-            <SellerAllTabs />
-            <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button>
+            {/* <h3 className='main-tab-title'>Selling Hub</h3> */}
+            <SellerAllTabs setSelectedLink={setSelectedLink}/>
+            {/* <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button> */}
           </div>
         );
       case 'items':

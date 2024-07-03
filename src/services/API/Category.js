@@ -1,24 +1,25 @@
 import request from '../request'
 import { BASE_API } from '../Constant'
 
-const baseUrl = `${BASE_API}categories`
+const baseUrlC = `${BASE_API}categories`
+const baseUrl = `${BASE_API}`
 
 function all(params = {}) {
   return request({
-    url: baseUrl,
+    url: baseUrlC,
     params,
   })
 }
 
 function overAll(params = {}) {
   return request({
-    url: `${baseUrl}/overAll`,
+    url: `${baseUrlC}/overAll`,
     params,
   })
 }
 function save(data) {
   return request({
-    url: baseUrl,
+    url: baseUrlC,
     data,
     method: 'POST',
   })
@@ -26,21 +27,21 @@ function save(data) {
 
 function productAttributes(categoryId, params = {}) {
   return request({
-    url: `${baseUrl}/product-attributes/${categoryId}`,
+    url: `${baseUrl}products/getCategoryAttributes/${categoryId}`,
     params,
   })
 }
 
 function tabs(params = {}) {
   return request({
-    url: `${baseUrl}/tabs/list`,
+    url: `${baseUrlC}/tabs/list`,
     params,
   })
 }
 
 function get(id) {
   return request({
-    url: `${baseUrl}/${id}`,
+    url: `${baseUrlC}/${id}`,
   })
 }
 

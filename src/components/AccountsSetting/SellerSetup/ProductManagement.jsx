@@ -4,9 +4,9 @@ import Chat from '../../CustomerDashboard/Chat';
 import Addresses from '../PersonalInfoAllPages/Addresses'
 import ListingForm from './ListingForm';
 import InActiveProducts from '../../Elements/InActiveProducts';
-const ProductManagement = () => {
+const ProductManagement = ({submitted , setSubmitted}) => {
   const [selectedOption, setSelectedOption] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  // const [submitted, setSubmitted] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [activeTab, setActiveTab] = useState('active');
 
@@ -45,78 +45,24 @@ const ProductManagement = () => {
 
   return (
     <>
-      {renderSelectedComponent() || ( // Render component or the product-management section
-        <section id='product-management'>
-          <div className='row align-items-center'>
-            <div className='col-lg-7'>
-              <h3>Start Listing your Product</h3>
-              <p>
-                This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32
-              </p>
+      {submitted ?
+      <ListingForm setSubmitted={setSubmitted}/>
+      :
+      ( // Render component or the product-management section
+        <section id='product-management' className='seller-product-managment'>
+          <div className="s-p-m-one">
+            <div className="s-p-m-left">
+              <h3 className='title'>Start Listing your Product</h3>
+              <p className='desc'>This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32</p>
             </div>
-            <div className='col-lg-5'>
-              <button className='listing' onClick={openPopup}>Create a new product listing</button>
-              {showPopup && (
-                <div className="prd-mng-popup">
-                  <div className="prd-mng-popup-inner">
-                    <span style={{ cursor: "pointer" }} className="close" onClick={() => setShowPopup(false)}>&times;</span>
-                    <div className='seller-productmngement-popup'>
-                      <h1>Select condition of your item</h1>
-                      <form onSubmit={handleSubmit}>
-                        <label>
-                          <input
-                            type="radio"
-                            value="BrandNew"
-                            checked={selectedOption === 'BrandNew'}
-                            onChange={handleOptionChange}
-                          />
-                          Brand New
-                        </label>
-                        <br />
-                        <label>
-                          <input
-                            type="radio"
-                            value="Used"
-                            checked={selectedOption === 'Used'}
-                            onChange={handleOptionChange}
-                          />
-                          Used
-                        </label>
-                        <br />
-                        <label>
-                          <input
-                            type="radio"
-                            value="Refurbished"
-                            checked={selectedOption === 'Refurbished'}
-                            onChange={handleOptionChange}
-                          />
-                          Refurbished
-                        </label>
-                        <br />
-                        <label>
-                          <input
-                            type="radio"
-                            value="Vintage"
-                            checked={selectedOption === 'Vintage'}
-                            onChange={handleOptionChange}
-                          />
-                          Vintage
-                        </label>
-                        <br />
-                        <button type="submit">Submit</button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {submitted && renderSelectedComponent()}
+            <div className="s-p-m-right">
+              <button className='listing' onClick={() =>{setSubmitted(true)}}>Create a new product listing</button>
             </div>
           </div>
           <div className='row'>
             <ul className='active-inactive-schedule'>
               <li className={activeTab === 'active' ? 'active' : ''} onClick={() => setActiveTab('active')}>Active products</li>
               <li className={activeTab === 'inactive' ? 'active' : ''} onClick={() => setActiveTab('inactive')}>Inactive products</li>
-              {/* <li className={activeTab === 'scheduled' ? 'active' : ''} onClick={() => setActiveTab('scheduled')}>Scheduled</li> */}
             </ul>
           </div>
           <div className='row'>

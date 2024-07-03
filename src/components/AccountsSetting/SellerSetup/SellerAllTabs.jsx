@@ -17,6 +17,7 @@ import NotFound from "../../../pages/NotFound_"
 import DiscountAndCoupens from './DiscountAndCoupens';
 import SellerFeedback from '../../Seller/SellerFeedback';
 import PendingOrderManagement from '../../OrderManagement/PendingOrderManagement';
+import Backimage from '../../../assets/Images/back-icon.png'
 
 const SellerAllTabs = (props) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('selling1');
@@ -72,12 +73,13 @@ const SellerAllTabs = (props) => {
   const handleCallbacks = (value) => {
     setSelectedMenuItem(value);
   }
+  const [submitted, setSubmitted] = useState(false);
   const renderComponent = () => {
     switch (selectedMenuItem) {
       case 'selling1':
         return <Selling orderid={props.orderid} parentCallback={handleCallbacks} />;
       case 'selling2':
-        return <ProductManagement />;
+        return <ProductManagement setSubmitted={setSubmitted} submitted={submitted}/>;
       case 'selling3':
         return null;
       case 'pending':
@@ -137,6 +139,7 @@ const SellerAllTabs = (props) => {
         <div className='row'>
           <div className='col-lg-3'>
             <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
+              <div className="title-selling-hub">Selling Hub</div>
               <ul>
                 <li className={selectedMenuItem === 'selling1' ? 'active' : ''} onClick={() => handleMenuItemClick('selling1')}>
                   Dashboard
@@ -210,7 +213,7 @@ const SellerAllTabs = (props) => {
                   </>
                   :
                   <>
-                    <li className={selectedMenuItem === 'selling2' ? 'active' : ''} onClick={() => handleMenuItemClick('selling2')}>
+                    <li className={selectedMenuItem === 'selling2' ? 'active' : ''} onClick={() => {handleMenuItemClick('selling2') ; setSubmitted(false)}}>
                       Product Management
                     </li>
                     <li className='ordaw' onClick={toggleOrderManagement}>
@@ -280,6 +283,7 @@ const SellerAllTabs = (props) => {
                   </>
                 }
               </ul>
+              <button className='backbutton-account' onClick={() => props?.setSelectedLink(null)}><img src={Backimage} /> Back</button>
             </div>
           </div>
           <div className='col-lg-9'>
