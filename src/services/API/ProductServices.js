@@ -49,6 +49,13 @@ function update(id, data) {
     method: 'POST',
   })
 }
+function updateProduct(id, data) {
+  return request({
+    url: `${baseUrl}/${id}`,
+    data,
+    method: 'POST',
+  })
+}
 
 function get(id, params = {}) {
   return request({
@@ -403,7 +410,8 @@ const ProductServices = {
   sellerActiveProducts,
   sellerInActiveProducts,
   storeProduct,
-  createSellerProduct
+  createSellerProduct,
+  updateProduct
 }
 
 export default ProductServices

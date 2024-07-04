@@ -1161,6 +1161,16 @@ section#productcard .productlist h2 {
   align-items: center;
 }
 
+section#productcard .productlist h2 .edit {
+  width: 100%;
+  text-align: right;
+  font-family: 'Cairo';
+  font-size: 20.04px;
+  font-weight: 700;
+  line-height: 37.56px;
+  color: #EF2A2A;
+}
+
 section#productcard .productlist h2 .circle {
   display: inline-block;
   width: 5px;
@@ -2454,6 +2464,10 @@ div#order-detailsid ::placeholder {
   position: relative;
 }
 
+.main-dasboard-tabs .account-dashboard {
+  /* margin: 50px 0px 80px 0px; */
+}
+
 .whatyouthink a {
   text-decoration: unset;
   border: 0;
@@ -2488,11 +2502,13 @@ section#activity-main-dashboard .left-menu ul {
 
 .left-menu {
   display: block;
+  margin-top: 80px;
+  margin-bottom: 80px;
 }
 
 .left-menu .title-selling-hub {
   display: block;
-  margin-top: 80px;
+  /* margin-top: 80px; */
   margin-bottom: 30px;
   font-family: 'Cairo';
   font-size: 24px;
@@ -4129,7 +4145,7 @@ section#sign-security .chngepaswrd {
   font-size: 14px;
   box-shadow: unset;
   margin-top: 100px;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
 }
 
 .personal-info-links ul {
@@ -6044,6 +6060,41 @@ th {
   line-height: 29.98px;
   text-align: left;
   color: #585858;
+}
+
+.seller-product-modal-wrap {}
+
+.seller-product-modal-wrap .modal-content {
+  width: 675px !important;
+  margin-inline: auto;
+  padding: 70px 20px;
+}
+
+.seller-product-modal-wrap .modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.seller-product-modal-wrap .modal-body h4 {
+  font-family: 'Cairo';
+  font-size: 40.32px;
+  font-weight: 700;
+  line-height: 75.56px;
+  text-align: center;
+  color: #373737;
+  margin-top: 21px;
+  margin-bottom: 0;
+}
+
+.seller-product-modal-wrap .modal-body p {
+  font-family: 'Lato';
+  font-size: 21.27px;
+  font-weight: 500;
+  line-height: 25.52px;
+  text-align: center;
+  color: #757474;
+  margin: 0;
 }
 
 @media (max-width: 1024px) {
