@@ -1169,12 +1169,15 @@ section#productcard .productlist h2 .edit {
   font-weight: 700;
   line-height: 37.56px;
   color: #EF2A2A;
+  cursor: pointer;
 }
 
 section#productcard .productlist h2 .circle {
   display: inline-block;
   width: 5px;
   height: 5px;
+  min-width: 5px;
+  min-height: 5px;
   border-radius: 100%;
   background-color: #8B2CA0;
 }
@@ -2496,6 +2499,15 @@ section#activity-main-dashboard .left-menu ul {
   gap: 16px;
 }
 
+section#activity-main-dashboard .left-menu .dropp ul {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .left-menu.open {
   display: block;
 }
@@ -2527,8 +2539,18 @@ section#activity-main-dashboard .left-menu ul li.active {
   color: #282828;
 }
 
+section#activity-main-dashboard .left-menu ul .ordaw.active {
+  background: transparent;
+  color: #282828;
+}
+
 section#activity-main-dashboard .left-menu ul li:hover {
   background: #D9D9D9;
+  color: #282828;
+}
+
+section#activity-main-dashboard .left-menu ul .ordaw:hover {
+  background: transparent;
   color: #282828;
 }
 
@@ -2582,6 +2604,24 @@ section#activity-main-dashboard .left-menu ul li {
   line-height: 39.35px;
   text-align: left;
   color: #28282866;
+}
+
+section#activity-main-dashboard .left-menu .dropp ul li {
+  list-style: none;
+  font-family: 'Cairo';
+  text-transform: capitalize;
+  cursor: pointer;
+  padding: 0px 7px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 30.35px;
+  text-align: left;
+  color: #fff;
+}
+
+section#activity-main-dashboard .left-menu .dropp ul li:hover {
+  color: #000;
+  background-color: #fff;
 }
 
 .ongoing .product-image .prd-details h5 {
@@ -3954,11 +3994,18 @@ section#sellershop .sellerdetails {
   height: 770px;
 }
 
+.chat-listing-wrap{
+  overflow: auto;
+}
+
 .chat-container ul {
   margin: 0;
   padding: 0;
-  height: 480px;
+  height: 605px;
   margin-top: 15px;
+  gap: 15px;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-container ul li {
@@ -4961,11 +5008,11 @@ button.rviews {
 }
 
 .dropp {
-  background: #f3efef;
-  margin: 10px 0px;
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  margin: 10px 0px 0px 0px;
   padding: 10px 10px;
-  border-radius: 10px;
 }
+
 
 /* Ordermanagement  */
 .detailed-product-info .order-seller-details p {
@@ -5312,8 +5359,11 @@ th {
   font-weight: 700;
 }
 
-.main-content {
+.main-content,
+.selling-activity,
+.loader-container {
   /* margin-top: 20px; */
+  height: 100%;
 }
 
 .main-content {}
@@ -6095,6 +6145,407 @@ th {
   text-align: center;
   color: #757474;
   margin: 0;
+}
+
+.seller-new-dashboard {
+  margin: 73px 0px;
+}
+
+.seller-new-dashboard .title {
+  font-family: 'Cairo';
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 32.13px;
+  text-align: left;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.seller-new-dashboard .seller-new-dashboard-one {
+  display: flex;
+  gap: 16px;
+}
+
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-o {
+  flex: 1;
+  background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
+  border-radius: 9.11px;
+  padding: 15px;
+}
+
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-t {
+  flex: 1;
+  background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
+  border-radius: 9.11px;
+  padding: 15px;
+}
+
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-th {
+  flex: 2;
+  background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
+  border-radius: 9.11px;
+  padding: 15px;
+}
+
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-o h4,
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-t h4,
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-th h4 {
+  font-family: 'Cairo';
+  font-size: 18.22px;
+  font-weight: 600;
+  line-height: 18.29px;
+  text-align: left;
+  color: #fff;
+  margin-bottom: 18px;
+}
+
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-o p,
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-t p,
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-th p {
+  font-family: 'Cairo';
+  font-size: 51px;
+  font-weight: 700;
+  line-height: 51.21px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-o .d-d,
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-t .d-d {}
+
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-th .s-b {
+  text-align: right;
+}
+
+.seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-th .s-b button {
+  border: 1px solid #FFFFFF;
+  font-family: 'Cairo';
+  font-size: 11.39px;
+  font-weight: 600;
+  line-height: 21.34px;
+  letter-spacing: 0.015em;
+  text-align: left;
+  color: #fff;
+  background: transparent;
+  padding: 8px 24px;
+}
+
+
+.seller-new-transaction {
+  margin: 73px 0px;
+}
+
+.seller-new-transaction .title {
+  font-family: 'Cairo';
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 32.13px;
+  text-align: left;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.seller-new-transaction .seller-new-transaction-one {
+  display: flex;
+  gap: 16px;
+}
+
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-o {
+  flex: 2;
+  background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
+  border-radius: 9.11px;
+  padding: 30px 20px;
+}
+
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-t {
+  flex: 2;
+  background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
+  border-radius: 9.11px;
+  padding: 30px 20px;
+}
+
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-th {
+  flex: 1;
+}
+
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-o h4,
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-t h4,
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-th h4 {
+  font-family: 'Cairo';
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 30px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 0px;
+}
+
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-o p,
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-t p,
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-th p {
+  font-family: 'Cairo';
+  font-size: 51px;
+  font-weight: 700;
+  line-height: 51.21px;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-o .d-d,
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-t .d-d {}
+
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-th .s-b {
+  text-align: right;
+}
+
+.seller-new-transaction .seller-new-transaction-one .s-n-d-o-th .s-b button {
+  border: 1px solid #FFFFFF;
+  font-family: 'Cairo';
+  font-size: 11.39px;
+  font-weight: 600;
+  line-height: 21.34px;
+  letter-spacing: 0.015em;
+  text-align: left;
+  color: #fff;
+  background: transparent;
+  padding: 8px 24px;
+}
+
+.seller-new-transaction .seller-new-transaction-two {
+  margin-top: 40px;
+}
+
+.seller-new-transaction .seller-new-transaction-two .two-title {
+  font-family: 'Cairo';
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 28px;
+  text-align: left;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing {}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing .s-n-t-t-titles {}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing .s-n-t-t-titles ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing .s-n-t-t-titles ul li {
+  list-style: none;
+  flex: 1 1;
+  color: #fff;
+  padding: 10px 20px;
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28.13px;
+  text-align: left;
+}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing .s-n-t-t-listing {}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing .s-n-t-t-listing .s-n-t-t-listing-wrap {}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing .s-n-t-t-listing .s-n-t-t-listing-wrap ul {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid #dbd8de;
+}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing .s-n-t-t-listing .s-n-t-t-listing-wrap ul:nth-child(even) {
+  background: #fdfbfe;
+}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing .s-n-t-t-listing .s-n-t-t-listing-wrap ul li {
+  list-style: none;
+  flex: 1 1;
+  color: #7d7b7b;
+  padding: 15px 20px;
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28.13px;
+  text-align: left;
+}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing .s-n-t-t-listing .s-n-t-t-listing-wrap ul li.edit-delete {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing .s-n-t-t-listing .s-n-t-t-listing-wrap ul li.edit-delete span:nth-child(1) svg {
+  color: #000;
+  font-size: 30px;
+}
+
+.seller-new-transaction .seller-new-transaction-two .s-n-t-t-transaction-listing .s-n-t-t-listing .s-n-t-t-listing-wrap ul li.edit-delete span:nth-child(2) svg{
+  color: #000;
+  font-size: 24px;
+}
+
+.seller-new-transaction .seller-new-transaction-three {
+  margin: 30px 0px;
+}
+
+.seller-new-transaction .seller-new-transaction-three button {
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  box-shadow: 0px 5px 11px 0px #0000003B;
+  width: max-content;
+  font-family: 'Lato';
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #fff;
+  padding: 20px 35px;
+  border-radius: 9.11px;
+  border: none;
+}
+
+.seller-new-transaction .seller-new-transaction-four {}
+
+.seller-new-transaction .seller-new-transaction-four .s-n-t-f-tabs {
+  display: flex;
+}
+
+.seller-new-transaction .seller-new-transaction-four .s-n-t-f-tabs ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  background-color: #b2b8be;
+  border-radius: 9.11px;
+}
+
+.seller-new-transaction .seller-new-transaction-four .s-n-t-f-tabs ul li {
+  list-style: none;
+  font-family: 'Lato';
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #fff;
+  padding: 20px 35px;
+  border-radius: 9.11px;
+  border: none;
+  cursor: pointer;
+}
+
+.seller-new-transaction .seller-new-transaction-four .s-n-t-f-tabs ul li.active {
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  color: #fff;
+}
+
+.create-coupon-modal {}
+
+.create-coupon-modal .modal-dialog {
+  transform: none;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px;
+}
+
+.create-coupon-modal .c-c-body {
+  padding: 30px;
+  border-radius: 9.11px;
+}
+
+.create-coupon-modal .modal-content {
+  border-radius: 9.11px;
+}
+
+.create-coupon-modal .c-c-body form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.create-coupon-modal .c-c-body form .coupon-title {
+  font-family: 'Cairo';
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 32.13px;
+  text-align: center;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+.create-coupon-modal .c-c-body form div {}
+.create-coupon-modal .c-c-body form .end-date {
+  position: relative;
+}
+.create-coupon-modal .c-c-body form .end-date p{
+  font-family: 'Cairo';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: left;
+  color: #7d7b7b;
+  margin: 0;
+  padding: 17px 25px;
+  border-radius: 13px;
+  background: #F0F0F0;
+  border: 0;
+  width: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.create-coupon-modal .c-c-body form input {
+  font-family: 'Cairo';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #292929;
+  margin: 0;
+  padding: 17px 25px;
+  border-radius: 13px;
+  background: #F0F0F0;
+  border: 0;
+  height: 58px;
+}
+
+.create-coupon-modal .c-c-body form input::placeholder {
+  color: #7d7b7b !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+}
+
+.create-coupon-modal .c-c-body form .c-c-button {
+  text-align: center;
+}
+
+.create-coupon-modal .c-c-body form .c-c-button button {
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  box-shadow: 0px 5px 11px 0px #0000003B;
+  width: max-content;
+  font-family: 'Lato';
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #fff;
+  padding: 15px 35px;
+  border-radius: 9.11px;
+  border: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
 }
 
 @media (max-width: 1024px) {

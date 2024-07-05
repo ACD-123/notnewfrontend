@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import ProductCard from '../../Elements/ProductCard';
 import ListingForm from './ListingForm';
 import InActiveProducts from '../../Elements/InActiveProducts';
-const ProductManagement = ({ submitted, setSubmitted }) => {
+const ProductManagement = ({ submitted, setSubmitted , setProductId , productId }) => {
   const [activeTab, setActiveTab] = useState('active');
-  const [productId, setProductId] = useState('');
+
 
   return (
     <>

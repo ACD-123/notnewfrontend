@@ -23,6 +23,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
   const inputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [popupText, setPopupText] = useState('');
   const [isFromLoading, setIsFromLoading] = useState(false);
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
@@ -135,7 +136,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
   const [selected, setSelected] = []
   const handelCategoryChange = (data, apiAttributes) => {
-    setProductManagments({ ...productManagment, category: data, selectToSend: [] }); // Initialize selectToSend as an empty array
     Category.productAttributes(data.value)
       .then((res) => {
         if (res?.data?.length > 0) {
@@ -146,22 +146,22 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
               value: index + 1,
               label: option
             })),
-            selectToSend: [] 
+            selectToSend: []
           }));
           setProductManagments(prev => ({ ...prev, attributes: categoryAddons }));
 
           if (productId != '' &&
             productId != null &&
             productId != undefined &&
-            productManagment?.attributes?.[0]?.selected === null) {
+            categoryAddons?.[0]?.selected === null) {
 
             let updateAddons = []
             let selectedd = []
             let selectToSendd = []
-            for (let i = 0; i < productManagment.attributes.length; i++) {
-              for (let j = 0; j < productManagment.attributes[i].options.length; j++) {
+            for (let i = 0; i < categoryAddons.length; i++) {
+              for (let j = 0; j < categoryAddons[i].options.length; j++) {
                 for (let k = 0; k < apiAttributes[i].options.length; k++) {
-                  if (apiAttributes[i].options[k] === productManagment.attributes[i].options[j].label) {
+                  if (apiAttributes[i].options[k] === categoryAddons[i].options[j].label) {
                     selectedd.push({
                       value: k + 1,
                       label: apiAttributes[i].options[k]
@@ -171,16 +171,15 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                 }
               }
               updateAddons.push({
-                name: productManagment.attributes[i].name,
+                name: categoryAddons[i].name,
                 selected: selectedd,
-                options: productManagment.attributes[i].options,
+                options: categoryAddons[i].options,
                 selectToSend: selectToSendd
               })
               selectedd = []
               selectToSendd = []
             }
-            return setProductManagments(prev => ({ ...prev, attributes: updateAddons }));
-           
+            setProductManagments(prev => ({ ...prev, attributes: updateAddons, category: data }));
           }
         }
       })
@@ -188,6 +187,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
         console.log(error);
         setIsLoading(false)
       });
+
+
   }
 
   useEffect(() => {
@@ -363,9 +364,10 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           console.log(res, 'setAttribnutes');
           setSuccess(true)
           setProductId('')
+          setPopupText('Product updated Sucessfully')
           setTimeout(() => {
             setSubmitted(false)
-          }, 5000);
+          }, 3000);
           setIsFromLoading(false)
         })
         .catch((error) => {
@@ -377,9 +379,10 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
         .then((res) => {
           console.log(res, 'setAttribnutes');
           setSuccess(true)
+          setPopupText('Product Listed Sucessfully')
           setTimeout(() => {
             setSubmitted(false)
-          }, 5000);
+          }, 3000);
           setIsFromLoading(false)
         })
         .catch((error) => {
@@ -392,15 +395,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
   }
 
   const getProductDetail = (guid) => {
-    // setIsLoading(true)
     ProductServices.get(guid)
       .then((response) => {
-        handelCategoryChange({ value: response?.data?.category?.id, label: response?.data?.category?.name }, response?.data?.attributes)
-        console.log(response?.data, 'product Detail');
-        console.log(productManagment.attributes, 'productManagment.attributes');
-        // const existingData = productManagment.attributes
-        // const apiData = response?.data?.attributes
-
         setProductManagments((prev) => ({
           ...prev,
           file: [...response?.data?.media],
@@ -449,6 +445,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           length: "2",
           width: "1.00"
         }))
+        handelCategoryChange({ value: response?.data?.category?.id, label: response?.data?.category?.name }, response?.data?.attributes)
       })
       .catch((e) => {
         console.log(e.message);
@@ -583,29 +580,29 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                   </div>
                 </div>
                 {productManagment?.attributes?.length > 0 ?
-                  <div className="two-field">
-                    {productManagment?.attributes?.map((data, index) => {
-                      return (
-                        <>
-                          <div className="two-field-left">
-                            <label htmlFor="Price">{data?.name}</label>
-                            <Select
-                              // defaultValue={selected}
-                              value={data?.selected}
-                              onChange={(e) => { handelAddonsChange(e, data, index) }}
-                              options={productManagment?.attributes?.[index]?.options}
-                              placeholder={`Select ${data?.name}`}
-                              isMulti
-                            />
-                            {productManagment?.attributes?.[index]?.selectToSend?.length === 0 && inputError &&
-                              <div className="error-input">{data?.name} is required</div>
-                            }
-                          </div>
-                        </>
-                      )
-                    })}
-                  </div>
-                  : null}
+                <div className="two-field">
+                  {productManagment?.attributes?.map((data, index) => {
+                    return (
+                      <>
+                        <div className="two-field-left">
+                          <label htmlFor="Price">{data?.name}</label>
+                          <Select
+                            // defaultValue={selected}
+                            value={data?.selected}
+                            onChange={(e) => { handelAddonsChange(e, data, index) }}
+                            options={productManagment?.attributes?.[index]?.options}
+                            placeholder={`Select ${data?.name}`}
+                            isMulti
+                          />
+                          {productManagment?.attributes?.[index]?.selectToSend?.length === 0 && inputError &&
+                            <div className="error-input">{data?.name} is required</div>
+                          }
+                        </div>
+                      </>
+                    )
+                  })}
+                </div>
+                : null}
                 <div className="two-field">
                   <div className="two-field-left">
                     <label>Brand</label>
@@ -972,7 +969,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
               </linearGradient>
             </defs>
           </svg>
-          <h4>Product Listed Sucessfully</h4>
+            <h4>{popupText}</h4>
           <p>We hope you enjoy selling on our platform</p>
         </div>
       </Modal>

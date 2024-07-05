@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import ProductServices from "../../services/API/ProductServices";
 import UserServices from "../../services/API/UserServices";
 import { Spinner } from "react-bootstrap";
-import NoDataFound from '../../assets/Images/do-data-found.png';
+import LoadingComponents from "../Shared/LoadingComponents";
+import NoDataFound from "../Shared/NoDataFound";
 
 const Watchlist = () => {
   const [user, setUser] = useState({});
@@ -118,24 +119,17 @@ const Watchlist = () => {
       {selectedTab === "inStock" && (
         <div className="wishlist">
           {isLoading ? ( // Render loader if isLoading is true
-            <div className="loader-container text-center">
-              <Spinner animation="border" role="status">
-                {/* <span className="sr-only">Loading...</span> */}
-              </Spinner>
-            </div>
+            <LoadingComponents />
           ) : (
             <>
-              {watchlistInstock.length === 0 ? (
-                <div className='no-data-found'>
-                  <img src={NoDataFound} alt="" />
-                  <p>In Stock Products Available</p>
-                </div>
-              ) : (
+              {watchlistInstock.length > 0 ? (
                 <>
                   {watchlistInstock.map((product) => (
                     <ProductItem key={product.id} product={product} />
                   ))}
                 </>
+              ) : (
+                <NoDataFound title={'No watchlist Found'} />
               )}
             </>
           )}

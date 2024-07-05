@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, Spinner } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import UserServices from "../../../services/API/UserServices";
-import SellerServices from '../../../services/API/SellerServices';
 import { isLoggedin, setUserDetails } from '../../../services/Auth';
-import NoDataFound from '../../../assets/Images/do-data-found.png';
+import LoadingComponents from '../../Shared/LoadingComponents';
+import NoDataFound from '../../Shared/NoDataFound';
+import { MdDelete } from "react-icons/md";
+import { FaPencilAlt } from "react-icons/fa";
 
 const DiscountAndCoupens = () => {
-    const [activeTab, setActiveTab] = useState('rr1');
     const [user, setUser] = useState({});
     const [isLoading, setIsLoading] = useState(true);
-    const [expiredCoupons, setExpiredCoupons] = useState([]);
-    const [activeCoupons, setActiveCoupons] = useState([]);
-    const [countCopons, setCountCopons] = useState([]);
+    const [inputError, setInputError] = useState(false);
+    const [copons, setCopons] = useState([]);
     const [showAddCouponPopup, setShowAddCouponPopup] = useState(false);
-    const [sellerGuid, setSellerGuid] = useState(null);
+    const seller_guid = localStorage.getItem('seller_guid')
+    const [tab, setTab] = useState(0);
+    const [editCoupon, setEditCoupon] = useState(false);
 
-    const handleTabClick = (tab) => {
-        setActiveTab(tab);
-    };
 
     const getUser = () => {
         UserServices.detail()
@@ -40,9 +39,7 @@ const DiscountAndCoupens = () => {
                     setIsLoading(false);
                     if (response) {
                         console.log('data Coupons', response.data);
-                        setActiveCoupons(response.data.active_coupons);
-                        setExpiredCoupons(response.data.expired_coupons);
-                        setCountCopons(response.data);
+                        setCopons(response.data);
                     }
                 })
                 .catch((error) => {
@@ -50,20 +47,6 @@ const DiscountAndCoupens = () => {
                     console.error('Error fetching coupons:', error);
                 });
         }
-    };
-
-
-    const getSellerGuid = () => {
-        SellerServices.getShopDetails()
-            .then((response) => {
-                if (response.status) {
-                    setSellerGuid(response.data.guid);
-                    console.log('seller guid', response.data.guid);
-                }
-            })
-            .catch((e) => {
-                console.log(e.message);
-            });
     };
 
     const [couponData, setCouponData] = useState({
@@ -88,19 +71,74 @@ const DiscountAndCoupens = () => {
         setShowAddCouponPopup(!showAddCouponPopup);
     };
 
-    const postCoupons = () => {
-        const requestData = {
-            ...couponData,
-            discount: parseFloat(couponData.discount),
-            min_order: parseInt(couponData.min_order),
-            seller_guid: sellerGuid // Use the sellerGuid state here
-        };
+    const postCoupons = (e) => {
+        e.preventDefault();
+        setInputError(true)
+        if (couponData.code === "",
+            couponData.discount === "",
+            couponData.min_order === "",
+            couponData.start_date === "",
+            couponData.end_date === ""
+        ) {
+            return
+        }
 
-        UserServices.addCoupons(requestData)
+        if (editCoupon) {
+            UserServices.updateCoupon(couponData)
+                .then((response) => {
+                    setShowAddCouponPopup(false);
+                    getSellerBid()
+                    setEditCoupon(false)
+                })
+                .catch((error) => {
+                    console.error('Error adding coupon:', error);
+                });
+        } else {
+
+            const requestData = {
+                ...couponData,
+                discount: parseFloat(couponData.discount),
+                min_order: parseInt(couponData.min_order),
+                seller_guid: seller_guid
+            };
+
+            UserServices.addCoupons(requestData)
+                .then((response) => {
+                    setShowAddCouponPopup(false);
+                    getSellerBid()
+                })
+                .catch((error) => {
+                    console.error('Error adding coupon:', error);
+                });
+        }
+    };
+
+    const deleteCoupons = (id) => {
+        UserServices.deleteCoupons({ id: id })
             .then((response) => {
-                setShowAddCouponPopup(false);
-                console.log('Coupon added successfully:', response);
-                // You may want to update state or trigger a reload of coupon data here
+                getSellerBid()
+            })
+            .catch((error) => {
+                console.error('Error adding coupon:', error);
+            });
+    };
+    const getCouponsById = (id) => {
+        UserServices.getCouponsById(id)
+            .then((response) => {
+                console.log(response?.data, 'getCouponsById');
+                setCouponData({
+                    title: response?.data?.title,
+                    code: response?.data?.code,
+                    discount: response?.data?.discount,
+                    min_order: response?.data?.min_order,
+                    start_date: response?.data?.start_date,
+                    end_date: response?.data?.end_date,
+                    seller_guid: response?.data?.seller_guid,
+                    id: response?.data?.id,
+                })
+                setEditCoupon(true)
+                toggleAddCouponPopup()
+
             })
             .catch((error) => {
                 console.error('Error adding coupon:', error);
@@ -114,10 +152,6 @@ const DiscountAndCoupens = () => {
     }, []);
 
     useEffect(() => {
-        getSellerGuid();
-    }, []);
-
-    useEffect(() => {
         if (user && user.id) {
             getSellerBid();
         }
@@ -125,146 +159,141 @@ const DiscountAndCoupens = () => {
 
     return (
         <>
-            <h3>Discounts & Coupons</h3>
-            <div className="row minndabb">
-                <div className="col-lg-4 col">
-                    <div className="dabbCoupons">
-                        <h4>Active Coupons</h4>
-                        <h1>{countCopons.active_count}</h1>
+            {isLoading ?
+                <LoadingComponents />
+                :
+                <div className="seller-new-transaction">
+                    <div className="title">Discounts & Coupons</div>
+                    <div className="seller-new-transaction-one">
+                        <div className="s-n-d-o-o">
+                            <p>{copons.active_count}</p>
+                            <h4>Active Coupons</h4>
+                        </div>
+                        <div className="s-n-d-o-t">
+                            <p>{copons.expired_count}</p>
+                            <h4>Expired Coupons</h4>
+                            <div className="d-d"></div>
+                        </div>
+                        <div className="s-n-d-o-th">
+                        </div>
                     </div>
-                </div>
-                <div className="col-lg-4 col">
-                    <div className="dabbCoupons">
-                        <h4>Expired Coupons</h4>
-                        <h1>{countCopons.expired_count}</h1>
+                    <div className="seller-new-transaction-three">
+                        <button onClick={() => { toggleAddCouponPopup() }}>Add new coupon</button>
                     </div>
-                </div>
-            </div>
-            <div className='bid-offer-tabs'>
-                <button className='AddCoupon' onClick={toggleAddCouponPopup}>Add Coupon</button>
-                <Modal show={showAddCouponPopup} onHide={toggleAddCouponPopup}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Add Coupon</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <>
-                            <div className="mb-3" controlId="formBasicCouponName">
-                                <input className='form-control' type="text" name="title" value={couponData.title} onChange={handleInputChange} placeholder="Coupon Name" />
+                    <div className="seller-new-transaction-four">
+                        <div className="s-n-t-f-tabs">
+                            <ul>
+                                <li onClick={() => { setTab(0) }} className={`${tab === 0 ? 'active' : ''}`}>Active Coupons</li>
+                                <li onClick={() => { setTab(1) }} className={`${tab === 1 ? 'active' : ''}`}>Inactive Coupons</li>
+                            </ul>
+                        </div>
+                    </div>
+                    {tab === 0 ?
+                        <div className="seller-new-transaction-two">
+                            <div className="s-n-t-t-transaction-listing">
+                                <div className="s-n-t-t-titles">
+                                    <ul>
+                                        <li>S.no</li>
+                                        <li>Coupons code</li>
+                                        <li>Discounts</li>
+                                        <li>Valid Till</li>
+                                        <li>Action</li>
+                                    </ul>
+                                </div>
+                                <div className="s-n-t-t-listing">
+                                    <div className="s-n-t-t-listing-wrap">
+                                        {copons?.active_coupons?.length > 0 ?
+                                            copons?.active_coupons?.map((data, index) => {
+                                                return (
+                                                    <ul key={index}>
+                                                        <li>{index + 1}</li>
+                                                        <li>{data?.code}</li>
+                                                        <li>{data?.discount}</li>
+                                                        <li>{data?.end_date?.slice(0, 10)}</li>
+                                                        <li className='edit-delete'><span onClick={() => { deleteCoupons(data?.id) }}><MdDelete /></span> <span onClick={() => { getCouponsById(data?.id) }}><FaPencilAlt /></span></li>
+                                                    </ul>
+                                                )
+                                            })
+                                            :
+                                            <NoDataFound title={'No transaction Found'} />
+                                        }
+                                    </div>
+                                </div>
                             </div>
-                            <div className="mb-3" controlId="formBasicCouponCode">
-                                <input className='form-control' type="number" name="code" value={couponData.code} onChange={handleInputChange} placeholder="Coupon Code" />
+                        </div>
+                        :
+                        <div className="seller-new-transaction-two">
+                            <div className="s-n-t-t-transaction-listing">
+                                <div className="s-n-t-t-titles">
+                                    <ul>
+                                        <li>S.no</li>
+                                        <li>Coupons code</li>
+                                        <li>Discounts</li>
+                                        <li>Valid Till</li>
+                                    </ul>
+                                </div>
+                                <div className="s-n-t-t-listing">
+                                    <div className="s-n-t-t-listing-wrap">
+                                        {copons?.expired_coupons?.length > 0 ?
+                                            copons?.expired_coupons?.map((data, index) => {
+                                                return (
+                                                    <ul key={index}>
+                                                        <li>{index + 1}</li>
+                                                        <li>{data?.code}</li>
+                                                        <li>{data?.discount}</li>
+                                                        <li>{data?.end_date?.slice(0, 10)}</li>
+                                                    </ul>
+                                                )
+                                            })
+                                            :
+                                            <NoDataFound title={'No transaction Found'} />
+                                        }
+                                    </div>
+                                </div>
                             </div>
-                            <div className="mb-3" controlId="formBasicCouponDiscount">
-                                <input className='form-control' type="number" name='discount' value={couponData.discount} onChange={handleInputChange} placeholder="Coupon Discount" />
-                            </div>
-                            <div className="mb-3" controlId="formBasicCouponMin_order">
-                                <input className='form-control' type="text" name='min_order' value={couponData.min_order} onChange={handleInputChange} placeholder="min_order" />
-                            </div>
-                            <div className="mb-3" controlId="formBasicCouponStart_date">
-                                <input className='form-control' type="date" name='start_date' value={couponData.start_date} onChange={handleInputChange} placeholder="Start Date" />
-                            </div>
-                            <div className="mb-3" controlId="formBasicCouponEnd_date">
-                                <input className='form-control' type="date" name='end_date' value={couponData.end_date} onChange={handleInputChange} placeholder="End Date" />
-                            </div>
-                            <div className="mb-3" controlId="formBasicCouponGuid">
-                                <input className='form-control' name='End Date' type="hidden" value={couponData.seller_guid} onChange={handleInputChange} placeholder="End Date" />
-                            </div>
-                        </>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={toggleAddCouponPopup}>
-                            Close
-                        </Button>
-                        <Button variant="primary" onClick={postCoupons}>
-                            Save Coupon
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                        </div>
 
-                <div className="tab-buttons">
-                    <button onClick={() => handleTabClick('rr1')} className={activeTab === 'rr1' ? 'active' : ''}>
-                        Active Coupons
-                    </button>
-                    <button onClick={() => handleTabClick('rr2')} className={activeTab === 'rr2' ? 'active' : ''}>
-                        Expired Coupons
-                    </button>
+                    }
                 </div>
-                {isLoading ? (
-                    <div className="loader-container text-center">
-                        <Spinner animation="border" role="status" />
-                    </div>
-                ) : (
-                    <div className="tab-content">
-                        {activeTab === 'rr1' && (
-                            <div>
-                                <div className='ongoing ordmangemnt'>
-                                    {activeCoupons.length === 0 ? ( // Check if customerOrders array is empty
-                                        <div className='no-data-found'>
-                                            <img src={NoDataFound} alt="" />
-                                            <p>Orders Not  Found</p>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            {activeCoupons.map((order, index) => (
-                                                <div className='row align-items-center' key={index}>
-                                                    <div className='col-lg-8'>
-                                                        <div className='product-image'>
-                                                            <div className='prd-details'>
-                                                                <h3>{order.title}</h3>
-                                                                <h6 style={{ fontWeight: "Bold", color: "#000" }}>{order.discount}</h6>
-                                                                <div className='bids-prd'>
-                                                                    <div style={{ color: "red" }}>{order.min_order}</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className='col-lg-4'>
-                                                        <div className='rightarrow viedeails'>
-                                                            <button>View Details</button>
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </div>
-                                            ))}
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-                        {activeTab === 'rr2' && (
-                            <div>
-                                <div className='ongoing ordmangemnt'>
-                                    {expiredCoupons.length === 0 ? ( // Check if customerOrders array is empty
-                                        <div className='no-data-found'>
-                                            <img src={NoDataFound} alt="" />
-                                            <p>Orders Not  Found</p>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            {expiredCoupons.map((order, index) => (
-                                                <div className='row align-items-center' key={index}>
-                                                    <div className='col-lg-8'>
-                                                        <div className='product-image'>
-                                                            <div className='prd-details'>
-                                                                <h3>{order.title}</h3>
-                                                                <h6 style={{ fontWeight: "Bold", color: "#000" }}>{order.discount}</h6>
-                                                                <div className='bids-prd'>
-                                                                    <div style={{ color: "red" }}>{order.min_order}</div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <hr />
-                                                </div>
-                                            ))}
-                                        </>
-                                    )}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                )}
-            </div>
+            }
+            <Modal
+                show={showAddCouponPopup}
+                onHide={toggleAddCouponPopup}
+                className='create-coupon-modal'
+            >
+                <div className='c-c-body'>
+                    <form onSubmit={postCoupons}>
+                        <div className="coupon-title">{editCoupon ? 'Edit Coupon' : 'Add Coupon'}</div>
+                        <div>
+                            <input className='form-control' type="text" name="title" value={couponData.title} onChange={handleInputChange} placeholder="Coupon Name" />
+                            {couponData.title === "" && inputError && <div className="error-input">Coupon name is required</div>}
+                        </div>
+                        <div>
+                            <input className='form-control' type="number" name="code" value={couponData.code} onChange={handleInputChange} placeholder="Coupon Code" />
+                            {couponData.code === "" && inputError && <div className="error-input">Coupon code is required</div>}
+                        </div>
+                        <div className='end-date'>
+                            <input className='form-control' type="date" name='start_date' value={couponData.start_date} onChange={handleInputChange} placeholder="Start Date" />
+                            {couponData.start_date === "" && inputError && <div className="error-input">Start date is required</div>}
+                        </div>
+                        <div className='end-date'>
+                            <input className='form-control' type="date" name='end_date' value={couponData.end_date} onChange={handleInputChange} placeholder="End Date" />
+                            {couponData.end_date === "" && inputError && <div className="error-input">End date is required</div>}
+                        </div>
+                        <div>
+                            <input className='form-control' type="text" name='min_order' value={couponData.min_order} onChange={handleInputChange} placeholder="Min Order" />
+                            {couponData.min_order === "" && inputError && <div className="error-input">Min order is required</div>}
+                        </div>
+                        <div>
+                            <input className='form-control' type="number" name='discount' value={couponData.discount} onChange={handleInputChange} placeholder="Coupon Discount" />
+                            {couponData.discount === "" && inputError && <div className="error-input">Coupon discount is required</div>}
+                        </div>
+                        <div className="c-c-button">
+                            <button type='submit'>Save Coupon</button>
+                        </div>
+                    </form>
+                </div>
+            </Modal>
         </>
     );
 };

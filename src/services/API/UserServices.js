@@ -200,6 +200,12 @@ function couponsDiscount(id, date){
     method: "GET"
   })
 }
+function getCouponsById(id){
+  return request({
+    url: `${BASE_API}coupons/get/${id}`,
+    method: "GET"
+  })
+}
 function getSavedSeller(id) {
   return request({
     url: `${BASE_API}favourites/get?type=2&user_id=${id}`,
@@ -209,6 +215,20 @@ function getSavedSeller(id) {
 function addCoupons(data){
   return request({
     url: `${BASE_API}coupons/save`,
+    data,
+    method: "POST"
+  })
+}
+function updateCoupon(data){
+  return request({
+    url: `${BASE_API}coupons/update`,
+    data,
+    method: "POST"
+  })
+}
+function deleteCoupons(data){
+  return request({
+    url: `${BASE_API}coupons/delete`,
     data,
     method: "POST"
   })
@@ -259,6 +279,9 @@ const UserService = {
   getBid,
   addCoupons,
   getSavedSeller,
+  deleteCoupons,
+  getCouponsById,
+  updateCoupon
   // depositfund,
 }
 

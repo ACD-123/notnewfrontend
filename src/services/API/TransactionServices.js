@@ -1,23 +1,24 @@
 import request from '../request'
 import { BASE_API } from '../Constant'
 // @todo this file name should be product service
-const baseUrl = `${BASE_API}transaction`
+const baseUrlTransaction = `${BASE_API}transaction`
+const baseUrl = `${BASE_API}`
 
 function usertransaction() {
   return request({
-    url: baseUrl + `/usertransaction`,
+    url: baseUrlTransaction + `/usertransaction`,
     method: 'GET',
   })
 }
-function gettransactions(){
+function gettransactions(seller_guid){
   return request({
-    url: baseUrl + `/gettransactions`,
+    url: baseUrl + `seller/sellertransaction/${seller_guid}`,
     method: 'GET',
   })
 }
 function getStripeTransactions(){
   return request({
-    url: baseUrl + `/getstripetransactions`,
+    url: baseUrlTransaction + `/getstripetransactions`,
     method: 'GET',
   })
 }

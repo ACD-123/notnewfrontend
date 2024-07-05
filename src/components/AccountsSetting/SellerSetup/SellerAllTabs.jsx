@@ -74,12 +74,14 @@ const SellerAllTabs = (props) => {
     setSelectedMenuItem(value);
   }
   const [submitted, setSubmitted] = useState(false);
+  const [productId, setProductId] = useState('');
   const renderComponent = () => {
+    // setProductId('')
     switch (selectedMenuItem) {
       case 'selling1':
         return <Selling orderid={props.orderid} parentCallback={handleCallbacks} />;
       case 'selling2':
-        return <ProductManagement setSubmitted={setSubmitted} submitted={submitted}/>;
+        return <ProductManagement setSubmitted={setSubmitted} submitted={submitted} productId={productId} setProductId={setProductId}/>;
       case 'selling3':
         return null;
       case 'pending':
@@ -104,8 +106,8 @@ const SellerAllTabs = (props) => {
       case 'selling7':
         return <DiscountAndCoupens /> // You can add the component for Discounts & coupons here
       case 'selling8':
-        // return <MyTransactions/>; // You can add the component for Transactions here
-        return <NotFound />
+        return <MyTransactions/>; // You can add the component for Transactions here
+        // return <NotFound />
       case 'sellingss1':
         return <EditProfileSetup />;
       case 'sellingss1b':
@@ -141,7 +143,7 @@ const SellerAllTabs = (props) => {
             <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
               <div className="title-selling-hub">Selling Hub</div>
               <ul>
-                <li className={selectedMenuItem === 'selling1' ? 'active' : ''} onClick={() => handleMenuItemClick('selling1')}>
+                <li className={selectedMenuItem === 'selling1' ? 'active' : ''} onClick={() => {handleMenuItemClick('selling1'); setProductId('')}}>
                   Dashboard
                 </li>
                 {user?.isTrustedSeller === 0 ?
@@ -213,7 +215,7 @@ const SellerAllTabs = (props) => {
                   </>
                   :
                   <>
-                    <li className={selectedMenuItem === 'selling2' ? 'active' : ''} onClick={() => {handleMenuItemClick('selling2') ; setSubmitted(false)}}>
+                    <li className={selectedMenuItem === 'selling2' ? 'active' : ''} onClick={() => {handleMenuItemClick('selling2') ; setSubmitted(false); setProductId('')}}>
                       Product Management
                     </li>
                     <li className='ordaw' onClick={toggleOrderManagement}>
@@ -221,35 +223,35 @@ const SellerAllTabs = (props) => {
                       {isOrderManagementOpen && (
                         <div className='dropp'>
                           <ul>
-                            <li className={selectedMenuItem === 'pending' ? 'active' : ''} onClick={() => handleMenuItemClick('pending')}>
+                            <li className={selectedMenuItem === 'pending' ? 'active' : ''} onClick={() => {handleMenuItemClick('pending'); setProductId('')}}>
                               Pending Orders
                             </li>
-                            <li className={selectedMenuItem === 'sellings1' ? 'active' : ''} onClick={() => handleMenuItemClick('sellings1')}>
+                            <li className={selectedMenuItem === 'sellings1' ? 'active' : ''} onClick={() => {handleMenuItemClick('sellings1'); setProductId('')}}>
                               Ongoing Orders
                             </li>
-                            <li className={selectedMenuItem === 'sellings2' ? 'active' : ''} onClick={() => handleMenuItemClick('sellings2')}>
+                            <li className={selectedMenuItem === 'sellings2' ? 'active' : ''} onClick={() => {handleMenuItemClick('sellings2'); setProductId('')}}>
                               Completed Orders
                             </li>
-                            <li className={selectedMenuItem === 'sellings3' ? 'active' : ''} onClick={() => handleMenuItemClick('sellings3')}>
+                            <li className={selectedMenuItem === 'sellings3' ? 'active' : ''} onClick={() => {handleMenuItemClick('sellings3'); setProductId('')}}>
                               Refund Orders
                             </li>
                           </ul>
                         </div>
                       )}
                     </li>
-                    <li className={selectedMenuItem === 'selling4' ? 'active' : ''} onClick={() => handleMenuItemClick('selling4')}>
+                    <li className={selectedMenuItem === 'selling4' ? 'active' : ''} onClick={() => {handleMenuItemClick('selling4'); setProductId('')}}>
                       Bids & Offers
                     </li>
-                    <li className={selectedMenuItem === 'selling5' ? 'active' : ''} onClick={() => handleMenuItemClick('selling5')}>
+                    <li className={selectedMenuItem === 'selling5' ? 'active' : ''} onClick={() => {handleMenuItemClick('selling5'); setProductId('')}}>
                       Chats
                     </li>
-                    <li className={selectedMenuItem === 'selling6' ? 'active' : ''} onClick={() => handleMenuItemClick('selling6')}>
+                    <li className={selectedMenuItem === 'selling6' ? 'active' : ''} onClick={() => {handleMenuItemClick('selling6'); setProductId('')}}>
                       Feedbacks
                     </li>
-                    <li className={selectedMenuItem === 'selling7' ? 'active' : ''} onClick={() => handleMenuItemClick('selling7')}>
+                    <li className={selectedMenuItem === 'selling7' ? 'active' : ''} onClick={() => {handleMenuItemClick('selling7'); setProductId('')}}>
                       Discounts & coupons
                     </li>
-                    <li className={selectedMenuItem === 'selling8' ? 'active' : ''} onClick={() => handleMenuItemClick('selling8')}>
+                    <li className={selectedMenuItem === 'selling8' ? 'active' : ''} onClick={() => {handleMenuItemClick('selling8'); setProductId('')}}>
                       Transactions
                     </li>
                     <li className='ordaw' onClick={toggleOrderManagements}>
@@ -259,21 +261,21 @@ const SellerAllTabs = (props) => {
                           <ul>
                             {trustedseller ? (
                               <>
-                                <li className={selectedMenuItem === 'sellingss1' ? 'active' : ''} onClick={() => handleMenuItemClick('sellingss1')}>
+                                <li className={selectedMenuItem === 'sellingss1' ? 'active' : ''} onClick={() => {handleMenuItemClick('sellingss1'); setProductId('')}}>
                                   Business Profile Setting
                                 </li>
                               </>
                             ) : (
                               <>
-                                <li className={selectedMenuItem === 'sellingss1b' ? 'active' : ''} onClick={() => handleMenuItemClick('sellingss1b')}>
+                                <li className={selectedMenuItem === 'sellingss1b' ? 'active' : ''} onClick={() => {handleMenuItemClick('sellingss1b'); setProductId('')}}>
                                   Business Profile Setting
                                 </li>
                               </>
                             )}
-                            <li className={selectedMenuItem === 'sellingss2' ? 'active' : ''} onClick={() => handleMenuItemClick('sellingss2')}>
+                            <li className={selectedMenuItem === 'sellingss2' ? 'active' : ''} onClick={() => {handleMenuItemClick('sellingss2'); setProductId('')}}>
                               Bank account
                             </li>
-                            <li className={selectedMenuItem === 'sellingss3' ? 'active' : ''} onClick={() => handleMenuItemClick('sellingss3')}>
+                            <li className={selectedMenuItem === 'sellingss3' ? 'active' : ''} onClick={() => {handleMenuItemClick('sellingss3'); setProductId('')}}>
                               Notifications Settings
                             </li>
                           </ul>
@@ -283,7 +285,7 @@ const SellerAllTabs = (props) => {
                   </>
                 }
               </ul>
-              <button className='backbutton-account' onClick={() => props?.setSelectedLink(null)}><img src={Backimage} /> Back</button>
+              <button className='backbutton-account' onClick={() => {props?.setSelectedLink(null); setProductId('')}}><img src={Backimage} /> Back</button>
             </div>
           </div>
           <div className='col-lg-9'>

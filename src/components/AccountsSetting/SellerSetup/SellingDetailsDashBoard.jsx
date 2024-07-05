@@ -22,6 +22,8 @@ import StarRating from "../../OrderManagement/StarRating";
 import Location from "../../../assets/Images/map.png";
 import { Spinner } from "react-bootstrap";
 import ProductCard from "../../Elements/ProductCard";
+import Select from 'react-select';
+import { months } from "moment/moment";
 const products = [
   {
     id: 1,
@@ -69,7 +71,7 @@ const DetailedProductInfo = ({ order }) => {
   const handleEstDelivery = (event) => {
     setEstDelivery(event.target.value);
   };
-  const handleOrderStatus = (e) =>{
+  const handleOrderStatus = (e) => {
     e.preventDefault();
     setOrderStatus(e.target.value);
   }
@@ -120,7 +122,7 @@ const DetailedProductInfo = ({ order }) => {
                     <input
                       type="text"
                       placeholder="Enter Estimated Delivery..."
-                      value={order.order.estimateDelivery }
+                      value={order.order.estimateDelivery}
                       onChange={handleEstDelivery}
                       style={{
                         border: "1px solid",
@@ -217,11 +219,11 @@ const DetailedProductInfo = ({ order }) => {
               </p>
               <p className="order-price-detail-list">
                 <div>Shipping</div>
-                <div>$ <input type="text"  value={order.order.shipping_cost} style={{ border: '1px solid', padding: '0 5px', borderRadius: '7px', marginLeft: '10px'}} placeholder="Enter Shipping Price.." /></div>
+                <div>$ <input type="text" value={order.order.shipping_cost} style={{ border: '1px solid', padding: '0 5px', borderRadius: '7px', marginLeft: '10px' }} placeholder="Enter Shipping Price.." /></div>
               </p>
               <p className="order-price-detail-list">
                 <div>Discount</div>
-                <div>$ <input type="text"  value={order.order.discountcode}  style={{ border: '1px solid', padding: '0 5px', borderRadius: '7px', marginLeft: '10px'}} placeholder="Enter Discount.." /></div>
+                <div>$ <input type="text" value={order.order.discountcode} style={{ border: '1px solid', padding: '0 5px', borderRadius: '7px', marginLeft: '10px' }} placeholder="Enter Discount.." /></div>
               </p>
               <p className="order-price-detail-list ordertotal">
                 <div>Order Total</div>
@@ -231,7 +233,7 @@ const DetailedProductInfo = ({ order }) => {
             <div className="not-order-detail">
               <h3>Note</h3>
               <div >
-                <textarea className="ord-note" style={{ width: '700px'}}>{order.order.admin_notes}</textarea>
+                <textarea className="ord-note" style={{ width: '700px' }}>{order.order.admin_notes}</textarea>
               </div>
             </div>
             <Link style={{ textDecoration: "unset" }}>
@@ -257,23 +259,61 @@ const SellingDetailsDashBoard = (props) => {
   const [isLoading, setIsLoading] = useState(true); // Add loading state
   let loggedInUser = localStorage.getItem("user_details");
   const loggedInUsers = JSON.parse(loggedInUser);
+  const Months = [
+    {
+      value: 1, label: 'January'
+    },
+    {
+      value: 2, label: 'February'
+    },
+    {
+      value: 3, label: 'March'
+    },
+    {
+      value: 4, label: 'April'
+    },
+    {
+      value: 5, label: 'May'
+    },
+    {
+      value: 6, label: 'June'
+    },
+    {
+      value: 7, label: 'July'
+    },
+    {
+      value: 8, label: 'August'
+    },
+    {
+      value: 9, label: 'September'
+    },
+    {
+      value: 10, label: 'October'
+    },
+    {
+      value: 11, label: 'November'
+    },
+    {
+      value: 12, label: 'December'
+    }]
+    const [month , setMonth] = useState(null)
 
-  const getShopData=()=>{
+  const getShopData = () => {
     SellerServices.getShopDetails()
-    .then((response) => {
-      console.log(response , 'user 2');
-      if(response.status){
-        setShopData(response.data);
-      }
-    })
-    .catch((e) => {
-      console.log(e.message);
-    });
+      .then((response) => {
+        console.log(response, 'user 2');
+        if (response.status) {
+          setShopData(response.data);
+        }
+      })
+      .catch((e) => {
+        console.log(e.message);
+      });
   }
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
-        console.log(response , 'user 1');
+        console.log(response, 'user 1');
         setUserDetails(response);
         setUser(response);
       })
@@ -285,11 +325,11 @@ const SellingDetailsDashBoard = (props) => {
   const getUserCompletedCount = () => {
     OrderServices.getusercompletedcount()
       .then((response) => {
-        console.log(response , 'user 3');
-        if(response.length > 0){
-          setOrderCount(response); 
-        }else{
-          setOrderCount(0); 
+        console.log(response?.data?.data, 'user 3');
+        if (response.length > 0) {
+          setOrderCount(response);
+        } else {
+          setOrderCount(0);
         }
       })
       .catch((e) => {
@@ -301,10 +341,10 @@ const SellingDetailsDashBoard = (props) => {
     console.log('offers')
     OrderServices.getuserbidscount()
       .then((response) => {
-        console.log(response , 'user 4');
-          setOfferCount(response.data);
-          localStorage.setItem('seller_guid' , response?.data?.seller_guid)
-          console.log('count',response)
+        console.log(response, 'user 4');
+        setOfferCount(response.data);
+        localStorage.setItem('seller_guid', response?.data?.seller_guid)
+        console.log('count', response)
       })
       .catch((e) => {
         console.log(e.message);
@@ -353,110 +393,127 @@ const SellingDetailsDashBoard = (props) => {
 
   return (
     <>
-    {isLoading ? ( // Show loader while fetching cart items
-                <div className="loader-container">
-                  <Spinner animation="border" role="status" />
-                </div>
-              ) : (
-                <>
-{selectedProduct ? (
-        <>
-          <div className="reviews-view-ordrmngment">
-            <DetailedProductInfo order={selectedOrder} />
-          </div>
-        </>
+      {isLoading ? ( // Show loader while fetching cart items
+        <div className="loader-container">
+          <Spinner animation="border" role="status" />
+        </div>
       ) : (
         <>
-          <section id="selleng-dashbaord">
-            <h3>Hi {loggedInUsers.name},</h3>
-            <h3>
-              {/* {shopdata ? (
-                <>
-              <Link to={`/sellershop/${shopdata.guid}`}>
-                My Shop
-              </Link></>
-            ):(
-                <></>
-              )} */}
-</h3>
-            <div className="row minndabb">
-              <div className="col-lg-4 col">
-                <div className="dabb">
-                  <h4>Completed Orders</h4>
-                  <h1>{orderoffer.completed_orders_count}</h1>
-                  <select style={{ width: "100%" }}>
-                    <option value="">Select Year</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                    <option value="2021">2021</option>
-                  </select>
+          {selectedProduct ? (
+            <>
+              <div className="reviews-view-ordrmngment">
+                <DetailedProductInfo order={selectedOrder} />
+              </div>
+            </>
+          ) : (
+            <>
+              {/* <div className="seller-new-dashboard">
+                <div className="title">Hi {loggedInUsers.name},</div>
+                <div className="seller-new-dashboard-one">
+                  <div className="s-n-d-o-o">
+                    <h4>Completed Orders</h4>
+                    <p>{orderoffer.completed_orders_count}</p>
+                    <div className="d-d">
+                      <Select
+                        value={month}
+                        onChange={setMonth}
+                        options={months}
+                        placeholder={'Select month'}
+                      />
+                    </div>
+                  </div>
+                  <div className="s-n-d-o-t">
+                    <h4>Offers</h4>
+                    <p>{orderoffer.offers}</p>
+                    <div className="d-d"></div>
+                  </div>
+                  <div className="s-n-d-o-th">
+                    <h4>Earnings</h4>
+                    <p>$ {orderoffer.earnings}</p>
+                    <div className="s-b"><button>Withdraw</button></div>
+                  </div>
+                </div>
+              </div> */}
+              <section id="selleng-dashbaord">
+                <h3>Hi {loggedInUsers.name},</h3>
+                <div className="row minndabb">
+                  <div className="col-lg-4 col">
+                    <div className="dabb">
+                      <h4>Completed Orders</h4>
+                      <h1>{orderoffer.completed_orders_count}</h1>
+                      <select style={{ width: "100%" }}>
+                        <option value="">Select Year</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                      </select>
 
-                  <select style={{ width: "100%", marginTop: "10px" }}>
-                    <option value="">Select Month</option>
-                    <option value="1">January</option>
-                    <option value="2">Febuary</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                  </select>
-                </div>
-              </div>
-              <div className="col-lg-4 col">
-                <div className="dabb">
-                  <h4>Offers</h4>
-                  <h1>{orderoffer.offers}</h1>
-                  <select style={{ width: "100%" }}>
-                    <option value="">Select Year</option>
-                    <option value="2024">2024</option>
-                    <option value="2023">2023</option>
-                    <option value="2022">2022</option>
-                    <option value="2021">2021</option>
-                  </select>
+                      <select style={{ width: "100%", marginTop: "10px" }}>
+                        <option value="">Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">Febuary</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-lg-4 col">
+                    <div className="dabb">
+                      <h4>Offers</h4>
+                      <h1>{orderoffer.offers}</h1>
+                      <select style={{ width: "100%" }}>
+                        <option value="">Select Year</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                        <option value="2022">2022</option>
+                        <option value="2021">2021</option>
+                      </select>
 
-                  <select style={{ width: "100%", marginTop: "10px" }}>
-                    <option value="">Select Month</option>
-                    <option value="1">January</option>
-                    <option value="2">Febuary</option>
-                    <option value="3">March</option>
-                    <option value="4">April</option>
-                    <option value="5">May</option>
-                    <option value="6">June</option>
-                    <option value="7">July</option>
-                    <option value="8">August</option>
-                    <option value="9">September</option>
-                    <option value="10">October</option>
-                    <option value="11">November</option>
-                    <option value="12">December</option>
-                  </select>
+                      <select style={{ width: "100%", marginTop: "10px" }}>
+                        <option value="">Select Month</option>
+                        <option value="1">January</option>
+                        <option value="2">Febuary</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-lg-4 col">
+                    <div className="dabb">
+                      <h4>Earnings</h4>
+                      <h1>$ {orderoffer.earnings}</h1>
+                      <button>Withdraw</button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div className="col-lg-4 col">
-                <div className="dabb">
-                  <h4>Earnings</h4>
-                  <h1>$ {orderoffer.earnings}</h1>
-                  <button>Withdraw</button>
+                <div className="order-feeds">
+                  <h3>Orders Feed</h3>
+                  {/* Secondrow */}
+                  <ProductCard />
                 </div>
-              </div>
-            </div>
-            <div className="order-feeds">
-              <h3>Orders Feed</h3>
-              {/* Secondrow */}
-              <ProductCard/>
-            </div>
-          </section>
+              </section>
+            </>
+          )}
         </>
       )}
-                </>
-              )}
-      
+
     </>
   );
 };
