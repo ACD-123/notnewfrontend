@@ -296,7 +296,7 @@ const SellingDetailsDashBoard = (props) => {
     {
       value: 12, label: 'December'
     }]
-    const [month , setMonth] = useState(null)
+  const [month, setMonth] = useState(null)
 
   const getShopData = () => {
     SellerServices.getShopDetails()
@@ -407,34 +407,36 @@ const SellingDetailsDashBoard = (props) => {
             </>
           ) : (
             <>
-              {/* <div className="seller-new-dashboard">
+              <div className="seller-new-dashboard">
                 <div className="title">Hi {loggedInUsers.name},</div>
                 <div className="seller-new-dashboard-one">
                   <div className="s-n-d-o-o">
+                    <h4>Today Sales</h4>
+                    <p>${orderoffer.earnings}</p>
+                    <div className="d-d">
+                      <Select
+                        value={month}
+                        onChange={setMonth}
+                        options={Months}
+                        placeholder={'Select month'}
+                      />
+                    </div>
+                  </div>
+                  <div className="s-n-d-o-t">
                     <h4>Completed Orders</h4>
                     <p>{orderoffer.completed_orders_count}</p>
                     <div className="d-d">
                       <Select
                         value={month}
                         onChange={setMonth}
-                        options={months}
+                        options={Months}
                         placeholder={'Select month'}
                       />
                     </div>
                   </div>
-                  <div className="s-n-d-o-t">
-                    <h4>Offers</h4>
-                    <p>{orderoffer.offers}</p>
-                    <div className="d-d"></div>
-                  </div>
-                  <div className="s-n-d-o-th">
-                    <h4>Earnings</h4>
-                    <p>$ {orderoffer.earnings}</p>
-                    <div className="s-b"><button>Withdraw</button></div>
-                  </div>
                 </div>
-              </div> */}
-              <section id="selleng-dashbaord">
+              </div>
+              {/* <section id="selleng-dashbaord">
                 <h3>Hi {loggedInUsers.name},</h3>
                 <div className="row minndabb">
                   <div className="col-lg-4 col">
@@ -505,10 +507,9 @@ const SellingDetailsDashBoard = (props) => {
                 </div>
                 <div className="order-feeds">
                   <h3>Orders Feed</h3>
-                  {/* Secondrow */}
                   <ProductCard />
                 </div>
-              </section>
+              </section> */}
             </>
           )}
         </>

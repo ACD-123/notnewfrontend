@@ -194,6 +194,19 @@ function getSellerActiveBid(user_id){
     method: "GET"
   })
 }
+function acceptSellerActiveBid(data){
+  return request({
+    url: `${baseUrlChat}bidding/award`,
+    method: "POST",
+    data
+  })
+}
+function getSellerActiveDetails(productid , guid){
+  return request({
+    url: `${baseUrlChat}bidding/get?product_id=${productid}&guid=${guid}`,
+    method: "GET"
+  })
+}
 function couponsDiscount(id, date){
   return request({
     url: `${BASE_API}coupons/get?user_id=${id}&user_date=${date}`,
@@ -281,7 +294,9 @@ const UserService = {
   getSavedSeller,
   deleteCoupons,
   getCouponsById,
-  updateCoupon
+  updateCoupon,
+  getSellerActiveDetails,
+  acceptSellerActiveBid
   // depositfund,
 }
 
