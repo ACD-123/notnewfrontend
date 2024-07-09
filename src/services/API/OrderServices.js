@@ -137,6 +137,12 @@ function getuserbidscount(params = {}) {
     method: 'GET',
   })
 }
+function getDashboardData() {
+  return request({
+    url: `${baseApi}seller/getsellerorder`,
+    method: 'GET',
+  })
+}
 function getbyid(id) {
   return request({
     url: `${baseUrl}/getById_/${id}`,
@@ -254,7 +260,8 @@ const OrderServices = {
   vendorDelivered,
   vendorNotDelivered,
   getOrderDetailsbyid,
-  updateSeller
+  updateSeller,
+  getDashboardData
 }
 
 export default OrderServices

@@ -37,6 +37,7 @@ import Refund from "../components/PurchaseHistory/Refund"
 import SubCategory from "../components/Products/Archive/SubCategory"
 import Topsellers from "../pages/Topsellers"
 import HotDeals from "../pages/HotDeals"
+import MySellerAccount from "../pages/MySellerAccount"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -91,6 +92,7 @@ const PublicRoutes = () => {
 					<Route path="/outstock" element={<OutStock/>} />
 					<Route path="/watchlist" element={<Watchlist/>}/>
 					<Route path="/productupload" element={<ProductUpload/>} />
+					<Route path="/my-seller-account" element={<MySellerAccount/>} />
 					<Route path="*" element={<NotFound/>} />
 				</Routes>
 			</BrowserRouter>

@@ -10,11 +10,13 @@ import StripeTransactions from './SellerSetup/StripeTransactions';
 import InStock from './SellerSetup/InStock';
 import OutStock from './SellerSetup/OutStock';
 import NotFound_ from '../../pages/NotFound_'
+import { useNavigate } from 'react-router-dom';
 
 const AccountInfo = () => {
   const [selectedLink, setSelectedLink] = useState(null);
   const [trustedseller, setTrustedSeller] = useState(false);
   const [value, setValue] = useState("");
+  const navigate = useNavigate()
 
   const handleLinkClick = (link, val) => {
     setSelectedLink(link);
@@ -40,10 +42,7 @@ const AccountInfo = () => {
       case 'Selling':
         return (
           <div>
-            {/* Content for Selling */}
-            {/* <h3 className='main-tab-title'>Selling Hub</h3> */}
             <SellerAllTabs setSelectedLink={setSelectedLink}/>
-            {/* <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button> */}
           </div>
         );
       case 'items':
@@ -125,7 +124,8 @@ const AccountInfo = () => {
               <hr style={{ width: '50%' }} />
               <ul>
               {trustedseller ? (
-                <li onClick={() => handleLinkClick('Selling')}>My Seller Account</li>
+                <li onClick={() => navigate('/my-seller-account?tab=dashboard')}>My Seller Account</li>
+                // <li onClick={() => handleLinkClick('Selling')}>Set Up Seller Account</li>
               ):(
                 <li onClick={() => handleLinkClick('Selling')}>Set Up Seller Account</li>
               )}

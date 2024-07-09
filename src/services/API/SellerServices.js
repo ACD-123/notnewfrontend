@@ -169,6 +169,12 @@ function setBank(data) {
       method: 'GET',
     })
   }
+  function getShopDetail() {
+    return request({
+      url: `${baseUrl}seller/getshopdetails`,
+      method: 'GET',
+    })
+  }
 
 const SellerServices = {
   all,
@@ -194,7 +200,8 @@ const SellerServices = {
   updateBank,
   getBankDetails,
   createRecent,
-  getTopSellers
+  getTopSellers,
+  getShopDetail
 }
 
 export default SellerServices

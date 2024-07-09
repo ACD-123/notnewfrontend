@@ -34,11 +34,9 @@ const Activity = () => {
   const handleMenuItemClick = (menu) => {
     navigate(`/customerdashboard?component=${menu}`);
     setSelectedMenuItem(menu);
-    // Close the menu after selecting an item (for mobile view)
     setIsMenuOpen(false);
   };
 
-  // Function to toggle menu visibility
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
