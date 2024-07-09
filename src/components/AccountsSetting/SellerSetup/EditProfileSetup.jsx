@@ -105,28 +105,22 @@ const EditProfileSetup = () => {
       setIsLoading(true);
       setEnabled(true);
       const fd = new FormData();
-      fd.append("fullname", shopData.fullname);
-      fd.append("email", shopData.email);
-      fd.append("address", address);
-      fd.append("phone", shopData.phone);
-      fd.append("country_id", shopData.country_id);
-      fd.append("state_id", shopData.state_id);
-      fd.append("city_id", shopData.city_id);
-      fd.append("zip", shopData.zip);
-      fd.append("latitude", shopData.latitude);
-      fd.append("longitude", shopData.longitude);
-      if (address) {
-        fd.append("address", address);
-      } else if (addresses) {
-        fd.append("address", addresses);
+      fd.append("fullname", editprofile.fullname);
+      fd.append("email", editprofile.email);
+      fd.append("address", editprofile?.address);
+      fd.append("phone", editprofile.phone);
+      fd.append("country_id", editprofile.country_id);
+      fd.append("state_id", editprofile.state_id);
+      fd.append("city_id", editprofile.city_id);
+      fd.append("zip", editprofile.zip);
+      fd.append("latitude", editprofile.latitude);
+      fd.append("longitude", editprofile.longitude);
+
+      if (editprofile.editImage) {
+        fd.append("file", editprofile?.file);
       }
-      if (profilePic) {
-        fd.append("file", profilePic);
-      }
-      for (let pair of fd.entries()) {
-        console.log('formdata params' + pair[0] + ", " + pair[1]);
-      }
-      fd.append("guid", guid);
+
+      fd.append("guid", editprofile?.guid);
       SellerServices.update(fd)
         .then((response) => {
           if (response.status) {
@@ -144,7 +138,7 @@ const EditProfileSetup = () => {
           setEnabled(false);
         });
     }
-    
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setShopData({
@@ -168,8 +162,8 @@ const EditProfileSetup = () => {
           phone: response?.data?.phone,
           address: response?.data?.address,
           zip: response?.data?.zip,
-          guid: response?.data?.country_id,
-          latitude: response?.data?.guid,
+          guid: response?.data?.guid,
+          latitude: response?.data?.latitude,
           longitude: response?.data?.longitude,
           description: response?.data?.description,
           file: response?.data?.cover_image
