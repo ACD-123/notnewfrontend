@@ -4415,21 +4415,7 @@ section#letsconnectbank form ::placeholder {
   font-size: 13px;
 }
 
-section#letsconnectbank form {
-  width: 56%;
-}
 
-section#letsconnectbank form select,
-section#letsconnectbank form input {
-  width: 100%;
-  background: #F0F0F0;
-  margin-bottom: 10px;
-  padding: 14px 20px;
-  border: 0;
-  color: #000;
-  font-size: 13px;
-  border-radius: 10px;
-}
 
 section#selleraccountsetup .statesfield .fieldss {
   width: 100%;
@@ -5234,14 +5220,6 @@ button.updte-profile {
   gap: 30px;
 }
 
-section#letsconnectbank form button.savee {
-  float: right;
-  width: 29%;
-  padding: 10px 0px;
-  color: #fff;
-  border: 0;
-  border-radius: 12px;
-}
 
 .biddata table,
 tbody,
@@ -6281,6 +6259,7 @@ th {
 
 .seller-new-transaction {
   margin: 73px 0px;
+  height: 100%;
 }
 
 .seller-new-transaction .title {
@@ -6471,6 +6450,8 @@ th {
 
 .seller-new-transaction .seller-new-transaction-four .s-n-t-f-tabs {
   display: flex;
+  border-bottom: 1px solid #EAEAEA;
+  padding-bottom: 10px;
 }
 
 .seller-new-transaction .seller-new-transaction-four .s-n-t-f-tabs ul {
@@ -6482,7 +6463,8 @@ th {
   margin: 0;
   padding: 0;
   display: flex;
-  background-color: #fdfbfe;
+  gap: 50px;
+  /* background-color: #fdfbfe; */
 }
 
 .seller-new-transaction .seller-new-transaction-four .s-n-t-f-tabs ul li {
@@ -6492,8 +6474,8 @@ th {
   font-weight: 500;
   line-height: 24px;
   text-align: left;
-  color: #aeb4b9;
-  padding: 15px 20px;
+  color: #757474;
+  padding: 10px 0px;
   border-radius: 9.11px;
   border: none;
   cursor: pointer;
@@ -6502,12 +6484,12 @@ th {
 
 .seller-new-transaction .seller-new-transaction-four .s-n-t-f-tabs ul li.active {
   background: transparent;
-  color: #58616c;
+  color: #757474;
 }
 
 .seller-new-transaction .seller-new-transaction-four .s-n-t-f-tabs ul li:hover {
   background: transparent;
-  color: #58616c;
+  color: #757474;
 }
 
 .seller-new-transaction .seller-new-transaction-four .s-n-t-f-tabs ul li:hover::after {
@@ -6519,6 +6501,7 @@ th {
   left: 0;
   bottom: 0;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  border-radius: 12px;
 }
 
 .seller-new-transaction .seller-new-transaction-four .s-n-t-f-tabs ul li.active::after {
@@ -6530,6 +6513,7 @@ th {
   left: 0;
   bottom: 0;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  border-radius: 12px;
 }
 
 .seller-new-transaction .seller-new-transaction-five {
@@ -7248,8 +7232,27 @@ input::-webkit-inner-spin-button {
   text-transform: capitalize;
 }
 
-.e-s-p-t-f .e-s-p-t-f-l input::placeholder{
-  font-size: 16px !important; 
+.e-s-p-t-f .e-s-p-t-f-l textarea {
+  font-family: 'Cairo';
+  font-size: 16px !important;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #292929;
+  margin: 0;
+  padding: 17px 25px;
+  border-radius: 13px;
+  background: #F0F0F0;
+  text-transform: capitalize;
+  height: 120px;
+}
+
+.e-s-p-t-f .e-s-p-t-f-l input::placeholder {
+  font-size: 16px !important;
+}
+
+.e-s-p-t-f .e-s-p-t-f-l textarea::placeholder {
+  font-size: 16px !important;
 }
 
 .e-s-p-t-f .e-s-p-t-f-l input:focus {
@@ -7257,11 +7260,12 @@ input::-webkit-inner-spin-button {
   border: 1px solid #CFCFCF;
 }
 
-.seller-edit-profile .b-s-u-p{
+.seller-edit-profile .b-s-u-p {
   text-align: center;
   margin-top: 40px;
 }
-.seller-edit-profile .b-s-u-p button{
+
+.seller-edit-profile .b-s-u-p button {
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   box-shadow: 0px 5px 11px 0px #0000003B;
   width: max-content;
@@ -7269,15 +7273,17 @@ input::-webkit-inner-spin-button {
   font-size: 20px;
   font-weight: 500;
   line-height: 24px;
-  text-align: left;
+  text-align: center;
   color: #fff;
   padding: 20px 35px;
   border-radius: 9.11px;
   border: none;
+  width: 200px;
 }
 
 .seller-edit-profile {
-  margin: 40px 0px;
+  margin: 40px auto;
+  width: 70%;
 }
 
 .seller-edit-profile .seller-profile {}
@@ -7322,6 +7328,569 @@ input::-webkit-inner-spin-button {
 .seller-edit-profile .seller-profile .s-p-i span svg {
   color: #000;
   font-size: 22px;
+}
+
+.seller-bank-detail {
+  margin: 40px auto;
+  width: 70%;
+  height: 40%;
+}
+
+.seller-bank-detail .s-b-d-i-f {
+  margin-bottom: 20px;
+
+}
+
+.seller-bank-detail .s-b-d-i-f input {
+  font-family: 'Cairo';
+  font-size: 16px !important;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #292929;
+  margin: 0;
+  padding: 17px 25px;
+  border-radius: 13px;
+  background: #F0F0F0;
+  height: 58px;
+  text-transform: capitalize;
+  width: 100%;
+  border: 1px solid #CFCFCF;
+}
+
+.seller-bank-detail .s-b-d-i-f input::placeholder {
+  font-size: 16px !important;
+}
+
+.seller-bank-detail .s-b-d-i-f-b {
+  text-align: center;
+  margin-top: 0px;
+}
+
+.seller-bank-detail .s-b-d-i-f-b button {
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  box-shadow: 0px 5px 11px 0px #0000003B;
+  width: max-content;
+  font-family: 'Lato';
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: center;
+  color: #fff;
+  padding: 20px 35px;
+  border-radius: 9.11px;
+  border: none;
+  width: 200px;
+}
+
+.seller-bank-detail .css-13cymwt-control {
+  border-radius: 13px;
+  background: #F0F0F0;
+  margin-bottom: 20px;
+}
+
+.seller-bank-detail .css-qbdosj-Input {}
+
+.seller-bank-detail .css-qbdosj-Input input {
+  height: 44px;
+}
+
+.seller-bank-detail .css-t3ipsp-control {
+  box-shadow: none !important;
+  border-radius: 13px;
+  background: #F0F0F0;
+  margin-bottom: 20px;
+  border: 1px solid #CFCFCF !important;
+}
+
+.seller-bank-detail {}
+
+.pending-oder-managment {
+  height: 100%;
+}
+
+.pending-oder-managment .p-o-m-w {}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l {
+  margin-top: 20px;
+}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul {
+  margin: 0;
+  padding: 0;
+  padding: 13px 0px;
+  border-top: 1px solid #EAEAEA;
+}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul:last-child {
+  margin: 0;
+  padding: 0;
+  padding: 13px 0px;
+  border-top: 1px solid #EAEAEA;
+  border-bottom: 1px solid #EAEAEA;
+}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-l {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-l .p-o-m-w-l-l-l {}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-l .p-o-m-w-l-l-l img {
+  width: 100px;
+  height: 100px;
+  background: red;
+  background-color: red;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-l .p-o-m-w-l-l-r {}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-l .p-o-m-w-l-l-r h2 {
+  font-family: 'Cairo';
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 30px;
+  text-align: left;
+  color: #101010;
+}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-l .p-o-m-w-l-l-r h2 span {
+  font-weight: 400;
+}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-l .p-o-m-w-l-l-r h3 {
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+  text-align: left;
+  color: #101010;
+}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-l .p-o-m-w-l-l-r p {
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+  text-align: left;
+  color: #101010;
+  margin: 0;
+}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-r {}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-r .p-o-m-w-l-r-w-d {}
+
+.pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-r .p-o-m-w-l-r-w-d button {
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  box-shadow: 0px 5px 11px 0px #0000003B;
+  width: max-content;
+  font-family: 'Lato';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: left;
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 9.11px;
+  border: none;
+}
+
+.seller-oder-managment-detail {}
+
+.seller-oder-managment-detail .title {
+  font-family: 'Cairo';
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 32.13px;
+  text-align: left;
+  color: #000;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.seller-oder-managment-detail .title span {
+  padding: 10px;
+  margin-right: 20px;
+  cursor: pointer;
+  margin-left: -20px;
+}
+
+.seller-oder-managment-detail .title span svg {}
+
+.seller-oder-managment-detail .s-o-m-d-1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.seller-oder-managment-detail .s-o-m-d-1 .s-o-m-d-1-l {
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+  text-align: left;
+  color: #1b1b1b;
+  text-transform: capitalize;
+}
+
+.seller-oder-managment-detail .s-o-m-d-1 .s-o-m-d-1-l span {
+  font-weight: 500;
+}
+
+.seller-oder-managment-detail .s-o-m-d-1 .s-o-m-d-1-r {
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+  text-align: left;
+  color: #1b1b1b;
+}
+
+.seller-oder-managment-detail .s-o-m-d-1 .s-o-m-d-1-r span {
+  font-weight: 500;
+}
+
+.seller-oder-managment-detail .s-o-m-d-2 {
+  border: 1px solid #EBEBEB;
+  background-color: #FAFAFA;
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-2 h2 {
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: left;
+  color: #3E3E3E;
+  margin-bottom: 12px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-2 .s-o-m-d-2-1 {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.seller-oder-managment-detail .s-o-m-d-2 .s-o-m-d-2-1 .s-o-m-d-2-1-l {
+  position: relative;
+}
+
+.seller-oder-managment-detail .s-o-m-d-2 .s-o-m-d-2-1 .s-o-m-d-2-1-l img {}
+
+.seller-oder-managment-detail .s-o-m-d-2 .s-o-m-d-2-1 .s-o-m-d-2-1-l svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.seller-oder-managment-detail .s-o-m-d-2 .s-o-m-d-2-1 .s-o-m-d-2-1-r {}
+
+.seller-oder-managment-detail .s-o-m-d-2 .s-o-m-d-2-1 .s-o-m-d-2-1-r ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-2 .s-o-m-d-2-1 .s-o-m-d-2-1-r ul li {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-family: 'Cairo';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #1b1b1b;
+}
+
+.seller-oder-managment-detail .s-o-m-d-2 .s-o-m-d-2-1 .s-o-m-d-2-1-r ul li {}
+
+.seller-oder-managment-detail .s-o-m-d-3 {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-l {}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-l h3 {
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 26px;
+  text-align: left;
+  color: #111111;
+}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-l p {
+  font-family: 'Cairo';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #111111;
+}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-l p span {
+  font-family: 'Cairo';
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: left;
+  color: #111111;
+}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-r {}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-r .s-o-m-d-3-r-a {
+  position: relative;
+}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-r .s-o-m-d-3-r-a .s-o-m-d-3-r-a-l {
+  width: 140px;
+  background: linear-gradient(93.63deg, #8B2CA0 -20.62%, #00C3C9 106.1%);
+  border-radius: 6px;
+  padding: 1px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-r .s-o-m-d-3-r-a .s-o-m-d-3-r-a-l .s-o-m-d-3-r-a-l-w {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 8px 15px;
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  text-align: left;
+  color: #111111;
+  cursor: pointer;
+}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-r .s-o-m-d-3-r-a .s-o-m-d-3-r-a-o {
+  width: 140px;
+  background: linear-gradient(93.63deg, #8B2CA0 -20.62%, #00C3C9 106.1%);
+  border-radius: 6px;
+  padding: 1px;
+  position: absolute;
+  top: 50px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-r .s-o-m-d-3-r-a .s-o-m-d-3-r-a-o ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 6px;
+  padding: 5px 15px;
+  font-family: 'Cairo';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 29.98px;
+  text-align: left;
+  color: #585858;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-r .s-o-m-d-3-r-a .s-o-m-d-3-r-a-o ul li {
+  list-style: none;
+  list-style: none;
+  padding: 10px 10px;
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  text-align: left;
+  color: #111111;
+  cursor: pointer;
+  width: 100%;
+}
+
+.seller-oder-managment-detail .s-o-m-d-3 .s-o-m-d-3-r .s-o-m-d-3-r-a .s-o-m-d-3-r-a-o ul li:hover {
+  background: linear-gradient(93.63deg, #8B2CA0 -20.62%, #00C3C9 106.1%);
+  color: #fff;
+  border-radius: 6px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 {
+  border: 1px solid #EBEBEB;
+  background-color: #FAFAFA;
+  padding: 20px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 {}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-l {}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-l img {
+  width: 120px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r {
+  width: 100%;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r h4 {
+  font-family: 'Cairo';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #111111;
+  margin-bottom: 2px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 {
+  display: flex;
+  justify-content: space-between;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 .d-4-1-r-1-l {}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 .d-4-1-r-1-l h5 {
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 33.73px;
+  text-align: left;
+  color: #000;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 .d-4-1-r-1-l p {
+  font-family: 'Cairo';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #757474;
+  margin: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 .d-4-1-r-1-l p span {
+  border: 1px solid #757474;
+  border-radius: 2px;
+  display: inline-block;
+  width: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 .d-4-1-r-1-r {}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 .d-4-1-r-1-r ul {
+  margin: 0;
+  padding: 0;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 .d-4-1-r-1-r ul li {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  font-family: 'Cairo';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #111111;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 .d-4-1-r-1-r ul li p {
+  margin: 0;
+font-weight: 700;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 .d-4-1-r-1-r ul li ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 10px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 .d-4-1-r-1-r ul li ul li {
+  list-style: none;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-2{
+  margin-top: 24px;
+}
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-2 ul{
+  margin: 0;
+  padding: 0;
+}
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-2 ul li{
+  list-style: none;
+}
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-2 ul li ul{
+  display: flex;
+  justify-content: space-between;
+}
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-2 ul li ul li{
+  font-family: 'Cairo';
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    text-align: left;
+    color: #111111;
+    margin-bottom: 5px;
+}
+
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-3{
+  margin-top: 10px;
+
+}
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-3 ul{
+  margin: 0;
+  padding: 0;
+}
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-3 ul li{
+  list-style: none;
+}
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-3 ul li ul{
+  display: flex;
+  justify-content: space-between;
+}
+.seller-oder-managment-detail .s-o-m-d-4 .d-4-3 ul li ul li{
+  font-family: 'Cairo';
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: left;
+  color: #111111;
+  margin-bottom: 0px;
 }
 
 @media (max-width: 1024px) {

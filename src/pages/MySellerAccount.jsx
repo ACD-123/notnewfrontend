@@ -268,22 +268,52 @@ const MySellerAccount = (props) => {
                                                                                 </div>
                                                                             )} */}
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'bids-offers' ? 'active' : ''} onClick={() => { handleMenuItemClick('bids-offers'); setProductId('') }}>
+                                                                        <li className={selectedMenuItem === 'bids-offers' ? 'active' : ''} 
+                                                                        onClick={() => {
+                                                                            handleMenuItemClick('bids-offers');
+                                                                            setSubmitted(false);
+                                                                            setProductId('')
+                                                                        }}>
                                                                             Bids & Offers
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'selling5' ? 'active' : ''} onClick={() => { handleMenuItemClick('selling5'); setProductId('') }}>
+                                                                        <li className={selectedMenuItem === 'chat' ? 'active' : ''} 
+                                                                        onClick={() => {
+                                                                            handleMenuItemClick('chat');
+                                                                            setSubmitted(false);
+                                                                            setProductId('')
+                                                                        }}>
                                                                             Chats
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'selling6' ? 'active' : ''} onClick={() => { handleMenuItemClick('selling6'); setProductId('') }}>
+                                                                        <li className={selectedMenuItem === 'seller-feedback' ? 'active' : ''} 
+                                                                        onClick={() => {
+                                                                            handleMenuItemClick('seller-feedback');
+                                                                            setSubmitted(false);
+                                                                            setProductId('')
+                                                                        }}>
                                                                             Feedbacks
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'discount-coupens' ? 'active' : ''} onClick={() => { handleMenuItemClick('discount-coupens'); setProductId('') }}>
+                                                                        <li className={selectedMenuItem === 'discount-coupens' ? 'active' : ''} 
+                                                                        onClick={() => {
+                                                                            handleMenuItemClick('discount-coupens');
+                                                                            setSubmitted(false);
+                                                                            setProductId('')
+                                                                        }}>
                                                                             Discounts & coupons
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'selling8' ? 'active' : ''} onClick={() => { handleMenuItemClick('selling8'); setProductId('') }}>
+                                                                        <li className={selectedMenuItem === 'm-transactions' ? 'active' : ''} 
+                                                                        onClick={() => {
+                                                                            handleMenuItemClick('m-transactions');
+                                                                            setSubmitted(false);
+                                                                            setProductId('')
+                                                                        }}>
                                                                             Transactions
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'shop-settings' ? 'active' : ''} onClick={() => { handleMenuItemClick('shop-settings'); setProductId('') }}>
+                                                                        <li className={selectedMenuItem === 'shop-settings' ? 'active' : ''} 
+                                                                        onClick={() => {
+                                                                            handleMenuItemClick('shop-settings');
+                                                                            setSubmitted(false);
+                                                                            setProductId('')
+                                                                        }}>
                                                                             Shop Settings
                                                                             {/* {isOrderManagementOpens && (
                                                                                 <div className='dropp'>

@@ -15,13 +15,11 @@ const ShopSetting = () => {
     const seller_guid = localStorage.getItem('seller_guid')
     const [tab, setTab] = useState(0);
 
-    const getShopDetail = () => {
+    const getShopDetaill = () => {
         SellerServices.getShopDetail()
             .then((response) => {
                 setIsLoading(false);
                 setShopDetails(response?.data)
-                console.log(response?.data , 'shop setting');
-                // setUser(response);
             })
             .catch((e) => {
                 setIsLoading(false);
@@ -29,7 +27,7 @@ const ShopSetting = () => {
     };
 
     useEffect(() => {
-            getShopDetail();
+            getShopDetaill();
     }, []);
 
     return (
@@ -54,13 +52,13 @@ const ShopSetting = () => {
                             <ul>
                                 <li onClick={() => { setTab(0) }} className={`${tab === 0 ? 'active' : ''}`}>Business Profile Setting</li>
                                 <li onClick={() => { setTab(1) }} className={`${tab === 1 ? 'active' : ''}`}>Bank account</li>
-                                <li onClick={() => { setTab(2) }} className={`${tab === 2 ? 'active' : ''}`}>Notifications Settings</li>
+                                {/* <li onClick={() => { setTab(2) }} className={`${tab === 2 ? 'active' : ''}`}>Notifications Settings</li> */}
                             </ul>
                         </div>
                     </div>
-                    {tab === 0 && <EditProfileSetup />}
+                    {tab === 0 && <EditProfileSetup getShopDetaill={getShopDetaill}/>}
                     {tab === 1 && <EditBankDetails />}
-                    {tab === 2 && <SellingNotifications />}
+                    {/* {tab === 2 && <SellingNotifications />} */}
                 </div>
             }
         </>

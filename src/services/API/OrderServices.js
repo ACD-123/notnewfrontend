@@ -186,6 +186,18 @@ function sellerOngoingOrders() {
     method: 'GET',
   })
 }
+function sellerActiveOrders() {
+  return request({
+    url: `${ordersApi}/accepted`,
+    method: 'GET',
+  })
+}
+function getPendingOdersDetail(oder_id) {
+  return request({
+    url: `${baseApi}order/getById/${oder_id}`,
+    method: 'GET',
+  })
+}
 function customerOngoingOrders() {
   return request({
     url: `${ordersApi}/active`,
@@ -261,7 +273,9 @@ const OrderServices = {
   vendorNotDelivered,
   getOrderDetailsbyid,
   updateSeller,
-  getDashboardData
+  getDashboardData,
+  getPendingOdersDetail,
+  sellerActiveOrders
 }
 
 export default OrderServices

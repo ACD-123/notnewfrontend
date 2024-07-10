@@ -5,62 +5,64 @@ import SellerServices from "../../../services/API/SellerServices"; //~/services/
 import UserServices from "../../../services/API/UserServices"; //~/services/API/AuthService
 import { toast } from "react-toastify";
 import { setUserDetails, isLoggedin, getUserDetails } from "../../../services/Auth"; // ~/services/Auth
-
+import Select from 'react-select'
+import LoadingComponents from '../../Shared/LoadingComponents';
 
 
 const EditBankDetails = () => {
-  // State variables to hold form data and control component rendering
-  const [selectedBank, setSelectedBank] = useState('');
-  const [accountName, setAccountName] = useState('');
-  const [accountNumber, setAccountNumber] = useState('');
-  const [bicSwift, setBicSwift] = useState('');
-  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
-  const [showNewComponent, setShowNewComponent] = useState(false); // State to render new component
-  const [banks, setBanks] = useState({}); // State to render new component
-  const [errors, setErrors] = useState({});
+  const [bankList, setBankList] = useState([]);
+  const [inputErrors, setInputErrors] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
 
+  const [bankForm, setBankForm] = useState({
+    bank_id: null,
+    accountName: '',
+    accountNumber: '',
+    bic_swift: '',
+  });
 
-  // Function to handle form submission
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const newErrors = {};
-    if (!selectedBank) {
-      newErrors.Bank = "Bank is required";
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      setBankForm(prev => ({ ...prev, [name]: checked }));
+    } else {
+      setBankForm(prev => ({ ...prev, [name]: value }));
     }
-    if (!accountName) {
-      newErrors.accountName = "Account Name is required";
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setInputErrors(true)
+    if (bankForm.bank_id === null) {
+      return
     }
-    if (!accountNumber) {
-      newErrors.accountNumber = "Account Number is required";
+    if (bankForm.accountName === '') {
+      return
     }
-    if (!bicSwift) {
-      newErrors.bicSwift = "BIC/Swift is required";
+    if (bankForm.accountNumber === '') {
+      return
     }
-    setErrors(newErrors);
-    if (Object.keys(newErrors).length === 0) {
-      setIsLoading(true);
-      setEnabled(true);
-      console.log('Form submitted:', { selectedBank, accountName, accountNumber, bicSwift });
-      const formData ={
-        'bank_id' : selectedBank,
-        'accountName' : accountName,
-        'accountNumber' : accountNumber,
-        'bic_swift' : bicSwift,
-      }
-      SellerServices.updateBank(formData)
+    if (bankForm.bic_swift === '') {
+      return
+    }
+    setIsLoading(true);
+    setEnabled(true);
+    const formData = {
+      bank_id: bankForm.bank_id.value,
+      accountName: bankForm?.accountName,
+      accountNumber: bankForm?.accountNumber,
+      bic_swift: bankForm?.bic_swift,
+    }
+    SellerServices.updateBank(formData)
       .then((response) => {
         UserServices.detail()
-        .then((responce) => {
-          toast.success(response.data);
-          setShowSuccessPopup(true);
-          setUserDetails(responce);
-          setShowNewComponent(true);
-        })
-        .catch((e) => {
-          toast.error(e.message);
-        });
+          .then((responce) => {
+            toast.success(response.data);
+          })
+          .catch((e) => {
+            toast.error(e.message);
+          });
       })
       .catch((e) => {
         toast.error(e.message);
@@ -71,109 +73,101 @@ const EditBankDetails = () => {
         setIsLoading(false);
         setEnabled(false);
       });
-    }
-    // Show success popup
-    // setShowSuccessPopup(true);
   };
-  // {
-  //   event.preventDefault();
-  //   // Here you can perform actions like submitting data to a server or processing the bank details
-  //   console.log('Form submitted:', { selectedBank, accountName, accountNumber, bicSwift });
-  //   // You can add further logic here for form validation, API calls, etc.
 
-  // };
- // Function to handle closing the success popup and show the new component
- const handleClosePopup = () => {
-  setShowSuccessPopup(false);
-  setShowNewComponent(true); // Show the new component
-};
-const getBanks = () => {
-  SellerServices.getBanks()
-    .then((response) => {
-      setBanks(response);
-    })
-    .catch((e) => {
+  const getBanks = () => {
+    SellerServices.getBanks()
+      .then((response) => {
+        console.log(response, 'banklist');
+        let bank = [];
+        for (let i = 0; i < response.length; i++) {
+          bank.push({ label: response[i].fullname, value: response[i].id })
+        }
+        setBankList(bank)
+        setIsLoading(false)
+
+      })
+      .catch((e) => {
+        setIsLoading(false)
+        console.log(e.message);
+      });
+  };
+
+  const getBankDetail = () => {
+    setIsLoading(true)
+    SellerServices.getBankDetails().then((response) => {
+      setBankForm({
+        bank_id: { label: response.data.bank?.fullname, value: response.data.bank?.id },
+        accountName: response.data.accountName,
+        accountNumber: response.data.accountNumber,
+        bic_swift: response.data.bic_swift,
+      })
+      getBanks();
+    }).catch((e) => {
       console.log(e.message);
+      setIsLoading(false)
     });
-};
-useEffect(() => {
-  getBanks();
-  SellerServices.getBankDetails().then((response) => {
-    // console.log('bank', response)
-    setAccountName(response.data.accountName);
-    setSelectedBank(response.data.bank_id);
-    setAccountNumber(response.data.accountNumber);
-    setBicSwift(response.data.bic_swift);
-  }).catch((e) => {
-      console.log(e.message);
-    });
-  //setShowNewComponent(true);
-}, []);
+  }
+  useEffect(() => {
+    getBankDetail()
+  }, []);
   return (
     <>
-      
-        <section id='letsconnectbank'>
-          <h3>Edit Bank Account details</h3>
+
+      <section id='letsconnectbank' className='seller-bank-detail'>
+        {isLoading ?
+          <LoadingComponents />
+          :
           <form onSubmit={handleSubmit}>
-          <div>
-            <select
-              value={selectedBank}
-              onChange={(e) => setSelectedBank(e.target.value)}
-              placeholder="Select Your Bank"
-            >
-              <option value="">Select Your Bank:</option>
-              {banks.length >0 ?(
-                <>
-                  {banks?.map((bank) => {
-                    return (
-                      <option key={bank.id} value={bank.id}>
-                        {bank.fullname}
-                      </option>
-                    );
-                  })}
-                </>
-              ):('')}
-              {/* <option value="Bank A">Bank A</option>
-              <option value="Bank B">Bank B</option> */}
-              {/* Add more options based on your bank list */}
-            </select>
-            {errors.Bank && <p className="error">{errors.Bank}</p>}
-          </div>
-          <div>
-            <input
-              type="text"
-              value={accountName}
-              onChange={(e) => setAccountName(e.target.value)}
-              placeholder="Account Name"
-            />
-            {errors.accountName && <p className="error">{errors.accountName}</p>}
-          </div>
-          <div>
-            <input
-              type="text"
-              value={accountNumber}
-              onChange={(e) => setAccountNumber(e.target.value)}
-              placeholder="Account Number"
-            />
-            {errors.accountNumber && <p className="error">{errors.accountNumber}</p>}
-          </div>
-          <div>
-            <input
-              type="text"
-              value={bicSwift}
-              onChange={(e) => setBicSwift(e.target.value)}
-              placeholder="BIC/SWIFT"
-            />
-            {errors.bicSwift && <p className="error">{errors.bicSwift}</p>}
-          </div>
-            {/* <button className='savee' type="submit">Save</button> */}
-            <button type="submit" className='savee' disabled={enabled}>
-              {isLoading ? "loading.." : "Update"}
-            </button>
+            <div className="s-b-d-i-f">
+              <Select
+                value={bankForm?.bank_id}
+                onChange={(e) => { setBankForm((prev) => ({ ...prev, bank_id: e })) }}
+                options={bankList}
+                placeholder={'Select bank'}
+              />
+              {inputErrors && bankForm.bank_id === null && <p className="error">Bank is required</p>}
+            </div>
+            <div className="s-b-d-i-f">
+              <input
+                type="text"
+                name='accountName'
+                value={bankForm?.accountName}
+                onChange={handleChange}
+                placeholder="Account Name"
+              />
+              {inputErrors && bankForm.accountName === '' && <p className="error">Account name is required</p>}
+            </div>
+            <div className="s-b-d-i-f">
+              <input
+                type="text"
+                name='accountNumber'
+                value={bankForm?.accountNumber}
+                onChange={handleChange}
+                placeholder="Account Number"
+              />
+              {inputErrors && bankForm.accountNumber === '' && <p className="error">Account number is required</p>}
+            </div>
+            <div className="s-b-d-i-f">
+              <input
+                type="text"
+                name='bic_swift'
+                value={bankForm?.bic_swift}
+                onChange={handleChange}
+                placeholder="Account Name"
+              />
+              {inputErrors && bankForm.bic_swift === '' && <p className="error">Bic swift is required</p>}
+            </div>
+            <div className="s-b-d-i-f-b">
+              <button type="submit" className='savee' disabled={enabled}>
+                {isLoading ? "loading.." : "Update"}
+              </button>
+            </div>
           </form>
-        </section>
-     
-      
+        }
+      </section>
+
+
     </>
   );
 };

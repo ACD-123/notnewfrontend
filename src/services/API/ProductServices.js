@@ -352,6 +352,12 @@ function getSavedSellerDetails(id) {
     method: 'GET',
   })
 }
+function getProductManagmentOderCount() {
+  return request({
+    url: `${baseApi}orders/counts`,
+    method: 'GET',
+  })
+}
 
 function createSellerProduct(body){
   return request({
@@ -411,7 +417,8 @@ const ProductServices = {
   sellerInActiveProducts,
   storeProduct,
   createSellerProduct,
-  updateProduct
+  updateProduct,
+  getProductManagmentOderCount
 }
 
 export default ProductServices
