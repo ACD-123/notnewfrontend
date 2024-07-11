@@ -3,35 +3,25 @@ import ProductServices from '../../services/API/ProductServices';
 import { Spinner } from 'react-bootstrap';
 import SellerProductCard from '../Shared/Cards/SellerProductCard';
 
-const ProductCard = ({ setSubmitted, setProductId }) => {
+const SellerProductCard = ({ setSubmitted, setProductId }) => {
   const [activeProducts, setActiveProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log(setSubmitted, 'setSubmitted');
+  const { pathname } = window.location;
+  const id = pathname.split("/").pop();
 
-  const activeProductData = async () => {
-    try {
-      const res = await ProductServices.sellerActiveProducts();
-      if (res.status) {
-        setActiveProducts(res.data);
-        setIsLoading(false)
-      }
-    } catch (error) {
-      setIsLoading(false)
-      console.error("Error fetching product data:", error);
-    }
-  };
-
-  const deleteSellerProduct = async (id) => {
-    setIsLoading(true)
-    ProductServices.deleteSellerProduct(id).then((res) => {
-        setActiveProducts(res.data);
-        activeProductData();
-      }).catch((error) => {
+  const getProduct = () => {
+    SellerServices.getShopDetailProducts(id)
+      .then((res) => {
+        console.log('Shop Products', res.data.products);
+        setActiveProducts(res.data.products);
         setIsLoading(false)
       })
-  }
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   useEffect(() => {
-    activeProductData();
+    getProduct();
   }, []);
 
   return (
@@ -65,4 +55,4 @@ const ProductCard = ({ setSubmitted, setProductId }) => {
   );
 };
 
-export default ProductCard;
+export default SellerProductCard;

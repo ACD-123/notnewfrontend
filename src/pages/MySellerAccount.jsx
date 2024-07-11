@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Leftmenuimage from '../assets/Images/leftmenu.png';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Backimage from '../assets/Images/back-icon.png'
-import OngoingOrderManagement from '../components/OrderManagement/OngoingOrderManagement';
-import PendingOrderManagement from '../components/OrderManagement/PendingOrderManagement';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import SellerFeedback from '../components/Seller/SellerFeedback';
 import DiscountAndCoupens from '../components/AccountsSetting/SellerSetup/DiscountAndCoupens';
 import MyTransactions from '../components/AccountsSetting/SellerSetup/MyTransactions';
-import SetupSellerAccount from '../components/AccountsSetting/SellerSetup/SetupSellerAccount';
-import EditBankDetails from '../components/AccountsSetting/SellerSetup/EditBankDetails';
-import EditProfileSetup from '../components/AccountsSetting/SellerSetup/EditProfileSetup';
-import RefundManagement from '../components/OrderManagement/RefundManagement';
 import Selling from '../components/AccountsSetting/SellerSetup/SellingDashboard';
-import CompleteOrderManagement from '../components/OrderManagement/CompleteOrderManagement';
 import BidsNoffers from '../components/AccountsSetting/SellerSetup/BidsNoffers';
-import SellingNotifications from '../components/AccountsSetting/NotificationPreferences/SellingNotifications';
 import ProductManagement from '../components/AccountsSetting/SellerSetup/ProductManagement';
 import Chat from '../components/CustomerDashboard/Chat';
 import Header from '../components/Header';
@@ -24,9 +15,6 @@ import ShopSetting from '../components/AccountsSetting/SellerSetup/ShopSetting';
 const MySellerAccount = (props) => {
     const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [isOrderManagementOpen, setIsOrderManagementOpen] = useState(false);
-    const [isOrderManagementOpens, setIsOrderManagementOpens] = useState(false);
-    const [trustedseller, setTrustedseller] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
@@ -64,17 +52,11 @@ const MySellerAccount = (props) => {
     const handleMenuItemClick = (menu) => {
         setSelectedMenuItem(menu);
         navigate(`/my-seller-account?tab=${menu}`)
-        // setIsOrderManagementOpen(false);
     };
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
-    const toggleOrderManagement = () => {
-        setIsOrderManagementOpen(!isOrderManagementOpen);
-    };
-    const toggleOrderManagements = () => {
-        setIsOrderManagementOpens(!isOrderManagementOpens);
-    };
+
     const handleCallbacks = (value) => {
         setSelectedMenuItem(value);
     }
@@ -82,7 +64,6 @@ const MySellerAccount = (props) => {
     const [productId, setProductId] = useState('');
 
     const renderComponent = () => {
-        // setProductId('')
         switch (selectedMenuItem) {
             case 'dashboard':
                 return <Selling orderid={props.orderid} parentCallback={handleCallbacks} />;
@@ -90,14 +71,6 @@ const MySellerAccount = (props) => {
                 return <ProductManagement setSubmitted={setSubmitted} submitted={submitted} productId={productId} setProductId={setProductId} />;
             case 'order-management':
                 return <OderManagments setSubmitted={setSubmitted} submitted={submitted} productId={productId} setProductId={setProductId} />;
-            // case 'pending':
-            //     return <PendingOrderManagement />;
-            // case 'sellings1':
-            //     return <OngoingOrderManagement />
-            // case 'sellings2':
-            //     return <CompleteOrderManagement />
-            // case 'sellings3':
-            //     return <RefundManagement />;
             case 'bids-offers':
                 return <BidsNoffers />;
             case 'chat':
@@ -110,28 +83,11 @@ const MySellerAccount = (props) => {
                 return <MyTransactions />
             case 'shop-settings':
                 return <ShopSetting />
-            // case 'sellingss1':
-            //     return <EditProfileSetup />;
-            // case 'sellingss1b':
-            //     return <SetupSellerAccount />;
-            // case 'sellingss2':
-            //     return <EditBankDetails />;
-            // case 'sellingss3':
-            //     return <SellingNotifications />;
             default:
                 return null;
         }
     };
 
-    useEffect(() => {
-        let loggedInUser = localStorage.getItem("user_details");
-        if (loggedInUser) {
-            const loggedInUsers = JSON.parse(loggedInUser);
-            if (loggedInUsers.isTrustedSeller == 1) {
-                setTrustedseller(true)
-            }
-        }
-    }, []);
     return (
         <>
             <Header />
@@ -139,13 +95,15 @@ const MySellerAccount = (props) => {
                 <div class="container">
                     <div class="row">
                         <div class="main-dasboard-tabs">
-                            <div class="whatyouthink">
-                                <a href="/customerdashboard">Tell us what you Think</a>
-                            </div>
-                            <div class="tab-buttons">
-                                <button onClick={() => { navigate('/customerdashboard?tab=activity&component=dashboard') }}>Activity</button>
-                                <button onClick={() => { navigate('/customerdashboard?tab=messages') }}>Messages</button>
-                                <button class="active" onClick={() => { navigate('/customerdashboard?tab=account') }}>Account</button>
+                            <div className="tab-buttons">
+                                <div className="t-b-b">
+                                    <button onClick={() => { navigate('/customerdashboard?tab=activity&component=dashboard') }}>Activity</button>
+                                    <button onClick={() => { navigate('/customerdashboard?tab=messages') }}>Messages</button>
+                                    <button class="active" onClick={() => { navigate('/customerdashboard?tab=account') }}>Account</button>
+                                </div>
+                                <div className='t-b-w'>
+                                    <Link to="">Tell us what you Think</Link>
+                                </div>
                             </div>
                             <div class="tab-content">
                                 <div class="account-dashboard">
@@ -241,105 +199,62 @@ const MySellerAccount = (props) => {
                                                                             }}>
                                                                             Product Management
                                                                         </li>
-                                                                        <li 
-                                                                        className={selectedMenuItem === 'order-management' ? 'active' : ''} 
-                                                                        onClick={() => {
-                                                                            handleMenuItemClick('order-management');
-                                                                            setSubmitted(false);
-                                                                            setProductId('')
-                                                                        }}>
+                                                                        <li
+                                                                            className={selectedMenuItem === 'order-management' ? 'active' : ''}
+                                                                            onClick={() => {
+                                                                                handleMenuItemClick('order-management');
+                                                                                setSubmitted(false);
+                                                                                setProductId('')
+                                                                            }}>
                                                                             Order Management
-                                                                            {/* {isOrderManagementOpen && (
-                                                                                <div className='dropp'>
-                                                                                    <ul>
-                                                                                        <li className={selectedMenuItem === 'pending' ? 'active' : ''} onClick={() => { handleMenuItemClick('pending'); setProductId('') }}>
-                                                                                            Pending Orders
-                                                                                        </li>
-                                                                                        <li className={selectedMenuItem === 'sellings1' ? 'active' : ''} onClick={() => { handleMenuItemClick('sellings1'); setProductId('') }}>
-                                                                                            Ongoing Orders
-                                                                                        </li>
-                                                                                        <li className={selectedMenuItem === 'sellings2' ? 'active' : ''} onClick={() => { handleMenuItemClick('sellings2'); setProductId('') }}>
-                                                                                            Completed Orders
-                                                                                        </li>
-                                                                                        <li className={selectedMenuItem === 'sellings3' ? 'active' : ''} onClick={() => { handleMenuItemClick('sellings3'); setProductId('') }}>
-                                                                                            Refund Orders
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            )} */}
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'bids-offers' ? 'active' : ''} 
-                                                                        onClick={() => {
-                                                                            handleMenuItemClick('bids-offers');
-                                                                            setSubmitted(false);
-                                                                            setProductId('')
-                                                                        }}>
+                                                                        <li className={selectedMenuItem === 'bids-offers' ? 'active' : ''}
+                                                                            onClick={() => {
+                                                                                handleMenuItemClick('bids-offers');
+                                                                                setSubmitted(false);
+                                                                                setProductId('')
+                                                                            }}>
                                                                             Bids & Offers
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'chat' ? 'active' : ''} 
-                                                                        onClick={() => {
-                                                                            handleMenuItemClick('chat');
-                                                                            setSubmitted(false);
-                                                                            setProductId('')
-                                                                        }}>
+                                                                        <li className={selectedMenuItem === 'chat' ? 'active' : ''}
+                                                                            onClick={() => {
+                                                                                handleMenuItemClick('chat');
+                                                                                setSubmitted(false);
+                                                                                setProductId('')
+                                                                            }}>
                                                                             Chats
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'seller-feedback' ? 'active' : ''} 
-                                                                        onClick={() => {
-                                                                            handleMenuItemClick('seller-feedback');
-                                                                            setSubmitted(false);
-                                                                            setProductId('')
-                                                                        }}>
+                                                                        <li className={selectedMenuItem === 'seller-feedback' ? 'active' : ''}
+                                                                            onClick={() => {
+                                                                                handleMenuItemClick('seller-feedback');
+                                                                                setSubmitted(false);
+                                                                                setProductId('')
+                                                                            }}>
                                                                             Feedbacks
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'discount-coupens' ? 'active' : ''} 
-                                                                        onClick={() => {
-                                                                            handleMenuItemClick('discount-coupens');
-                                                                            setSubmitted(false);
-                                                                            setProductId('')
-                                                                        }}>
+                                                                        <li className={selectedMenuItem === 'discount-coupens' ? 'active' : ''}
+                                                                            onClick={() => {
+                                                                                handleMenuItemClick('discount-coupens');
+                                                                                setSubmitted(false);
+                                                                                setProductId('')
+                                                                            }}>
                                                                             Discounts & coupons
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'm-transactions' ? 'active' : ''} 
-                                                                        onClick={() => {
-                                                                            handleMenuItemClick('m-transactions');
-                                                                            setSubmitted(false);
-                                                                            setProductId('')
-                                                                        }}>
+                                                                        <li className={selectedMenuItem === 'm-transactions' ? 'active' : ''}
+                                                                            onClick={() => {
+                                                                                handleMenuItemClick('m-transactions');
+                                                                                setSubmitted(false);
+                                                                                setProductId('')
+                                                                            }}>
                                                                             Transactions
                                                                         </li>
-                                                                        <li className={selectedMenuItem === 'shop-settings' ? 'active' : ''} 
-                                                                        onClick={() => {
-                                                                            handleMenuItemClick('shop-settings');
-                                                                            setSubmitted(false);
-                                                                            setProductId('')
-                                                                        }}>
+                                                                        <li className={selectedMenuItem === 'shop-settings' ? 'active' : ''}
+                                                                            onClick={() => {
+                                                                                handleMenuItemClick('shop-settings');
+                                                                                setSubmitted(false);
+                                                                                setProductId('')
+                                                                            }}>
                                                                             Shop Settings
-                                                                            {/* {isOrderManagementOpens && (
-                                                                                <div className='dropp'>
-                                                                                    <ul>
-                                                                                        {trustedseller ? (
-                                                                                            <>
-                                                                                                <li className={selectedMenuItem === 'sellingss1' ? 'active' : ''} onClick={() => { handleMenuItemClick('sellingss1'); setProductId('') }}>
-                                                                                                    Business Profile Setting
-                                                                                                </li>
-                                                                                            </>
-                                                                                        ) : (
-                                                                                            <>
-                                                                                                <li className={selectedMenuItem === 'sellingss1b' ? 'active' : ''} onClick={() => { handleMenuItemClick('sellingss1b'); setProductId('') }}>
-                                                                                                    Business Profile Setting
-                                                                                                </li>
-                                                                                            </>
-                                                                                        )}
-                                                                                        <li className={selectedMenuItem === 'sellingss2' ? 'active' : ''} onClick={() => { handleMenuItemClick('sellingss2'); setProductId('') }}>
-                                                                                            Bank account
-                                                                                        </li>
-                                                                                        <li className={selectedMenuItem === 'sellingss3' ? 'active' : ''} onClick={() => { handleMenuItemClick('sellingss3'); setProductId('') }}>
-                                                                                            Notifications Settings
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </div>
-                                                                            )} */}
                                                                         </li>
                                                                     </>
                                                                 }

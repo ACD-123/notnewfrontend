@@ -222,6 +222,12 @@ function sellerCompletedOrders() {
     method: 'GET',
   })
 }
+function sellerRejectedOrders() {
+  return request({
+    url: `${ordersApi}/rejected`,
+    method: 'GET',
+  })
+}
 function customerRefundOrders() {
   return request({
     url: `${ordersApi}/refundcustomer`,
@@ -275,7 +281,8 @@ const OrderServices = {
   updateSeller,
   getDashboardData,
   getPendingOdersDetail,
-  sellerActiveOrders
+  sellerActiveOrders,
+  sellerRejectedOrders
 }
 
 export default OrderServices

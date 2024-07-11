@@ -21,11 +21,11 @@ function sellerInActiveProducts(params = {}) {
     params,
   })
 }
-function getAuctionsProducts(id) {
-  return request({
-    url: `${baseUrl}/auctioned?user_id=${id};`,
-  })
-}
+// function getAuctionsProducts(id) {
+//   return request({
+//     url: `${baseUrl}/auctioned?user_id=${id};`,
+//   })
+// }
 
 function save(data) {
   return request({
@@ -39,6 +39,12 @@ function isFavorite(data) {
     url: `${baseApi}favourites/save`,
     data,
     method: 'POST',
+  })
+}
+function deleteSellerProduct(id) {
+  return request({
+    url: `${baseApi}products/deleteProduct/${id}`,
+    method: 'GET',
   })
 }
 
@@ -418,7 +424,8 @@ const ProductServices = {
   storeProduct,
   createSellerProduct,
   updateProduct,
-  getProductManagmentOderCount
+  getProductManagmentOderCount,
+  deleteSellerProduct
 }
 
 export default ProductServices

@@ -36,6 +36,12 @@ function recursiveCategories(params = {}) {
       method: 'GET',
     })
   }
+  function  getAuctionProducts(user_id){
+    return request({
+      url: `${baseUrl}products/auctioned?user_id=${user_id}`,
+      method: 'GET',
+    })
+  }
   function removeDuplicates(arr) {
     let unique = [];
     for (let i = 0; i < arr.length; i++) {
@@ -52,7 +58,8 @@ function recursiveCategories(params = {}) {
     getCompanies,
     getbrands,
     getrecursive,
-    getTopSelling
+    getTopSelling,
+    getAuctionProducts
   }
   
   export default HomeService

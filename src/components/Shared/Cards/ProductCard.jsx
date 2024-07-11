@@ -204,7 +204,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                             <>
                                 {!data?.auctioned && (
                                     <div onClick={() => addToFavorites(data.guid, index)} className="favoriteImg">
-                                        {data.is_favourite === true ? (<FaHeart />) : (<FaRegHeart />)}
+                                        {data?.is_favourite === true ? (<FaHeart />) : (<FaRegHeart />)}
                                     </div>
                                 )}
                             </>

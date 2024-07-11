@@ -13,9 +13,6 @@ const libraries = ["places"];
 
 const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
-
-  // Ali monis
-
   const [inputError, setInputError] = useState(false);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -136,6 +133,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
   const [selected, setSelected] = []
   const handelCategoryChange = (data, apiAttributes) => {
+    setProductManagments(prev => ({ ...prev, category: data }));
     Category.productAttributes(data.value)
       .then((res) => {
         if (res?.data?.length > 0) {
@@ -150,9 +148,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           }));
           setProductManagments(prev => ({ ...prev, attributes: categoryAddons }));
 
-          if (productId != '' &&
-            productId != null &&
-            productId != undefined &&
+          if (productId !== '' &&
+            productId !== null &&
+            productId !== undefined &&
             categoryAddons?.[0]?.selected === null) {
 
             let updateAddons = []
@@ -358,7 +356,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     formData.append("length", productManagment.length);
     formData.append("width", productManagment.width);
 
-    if (productId != '' && productId != null && productId != undefined) {
+    if (productId !== '' && productId !== null && productId !== undefined) {
       ProductServices.updateProduct(productId, formData)
         .then((res) => {
           console.log(res, 'setAttribnutes');
@@ -463,7 +461,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
   }, [])
 
   useEffect(() => {
-    if (productId != "") {
+    if (productId !== "") {
       console.log(productId, 'product id found');
       getProductDetail(productId)
     }
@@ -569,6 +567,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                   <div className="two-field-left">
                     <label>Category</label>
                     <Select
+                      defaultValue={categories?.find(option => option?.value === productManagment?.category?.value)}
                       value={categories?.find(option => option?.value === productManagment?.category?.value)}
                       onChange={handelCategoryChange}
                       options={categories}
@@ -580,29 +579,29 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                   </div>
                 </div>
                 {productManagment?.attributes?.length > 0 ?
-                <div className="two-field">
-                  {productManagment?.attributes?.map((data, index) => {
-                    return (
-                      <>
-                        <div className="two-field-left">
-                          <label htmlFor="Price">{data?.name}</label>
-                          <Select
-                            // defaultValue={selected}
-                            value={data?.selected}
-                            onChange={(e) => { handelAddonsChange(e, data, index) }}
-                            options={productManagment?.attributes?.[index]?.options}
-                            placeholder={`Select ${data?.name}`}
-                            isMulti
-                          />
-                          {productManagment?.attributes?.[index]?.selectToSend?.length === 0 && inputError &&
-                            <div className="error-input">{data?.name} is required</div>
-                          }
-                        </div>
-                      </>
-                    )
-                  })}
-                </div>
-                : null}
+                  <div className="two-field">
+                    {productManagment?.attributes?.map((data, index) => {
+                      return (
+                        <>
+                          <div className="two-field-left">
+                            <label htmlFor="Price">{data?.name}</label>
+                            <Select
+                              // defaultValue={selected}
+                              value={data?.selected}
+                              onChange={(e) => { handelAddonsChange(e, data, index) }}
+                              options={productManagment?.attributes?.[index]?.options}
+                              placeholder={`Select ${data?.name}`}
+                              isMulti
+                            />
+                            {productManagment?.attributes?.[index]?.selectToSend?.length === 0 && inputError &&
+                              <div className="error-input">{data?.name} is required</div>
+                            }
+                          </div>
+                        </>
+                      )
+                    })}
+                  </div>
+                  : null}
                 <div className="two-field">
                   <div className="two-field-left">
                     <label>Brand</label>
@@ -660,9 +659,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                               checked={productManagment.sellingNow}
                               onClick={() => {
                                 if (productManagment.sellingNow) {
-                                  setProductManagments(prev => ({ ...prev, sellingNow: false }))
+                                  setProductManagments(prev => ({ ...prev, sellingNow: false , price : '' , saleprice : '' , minpurchase : '' , listing : ''}))
                                 } else {
-                                  setProductManagments(prev => ({ ...prev, sellingNow: true }))
+                                  setProductManagments(prev => ({ ...prev, sellingNow: true , price : '' , saleprice : '' , minpurchase : '' , listing : ''}))
                                 }
                               }}
                             />
@@ -687,9 +686,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                               checked={productManagment.auctioned}
                               onClick={() => {
                                 if (productManagment.auctioned) {
-                                  setProductManagments(prev => ({ ...prev, auctioned: false }))
+                                  setProductManagments(prev => ({ ...prev, auctioned: false , bids : ""  , durations : 0 , hours: "" , auctionListing:"" , end_listing: "" }))
                                 } else {
-                                  setProductManagments(prev => ({ ...prev, auctioned: true }))
+                                  setProductManagments(prev => ({ ...prev, auctioned: true , bids : ""  , durations : 0 , hours: "" , auctionListing:"" , end_listing: ""}))
                                 }
                               }}
                             />
@@ -969,7 +968,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
               </linearGradient>
             </defs>
           </svg>
-            <h4>{popupText}</h4>
+          <h4>{popupText}</h4>
           <p>We hope you enjoy selling on our platform</p>
         </div>
       </Modal>

@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 // import CategoryServicies from '../../../services/API/Category'; //~/services/API/Category
 import Home from '../../../services/API/HomeService'; //~/services/API/Home
 import { BASE_URL } from "../../../services/Constant";
+import LoadingComponents from '../../Shared/LoadingComponents';
 const CategoryList = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -54,16 +55,13 @@ const CategoryList = () => {
           <div className='container'>
           <div className='row'>
             {loading ? (
-              // <p>Loading...</p>
-              <p>&nbsp;</p>
-            ) : error ? (
-              <p>{error}</p>
+              <LoadingComponents/>
             ) : (
               <>
                 {categoryData.map((category) => {
                   return (
                     <div className='col col-lg-2'>
-                      <Link to={`/category/${category.id}`}>
+                      <Link to={`/category?category-id=${category.id}`}>
                       <div className='category' key={category.id}>
                         <div>
                           {category.media.length > 0 ?(

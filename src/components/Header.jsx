@@ -6,9 +6,9 @@ import Cart from "../assets/Images/Elements/cart.png";
 import NavBar from "./Elements/NavBar";
 import blankUser from "../../src/assets/Images/User/blankuser.jpg"
 import { Link } from "react-router-dom";
-import UserServices from "../services/API/UserServices"; //~/services/API/AuthService
-import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth"; // ~/services/Auth
-import CartServices from "../services/API/CartServices"; //~/services/API/CartServices
+import UserServices from "../services/API/UserServices";
+import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth";
+import CartServices from "../services/API/CartServices";
 import { BASE_URL } from "../services/Constant"
 import { useNavigate, useLocation } from "react-router-dom";
 import SearchSvg from "./Shared/Svgs/SearchSvg";
@@ -29,6 +29,8 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const path = location.pathname;
+  const search = location.search;
+  console.log(search , 'path');
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -573,27 +575,29 @@ const Header = () => {
               </div>
             </div>
           </div>
-          <div className="header-wrap-bottom">
-            <div className="container">
-              <div className="row">
-                <div className="col-lg-12">
-                  <div className="bottom">
-                    <ul>
-                      <li className={`${path === '/' ? 'active' : ''}`}><Link className='nav-link' to="/">Home</Link></li>
-                      <li className={`${path === '/top-category' ? 'active' : ''}`}><Link className='nav-link' to="/top-category">Top Categories</Link></li>
-                      <li className={`${path === '/auctions' ? 'active' : ''}`}><Link className='nav-link' to="/auctions">Auctions</Link></li>
-                      <li className={`${path === '/hot-deals' ? 'active' : ''}`}><Link className='nav-link' to="/hot-deals">Hot Deals</Link></li>
-                      <li className={`${path === '/top-sellers' ? 'active' : ''}`}><Link className='nav-link' to="/top-sellers">Top Sellers</Link></li>
-                      {/* <li><Nav.Link href="/categorykeyword">Electronics</Nav.Link></li>
+          {(search.includes('tab') || search.includes('component')) ? null :
+            <div className="header-wrap-bottom">
+              <div className="container">
+                <div className="row">
+                  <div className="col-lg-12">
+                    <div className="bottom">
+                      <ul>
+                        <li className={`${path === '/' ? 'active' : ''}`}><Link className='nav-link' to="/">Home</Link></li>
+                        <li className={`${path === '/top-category' ? 'active' : ''}`}><Link className='nav-link' to="/top-category">Top Categories</Link></li>
+                        <li className={`${path === '/auctions' ? 'active' : ''}`}><Link className='nav-link' to="/auctions">Auctions</Link></li>
+                        <li className={`${path === '/hot-deals' ? 'active' : ''}`}><Link className='nav-link' to="/hot-deals">Hot Deals</Link></li>
+                        <li className={`${path === '/top-sellers' ? 'active' : ''}`}><Link className='nav-link' to="/top-sellers">Top Sellers</Link></li>
+                        {/* <li><Nav.Link href="/categorykeyword">Electronics</Nav.Link></li>
                     <li><Nav.Link href="/categorykeyword">Vintage Products</Nav.Link></li>
                     <li><Nav.Link href="/categorykeyword">Auto Parts</Nav.Link></li> */}
-                      <li className={`${path === '/notFound' ? 'active' : ''}`}><Link className='nav-link' to="/notFound">Recomendations</Link></li>
-                    </ul>
+                        <li className={`${path === '/notFound' ? 'active' : ''}`}><Link className='nav-link' to="/notFound">Recomendations</Link></li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+           }
         </div>
       </header>
     </>

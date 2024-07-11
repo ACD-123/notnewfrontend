@@ -7,43 +7,36 @@ import NoDataFound from "../Shared/NoDataFound";
 import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
 
 
-const PendingOrderManagement = ({ detail, setDetail , getProductManagmentOderCount }) => {
-  const [selectedOrderId, setSelectedOrderId] = useState(null);
+const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCount }) => {
   const [pendingOdrList, setPendingOdrList] = useState([]);
   const [pendingOdrDetail, setPendingOdrDetail] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [orderStatus, setOrderStatus] = useState({});
-  const [rejectReason, setRejectReason] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
   const [showAction, setShowAction] = useState(false);
-
-  const handleViewDetails = (orderId) => {
-    setSelectedOrderId(orderId);
-  };
+  const [pendingOrderAttributes, setPendingOrderAttributes] = useState([]);
 
   const updateOrderStatus = (orderId, status) => {
-
-      OrderServices.updateOrderStatus({ order_id: orderId, status})
-        .then((response) => {
-          getPendingOders();
-          setDetail(false);
-          setShowAction(false);
-          getProductManagmentOderCount()
-        })
-        .catch((error) => {
-          console.error("Error updating order status:", error);
-          toast.error("Failed to update order status.");
-        });
+    setIsLoading(true)
+    OrderServices.updateOrderStatus({ order_id: orderId, status })
+      .then((response) => {
+        getPendingOders();
+        setDetail(false);
+        setShowAction(false);
+        getProductManagmentOderCount()
+        setIsLoading(true)
+      })
+      .catch((error) => {
+        setIsLoading(true)
+        toast.error("Failed to update order status.");
+      });
     // }
   };
 
   const getPendingOders = () => {
     OrderServices.sellerOngoingOrders()
       .then((response) => {
-        console.log(response, 'setOrderSummary');
         setPendingOdrList(response?.data);
         setIsLoading(false);
-  
+
       })
       .catch((e) => {
         toast.error(e.message);
@@ -52,38 +45,31 @@ const PendingOrderManagement = ({ detail, setDetail , getProductManagmentOderCou
   };
 
   const getPendingOdersDetail = (order_id) => {
-    setIsLoading(true);
     setDetail(true)
+    setIsLoading(true)
     OrderServices.getPendingOdersDetail(order_id)
       .then((response) => {
         console.log(response?.data, 'getPendingOdersDetail');
         setPendingOdrDetail(response?.data)
-        setIsLoading(false);
         setShowAction(false);
         getProductManagmentOderCount()
+        console.log(response?.data?.products?.[0]?.attributes);
+        const attributes = response?.data?.products?.[0]?.attributes
+        const validJsonString = attributes.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+)(\s*[},])/g, '$1"$2"$3');
+        const normalArray = JSON.parse(validJsonString);
+        setPendingOrderAttributes(normalArray)
+        setIsLoading(false)
       })
       .catch((e) => {
         toast.error(e.message);
-        setIsLoading(false);
+        setIsLoading(false)
       });
   };
-
-  const goBackToOrders = () => {
-    setSelectedOrderId(null);
-  };
-
-  // const filteredOrders = ordersummary?.filter(
-  //   (order) => order.order_id !== selectedOrderId
-  // );
 
   useEffect(() => {
     getPendingOders();
   }, []);
 
-  const handleStatusChange = (orderId, status) => {
-    setOrderStatus({ ...orderStatus, [orderId]: status });
-    updateOrderStatus(orderId, status);
-  };
 
   return (
     <>
@@ -106,8 +92,8 @@ const PendingOrderManagement = ({ detail, setDetail , getProductManagmentOderCou
                             </div>
                             <div className="p-o-m-w-l-l-r">
                               <h2><span>Order # : </span>{data?.orderid}</h2>
-                              <h3>User Name : {data?.fullname}</h3>
-                              <p>Status : {data?.status}</p>
+                              <h3>Customer Name : {data?.fullname}</h3>
+                              <p>Orders Status : {data?.status}</p>
                             </div>
                           </div>
                           <div className="p-o-m-w-l-r">
@@ -139,7 +125,7 @@ const PendingOrderManagement = ({ detail, setDetail , getProductManagmentOderCou
                 <h2>Ship to</h2>
                 <div className="s-o-m-d-2-1">
                   <div className="s-o-m-d-2-1-l">
-                    <img style={{ width: "100%" }} src={Location} />
+                    <img style={{ width: "100%" }} src={Location} alt="location" />
                     <svg width="23" height="29" viewBox="0 0 23 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <circle cx="11.9727" cy="11.2344" r="5" fill="white" />
                       <path d="M11.9727 0.234375C9.05634 0.237815 6.26045 1.39785 4.19829 3.46C2.13614 5.52216 0.976108 8.31805 0.972668 11.2344C0.969175 13.6176 1.74765 15.9362 3.18867 17.8344C3.18867 17.8344 3.48867 18.2294 3.53767 18.2864L11.9727 28.2344L20.4117 18.2814C20.4557 18.2284 20.7567 17.8344 20.7567 17.8344L20.7577 17.8314C22.198 15.934 22.9761 13.6165 22.9727 11.2344C22.9692 8.31805 21.8092 5.52216 19.747 3.46C17.6849 1.39785 14.889 0.237815 11.9727 0.234375ZM11.9727 15.2344C11.1815 15.2344 10.4082 14.9998 9.75039 14.5603C9.09259 14.1207 8.5799 13.496 8.27715 12.7651C7.9744 12.0342 7.89519 11.2299 8.04953 10.454C8.20387 9.67809 8.58483 8.96536 9.14424 8.40595C9.70365 7.84654 10.4164 7.46557 11.1923 7.31123C11.9682 7.15689 12.7725 7.23611 13.5034 7.53886C14.2343 7.84161 14.859 8.3543 15.2985 9.01209C15.7381 9.66989 15.9727 10.4432 15.9727 11.2344C15.9713 12.2948 15.5495 13.3115 14.7996 14.0613C14.0498 14.8112 13.0331 15.2331 11.9727 15.2344Z" fill="url(#paint0_linear_14_34179)" />
@@ -211,8 +197,8 @@ const PendingOrderManagement = ({ detail, setDetail , getProductManagmentOderCou
                     {showAction &&
                       <div className="s-o-m-d-3-r-a-o">
                         <ul>
-                          <li onClick={() =>{updateOrderStatus(pendingOdrDetail?.id , 4)}}>Accept</li>
-                          <li onClick={() =>{updateOrderStatus(pendingOdrDetail?.id , 2)}}>Reject</li>
+                          <li onClick={() => { updateOrderStatus(pendingOdrDetail?.id, 4) }}>Accept</li>
+                          <li onClick={() => { updateOrderStatus(pendingOdrDetail?.id, 2) }}>Reject</li>
                         </ul>
                       </div>
                     }
@@ -222,7 +208,7 @@ const PendingOrderManagement = ({ detail, setDetail , getProductManagmentOderCou
               <div className="s-o-m-d-4">
                 <div className="d-4-1">
                   <div className="d-4-1-l">
-                    <img src={pendingOdrDetail?.products?.[0]?.media?.[0]?.name} />
+                    <img src={pendingOdrDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
                   </div>
                   <div className="d-4-1-r">
                     <h4>{pendingOdrDetail?.products?.[0]?.name}</h4>
@@ -233,23 +219,16 @@ const PendingOrderManagement = ({ detail, setDetail , getProductManagmentOderCou
                       </div>
                       <div className="d-4-1-r-1-r">
                         <ul>
-                          {}
-                          <li>
-                            <p>Size : </p>
-                            <ul>
-                              <li>Small</li>
-                              {/* <li>Medium</li>
-                              <li>Large</li> */}
-                            </ul>
-                          </li>
-                          <li>
-                            <p>Color : </p>
-                            <ul>
-                              <li>Red</li>
-                              {/* <li>Green</li>
-                              <li>Blue</li> */}
-                            </ul>
-                          </li>
+                          {pendingOrderAttributes.map((data, index) => {
+                            return (
+                              <li key={index}>
+                                <p>{data?.key} : </p>
+                                <ul>
+                                  <li>{data?.value}</li>
+                                </ul>
+                              </li>
+                            )
+                          })}
                         </ul>
                       </div>
                     </div>
@@ -284,9 +263,7 @@ const PendingOrderManagement = ({ detail, setDetail , getProductManagmentOderCou
                   </ul>
                 </div>
               </div>
-              <div className="s-o-m-d-5"></div>
             </div>
-
           )
         }
       </div>

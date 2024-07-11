@@ -17,6 +17,18 @@ function overAll(params = {}) {
     params,
   })
 }
+function getCategoryProductsById(category_id) {
+  return request({
+    url: `${baseUrl}products/category-wise-product/${category_id}`,
+    method: 'GET'
+  })
+}
+function getCategorySubCategoryById(category_id) {
+  return request({
+    url: `${baseUrl}categories/sub-categories/${category_id}`,
+      method: 'GET'
+  })
+}
 function save(data) {
   return request({
     url: baseUrlC,
@@ -52,6 +64,8 @@ const Category = {
   tabs,
   get,
   overAll,
+  getCategoryProductsById,
+  getCategorySubCategoryById
 }
 
 export default Category

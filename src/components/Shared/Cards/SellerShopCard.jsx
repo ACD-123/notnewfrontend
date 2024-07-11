@@ -3,7 +3,7 @@ import blank from "../../../assets/Images/Productcard/blank.jpg";
 import { Link } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 
-const SellerProductCard = ({ data, setSubmitted, setProductId , deleteSellerProduct }) => {
+const SellerShopCard = ({ data}) => {
 
     return (
         <>
@@ -28,11 +28,7 @@ const SellerProductCard = ({ data, setSubmitted, setProductId , deleteSellerProd
                             <h3>{data?.name}</h3>
                             <h4>{data?.description}</h4>
                             <h2>
-                                <span>
                                     ${data?.bid_price}
-                                </span>
-                                <div className="edit" onClick={() => { setSubmitted(true); setProductId(data?.guid) }}>Edit</div>
-                                <div className="delete" onClick={() => { deleteSellerProduct(data?.id) }}><MdDelete /></div>
                             </h2>
                         </>
                     </div>
@@ -58,19 +54,13 @@ const SellerProductCard = ({ data, setSubmitted, setProductId , deleteSellerProd
                         <h2>
                             {data?.sale_price > 0 ?
                                 <>
-                                    <span>
                                         ${data?.price}
                                         <div className="circle"></div>
                                         <div className="sale-price">${data?.sale_price}</div>
-                                    </span>
-                                    <div className="edit" onClick={() => { setSubmitted(true); setProductId(data?.guid) }}>Edit</div>
-                                    <div className="delete" onClick={() => { deleteSellerProduct(data?.id) }}><MdDelete /></div>
                                 </>
                                 :
                                 <>
-                                    <span>${data?.price}</span>
-                                    <div className="edit" onClick={() => { setSubmitted(true); setProductId(data?.guid) }}>Edit</div>
-                                    <div className="delete" onClick={() => { deleteSellerProduct(data?.id) }}><MdDelete /></div>
+                                    ${data?.price}
                                 </>
                             }
                         </h2>
@@ -81,4 +71,4 @@ const SellerProductCard = ({ data, setSubmitted, setProductId , deleteSellerProd
     )
 }
 
-export default SellerProductCard
+export default SellerShopCard
