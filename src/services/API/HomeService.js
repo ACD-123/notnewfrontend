@@ -16,7 +16,7 @@ function recursiveCategories(params = {}) {
   }
   function getbrands(){
     return request({
-      url: `${baseUrl}brands/`
+      url: `${baseUrl}brands`
     })
   }
   function getrecursive(){
