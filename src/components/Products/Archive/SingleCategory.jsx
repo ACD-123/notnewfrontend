@@ -15,6 +15,10 @@ import HomeService from '../../../services/API/HomeService';
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import { FaCheck } from 'react-icons/fa';
+import LoadingComponents from '../../Shared/LoadingComponents';
+import NoDataFound from '../../Shared/NoDataFound';
+import ProductSkeletonLoader from '../../Shared/ProductSkeletonLoader';
+import Skeleton from 'react-skeleton-loader';
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -26,6 +30,7 @@ const SingleCategory = () => {
   const [categorySubCategories, setCategoryProductCategories] = useState([]);
   const [categoryAttributes, setCategoryAttributes] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [Loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredBrands, setFilteredBrands] = useState(brands);
   const [showDropdown, setShowDropdown] = useState({ price: false, brand: false });
@@ -35,25 +40,26 @@ const SingleCategory = () => {
   const [priceRange, setPriceRange] = useState({
     min: 0,
     max: 1000,
-  }); // Initial range values
+  });
 
-  const handleSliderChange = (value) => {
-    console.log(value);
-    setPriceRange({
-      min: value[0],
-      max: value[1],
-    });
-  };
+  // const handleSliderChange = (value) => {
+  //   console.log(value);
+  //   setPriceRange({
+  //     min: value[0],
+  //     max: value[1],
+  //   });
+  // };
 
   const getCategoryProductsById = () => {
     Category.getCategoryProductsById(category_id)
       .then((response) => {
         setCategoryProducts(response?.data);
         getCategorySubCategoryById(category_id)
-        getBrands()
+        // getBrands()
       })
       .catch((e) => {
         toast.error(e.message);
+        setLoading(false)
       });
   };
 
@@ -61,53 +67,55 @@ const SingleCategory = () => {
     Category.getCategorySubCategoryById(category_id)
       .then((response) => {
         setCategoryProductCategories(response?.data);
-        getCategoryAttributes(category_id)
+        setLoading(false)
+        // getCategoryAttributes(category_id)
       })
       .catch((e) => {
         toast.error(e.message);
+        setLoading(false)
       });
   };
 
-  const getCategoryAttributes = (id) => {
-    Category.productAttributes(id)
-      .then((res) => {
-        console.log(res, 'getCategoryAttributes');
-        for (let i = 0; i < res?.data.length; i++) {
-          const attributeName = res?.data?.[i]?.key;
-          setShowDropdown((prev) => ({ ...showDropdown, [attributeName]: false }))
-        }
-        console.log(showDropdown, 'showDropdown');
-        const categoryAddons = res?.data?.map(category => ({
-          name: category.key,
-          options: category.options.map((option, index) => ({
-            id: id,
-            label: option,
-            check: false
-          }))
-        }));
-        setCategoryAttributes(categoryAddons)
-        console.log(categoryAddons, 'categoryAddons');
-      }
-      )
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  // const getCategoryAttributes = (id) => {
+  //   Category.productAttributes(id)
+  //     .then((res) => {
+  //       console.log(res, 'getCategoryAttributes');
+  //       for (let i = 0; i < res?.data.length; i++) {
+  //         const attributeName = res?.data?.[i]?.key;
+  //         setShowDropdown((prev) => ({ ...showDropdown, [attributeName]: false }))
+  //       }
+  //       console.log(showDropdown, 'showDropdown');
+  //       const categoryAddons = res?.data?.map(category => ({
+  //         name: category.key,
+  //         options: category.options.map((option, index) => ({
+  //           id: id,
+  //           label: option,
+  //           check: false
+  //         }))
+  //       }));
+  //       setCategoryAttributes(categoryAddons)
+  //       console.log(categoryAddons, 'categoryAddons');
+  //     }
+  //     )
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }
 
-  const getBrands = () => {
-    HomeService.getbrands()
-      .then((response) => {
-        const brands = response?.map(brand => ({
-          ...brand,
-          check: false
-        }));
-        setBrands(brands);
-        setFilteredBrands(brands)
-      })
-      .catch((e) => {
-        console.log(e.message);
-      });
-  };
+  // const getBrands = () => {
+  //   HomeService.getbrands()
+  //     .then((response) => {
+  //       const brands = response?.map(brand => ({
+  //         ...brand,
+  //         check: false
+  //       }));
+  //       setBrands(brands);
+  //       setFilteredBrands(brands)
+  //     })
+  //     .catch((e) => {
+  //       console.log(e.message);
+  //     });
+  // };
 
   const handleToggleFavourite = (index) => {
     const updatedProducts = [...categoryProducts];
@@ -115,21 +123,21 @@ const SingleCategory = () => {
     setCategoryProducts(updatedProducts);
   };
 
-  const searchBrand = (event) => {
-    setSearchTerm(event);
-    filterBrands(event);
-  };
+  // const searchBrand = (event) => {
+  //   setSearchTerm(event);
+  //   filterBrands(event);
+  // };
 
-  const filterBrands = (term) => {
-    if (term === '') {
-      setFilteredBrands(brands);
-    } else {
-      const filtered = brands.filter(brand =>
-        brand.name.toLowerCase().includes(term.toLowerCase())
-      );
-      setFilteredBrands(filtered);
-    }
-  };
+  // const filterBrands = (term) => {
+  //   if (term === '') {
+  //     setFilteredBrands(brands);
+  //   } else {
+  //     const filtered = brands.filter(brand =>
+  //       brand.name.toLowerCase().includes(term.toLowerCase())
+  //     );
+  //     setFilteredBrands(filtered);
+  //   }
+  // };
 
   useEffect(() => {
     getCategoryProductsById()
@@ -140,13 +148,22 @@ const SingleCategory = () => {
       <Header />
       <div className="category-page">
         <div className="category-page-wrap">
+          {/* {Loading ?
+            <LoadingComponents /> */}
+          :
           <div className="container">
-            <div className="breadcrem">
-              Home / Category / <span>{categorySubCategories?.category?.name}</span>
+            {Loading ? <Skeleton />
+              :
+              <div className="breadcrem">Home / Category / <span>{categorySubCategories?.category?.name}</span></div>
+            }
+            <div className="title">
+              {Loading ?<Skeleton />
+                :
+                categorySubCategories?.category?.name
+              }
             </div>
-            <div className="title">{categorySubCategories?.category?.name}</div>
             <div className="filter-product">
-              <div className="d-p-l">
+              {/* <div className="d-p-l">
                 <div className="filters">Filters</div>
                 <div className="category">{categorySubCategories?.category?.name}</div>
                 <div className="sub-category">
@@ -331,58 +348,59 @@ const SingleCategory = () => {
                     )
                   }))
                 }
-              </div>
+              </div> */}
               <div className="d-p-r">
                 <div id="productcard">
                   <div className="row">
-                    {categoryProducts?.map((data, index) => {
-                      return (
-                        <div className="col-lg-3">
-                          <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
-                        </div>
+                    {!Loading ?
+                      (
+                        categoryProducts.length > 0 ?
+                          (categoryProducts?.map((data, index) => {
+                            return (
+                              <div className="col-lg-3">
+                                <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
+                              </div>
+                            )
+                          }))
+                          :
+                          <NoDataFound />
                       )
-                    })}
+                      :
+                      <>
+                        <div className="col-lg-3 mb-4">
+                          <ProductSkeletonLoader />
+                        </div>
+                        <div className="col-lg-3 mb-4">
+                          <ProductSkeletonLoader />
+                        </div>
+                        <div className="col-lg-3 mb-4">
+                          <ProductSkeletonLoader />
+                        </div>
+                        <div className="col-lg-3 mb-4">
+                          <ProductSkeletonLoader />
+                        </div>
+                        <div className="col-lg-3">
+                          <ProductSkeletonLoader />
+                        </div>
+                        <div className="col-lg-3">
+                          <ProductSkeletonLoader />
+                        </div>
+                        <div className="col-lg-3">
+                          <ProductSkeletonLoader />
+                        </div>
+                        <div className="col-lg-3">
+                          <ProductSkeletonLoader />
+                        </div>
+                      </>
+                    }
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          {/* } */}
         </div>
       </div>
-      {/* <section id='singlecategory'>
-        <div className='container'>
-          <h2>Men Running Shoes</h2>
-          <div className='row'>
-
-            <div className='col-lg-3'>
-              <div id='all-filters'>
-                <h3 style={{ color: "#000" }}>Filters</h3>
-                <SubcategoriesList />
-                <Search />
-                <PriceRange />
-                <SizeToggle />
-              </div>
-            </div>
-            <div className='col-lg-9'>
-              {renderProductCards()}
-              <ul className="pagination">
-                {Array.from({ length: totalPages }, (_, index) => (
-                  <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
-                    <button onClick={() => paginate(index + 1)} className="page-link">
-                      {index + 1}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-      <div className="main-category">
-        <div className="main-category-wrap">
-
-        </div>
-      </div> */}
       <GetSurprisedBanner />
       <Footer />
     </>

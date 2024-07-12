@@ -186,7 +186,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
         setIsLoading(false)
       });
 
-
   }
 
   useEffect(() => {

@@ -575,7 +575,7 @@ const Header = () => {
               </div>
             </div>
           </div>
-          {(search.includes('tab') || search.includes('component')) ? null :
+          {(search.includes('tab') || search.includes('component') || path.includes('category')) ? null :
             <div className="header-wrap-bottom">
               <div className="container">
                 <div className="row">
