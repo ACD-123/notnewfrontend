@@ -28,7 +28,7 @@ const Topsellers = () => {
     return (
         <>
             <Header />
-            <div className="top-sellers">
+            <div className="top-sellers" id='productcard'>
                 <div className="top-sellers-wrap">
                     <div className="container">
                         <div className="row">

@@ -106,10 +106,9 @@ const AccountInfo = () => {
       default:
         return (
             <div className='row'>
-          <div className='col-lg-4'>
+          <div className='col-lg-2'>
             <div className='personal-info-links'>
-              <h4>Personal Info</h4>
-              <hr style={{ width: '50%' }} />
+              <h4><span>Personal Info</span></h4>
               <ul>
                 <li onClick={() => handleLinkClick('PersonalInfo','component1')}>Personal information</li>
                 <li onClick={() => handleLinkClick('PersonalInfo','component2')}>Sign in and security</li>
@@ -118,10 +117,10 @@ const AccountInfo = () => {
                 <li onClick={() => handleLinkClick('PersonalInfo','component5')}>Search History</li>
               </ul>
             </div>
-            {/* Add other sections with their respective links */}
+          </div>
+          <div className='col-lg-2'>
             <div className='personal-info-links'>
-              <h4>Selling</h4>
-              <hr style={{ width: '50%' }} />
+              <h4><span>Selling</span></h4>
               <ul>
               {trustedseller ? (
                 <li onClick={() => navigate('/my-seller-account?tab=dashboard')}>My Seller Account</li>
@@ -132,29 +131,28 @@ const AccountInfo = () => {
                 {/* <li onClick={() => handleLinkClick('items')}>List an Item</li> */}
               </ul>
             </div>
+          </div>
+          <div className='col-lg-2'>
             <div className='personal-info-links'>
-              <h4>Watching</h4>
-              <hr style={{ width: '50%' }} />
+              <h4><span>Watching</span></h4>
               <ul>
                 <li onClick={() => handleLinkClick('instock')}>In Stock</li>
                 <li onClick={() => handleLinkClick('outstock')}>Out Stock</li>
               </ul>
             </div>
           </div>
-          <div className='col-lg-4'>
-            {/* Add other sections with their respective links */}
+          <div className='col-lg-3'>
             <div className='personal-info-links'>
-              <h4>Payment Information</h4>
-              <hr style={{ width: '50%' }} />
+              <h4><span>Payment Information</span></h4>
               <ul>
                 <li onClick={() => handleLinkClick('transactions')}>Payments</li>
                 <li onClick={() => handleLinkClick('stripe')}>Stripe Account</li>
               </ul>
             </div>
-            {/* Add other sections with their respective links */}
+          </div>
+          <div className='col-lg-3'>
             <div className='personal-info-links'>
-              <h4>Notification Preferences</h4>
-              <hr style={{ width: '50%' }} />
+              <h4><span>Notification Preferences</span></h4>
               <ul>
                 <li onClick={() => handleLinkClick('NotificationPreferences')}>Notification Settings</li>
                 {/* <li onClick={() => handleLinkClick('NotificationPreferences')}>General Notifications</li>

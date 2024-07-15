@@ -57,7 +57,7 @@ const HotSellingProducts = ({ loading, data, setHotProducts, title }) => {
                 <h3>
                   {title}
                   <span>
-                    <Link to="/AllNewProducts">View More</Link>
+                    <Link to="/hot-deals">View More</Link>
                   </span>
                 </h3>
               </div>

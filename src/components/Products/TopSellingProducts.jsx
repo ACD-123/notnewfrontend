@@ -15,7 +15,6 @@ const TopSellingProducts = ({ data, setTopSellingProducts, title, loading }) => 
   return (
     <>
       <section id="product-recents-viewed" className="top-selling-product">
-        {/* {data?.length > 0 ? ( */}
         <>
           <div className="container">
             <div className="row">
@@ -23,7 +22,7 @@ const TopSellingProducts = ({ data, setTopSellingProducts, title, loading }) => 
                 <h3>
                   {title}
                   <span>
-                    <Link to="/AllNewProducts">View More</Link>
+                    <Link to="/top-selling-prodcuts">View More</Link>
                   </span>
                 </h3>
               </div>
@@ -34,18 +33,10 @@ const TopSellingProducts = ({ data, setTopSellingProducts, title, loading }) => 
               <div className="row">
                 {loading ?
                   <>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
+                    <div className="col-lg-3"><ProductSkeletonLoader /></div>
+                    <div className="col-lg-3"><ProductSkeletonLoader /></div>
+                    <div className="col-lg-3"><ProductSkeletonLoader /></div>
+                    <div className="col-lg-3"><ProductSkeletonLoader /></div>
 
                   </>
                   :
@@ -59,9 +50,6 @@ const TopSellingProducts = ({ data, setTopSellingProducts, title, loading }) => 
             </div>
           </section>
         </>
-        {/* ) : (
-          ""
-        )} */}
       </section>
     </>
   );

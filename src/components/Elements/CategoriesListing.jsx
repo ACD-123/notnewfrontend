@@ -15,15 +15,15 @@ import Category from "../../services/API/Category"; //~/services/API/Category
 import { BASE_URL } from "../../services/Constant";
 import HomeService from "../../services/API/HomeService"; //~/services/API/Home
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CategoriesListing = () => {
   const [categories, setCategories] = useState({});
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
   const getCategory = () => {
     HomeService.getrecursive().then((res) => {
       setCategories(res);
-      console.log(res , 'categories');
       setLoading(false)
     }).catch((error) => {
       setLoading(false)
@@ -80,12 +80,12 @@ const CategoriesListing = () => {
                               <img src={Categorylistimage2} alt={product.name} />
                             </div>
                           )}
-                          <h3>{product.name}</h3>
+                          <h3 onClick={() =>{navigate(`/category?category-id=${product?.id}`)}}>{product.name}</h3>
                           <ul>
                             {product.children_recursive.map(
                             (subcategory, index) => (
                               <li key={index}>
-                                <Link to={`/sub-category?sub-cat=${subcategory.id}`}>
+                                <Link to={`/category?category-id=${subcategory?.id}`}>
                                   {subcategory.name}
                                 </Link>
                               </li>
@@ -93,7 +93,7 @@ const CategoriesListing = () => {
                           )}
                           </ul>
                           <a href="#" className="see-all-category">
-                          <Link to={`/category?cat=${product.id}`}>
+                          <Link to={`/category?category-id=${product?.id}`}>
                             See All
                             </Link>
                           </a>

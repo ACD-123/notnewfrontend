@@ -38,6 +38,8 @@ import SubCategory from "../components/Products/Archive/SubCategory"
 import Topsellers from "../pages/Topsellers"
 import HotDeals from "../pages/HotDeals"
 import MySellerAccount from "../pages/MySellerAccount"
+import SearchProduct from "../pages/SearchProduct"
+import TopSellingProducts from "../pages/TopSellingProducts"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -62,6 +64,7 @@ const PublicRoutes = () => {
 					<Route path="/signin" element={<SignIn />} />
 					<Route path="/top-category" element={<TopCategory />} />
 					<Route path="/top-sellers" element={<Topsellers />} />
+					<Route path="/top-selling-prodcuts" element={<TopSellingProducts />} />
 					<Route path="/hot-deals" element={<HotDeals />} />
 					<Route path="/category" element={<SingleCategory />} />
 					<Route path="/sub-category" element={<SubCategory />} />
@@ -93,6 +96,7 @@ const PublicRoutes = () => {
 					<Route path="/watchlist" element={<Watchlist/>}/>
 					<Route path="/productupload" element={<ProductUpload/>} />
 					<Route path="/my-seller-account" element={<MySellerAccount/>} />
+					<Route path="/search-product" element={<SearchProduct/>} />
 					<Route path="*" element={<NotFound/>} />
 				</Routes>
 			</BrowserRouter>

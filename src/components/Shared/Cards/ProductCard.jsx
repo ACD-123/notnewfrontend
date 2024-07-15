@@ -114,6 +114,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                 )}
                             </>
                         ) : (
+                            data?.product?.auctioned ? null :
                             <>
                                 <Link to="/signin">
                                     <div className="favoriteImg">
@@ -209,6 +210,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                 )}
                             </>
                         ) : (
+                            data?.auctioned ? null :
                             <>
                                 <Link to="/signin">
                                     <div className="favoriteImg">

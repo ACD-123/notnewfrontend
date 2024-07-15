@@ -24,15 +24,21 @@ function recursiveCategories(params = {}) {
       url: `${baseUrl}recursiveCategories`
     })
   }
+
+  function getSearchProducts(search){
+    return request({
+      url: `${baseUrl}searchHistory/get?search_key=${search}`
+    })
+  }
   function  getshopData(id){
     return request({
       url: `${baseUrl}getshopData/${id}`,
       method: 'GET',
     })
   }
-  function  getTopSelling(){
+  function  getTopSelling(user_id){
     return request({
-      url: `${baseUrl}products/getTopSelling`,
+      url: `${baseUrl}products/getTopSelling?user_id=${user_id}`,
       method: 'GET',
     })
   }
@@ -59,7 +65,8 @@ function recursiveCategories(params = {}) {
     getbrands,
     getrecursive,
     getTopSelling,
-    getAuctionProducts
+    getAuctionProducts,
+    getSearchProducts
   }
   
   export default HomeService

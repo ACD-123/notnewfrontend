@@ -15,22 +15,27 @@ import SearchSvg from "./Shared/Svgs/SearchSvg";
 import HeaderCategoryArrowSvg from "./Shared/Svgs/HeaderCategoryArrowSvg";
 import HomeService from "../services/API/HomeService";
 import HeaderArrowRightSvg from "./Shared/Svgs/HeaderArrowRightSvg";
+import Skeleton from "react-skeleton-loader";
+import NoDataFound from "./Shared/NoDataFound";
 const Header = () => {
-  const items = useSelector(state => state.cupon.cupon);
-  let user_details = JSON.parse(localStorage.getItem('user_details'));
-  const cart_items = items ? items : 0;
   const [showDropdown, setShowDropdown] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
+  const [searchProduct, setSearchProduct] = useState([]);
   const [categoryDropdown, setCategoryDropdown] = useState(false);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [user, setUser] = useState({});
   const [profilepic, setProfilePic] = useState("");
   const [cartitems, setCartItems] = useState(0);
-  let token = localStorage.getItem("access_token");
+  const [inputSearch, setInputSearch] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
+  let token = localStorage.getItem("access_token");
+  const items = useSelector(state => state.cupon.cupon);
+  let user_details = JSON.parse(localStorage.getItem('user_details'));
+  const cart_items = items ? items : 0;
   const path = location.pathname;
   const search = location.search;
-  console.log(search , 'path');
+
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -86,6 +91,19 @@ const Header = () => {
   useEffect(() => {
     getCategory();
   }, []);
+
+  const handelInputChange = (e) => {
+    setSearchLoading(true)
+    setInputSearch(e.target.value)
+    HomeService.getSearchProducts(e.target.value).then((res) => {
+      // setCategories(res);
+      console.log(res?.data, 'getSearchProducts');
+      setSearchProduct(res?.data)
+      setSearchLoading(false)
+    }).catch((error) => {
+      setSearchLoading(false)
+    });
+  }
 
 
   return (
@@ -403,50 +421,109 @@ const Header = () => {
                     </div>
                     <div className="header-right">
                       <div className="search-bar">
-                        <div className="search-icon">
-                          <SearchSvg />
+                        <div className="search-bar-t" style={{
+                          borderBottomLeftRadius: inputSearch !== "" ? '0px' : '24px',
+                          borderBottomRightRadius: inputSearch !== "" ? '0px' : '24px',
+                          borderBottom: inputSearch !== "" ? '0px' : '1px solid #DBDBDB'
+                        }}>
+                          <div className="search-icon">
+                            <SearchSvg />
+                          </div>
+                          <div className="input">
+                            <input type="text" placeholder="Search Here Anything....." onChange={handelInputChange} />
+                          </div>
+                          <div className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
+                            <div className="value">
+                              <div className="value-wrap">
+                                Categories
+                                <HeaderCategoryArrowSvg />
+                              </div>
+                            </div>
+                            {categoryDropdown &&
+                              <div className="options">
+                                <div className="options-wrap">
+                                  {categories?.slice(0, 3)?.map((data, index) => {
+                                    return (
+                                      <div>
+                                        <h4 onClick={() =>{navigate(`/category?category-id=${data?.id}`)}}>{data?.name}</h4>
+                                        <ul>
+                                          {data?.children_recursive?.slice(0, 3)?.map(
+                                            (subcategory, index) => (
+                                              <li key={index}>
+                                                <Link to={`/category?category-id=${subcategory?.id}`}>
+                                                  {subcategory.name}
+                                                </Link>
+                                              </li>
+                                            )
+                                          )}
+                                        </ul>
+
+                                      </div>
+                                    )
+                                  })}
+                                </div>
+                                <div className="footer">
+                                  <Link to={'/top-category'}>See All Categories</Link>
+                                  <HeaderArrowRightSvg />
+                                  <HeaderArrowRightSvg />
+                                </div>
+                              </div>
+                            }
+                          </div>
                         </div>
-                        <div className="input">
-                          <input type="text" placeholder="Search Here Anything....." />
-                        </div>
-                        <div className="category-drop-down" onClick={() =>{setCategoryDropdown(!categoryDropdown)}}>
-                          <div className="value">
-                            <div className="value-wrap">
-                              Categories
-                              <HeaderCategoryArrowSvg />
+                        {inputSearch != '' &&
+                          <div className="search-bar-b">
+                            <div className="search-bar-b-w">
+                              <div className="search-bar-b-w-list">
+                                {inputSearch != '' ?
+                                  (searchLoading ?
+                                    <ul>
+                                      <li><Skeleton /></li>
+                                      <li><Skeleton /></li>
+                                      <li><Skeleton /></li>
+                                    </ul>
+                                    :
+                                    <>
+                                    {searchProduct?.products?.length > 0 ?
+                                    <ul>
+                                      {searchProduct?.products?.slice(0, 5)?.map((data, index) => {
+                                        return (
+                                          <li key={index} onClick={() => {
+                                            if (data?.auctioned) {
+                                              navigate(`/auctionproduct/${data?.guid}`)
+                                            } else {
+                                              navigate(`/singleproduct/${data?.guid}`)
+                                            }
+                                          }}>
+                                            <div>
+                                              <img src={data?.media?.[0]?.name} alt="" />
+                                            </div>
+                                            <div>
+                                              <h3>{data?.name}</h3>
+                                              <p>{data?.description}</p>
+                                            </div>
+                                          </li>
+                                        )
+                                      })}
+                                    </ul>
+                                    :
+                                    <NoDataFound title={'No product found'}/>
+                                    }
+                                    </>
+                                  )
+                                  :
+                                  null
+                                }
+                              </div>
+                              {searchProduct?.products?.length > 0 ?
+                              <div className="search-bar-b-w-l-m">
+                                <Link to={`/search-product?text=${inputSearch}`}>Load More</Link>
+                              </div>
+                              :
+                              null}
                             </div>
                           </div>
-                          {categoryDropdown &&
-                            <div className="options">
-                              <div className="options-wrap">
-                                {categories?.slice(0, 3)?.map((data, index) => {
-                                  return (
-                                    <div>
-                                      <h4>{data?.name}</h4>
-                                      <ul>
-                                        {/* {data.children_recursive.map(
-                                      (subcategory, index) => (
-                                        <li key={index}>
-                                          <Link to={`/sub-category?sub-cat=${subcategory.id}`}>
-                                            {subcategory.name}
-                                          </Link>
-                                        </li>
-                                      )
-                                    )} */}
-                                      </ul>
-
-                                    </div>
-                                  )
-                                })}
-                              </div>
-                              <div className="footer">
-                                <Link to={'/top-category'}>See All Categories</Link>
-                                <HeaderArrowRightSvg />
-                                <HeaderArrowRightSvg />
-                              </div>
-                            </div>
-                          }
-                        </div>
+                        }
                       </div>
                       {isLoggedin() ? (
                         <>
@@ -575,7 +652,7 @@ const Header = () => {
               </div>
             </div>
           </div>
-          {(search.includes('tab') || search.includes('component') || path.includes('category')) ? null :
+          {(search.includes('tab') || search.includes('component') || path.includes('category') && !path.includes('top-category')) ? null :
             <div className="header-wrap-bottom">
               <div className="container">
                 <div className="row">
@@ -590,14 +667,14 @@ const Header = () => {
                         {/* <li><Nav.Link href="/categorykeyword">Electronics</Nav.Link></li>
                     <li><Nav.Link href="/categorykeyword">Vintage Products</Nav.Link></li>
                     <li><Nav.Link href="/categorykeyword">Auto Parts</Nav.Link></li> */}
-                        <li className={`${path === '/notFound' ? 'active' : ''}`}><Link className='nav-link' to="/notFound">Recomendations</Link></li>
+                        {/* <li className={`${path === '/notFound' ? 'active' : ''}`}><Link className='nav-link' to="/notFound">Recomendations</Link></li> */}
                       </ul>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-           }
+          }
         </div>
       </header>
     </>

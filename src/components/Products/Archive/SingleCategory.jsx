@@ -7,7 +7,7 @@ import Search from "../../Elements/FilterAttributes/Search"
 import PriceRange from "../../Elements/FilterAttributes/PriceRange"
 import SizeToggle from "../../Elements/FilterAttributes/Size"
 import Category from '../../../services/API/Category';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ProductCard from '../../Shared/Cards/ProductCard';
 import ProductServices from '../../../services/API/ProductServices';
@@ -19,6 +19,7 @@ import LoadingComponents from '../../Shared/LoadingComponents';
 import NoDataFound from '../../Shared/NoDataFound';
 import ProductSkeletonLoader from '../../Shared/ProductSkeletonLoader';
 import Skeleton from 'react-skeleton-loader';
+import Select from 'react-select';
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -27,7 +28,9 @@ const useQuery = () => {
 const SingleCategory = () => {
   const [cardsPerPage] = useState(6);
   const [categoryProducts, setCategoryProducts] = useState([]);
-  const [categorySubCategories, setCategoryProductCategories] = useState([]);
+  const [categorySubCategories, setCategorySubCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [selectedSubCategories, setSelectedSubCategories] = useState(null);
   const [categoryAttributes, setCategoryAttributes] = useState([]);
   const [brands, setBrands] = useState([]);
   const [Loading, setLoading] = useState(true);
@@ -50,15 +53,18 @@ const SingleCategory = () => {
   //   });
   // };
 
-  const getCategoryProductsById = () => {
+  const getCategoryProductsById = (category_id) => {
+    setLoading(true)
     Category.getCategoryProductsById(category_id)
       .then((response) => {
         setCategoryProducts(response?.data);
         getCategorySubCategoryById(category_id)
         // getBrands()
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.data);
+        setCategoryProducts([])
+        getCategorySubCategoryById(category_id)
         setLoading(false)
       });
   };
@@ -66,12 +72,18 @@ const SingleCategory = () => {
   const getCategorySubCategoryById = (category_id) => {
     Category.getCategorySubCategoryById(category_id)
       .then((response) => {
-        setCategoryProductCategories(response?.data);
+        const arr = []
+        for (let i = 0; i < response?.data?.sub_categories.length; i++) {
+          arr.push({ label: response?.data?.sub_categories?.[i]?.name, value: response?.data?.sub_categories?.[i]?.id })
+        }
+        setCategorySubCategories(response?.data);
+        setSubCategories([{ label: response?.data?.category?.name, value: response?.data?.category?.id }, ...arr]);
+        setSelectedSubCategories({ label: response?.data?.category?.name, value: response?.data?.category?.id })
         setLoading(false)
         // getCategoryAttributes(category_id)
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.data);
         setLoading(false)
       });
   };
@@ -139,28 +151,43 @@ const SingleCategory = () => {
   //   }
   // };
 
+  const handelSubCategoryChange = (e) => {
+    console.log(e, 'handelSubCategoryChange');
+    getCategoryProductsById(e.value)
+    setSelectedSubCategories(e)
+  }
+
   useEffect(() => {
-    getCategoryProductsById()
-  }, [])
+    getCategoryProductsById(category_id)
+  }, [category_id])
 
   return (
     <>
       <Header />
       <div className="category-page">
         <div className="category-page-wrap">
-          {/* {Loading ?
-            <LoadingComponents /> */}
-          :
           <div className="container">
             {Loading ? <Skeleton />
               :
-              <div className="breadcrem">Home / Category / <span>{categorySubCategories?.category?.name}</span></div>
+              <div className="breadcrem"><Link to={'/'}>Home / </Link><Link to={'/top-category'}>Category / </Link><span>{selectedSubCategories?.label}</span></div>
             }
             <div className="title">
-              {Loading ?<Skeleton />
-                :
-                categorySubCategories?.category?.name
-              }
+              <div className="t">
+                {Loading ? <Skeleton />
+                  :
+                  selectedSubCategories?.label
+                }
+              </div>
+              <div className="s">
+                <Select
+                  defaultValue={subCategories?.find(option => option?.value === selectedSubCategories?.value)}
+                  value={subCategories?.find(option => option?.value === selectedSubCategories?.value)}
+                  // defaultValue={selectedSubCategories}
+                  onChange={handelSubCategoryChange}
+                  options={subCategories}
+                  placeholder={'Select sub category'}
+                />
+              </div>
             </div>
             <div className="filter-product">
               {/* <div className="d-p-l">
@@ -363,7 +390,7 @@ const SingleCategory = () => {
                             )
                           }))
                           :
-                          <NoDataFound />
+                          <NoDataFound title={'No products found'} />
                       )
                       :
                       <>
@@ -398,7 +425,6 @@ const SingleCategory = () => {
               </div>
             </div>
           </div>
-          {/* } */}
         </div>
       </div>
       <GetSurprisedBanner />

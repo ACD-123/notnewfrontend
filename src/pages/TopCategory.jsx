@@ -8,24 +8,25 @@ import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 
 const TopCategory = () => {
   const [banners, setBanners] = useState([]);
-	const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-	const getTopSelling = () => {
-		HomeService.getTopSelling()
-			.then((response) => {
-				setBanners(response?.data?.banners)
-				setTimeout(() => {
-					setLoading(false)
-				}, 1000);
-			})
-			.catch((e) => {
-				console.log('error', e)
-			});
-	};
+  const getTopSelling = () => {
+    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+    HomeService.getTopSelling(loggedInUser?.id)
+      .then((response) => {
+        setBanners(response?.data?.banners)
+        setTimeout(() => {
+          setLoading(false)
+        }, 1000);
+      })
+      .catch((e) => {
+        console.log('error', e)
+      });
+  };
 
-	useEffect(() => {
-		getTopSelling()
-	}, [])
+  useEffect(() => {
+    getTopSelling()
+  }, [])
   return (
     <>
       <Header />
@@ -34,7 +35,7 @@ const TopCategory = () => {
           <div className="container">
             <div className="row">
               <div className="col-lg-12">
-                <Banner data={banners} loading={loading}/>
+                <Banner data={banners} loading={loading} />
                 <CategoriesListing />
                 <GetSurprisedBanner />
               </div>

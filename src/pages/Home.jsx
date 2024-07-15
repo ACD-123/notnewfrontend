@@ -13,6 +13,7 @@ import UserServices from "../services/API/UserServices"; //~/services/API/AuthSe
 import HomeService from "../services/API/HomeService"; //~/services/API/AuthService
 import TopSellingProducts from "../components/Products/TopSellingProducts";
 import HotSellingProducts from "../components/Products/HotSellingProducts";
+import HomeCategorySlider from "../components/Shared/Sliders/HomeCategorySlider";
 
 const Home = () => {
 	const [user, setUser] = useState({});
@@ -22,13 +23,14 @@ const Home = () => {
 	const [hotProducts, setHotProducts] = useState([]);
 	const [topSelling, setTopSelling] = useState([]);
 	const [loading, setLoading] = useState(true);
+	const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
 
-	const getTopSelling = () => {
-		HomeService.getTopSelling()
+	const getTopSelling = (id) => {
+		HomeService.getTopSelling(id)
 			.then((response) => {
-				setBanners(response?.data?.banners)
-				setTopSellingProducts(response?.data?.products)
-				setHotProducts(response?.data?.hot)
+				setBanners(response?.data?.banners?.slice(0,4))
+				setTopSellingProducts(response?.data?.products?.slice(0,4))
+				setHotProducts(response?.data?.hot?.slice(0,4))
 				setTimeout(() => {
 					setLoading(false)
 				}, 1000);
@@ -39,13 +41,14 @@ const Home = () => {
 	};
 
 	useEffect(() => {
-		getTopSelling()
+		getTopSelling(loggedInUser?.id)
 	}, [])
 
 	return (
 		<>
 			<Header />
 			<Banner data={banners} loading={loading} />
+			<HomeCategorySlider/>
 			<Items title={'New Items'} />
 			<TopSellingProducts loading={loading} data={topSellingProducts} setTopSellingProducts={setTopSellingProducts} title={'Top Selling Products'} />
 			<HotSellingProducts loading={loading} data={hotProducts} setHotProducts={setHotProducts} title={'Hot Selling Products'} />
