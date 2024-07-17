@@ -44,7 +44,7 @@ const Activity = () => {
   // Render the component based on the selected menu item
   const renderComponent = () => {
     switch (selectedMenuItem) {
-      case 'dashboard':
+      case 'my-orders':
         return <Dashboard />;
       case 'recently-viewed':
         // return <RecentlyViewed />;
@@ -92,8 +92,8 @@ const Activity = () => {
         {/* Left Menu (including toggle for mobile view) */}
         <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
           <ul>
-            <li className={selectedMenuItem === 'dashboard' ? 'active' : ''} onClick={() => handleMenuItemClick('dashboard')}>
-              Dashboard
+            <li className={selectedMenuItem === 'my-orders' ? 'active' : ''} onClick={() => handleMenuItemClick('my-orders')}>
+            My Orders
             </li>
             <li className={selectedMenuItem === 'recently-viewed' ? 'active' : ''} onClick={() => handleMenuItemClick('recently-viewed')}>
               Recently viewed

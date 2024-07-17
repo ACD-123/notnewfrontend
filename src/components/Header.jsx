@@ -564,10 +564,10 @@ const Header = () => {
                                 <ul>
                                   <li
                                     onClick={() =>
-                                      handleDropdownItemClick("dashboard")
+                                      handleDropdownItemClick("my-orders")
                                     }
                                   >
-                                    Dashboard
+                                    My Orders
                                   </li>
                                   <li
                                     onClick={() =>

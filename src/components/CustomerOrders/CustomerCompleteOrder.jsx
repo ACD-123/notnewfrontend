@@ -8,15 +8,20 @@ import { IoIosArrowBack } from "react-icons/io";
 import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 
-const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCount }) => {
+const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount }) => {
   const [completedOders, setCompletedOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [review, setReview] = useState(false);
   const [pendingOrderDetail, setPendingOrderDetail] = useState([]);
   const [pendingOrderAttributes, setPendingOrderAttributes] = useState([]);
+  const [reviewStar, setReviewStar] = useState('');
+  const [description, setdescription] = useState('');
+  const [selectedIndex, setSelectedIndex] = useState('');
+  const [inputError, setInputError] = useState(false);
+  const [oderDetailResponse, setOderDetailResponse] = useState([])
 
   const getCompletedOders = () => {
-    OrderServices.sellerCompletedOrders()
+    OrderServices.customerCompleteOrders()
       .then((response) => {
         setCompletedOrders(response?.data);
         setIsLoading(false);
@@ -36,7 +41,17 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
         setPendingOrderDetail(response?.data)
         setIsLoading(false);
         let tempArr = []
+        setdescription('')
+        setOderDetailResponse(response?.data?.products)
         for (let i = 0; i < response?.data?.products.length; i++) {
+          setdescription((prev) => ({
+            ...prev,
+            [`description${i}`]: ''
+          }));
+          setReviewStar((prev) => ({
+            ...prev,
+            [`star${i}`]: 0
+          }));
           const attributes = response?.data?.products?.[i]?.attributes;
           const validJsonString = attributes.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+)(\s*[},])/g, '$1"$2"$3');
           const normalArray = JSON.parse(validJsonString);
@@ -50,9 +65,58 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
       });
   };
 
+  const customerOderReview = (e, id, i) => {
+    e.preventDefault();
+    setSelectedIndex(i);
+    setInputError(true)
+    console.log(description[`description${i}`], 'description[`description${i}`]');
+    if (description[`description${i}`] != "") {
+      OrderServices.customerOderReview({
+        product_id: id,
+        comments: description[`description${i}`],
+        rating: reviewStar[`star${i}`]
+      })
+        .then((response) => {
+          setInputError(false)
+          setSelectedIndex('');
+          setdescription((prev) => ({ ...prev, [`description${i}`]: '' }))
+          setReviewStar((prev) => ({ ...prev, [`star${i}`]: 0 }))
+          toast.success(response.data);
+          setReviewStar(0)
+        })
+        .catch((e) => {
+          toast.error(e.message);
+        });
+    }
+  }
+
   useEffect(() => {
     getCompletedOders();
   }, []);
+
+  const reOrder = (e) => {
+    e.preventDefault();
+    console.log(oderDetailResponse, 'oderDetailResponse');
+    
+    // Creating the orderData array with the desired structure
+    const orderData = oderDetailResponse.map(item => ({
+      product_id: item.id,
+      price: item.producttotal,
+      quantity: item.quantity,
+      attributes: item.attributes
+    }));
+  
+    console.log(orderData, 'orderData');
+  
+    // Sending the orderData array as the payload
+    OrderServices.customerReOrder(orderData)
+      .then((response) => {
+        toast.success(response.data);
+      })
+      .catch((e) => {
+        toast.error(e.message);
+      });
+  };
 
   return (
     <div className="pending-oder-managment">
@@ -80,9 +144,8 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                         </div>
                         <div className="p-o-m-w-l-r">
                           <div className="p-o-m-w-l-r-w-d">
-                            <button onClick={() => { getCompletedOdersDetail(data?.order_id, false) }}>View Details</button>
-                            <button onClick={() => { getCompletedOdersDetail(data?.order_id, true) }}>
-                              <span>Reviews</span></button>
+                            <button onClick={() => { getCompletedOdersDetail(data?.order_id, false) }}>Re Order</button>
+                            <button onClick={() => { getCompletedOdersDetail(data?.order_id, true) }}><span>Refund</span></button>
                           </div>
                         </div>
                       </li>
@@ -109,7 +172,7 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
               <h2>Ship to</h2>
               <div className="s-o-m-d-2-1">
                 <div className="s-o-m-d-2-1-l">
-                  <img style={{ width: "100%" }} src={Location} alt="location"/>
+                  <img style={{ width: "100%" }} src={Location} alt="location" />
                   <svg width="23" height="29" viewBox="0 0 23 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="11.9727" cy="11.2344" r="5" fill="white" />
                     <path d="M11.9727 0.234375C9.05634 0.237815 6.26045 1.39785 4.19829 3.46C2.13614 5.52216 0.976108 8.31805 0.972668 11.2344C0.969175 13.6176 1.74765 15.9362 3.18867 17.8344C3.18867 17.8344 3.48867 18.2294 3.53767 18.2864L11.9727 28.2344L20.4117 18.2814C20.4557 18.2284 20.7567 17.8344 20.7567 17.8344L20.7577 17.8314C22.198 15.934 22.9761 13.6165 22.9727 11.2344C22.9692 8.31805 21.8092 5.52216 19.747 3.46C17.6849 1.39785 14.889 0.237815 11.9727 0.234375ZM11.9727 15.2344C11.1815 15.2344 10.4082 14.9998 9.75039 14.5603C9.09259 14.1207 8.5799 13.496 8.27715 12.7651C7.9744 12.0342 7.89519 11.2299 8.04953 10.454C8.20387 9.67809 8.58483 8.96536 9.14424 8.40595C9.70365 7.84654 10.4164 7.46557 11.1923 7.31123C11.9682 7.15689 12.7725 7.23611 13.5034 7.53886C14.2343 7.84161 14.859 8.3543 15.2985 9.01209C15.7381 9.66989 15.9727 10.4432 15.9727 11.2344C15.9713 12.2948 15.5495 13.3115 14.7996 14.0613C14.0498 14.8112 13.0331 15.2331 11.9727 15.2344Z" fill="url(#paint0_linear_14_34179)" />
@@ -183,41 +246,57 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                 </div>
               </div>
             }
-            <div className="s-o-m-d-4" style={{marginTop : review ? '30px' : '0px'}}>
-            <div className="d-4-1">
-                  {pendingOrderDetail?.products?.map((data, index) => {
-                    return (
-                      <div className="d-4-1-w">
-                        <div className="d-4-1-l">
-                          <img src={data?.media?.[0]?.name} alt="Product" />
-                        </div>
-                        <div className="d-4-1-r">
-                          <h4>{data?.name}</h4>
-                          <div className="d-4-1-r-1">
-                            <div className="d-4-1-r-1-l">
-                              <h5>${data?.producttotal}</h5>
-                              <p>Quantity :<span>{data?.quantity}</span></p>
-                            </div>
-                            <div className="d-4-1-r-1-r">
-                              <ul>
-                                {pendingOrderAttributes?.[index]?.map((data, i) => {
-                                  return (
-                                    <li key={i}>
-                                      <p>{data?.key} : </p>
-                                      <ul>
-                                        <li>{data?.value}</li>
-                                      </ul>
-                                    </li>
-                                  )
-                                })}
-                              </ul>
-                            </div>
+            <div className="s-o-m-d-4" style={{ marginTop: review ? '30px' : '0px' }}>
+              <div className="d-4-1">
+                {pendingOrderDetail?.products?.map((data, index) => {
+                  return (
+                    <div className="d-4-1-w">
+                      <div className="d-4-1-l">
+                        <img src={data?.media?.[0]?.name} alt="Product" />
+                      </div>
+                      <div className="d-4-1-r">
+                        <h4>{data?.name}</h4>
+                        <div className="d-4-1-r-1">
+                          <div className="d-4-1-r-1-l">
+                            <h5>${data?.producttotal}</h5>
+                            <p>Quantity :<span>{data?.quantity}</span></p>
+                          </div>
+                          <div className="d-4-1-r-1-r">
+                            <ul>
+                              {pendingOrderAttributes?.[index]?.map((data, i) => {
+                                return (
+                                  <li key={i}>
+                                    <p>{data?.key} : </p>
+                                    <ul>
+                                      <li>{data?.value}</li>
+                                    </ul>
+                                  </li>
+                                )
+                              })}
+                            </ul>
                           </div>
                         </div>
                       </div>
-                    )
-                  })}
-                </div>
+                      <div className="d-4-1-e">
+                        <form onSubmit={(e) => { customerOderReview(e, data?.id, index) }}>
+                          <div className="review-star">
+                            <span onClick={() => { setReviewStar((prev) => ({ ...prev, [`star${index}`]: 1 })) }}>{reviewStar[`star${index}`] > 0 ? <FaStar /> : <FaRegStar />}</span>
+                            <span onClick={() => { setReviewStar((prev) => ({ ...prev, [`star${index}`]: 2 })) }}>{reviewStar[`star${index}`] > 1 ? <FaStar /> : <FaRegStar />}</span>
+                            <span onClick={() => { setReviewStar((prev) => ({ ...prev, [`star${index}`]: 3 })) }}>{reviewStar[`star${index}`] > 2 ? <FaStar /> : <FaRegStar />}</span>
+                            <span onClick={() => { setReviewStar((prev) => ({ ...prev, [`star${index}`]: 4 })) }}>{reviewStar[`star${index}`] > 3 ? <FaStar /> : <FaRegStar />}</span>
+                            <span onClick={() => { setReviewStar((prev) => ({ ...prev, [`star${index}`]: 5 })) }}>{reviewStar[`star${index}`] > 4 ? <FaStar /> : <FaRegStar />}</span>
+                          </div>
+                          <textarea placeholder="Description..." onChange={(e) => { setdescription((prev) => ({ ...prev, [`description${index}`]: e.target.value })) }}></textarea>
+                          {description[`description${index}`] === "" && inputError && selectedIndex === index && <p className="error-input">Description is required</p>}
+                          <div className="review-s-b">
+                            <button>Send</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
               {/* <div className="d-4-1">
                 <div className="d-4-1-l">
                   <img src={pendingOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product"/>
@@ -284,63 +363,63 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                 <div className="s-o-m-d-5">
                   <h4>Ratings</h4>
                   <div className="s-o-m-d-5-r">
-                  {/* <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><span>4.5</span> */}
-                  {pendingOrderDetail?.products?.[0]?.rating === 5 &&
-                    <>
-                      <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
-                    </>
+                    {/* <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><span>4.5</span> */}
+                    {pendingOrderDetail?.products?.[0]?.rating === 5 &&
+                      <>
+                        <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
+                      </>
                     }
-                        {pendingOrderDetail?.products?.[0]?.rating === 4 &&
-                          <>
-                            <FaStar /><FaStar /><FaStar /><FaStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating === 3 &&
-                          <>
-                            <FaStar /><FaStar /><FaStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating === 2 &&
-                          <>
-                            <FaStar /><FaStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating === 1 &&
-                          <>
-                            <FaStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating === 0 &&
-                          <>
-                            <FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating > 0 && pendingOrderDetail?.products?.[0]?.rating < 1 &&
-                          <>
-                            <FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating > 1 && pendingOrderDetail?.products?.[0]?.rating < 2 &&
-                          <>
-                            <FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating > 2 && pendingOrderDetail?.products?.[0]?.rating < 3 &&
-                          <>
-                            <FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating > 3 && pendingOrderDetail?.products?.[0]?.rating < 4 &&
-                          <>
-                            <FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating > 4 && pendingOrderDetail?.products?.[0]?.rating < 5 &&
-                          <>
-                            <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt />
-                          </>
-                        }
-                        <span>({pendingOrderDetail?.products?.[0]?.rating})</span>
+                    {pendingOrderDetail?.products?.[0]?.rating === 4 &&
+                      <>
+                        <FaStar /><FaStar /><FaStar /><FaStar /><FaRegStar />
+                      </>
+                    }
+                    {pendingOrderDetail?.products?.[0]?.rating === 3 &&
+                      <>
+                        <FaStar /><FaStar /><FaStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {pendingOrderDetail?.products?.[0]?.rating === 2 &&
+                      <>
+                        <FaStar /><FaStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {pendingOrderDetail?.products?.[0]?.rating === 1 &&
+                      <>
+                        <FaStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {pendingOrderDetail?.products?.[0]?.rating === 0 &&
+                      <>
+                        <FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {pendingOrderDetail?.products?.[0]?.rating > 0 && pendingOrderDetail?.products?.[0]?.rating < 1 &&
+                      <>
+                        <FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {pendingOrderDetail?.products?.[0]?.rating > 1 && pendingOrderDetail?.products?.[0]?.rating < 2 &&
+                      <>
+                        <FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {pendingOrderDetail?.products?.[0]?.rating > 2 && pendingOrderDetail?.products?.[0]?.rating < 3 &&
+                      <>
+                        <FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {pendingOrderDetail?.products?.[0]?.rating > 3 && pendingOrderDetail?.products?.[0]?.rating < 4 &&
+                      <>
+                        <FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar />
+                      </>
+                    }
+                    {pendingOrderDetail?.products?.[0]?.rating > 4 && pendingOrderDetail?.products?.[0]?.rating < 5 &&
+                      <>
+                        <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt />
+                      </>
+                    }
+                    <span>({pendingOrderDetail?.products?.[0]?.rating})</span>
                   </div>
                 </div>
                 <div className="s-o-m-d-6">
@@ -351,6 +430,11 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                 </div>
               </>
             }
+            <div className="s-o-m-d-11">
+              <form onSubmit={reOrder}>
+                <button>Confirm Re-Order</button>
+              </form>
+            </div>
           </div>
         )
       }
@@ -358,4 +442,4 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
   );
 };
 
-export default CompleteOrderManagement;
+export default CustomerCompleteOrder;

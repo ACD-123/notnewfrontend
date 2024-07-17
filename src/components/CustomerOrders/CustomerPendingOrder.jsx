@@ -7,7 +7,7 @@ import NoDataFound from "../Shared/NoDataFound";
 import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
 
 
-const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCount }) => {
+const CustomerPendingOrder = ({ detail, setDetail, getProductManagmentOderCount }) => {
   const [pendingOdrList, setPendingOdrList] = useState([]);
   const [pendingOdrDetail, setPendingOdrDetail] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -32,7 +32,7 @@ const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
   };
 
   const getPendingOders = () => {
-    OrderServices.sellerOngoingOrders()
+    OrderServices.customerPendingOrders()
       .then((response) => {
         setPendingOdrList(response?.data);
         setIsLoading(false);
@@ -52,7 +52,6 @@ const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
         console.log(response?.data, 'getPendingOdersDetail');
         setPendingOdrDetail(response?.data)
         setShowAction(false);
-        getProductManagmentOderCount()
         let tempArr = []
         for (let i = 0; i < response?.data?.products.length; i++) {
           const attributes = response?.data?.products?.[i]?.attributes;
@@ -194,17 +193,9 @@ const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
                 </div>
                 <div className="s-o-m-d-3-r">
                   <div className="s-o-m-d-3-r-a">
-                    <div className="s-o-m-d-3-r-a-l" onClick={() => { setShowAction(!showAction) }}>
-                      <div className="s-o-m-d-3-r-a-l-w">Action <IoIosArrowDown /></div>
+                    <div className="s-o-m-d-3-r-a-l">
+                      <div className="s-o-m-d-3-r-a-l-w" style={{justifyContent:'center'}}>{pendingOdrDetail?.status}</div>
                     </div>
-                    {showAction &&
-                      <div className="s-o-m-d-3-r-a-o">
-                        <ul>
-                          <li onClick={() => { updateOrderStatus(pendingOdrDetail?.id, 4) }}>Accept</li>
-                          <li onClick={() => { updateOrderStatus(pendingOdrDetail?.id, 2) }}>Reject</li>
-                        </ul>
-                      </div>
-                    }
                   </div>
                 </div>
               </div>
@@ -280,4 +271,4 @@ const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
   );
 };
 
-export default PendingOrderManagement;
+export default CustomerPendingOrder;

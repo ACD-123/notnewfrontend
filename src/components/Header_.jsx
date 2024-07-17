@@ -96,10 +96,10 @@ const Header_ = () => {
                           <ul>
                             <li
                               onClick={() =>
-                                handleDropdownItemClick("dashboard")
+                                handleDropdownItemClick("my-orders")
                               }
                             >
-                              Dashboard
+                              My Orders
                             </li>
                             <li
                               onClick={() =>
@@ -211,9 +211,9 @@ const Header_ = () => {
                       <div className="dropdown-content">
                         <ul>
                           <li
-                            onClick={() => handleDropdownItemClick("dashboard")}
+                            onClick={() => handleDropdownItemClick("my-orders")}
                           >
-                            Dashboard
+                            My Orders
                           </li>
                           <li
                             onClick={() =>

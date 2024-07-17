@@ -69,7 +69,7 @@ const PublicRoutes = () => {
 					<Route path="/category" element={<SingleCategory />} />
 					<Route path="/sub-category" element={<SubCategory />} />
 					<Route path="/auctions" element={<Auctions />} />
-					<Route path="/AllProducts" element={<AllProducts />} />
+					<Route path="/product-filter" element={<AllProducts />} />
 					<Route path="/AllNewProducts" element={<AllNewProducts/>} />
 					<Route path="/forget-password" element={<PasswordRecovery />} />
 					<Route path="/forgotverification/:email" element={<ForgotVerification />} />

@@ -113,7 +113,22 @@ function orderRefund(formData) {
   return request({
     url: `${baseApi}refund/add`,
     method: 'POST',
-    data: formData, // Send the form data containing order_id, product_id, reason, and images
+    data: formData,
+  });
+}
+function customerOderReview(data) {
+  return request({
+    url: `${baseApi}feedback/add`,
+    method: 'POST',
+    data: data, 
+  });
+}
+
+function customerReOrder(data) {
+  return request({
+    url: `${baseApi}cart/reorder`,
+    method: 'POST',
+    data: data, 
   });
 }
 
@@ -186,6 +201,12 @@ function sellerOngoingOrders() {
     method: 'GET',
   })
 }
+function customerPendingOrders() {
+  return request({
+    url: `${ordersApi}/activecustomer`,
+    method: 'GET',
+  })
+}
 function sellerActiveOrders() {
   return request({
     url: `${ordersApi}/accepted`,
@@ -219,6 +240,12 @@ function customerCompletedOrders() {
 function sellerCompletedOrders() {
   return request({
     url: `${ordersApi}/completed`,
+    method: 'GET',
+  })
+}
+function customerCompleteOrders() {
+  return request({
+    url: `${ordersApi}/completedcustomer`,
     method: 'GET',
   })
 }
@@ -282,7 +309,11 @@ const OrderServices = {
   getDashboardData,
   getPendingOdersDetail,
   sellerActiveOrders,
-  sellerRejectedOrders
+  sellerRejectedOrders,
+  customerPendingOrders,
+  customerCompleteOrders,
+  customerOderReview,
+  customerReOrder
 }
 
 export default OrderServices

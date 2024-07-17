@@ -5,20 +5,18 @@ import { toast } from "react-toastify";
 import LoadingComponents from "../Shared/LoadingComponents";
 import NoDataFound from "../Shared/NoDataFound";
 import { IoIosArrowBack } from "react-icons/io";
-import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { FaRegQuestionCircle } from "react-icons/fa";
 
-
-const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCount }) => {
-  const [completedOders, setCompletedOrders] = useState([]);
+const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }) => {
+  const [rejectedOders, setRejectedOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [review, setReview] = useState(false);
-  const [pendingOrderDetail, setPendingOrderDetail] = useState([]);
-  const [pendingOrderAttributes, setPendingOrderAttributes] = useState([]);
+  const [rejectedOrderDetail, setRejectedOrderDetail] = useState([]);
+  const [rejectedOrderAttributes, setRejectedOrderAttributes] = useState([]);
 
-  const getCompletedOders = () => {
-    OrderServices.sellerCompletedOrders()
+  const getRejectedOders = () => {
+    OrderServices.sellerRefundOrders()
       .then((response) => {
-        setCompletedOrders(response?.data);
+        setRejectedOrders(response?.data);
         setIsLoading(false);
       })
       .catch((e) => {
@@ -27,22 +25,19 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
       });
   };
 
-  const getCompletedOdersDetail = (order_id, condition) => {
+  const getRejectedOdersDetail = (order_id) => {
     setIsLoading(true);
     setDetail(true)
-    setReview(condition)
     OrderServices.getPendingOdersDetail(order_id)
       .then((response) => {
-        setPendingOrderDetail(response?.data)
+        setRejectedOrderDetail(response?.data)
         setIsLoading(false);
-        let tempArr = []
-        for (let i = 0; i < response?.data?.products.length; i++) {
-          const attributes = response?.data?.products?.[i]?.attributes;
-          const validJsonString = attributes.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+)(\s*[},])/g, '$1"$2"$3');
-          const normalArray = JSON.parse(validJsonString);
-          tempArr.push(normalArray)
-        }
-        setPendingOrderAttributes(tempArr)
+        console.log(response?.data?.products?.[0]?.attributes);
+        const attributes = response?.data?.products?.[0]?.attributes
+        const validJsonString = attributes.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+)(\s*[},])/g, '$1"$2"$3');
+        const normalArray = JSON.parse(validJsonString);
+        setRejectedOrderAttributes(normalArray)
+        console.log(normalArray, 'normalArray');
       })
       .catch((e) => {
         toast.error(e.message);
@@ -50,8 +45,9 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
       });
   };
 
+
   useEffect(() => {
-    getCompletedOders();
+    getRejectedOders();
   }, []);
 
   return (
@@ -62,9 +58,9 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
         (!detail
           ?
           <div className="p-o-m-w">
-            {completedOders?.length > 0 ?
+            {rejectedOders?.length > 0 ?
               <div className="p-o-m-w-l">
-                {completedOders?.map((data, index) => {
+                {rejectedOders?.map((data, index) => {
                   return (
                     <ul>
                       <li>
@@ -80,9 +76,7 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                         </div>
                         <div className="p-o-m-w-l-r">
                           <div className="p-o-m-w-l-r-w-d">
-                            <button onClick={() => { getCompletedOdersDetail(data?.order_id, false) }}>View Details</button>
-                            <button onClick={() => { getCompletedOdersDetail(data?.order_id, true) }}>
-                              <span>Reviews</span></button>
+                            <button onClick={() => { getRejectedOdersDetail(data?.order_id) }}>Reason</button>
                           </div>
                         </div>
                       </li>
@@ -96,20 +90,20 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
           </div>
           :
           <div className="seller-oder-managment-detail">
-            <div className="title"><span onClick={() => { setDetail(false); setReview(false) }}><IoIosArrowBack /></span>Completed Order Details</div>
+            <div className="title"><span onClick={() => { setDetail(false) }}><IoIosArrowBack /></span>Refund Order Details</div>
             <div className="s-o-m-d-1">
               <div className="s-o-m-d-1-l">
-                <span>Seller : </span>{pendingOrderDetail?.products?.[0]?.seller}
+                <span>Seller : </span>{rejectedOrderDetail?.products?.[0]?.seller}
               </div>
               <div className="s-o-m-d-1-r">
-                <span>ORDER # :</span> {pendingOrderDetail?.orderid}
+                <span>ORDER # :</span> {rejectedOrderDetail?.orderid}
               </div>
             </div>
-            <div className="s-o-m-d-2">
-              <h2>Ship to</h2>
+            <div className="s-o-m-d-2" style={{ borderTop: '1px solid #EBEBEB', borderBottom: 'none', borderLeft: 'none', borderRight: 'none', backgroundColor: 'transparent' }}>
+              {/* <h2>Ship to</h2> */}
               <div className="s-o-m-d-2-1">
                 <div className="s-o-m-d-2-1-l">
-                  <img style={{ width: "100%" }} src={Location} alt="location"/>
+                  <img style={{ width: "100%" }} src={Location} alt="location" />
                   <svg width="23" height="29" viewBox="0 0 23 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="11.9727" cy="11.2344" r="5" fill="white" />
                     <path d="M11.9727 0.234375C9.05634 0.237815 6.26045 1.39785 4.19829 3.46C2.13614 5.52216 0.976108 8.31805 0.972668 11.2344C0.969175 13.6176 1.74765 15.9362 3.18867 17.8344C3.18867 17.8344 3.48867 18.2294 3.53767 18.2864L11.9727 28.2344L20.4117 18.2814C20.4557 18.2284 20.7567 17.8344 20.7567 17.8344L20.7577 17.8314C22.198 15.934 22.9761 13.6165 22.9727 11.2344C22.9692 8.31805 21.8092 5.52216 19.747 3.46C17.6849 1.39785 14.889 0.237815 11.9727 0.234375ZM11.9727 15.2344C11.1815 15.2344 10.4082 14.9998 9.75039 14.5603C9.09259 14.1207 8.5799 13.496 8.27715 12.7651C7.9744 12.0342 7.89519 11.2299 8.04953 10.454C8.20387 9.67809 8.58483 8.96536 9.14424 8.40595C9.70365 7.84654 10.4164 7.46557 11.1923 7.31123C11.9682 7.15689 12.7725 7.23611 13.5034 7.53886C14.2343 7.84161 14.859 8.3543 15.2985 9.01209C15.7381 9.66989 15.9727 10.4432 15.9727 11.2344C15.9713 12.2948 15.5495 13.3115 14.7996 14.0613C14.0498 14.8112 13.0331 15.2331 11.9727 15.2344Z" fill="url(#paint0_linear_14_34179)" />
@@ -138,7 +132,7 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                           </linearGradient>
                         </defs>
                       </svg>
-                      {pendingOrderDetail?.shipmentaddress}
+                      {rejectedOrderDetail?.shipmentaddress}
                     </li>
                     <li>
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -150,7 +144,7 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                           </linearGradient>
                         </defs>
                       </svg>
-                      {pendingOrderDetail?.phone}
+                      {rejectedOrderDetail?.phone}
                     </li>
                     <li>
                       <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -162,76 +156,27 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                           </linearGradient>
                         </defs>
                       </svg>
-                      {pendingOrderDetail?.name}
+                      {rejectedOrderDetail?.name}
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
-            {!review &&
-              <div className="s-o-m-d-3">
-                <div className="s-o-m-d-3-l">
-                  <h3>Delivery Details</h3>
-                  <p>Est Delivery: Tue, <span>Dec 15</span> -Wed, <span>Dec 16</span></p>
-                </div>
-                <div className="s-o-m-d-3-r">
-                  <div className="s-o-m-d-3-r-a">
-                    <div className="s-o-m-d-3-r-a-l">
-                      <div className="s-o-m-d-3-r-a-l-w" style={{ justifyContent: 'center' }}>Completed</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            }
-            <div className="s-o-m-d-4" style={{marginTop : review ? '30px' : '0px'}}>
-            <div className="d-4-1">
-                  {pendingOrderDetail?.products?.map((data, index) => {
-                    return (
-                      <div className="d-4-1-w">
-                        <div className="d-4-1-l">
-                          <img src={data?.media?.[0]?.name} alt="Product" />
-                        </div>
-                        <div className="d-4-1-r">
-                          <h4>{data?.name}</h4>
-                          <div className="d-4-1-r-1">
-                            <div className="d-4-1-r-1-l">
-                              <h5>${data?.producttotal}</h5>
-                              <p>Quantity :<span>{data?.quantity}</span></p>
-                            </div>
-                            <div className="d-4-1-r-1-r">
-                              <ul>
-                                {pendingOrderAttributes?.[index]?.map((data, i) => {
-                                  return (
-                                    <li key={i}>
-                                      <p>{data?.key} : </p>
-                                      <ul>
-                                        <li>{data?.value}</li>
-                                      </ul>
-                                    </li>
-                                  )
-                                })}
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              {/* <div className="d-4-1">
+            <div className="s-o-m-d-4">
+              <div className="d-4-1">
                 <div className="d-4-1-l">
-                  <img src={pendingOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product"/>
+                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
                 </div>
                 <div className="d-4-1-r">
-                  <h4>{pendingOrderDetail?.products?.[0]?.name}</h4>
+                  <h4>{rejectedOrderDetail?.products?.[0]?.name}</h4>
                   <div className="d-4-1-r-1">
                     <div className="d-4-1-r-1-l">
-                      <h5>${pendingOrderDetail?.products?.[0]?.producttotal}</h5>
-                      <p>Quantity :<span>{pendingOrderDetail?.products?.[0]?.quantity}</span></p>
+                      <h5>${rejectedOrderDetail?.products?.[0]?.producttotal}</h5>
+                      <p>Quantity :<span>{rejectedOrderDetail?.products?.[0]?.quantity}</span></p>
                     </div>
                     <div className="d-4-1-r-1-r">
                       <ul>
-                        {pendingOrderAttributes.map((data, index) => {
+                        {rejectedOrderAttributes.map((data, index) => {
                           return (
                             <li key={index}>
                               <p>{data?.key} : </p>
@@ -245,112 +190,119 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                     </div>
                   </div>
                 </div>
-              </div> */}
-              {!review &&
-                <>
-                  <div className="d-4-2">
-                    <ul>
-                      <li>
-                        <ul>
-                          <li>Subtotal ( {pendingOrderDetail?.products?.[0]?.quantity} item )</li>
-                          <li>${pendingOrderDetail?.subtotal}</li>
-                        </ul>
-                        <ul>
-                          <li>Shipping</li>
-                          <li>${pendingOrderDetail?.shippingcost}</li>
-                        </ul>
-                        <ul>
-                          <li>Discount</li>
-                          <li>-$5.00</li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="d-4-3">
-                    <ul>
-                      <li>
-                        <ul>
-                          <li>Order Total</li>
-                          <li>${pendingOrderDetail?.products?.[0]?.ordertotal}</li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </>
-              }
+              </div>
+              {/* <div className="d-4-2">
+              <ul>
+                <li>
+                  <ul>
+                    <li>Subtotal ( {rejectedOrderDetail?.products?.[0]?.quantity} item )</li>
+                    <li>${rejectedOrderDetail?.subtotal}</li>
+                  </ul>
+                  <ul>
+                    <li>Shipping</li>
+                    <li>${rejectedOrderDetail?.shippingcost}</li>
+                  </ul>
+                  <ul>
+                    <li>Discount</li>
+                    <li>-$5.00</li>
+                  </ul>
+                </li>
+              </ul>
             </div>
-            {review &&
-              <>
-                <div className="s-o-m-d-5">
-                  <h4>Ratings</h4>
-                  <div className="s-o-m-d-5-r">
-                  {/* <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><span>4.5</span> */}
-                  {pendingOrderDetail?.products?.[0]?.rating === 5 &&
-                    <>
-                      <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
-                    </>
-                    }
-                        {pendingOrderDetail?.products?.[0]?.rating === 4 &&
-                          <>
-                            <FaStar /><FaStar /><FaStar /><FaStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating === 3 &&
-                          <>
-                            <FaStar /><FaStar /><FaStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating === 2 &&
-                          <>
-                            <FaStar /><FaStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating === 1 &&
-                          <>
-                            <FaStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating === 0 &&
-                          <>
-                            <FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating > 0 && pendingOrderDetail?.products?.[0]?.rating < 1 &&
-                          <>
-                            <FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating > 1 && pendingOrderDetail?.products?.[0]?.rating < 2 &&
-                          <>
-                            <FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating > 2 && pendingOrderDetail?.products?.[0]?.rating < 3 &&
-                          <>
-                            <FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating > 3 && pendingOrderDetail?.products?.[0]?.rating < 4 &&
-                          <>
-                            <FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar />
-                          </>
-                        }
-                        {pendingOrderDetail?.products?.[0]?.rating > 4 && pendingOrderDetail?.products?.[0]?.rating < 5 &&
-                          <>
-                            <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt />
-                          </>
-                        }
-                        <span>({pendingOrderDetail?.products?.[0]?.rating})</span>
+            <div className="d-4-3">
+              <ul>
+                <li>
+                  <ul>
+                    <li>Order Total</li>
+                    <li>${rejectedOrderDetail?.products?.[0]?.ordertotal}</li>
+                  </ul>
+                </li>
+              </ul>
+            </div> */}
+            </div>
+            <div className="s-o-m-d-7">
+              <h4>Refund Reason Images ({'7'})</h4>
+              <div className="s-o-m-d-7-i">
+                <div className="s-o-m-d-7-i-w">
+                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                </div>
+                <div className="s-o-m-d-7-i-w">
+                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                </div>
+                <div className="s-o-m-d-7-i-w">
+                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                </div>
+                <div className="s-o-m-d-7-i-w">
+                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                </div>
+                <div className="s-o-m-d-7-i-w">
+                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                </div>
+                <div className="s-o-m-d-7-i-w">
+                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                  <div className="s-o-m-d-7-i-w-l-m">
+                    View More
                   </div>
                 </div>
-                <div className="s-o-m-d-6">
-                  <h4>Feedback</h4>
-                  <div className="s-o-m-d-5-f">
-                    This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+              </div>
+            </div>
+            <div className="s-o-m-d-6">
+              <h4>Reason reasons</h4>
+              <div className="s-o-m-d-5-f">
+                This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+              </div>
+            </div>
+            <div className="s-o-m-d-8">
+              <h4>Refund Amount</h4>
+              <div className="d-4-2">
+                <ul>
+                  <li>
+                    <ul>
+                      <li>Subtotal ( {rejectedOrderDetail?.products?.[0]?.quantity} item )</li>
+                      <li>${rejectedOrderDetail?.subtotal}</li>
+                    </ul>
+                    <ul>
+                      <li>Shipping</li>
+                      <li>${rejectedOrderDetail?.shippingcost}</li>
+                    </ul>
+                    <ul>
+                      <li>Discount</li>
+                      <li>-$5.00</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+              <div className="d-4-3">
+                <ul>
+                  <li>
+                    <ul>
+                      <li>Order Total</li>
+                      <li>${rejectedOrderDetail?.products?.[0]?.ordertotal}</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="s-o-m-d-3">
+              <div className="s-o-m-d-3-l">
+                <h3>Refund Approval</h3>
+              </div>
+              <div className="s-o-m-d-3-r">
+                <div className="s-o-m-d-3-r-a">
+                  <div className="s-o-m-d-3-r-a-l">
+                    <div className="s-o-m-d-3-r-a-l-w" style={{ justifyContent: 'center' }}>Pending</div>
                   </div>
                 </div>
-              </>
-            }
+              </div>
+            </div>
+            <div className="s-o-m-d-9">
+              <div className="s-o-m-d-9-l">
+                <FaRegQuestionCircle />
+              </div>
+              <div className="s-o-m-d-9-r">
+                Amount will be transferred after admin approval and amount will be deducted from your earnings
+              </div>
+            </div>
           </div>
         )
       }
@@ -358,4 +310,4 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
   );
 };
 
-export default CompleteOrderManagement;
+export default CustomerRefundOrder;
