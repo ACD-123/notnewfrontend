@@ -139,21 +139,14 @@
 
 // export default Dashboard
 
-import React, { useState, useEffect } from 'react';
-import ProductServices from '../../services/API/ProductServices';
-import LoadingComponents from '../Shared/LoadingComponents';
+import React, { useState } from 'react';
 import CustomerPendingOrder from '../CustomerOrders/CustomerPendingOrder';
 import CustomerCompleteOrder from '../CustomerOrders/CustomerCompleteOrder';
 import CustomerRefundOrder from '../CustomerOrders/CustomerRefundOrder';
 
 const Dashboard = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const [detail, setDetail] = useState(false);
   const [tab, setTab] = useState(0);
-
-
-
-
 
   return (
     <>
@@ -166,7 +159,7 @@ const Dashboard = () => {
                 <ul>
                   <li onClick={() => { setTab(0) }} className={`${tab === 0 ? 'active' : ''}`}>Active Orders</li>
                   <li onClick={() => { setTab(1) }} className={`${tab === 1 ? 'active' : ''}`}>Completed Orders</li>
-                  <li onClick={() => { setTab(4) }} className={`${tab === 2 ? 'active' : ''}`}>RefundsOrders</li>
+                  <li onClick={() => { setTab(2) }} className={`${tab === 2 ? 'active' : ''}`}>RefundsOrders</li>
                 </ul>
               </div>
             </div>

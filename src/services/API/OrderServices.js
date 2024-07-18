@@ -126,7 +126,15 @@ function customerOderReview(data) {
 
 function customerReOrder(data) {
   return request({
-    url: `${baseApi}cart/reorder`,
+    url: `${baseApi}cart/reorderweb`,
+    method: 'POST',
+    data: {data: data}, 
+  });
+}
+
+function postHelpAndSupport(data) {
+  return request({
+    url: `${baseApi}additional_pages/store`,
     method: 'POST',
     data: data, 
   });
@@ -207,6 +215,20 @@ function customerPendingOrders() {
     method: 'GET',
   })
 }
+
+function customerSellerShops(user_id) {
+  return request({
+    url: `${baseApi}favourites/get?type=2&user_id=${user_id}`,
+    method: 'GET',
+  })
+}
+function customerActiveFavProducts(user_id) {
+  return request({
+    url: `${baseApi}favourites/get?type=1&user_id=${user_id}`,
+    method: 'GET',
+  })
+}
+
 function sellerActiveOrders() {
   return request({
     url: `${ordersApi}/accepted`,
@@ -313,7 +335,10 @@ const OrderServices = {
   customerPendingOrders,
   customerCompleteOrders,
   customerOderReview,
-  customerReOrder
+  customerReOrder,
+  customerSellerShops,
+  customerActiveFavProducts,
+  postHelpAndSupport
 }
 
 export default OrderServices

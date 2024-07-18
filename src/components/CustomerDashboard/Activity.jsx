@@ -15,6 +15,8 @@ import NotFound_ from '../../pages/NotFound_'
 import { useNavigate } from 'react-router-dom';
 
 import Chat from './Chat';
+import MyFavCustomer from './MyFavCustomer';
+import HelpAndSupport from './HelpAndSupport';
 const Activity = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard'); // Initial menu selection
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
@@ -46,6 +48,10 @@ const Activity = () => {
     switch (selectedMenuItem) {
       case 'my-orders':
         return <Dashboard />;
+      case 'my-favourites':
+        return <MyFavCustomer />;
+        case 'help-and-support':
+        return <HelpAndSupport />;
       case 'recently-viewed':
         // return <RecentlyViewed />;
         return <NotFound_/>
@@ -94,6 +100,12 @@ const Activity = () => {
           <ul>
             <li className={selectedMenuItem === 'my-orders' ? 'active' : ''} onClick={() => handleMenuItemClick('my-orders')}>
             My Orders
+            </li>
+            <li className={selectedMenuItem === 'my-favourites' ? 'active' : ''} onClick={() => handleMenuItemClick('my-favourites')}>
+            My Favourites
+            </li>
+            <li className={selectedMenuItem === 'help-and-support' ? 'active' : ''} onClick={() => handleMenuItemClick('help-and-support')}>
+            Help And Support
             </li>
             <li className={selectedMenuItem === 'recently-viewed' ? 'active' : ''} onClick={() => handleMenuItemClick('recently-viewed')}>
               Recently viewed

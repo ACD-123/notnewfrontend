@@ -114,14 +114,14 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                 )}
                             </>
                         ) : (
-                            data?.product?.auctioned ? null :
-                            <>
-                                <Link to="/signin">
-                                    <div className="favoriteImg">
-                                        <FaRegHeart />
-                                    </div>
-                                </Link>
-                            </>
+                            // data?.product?.auctioned ? null :
+                                <>
+                                    <Link to="/signin">
+                                        <div className="favoriteImg">
+                                            <FaRegHeart />
+                                        </div>
+                                    </Link>
+                                </>
                         )}
                     </div>
                 </div>
@@ -163,7 +163,11 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                     <h3>{data?.name}</h3>
                                     <h4>{data?.description}</h4>
                                     {data?.auctioned ?
-                                        <h2>${data?.bids}</h2>
+                                        (data?.bids ?
+                                            <h2>${data?.bids}</h2>
+                                            :
+                                            <h2>${data?.bid_price}</h2>
+                                        )
                                         :
                                         <h2>${data?.price}
                                             {data?.sale_price > 0 ?
@@ -184,7 +188,11 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                     <h3>{data?.name}</h3>
                                     <h4>{data?.description}</h4>
                                     {data?.auctioned ?
-                                        <h2>${data?.bids}</h2>
+                                        (data?.bids ?
+                                            <h2>${data?.bids}</h2>
+                                            :
+                                            <h2>${data?.bid_price}</h2>
+                                        )
                                         :
                                         <h2>${data?.price}
                                             {data?.sale_price > 0 ?
@@ -203,24 +211,24 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                         )}
                         {isLoggedin ? (
                             <>
-                                {!data?.auctioned && (
+                                {/* {!data?.auctioned && ( */}
                                     <div onClick={() => addToFavorites(data.guid, index)} className="favoriteImg">
                                         {data?.is_favourite === true ? (<FaHeart />) : (<FaRegHeart />)}
                                     </div>
-                                )}
+                                {/* )} */}
                             </>
                         ) : (
-                            data?.auctioned ? null :
-                            <>
-                                <Link to="/signin">
-                                    <div className="favoriteImg">
-                                        <FaRegHeart />
-                                    </div>
-                                </Link>
-                            </>
+                            // data?.auctioned ? null :
+                                <>
+                                    <Link to="/signin">
+                                        <div className="favoriteImg">
+                                            <FaRegHeart />
+                                        </div>
+                                    </Link>
+                                </>
                         )}
                     </div>
-                </div>
+                </div >
             }
         </>
     )

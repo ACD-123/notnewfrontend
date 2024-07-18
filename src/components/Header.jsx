@@ -445,7 +445,7 @@ const Header = () => {
                                   {categories?.slice(0, 3)?.map((data, index) => {
                                     return (
                                       <div>
-                                        <h4 onClick={() =>{navigate(`/category?category-id=${data?.id}`)}}>{data?.name}</h4>
+                                        <h4 onClick={() => { navigate(`/category?category-id=${data?.id}`) }}>{data?.name}</h4>
                                         <ul>
                                           {data?.children_recursive?.slice(0, 3)?.map(
                                             (subcategory, index) => (
@@ -484,31 +484,31 @@ const Header = () => {
                                     </ul>
                                     :
                                     <>
-                                    {searchProduct?.products?.length > 0 ?
-                                    <ul>
-                                      {searchProduct?.products?.slice(0, 5)?.map((data, index) => {
-                                        return (
-                                          <li key={index} onClick={() => {
-                                            if (data?.auctioned) {
-                                              navigate(`/auctionproduct/${data?.guid}`)
-                                            } else {
-                                              navigate(`/singleproduct/${data?.guid}`)
-                                            }
-                                          }}>
-                                            <div>
-                                              <img src={data?.media?.[0]?.name} alt="" />
-                                            </div>
-                                            <div>
-                                              <h3>{data?.name}</h3>
-                                              <p>{data?.description}</p>
-                                            </div>
-                                          </li>
-                                        )
-                                      })}
-                                    </ul>
-                                    :
-                                    <NoDataFound title={'No product found'}/>
-                                    }
+                                      {searchProduct?.products?.length > 0 ?
+                                        <ul>
+                                          {searchProduct?.products?.slice(0, 5)?.map((data, index) => {
+                                            return (
+                                              <li key={index} onClick={() => {
+                                                if (data?.auctioned) {
+                                                  navigate(`/auctionproduct/${data?.guid}`)
+                                                } else {
+                                                  navigate(`/singleproduct/${data?.guid}`)
+                                                }
+                                              }}>
+                                                <div>
+                                                  <img src={data?.media?.[0]?.name} alt="" />
+                                                </div>
+                                                <div>
+                                                  <h3>{data?.name}</h3>
+                                                  <p>{data?.description}</p>
+                                                </div>
+                                              </li>
+                                            )
+                                          })}
+                                        </ul>
+                                        :
+                                        <NoDataFound title={'No product found'} />
+                                      }
                                     </>
                                   )
                                   :
@@ -516,11 +516,11 @@ const Header = () => {
                                 }
                               </div>
                               {searchProduct?.products?.length > 0 ?
-                              <div className="search-bar-b-w-l-m">
-                                <Link to={`/search-product?text=${inputSearch}`}>Load More</Link>
-                              </div>
-                              :
-                              null}
+                                <div className="search-bar-b-w-l-m">
+                                  <Link to={`/search-product?text=${inputSearch}`}>Load More</Link>
+                                </div>
+                                :
+                                null}
                             </div>
                           </div>
                         }
@@ -568,6 +568,20 @@ const Header = () => {
                                     }
                                   >
                                     My Orders
+                                  </li>
+                                  <li
+                                    onClick={() =>
+                                      handleDropdownItemClick("my-favourites")
+                                    }
+                                  >
+                                    My Favourites
+                                  </li>
+                                  <li
+                                    onClick={() =>
+                                      handleDropdownItemClick("help-and-support")
+                                    }
+                                  >
+                                    Help And Support
                                   </li>
                                   <li
                                     onClick={() =>

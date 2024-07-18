@@ -103,6 +103,13 @@ const Header_ = () => {
                             </li>
                             <li
                               onClick={() =>
+                                handleDropdownItemClick("my-favourites")
+                              }
+                            >
+                              My Favourites
+                            </li>
+                            <li
+                              onClick={() =>
                                 handleDropdownItemClick("recently-viewed")
                               }
                             >
@@ -215,6 +222,13 @@ const Header_ = () => {
                           >
                             My Orders
                           </li>
+                          <li
+                              onClick={() =>
+                                handleDropdownItemClick("my-favourites")
+                              }
+                            >
+                              My Favourites
+                            </li>
                           <li
                             onClick={() =>
                               handleDropdownItemClick("recently-viewed")

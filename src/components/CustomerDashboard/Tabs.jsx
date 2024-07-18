@@ -36,7 +36,7 @@ const Tabs = () => {
 
   const handleMenuItemClick = (tab) => {
     if (tab === 'activity') {
-      navigate(`/customerdashboard?tab=${tab}&component=dashboard`);
+      navigate(`/customerdashboard?tab=${tab}&component=my-orders`);
       setSelectedTab(tab);
     } else {
       navigate(`/customerdashboard?tab=${tab}`);

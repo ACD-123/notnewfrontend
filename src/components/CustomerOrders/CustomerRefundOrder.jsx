@@ -164,29 +164,31 @@ const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }
             </div>
             <div className="s-o-m-d-4">
               <div className="d-4-1">
-                <div className="d-4-1-l">
-                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                </div>
-                <div className="d-4-1-r">
-                  <h4>{rejectedOrderDetail?.products?.[0]?.name}</h4>
-                  <div className="d-4-1-r-1">
-                    <div className="d-4-1-r-1-l">
-                      <h5>${rejectedOrderDetail?.products?.[0]?.producttotal}</h5>
-                      <p>Quantity :<span>{rejectedOrderDetail?.products?.[0]?.quantity}</span></p>
-                    </div>
-                    <div className="d-4-1-r-1-r">
-                      <ul>
-                        {rejectedOrderAttributes.map((data, index) => {
-                          return (
-                            <li key={index}>
-                              <p>{data?.key} : </p>
-                              <ul>
-                                <li>{data?.value}</li>
-                              </ul>
-                            </li>
-                          )
-                        })}
-                      </ul>
+                <div className="d-4-1-w">
+                  <div className="d-4-1-l">
+                    <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                  </div>
+                  <div className="d-4-1-r">
+                    <h4>{rejectedOrderDetail?.products?.[0]?.name}</h4>
+                    <div className="d-4-1-r-1">
+                      <div className="d-4-1-r-1-l">
+                        <h5>${rejectedOrderDetail?.products?.[0]?.producttotal}</h5>
+                        <p>Quantity :<span>{rejectedOrderDetail?.products?.[0]?.quantity}</span></p>
+                      </div>
+                      <div className="d-4-1-r-1-r">
+                        <ul>
+                          {rejectedOrderAttributes.map((data, index) => {
+                            return (
+                              <li key={index}>
+                                <p>{data?.key} : </p>
+                                <ul>
+                                  <li>{data?.value}</li>
+                                </ul>
+                              </li>
+                            )
+                          })}
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>

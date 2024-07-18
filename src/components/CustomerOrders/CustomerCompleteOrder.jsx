@@ -96,26 +96,29 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
 
   const reOrder = (e) => {
     e.preventDefault();
-    console.log(oderDetailResponse, 'oderDetailResponse');
-    
-    // Creating the orderData array with the desired structure
-    const orderData = oderDetailResponse.map(item => ({
-      product_id: item.id,
-      price: item.producttotal,
-      quantity: item.quantity,
-      attributes: item.attributes
-    }));
-  
-    console.log(orderData, 'orderData');
-  
-    // Sending the orderData array as the payload
-    OrderServices.customerReOrder(orderData)
-      .then((response) => {
-        toast.success(response.data);
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      });
+
+    for (let i = 0; i < oderDetailResponse.length; i++) {
+      let tempArr = []
+      const attributes = oderDetailResponse[i].attributes;
+      const validJsonString = attributes.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+)(\s*[},])/g, '$1"$2"$3');
+      const normalArray = JSON.parse(validJsonString);
+      tempArr.push(normalArray)
+      OrderServices.customerReOrder(JSON.stringify([{
+        product_id: oderDetailResponse[i].id,
+        price: oderDetailResponse[i].producttotal,
+        quantity: oderDetailResponse[i].quantity,
+        attributes: JSON.stringify(tempArr)
+      }]))
+        .then((response) => {
+          console.log(response?.message, 'dasdadasd');
+          toast.success(response?.message);
+        })
+        .catch((error) => {
+          // console.log(error?.response?.data?.message , 'dasdadasd');
+          toast.error(error?.response?.data?.message);
+        });
+
+    }
   };
 
   return (
@@ -145,7 +148,8 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                         <div className="p-o-m-w-l-r">
                           <div className="p-o-m-w-l-r-w-d">
                             <button onClick={() => { getCompletedOdersDetail(data?.order_id, false) }}>Re Order</button>
-                            <button onClick={() => { getCompletedOdersDetail(data?.order_id, true) }}><span>Refund</span></button>
+                            {/* <button onClick={() => { getCompletedOdersDetail(data?.order_id, true) }}><span>Refund</span></button> */}
+                            <button><span>Refund</span></button>
                           </div>
                         </div>
                       </li>

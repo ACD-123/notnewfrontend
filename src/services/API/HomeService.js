@@ -14,11 +14,19 @@ function getCompanies() {
     url: `${baseUrl}getcompanies`
   })
 }
+
 function getbrands() {
   return request({
     url: `${baseUrl}brands`
   })
 }
+
+function getHigherProductPrice() {
+  return request({
+    url: `${baseUrl}products/maxPriceProduct`
+  })
+}
+
 function getrecursive() {
   return request({
     url: `${baseUrl}recursiveCategories`
@@ -31,7 +39,7 @@ function getSearchProducts(search) {
   })
 }
 
-function getFilterProducts(user_id, category, brand, condition, attribute, min_price, max_price) {
+function getFilterProducts(user_id, category, brand, condition, attribute, min_price, max_price , page_size , page) {
   let attributes = [];
   for (let i = 0; i < attribute?.length; i++) {
     // for (let j = 0; j < attribute[i].selectToSend.length; j++) {
@@ -45,7 +53,10 @@ function getFilterProducts(user_id, category, brand, condition, attribute, min_p
     &condition=${condition ? condition : null }
     &attributes=${attribute.length > 0 ? JSON.stringify(attributes) : "[]"}
     &min_price=${min_price}
-    &max_price=${max_price}`
+    &max_price=${max_price}
+    &page_size=${page_size}
+    &page=${page}
+    `
   })
 }
 
@@ -86,7 +97,8 @@ const HomeService = {
   getTopSelling,
   getAuctionProducts,
   getSearchProducts,
-  getFilterProducts
+  getFilterProducts,
+  getHigherProductPrice
 }
 
 export default HomeService

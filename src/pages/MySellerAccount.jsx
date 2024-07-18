@@ -97,7 +97,7 @@ const MySellerAccount = (props) => {
                         <div class="main-dasboard-tabs">
                             <div className="tab-buttons">
                                 <div className="t-b-b">
-                                    <button onClick={() => { navigate('/customerdashboard?tab=activity&component=dashboard') }}>Activity</button>
+                                    <button onClick={() => { navigate('/customerdashboard?tab=activity&component=my-orders') }}>Activity</button>
                                     <button onClick={() => { navigate('/customerdashboard?tab=messages') }}>Messages</button>
                                     <button class="active" onClick={() => { navigate('/customerdashboard?tab=account') }}>Account</button>
                                 </div>
