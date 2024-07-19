@@ -59,7 +59,7 @@ const CustomerActiveProducts = () => {
                                 </div>
                             </div>
                             :
-                            <NoDataFound title={'No pending oders found'} />
+                            <NoDataFound title={'No active favourite product found'} />
                         }
                     </div>
                 }

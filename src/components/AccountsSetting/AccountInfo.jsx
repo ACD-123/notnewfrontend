@@ -110,11 +110,11 @@ const AccountInfo = () => {
             <div className='personal-info-links'>
               <h4><span>Personal Info</span></h4>
               <ul>
-                <li onClick={() => handleLinkClick('PersonalInfo','component1')}>Personal information</li>
-                <li onClick={() => handleLinkClick('PersonalInfo','component2')}>Sign in and security</li>
-                <li onClick={() => handleLinkClick('PersonalInfo','component3')}>Addresses</li>
-                <li onClick={() => handleLinkClick('PersonalInfo','component4')}>Save images</li>
-                <li onClick={() => handleLinkClick('PersonalInfo','component5')}>Search History</li>
+                <li onClick={() => navigate('/personal-info?component=profile-information')}>Personal information</li>
+                <li onClick={() => navigate('/personal-info?component=sign-in-and-security')}>Sign in and security</li>
+                <li onClick={() => navigate('/personal-info?component=addresses')}>Addresses</li>
+                <li onClick={() => navigate('/personal-info?component=save-images')}>Save images</li>
+                <li onClick={() => navigate('/personal-info?component=search-history')}>Search History</li>
               </ul>
             </div>
           </div>

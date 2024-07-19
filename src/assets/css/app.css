@@ -225,12 +225,17 @@ section#singup .register form button.btn.btn-primary {
   font-size: 9px;
 }
 
+.pic-holder .text-uppercase svg{
+  font-size: 50px;
+  opacity: 0.5;
+}
+
 .pic-holder {
   text-align: center;
   position: relative;
-  border-radius: 50%;
-  width: 90px;
-  height: 90px;
+  border-radius: 12px;
+  width: 100px;
+  height: 100px;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -1376,6 +1381,21 @@ section#product-recents-viewed .headings h3 span {
 
 .productlist {
   position: relative;
+}
+
+.productlist .d-r-s-o-p-i{
+  cursor: pointer;
+    height: auto;
+    width: auto;
+    display: inline-block;
+    padding: 0px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+.productlist .d-r-s-o-p-i svg{
+  font-size: 36px;
+  color: #852e99;
 }
 
 span.auction-badge {
@@ -2693,13 +2713,37 @@ section#activity-main-dashboard .left-menu .dropp ul {
   margin-bottom: 80px;
 }
 
-.left-menu .title-selling-hub {
+.left-menu .title-customer-side {
   display: block;
-  /* margin-top: 80px; */
   margin-bottom: 30px;
   font-family: 'Cairo';
   font-size: 24px;
-  font-weight: 500;
+  font-weight: 700;
+  line-height: 15.84px;
+  text-align: left;
+  color: #111111;
+  padding-left: 7px;
+}
+
+.left-menu .title-customer-side-2 {
+  display: block;
+  margin-bottom: 30px;
+  font-family: 'Cairo';
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 15.84px;
+  text-align: left;
+  color: #111111;
+  margin-top: 30px;
+  padding-left: 7px;
+}
+
+.left-menu .title-selling-hub {
+  display: block;
+  margin-bottom: 30px;
+  font-family: 'Cairo';
+  font-size: 24px;
+  font-weight: 700;
   line-height: 15.84px;
   text-align: left;
   color: #111111;
@@ -7353,22 +7397,23 @@ th {
 
 .seller-new-transaction .h-a-s form .h-a-s-i {}
 
-.seller-new-transaction .h-a-s form .h-a-s-i textarea{
+.seller-new-transaction .h-a-s form .h-a-s-i textarea {
   font-family: 'Cairo';
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 24px;
-    text-align: left;
-    color: #292929;
-    margin: 0;
-    padding: 17px 25px;
-    border-radius: 13px;
-    background: #F0F0F0;
-    border: 0;
-    width: 50%;
-    height: 100px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #292929;
+  margin: 0;
+  padding: 17px 25px;
+  border-radius: 13px;
+  background: #F0F0F0;
+  border: 0;
+  width: 50%;
+  height: 100px;
 }
-.seller-new-transaction .h-a-s form .h-a-s-i textarea::placeholder{
+
+.seller-new-transaction .h-a-s form .h-a-s-i textarea::placeholder {
   color: #292929 !important;
 }
 
@@ -7378,20 +7423,164 @@ th {
 
 .seller-new-transaction .h-a-s form .h-a-s-b button {
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
-    box-shadow: 0px 5px 11px 0px #0000003B;
-    width: max-content;
-    font-family: 'Lato';
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 24px;
-    text-align: left;
-    color: #fff;
-    padding: 15px 35px;
-    border-radius: 9.11px;
-    border: none;
+  box-shadow: 0px 5px 11px 0px #0000003B;
+  width: max-content;
+  font-family: 'Lato';
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: left;
+  color: #fff;
+  padding: 15px 35px;
+  border-radius: 9.11px;
+  border: none;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-f-a-q {}
+
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul {
+  margin: 0;
+  padding: 0;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li {
+  list-style: none;
+  background: linear-gradient(93.63deg, #8B2CA0 -20.62%, #00C3C9 106.1%);
+
+}
+
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:first-child {
+  padding: 2px 0px;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:nth-child(2),
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:nth-child(3),
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:nth-child(4),
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:nth-child(5),
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:nth-child(6),
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:nth-child(7),
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:nth-child(8),
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:nth-child(9),
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:nth-child(10),
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:nth-child(11) {
+  padding: 0px 0px 2px 0px;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li:last-child {
+  padding: 0px 0px 2px 0px;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li .h-a-s-f-a-q-w {
+  background: #fff;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li .h-a-s-f-a-q-w .h-a-s-f-a-q-q {
+  background: linear-gradient(93.63deg, #8B2CA0 -20.62%, #00C3C9 106.1%);
+}
+
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li .h-a-s-f-a-q-w .h-a-s-f-a-q-q div {
+  font-family: 'Cairo';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  text-align: left;
+  color: #111111;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li .h-a-s-f-a-q-w .h-a-s-f-a-q-q div svg {
+  font-size: 28px;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-f-a-q ul li .h-a-s-f-a-q-w .h-a-s-f-a-q-a {
+  display: block;
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  text-align: left;
+  color: #111111;
+  padding: 20px 20px 20px 20px;
 }
 
 .create-coupon-modal {}
+
+.seller-new-transaction .h-a-s .h-a-s-b-a-o {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  background-color: #f3f3f8;
+  border-radius: 12px;
+  padding: 10px 20px 10px 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l .h-a-s-b-a-o-l-l {}
+
+.seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l .h-a-s-b-a-o-l-l img {
+  width: 120px;
+  border-radius: 12px;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l-r{
+  width: 100%;
+}
+.seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l-r .h-a-s-b-a-o-l-r-t {}
+
+.seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l-r .h-a-s-b-a-o-l-r-t h4 {
+  display: block;
+  font-family: 'Cairo';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  text-align: left;
+  color: #111111;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l-r .h-a-s-b-a-o-l-r-b {}
+
+.seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l-r .h-a-s-b-a-o-l-r-b ul {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l-r .h-a-s-b-a-o-l-r-b ul li {
+  list-style: none;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l-r .h-a-s-b-a-o-l-r-b ul li h5 {
+  display: block;
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  text-align: left;
+  color: #111111;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l-r .h-a-s-b-a-o-l-r-b ul li p {
+  display: block;
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  text-align: left;
+  color: #111111;
+  margin: 0;
+}
 
 .create-coupon-modal .modal-dialog {
   transform: none;
@@ -7489,6 +7678,60 @@ th {
   padding: 15px 35px;
   border-radius: 9.11px;
   border: none;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-p-p {}
+
+.seller-new-transaction .h-a-s .h-a-s-p-p ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-p-p ul li {
+  list-style: none;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-p-p ul li .h-a-s-p-p-w {
+  background: #fff;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-p-p ul li .h-a-s-p-p-w .h-a-s-p-p-q {
+  background: linear-gradient(93.63deg, #8B2CA0 -20.62%, #00C3C9 106.1%);
+}
+
+.seller-new-transaction .h-a-s .h-a-s-p-p ul li .h-a-s-p-p-w .h-a-s-p-p-q div {
+  display: block;
+  font-family: 'Cairo';
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  text-align: left;
+  color: #111111;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0px;
+  background: #fff;
+  cursor: pointer;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-p-p ul li .h-a-s-p-p-w .h-a-s-p-p-q div span {
+  color: #c4c2c2;
+  font-weight: 600;
+}
+
+.seller-new-transaction .h-a-s .h-a-s-p-p ul li .h-a-s-p-p-w .h-a-s-p-p-a {
+  display: block;
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  text-align: left;
+  color: #111111;
+  padding: 0px 0px 20px 0px;
 }
 
 input::-webkit-outer-spin-button,
@@ -9052,6 +9295,14 @@ input::-webkit-inner-spin-button {
   text-align: left;
   color: #464646;
   cursor: pointer;
+}
+
+.bids-skeleton-loader{}
+.bids-skeleton-loader span{
+  width: 100% !important;
+  display: block;
+  height: 100px !important;
+  min-width: 100% !important;
 }
 
 @media (max-width: 1024px) {

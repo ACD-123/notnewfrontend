@@ -6,8 +6,6 @@ import Leftmenuimage from '../../assets/Images/leftmenu.png'
 import MainPurchase from '../PurchaseHistory/MainPurchase'
 import SavedSearches from './SavedSearches'
 import { useLocation } from 'react-router-dom';
-import Wishlist from './Wishlist';
-import Watchlist from './Watchlist';
 import Dashboard from './Dashboard'
 import BuyAgain from './BuyAgain';
 import BidsOffer from './BidsOffer';
@@ -17,6 +15,10 @@ import { useNavigate } from 'react-router-dom';
 import Chat from './Chat';
 import MyFavCustomer from './MyFavCustomer';
 import HelpAndSupport from './HelpAndSupport';
+import MyBidsAndOffers from './MyBidsAndOffers';
+import RecentlySearchedItems from './RecentlySearchedItems';
+import CustomerFaqs from './CustomerFaqs';
+import PrivacyPolicy from './PrivacyPolicy';
 const Activity = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard'); // Initial menu selection
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
@@ -48,104 +50,69 @@ const Activity = () => {
     switch (selectedMenuItem) {
       case 'my-orders':
         return <Dashboard />;
+      case 'my-bids-and-offers':
+        return <MyBidsAndOffers />;
+      case 'recently-searched-items':
+        return <RecentlySearchedItems />;
       case 'my-favourites':
         return <MyFavCustomer />;
-        case 'help-and-support':
+      case 'help-and-support':
         return <HelpAndSupport />;
-      case 'recently-viewed':
-        // return <RecentlyViewed />;
-        return <NotFound_/>
-      case 'bids-offers':
-        // return <BidsOffer /> ;
-        return <NotFound_/>
-      case 'wishlist':
-        // return <Wishlist /> ;
-        return <NotFound_/>
-      case 'order-track':
-        return <MainPurchase />;
-        // return <NotFound_/>
-      case 'buy-again':
-        // return <BuyAgain />;
-        return <NotFound_/>
-      case 'selling':
-        return <NotFound_/>;
-      case 'saved-searches':
-        // return <SavedSearches />;
-        return <NotFound_/>
-      case 'saved-sellers':
-        return <SavedSellers />;
-        // return <NotFound_ />
-      case 'messages':
-        // return <Chat />;
-        return<NotFound_/>
-      case 'watchlist':
-        return <Watchlist/>
-        // return <NotFound_/>
+      case 'faq':
+        return <CustomerFaqs />;
+      case 'privacy-policy':
+        return <PrivacyPolicy />;
       default:
-        return ; // Default to Test component if no matching menu item is found
+        return;
     }
   };
 
   return (
     <>
       <section id='activity-main-dashboard'>
-        {/* Toggle button for mobile menu */}
         <button className="mobile-menu-toggle" onClick={toggleMenu}>
           <img src={Leftmenuimage} />
         </button>
         <div className='row'>
-        <div className='col-lg-3'>
-        {/* Left Menu (including toggle for mobile view) */}
-        <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
-          <ul>
-            <li className={selectedMenuItem === 'my-orders' ? 'active' : ''} onClick={() => handleMenuItemClick('my-orders')}>
-            My Orders
-            </li>
-            <li className={selectedMenuItem === 'my-favourites' ? 'active' : ''} onClick={() => handleMenuItemClick('my-favourites')}>
-            My Favourites
-            </li>
-            <li className={selectedMenuItem === 'help-and-support' ? 'active' : ''} onClick={() => handleMenuItemClick('help-and-support')}>
-            Help And Support
-            </li>
-            <li className={selectedMenuItem === 'recently-viewed' ? 'active' : ''} onClick={() => handleMenuItemClick('recently-viewed')}>
-              Recently viewed
-            </li>
-            <li className={selectedMenuItem === 'bids-offers' ? 'active' : ''} onClick={() => handleMenuItemClick('bids-offers')}>
-            bids/Offers
-            </li>
-            <li className={selectedMenuItem === 'wishlist' ? 'active' : ''} onClick={() => handleMenuItemClick('wishlist')}>
-            Wishlist
-            </li>
-            <li className={selectedMenuItem === 'watchlist' ? 'active' : ''} onClick={() => handleMenuItemClick('watchlist')}>
-            Watchlist
-            </li>
-            <li className={selectedMenuItem === 'order-track' ? 'active' : ''} onClick={() => handleMenuItemClick('order-track')}>
-            Order Track
-            </li>
-            <li className={selectedMenuItem === 'buy-again' ? 'active' : ''} onClick={() => handleMenuItemClick('buy-again')}>
-            buy again
-            </li>
-            <li className={selectedMenuItem === 'selling' ? 'active' : ''} onClick={() => handleMenuItemClick('selling')}>
-            selling
-            </li>
-            <li className={selectedMenuItem === 'saved-searches' ? 'active' : ''} onClick={() => handleMenuItemClick('saved-searches')}>
-            saved searches
-            </li>
-            <li className={selectedMenuItem === 'saved-sellers' ? 'active' : ''} onClick={() => handleMenuItemClick('saved-sellers')}>
-            saved sellers
-            </li>
-            <li className={selectedMenuItem === 'messages' ? 'active' : ''} onClick={() => handleMenuItemClick('messages')}>
-            messages
-            </li>
-          </ul>
-        </div>
-        </div>
-        <div className='col-lg-9'>
-        {/* Render the selected component */}
-        <div className="main-content">
-          {renderComponent()}
-        </div>
-        </div>
+          <div className='col-lg-3'>
+            <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
+              <div className="title-customer-side">Shopping</div>
+              <ul>
+                <li className={selectedMenuItem === 'my-orders' ? 'active' : ''} onClick={() => handleMenuItemClick('my-orders')}>
+                  My Orders
+                </li>
+                <li className={selectedMenuItem === 'my-bids-and-offers' ? 'active' : ''} onClick={() => handleMenuItemClick('my-bids-and-offers')}>
+                  My Bids And Offers
+                </li>
+                <li className={selectedMenuItem === 'my-favourites' ? 'active' : ''} onClick={() => handleMenuItemClick('my-favourites')}>
+                  My Favourites
+                </li>
+                <li className={selectedMenuItem === 'recently-searched-items' ? 'active' : ''} onClick={() => handleMenuItemClick('recently-searched-items')}>
+                  Recently Searched Items
+                </li>
+              </ul>
+              <div className="title-customer-side-2">Account</div>
+              <ul>
+                <li className={selectedMenuItem === 'edit-profile' ? 'active' : ''} onClick={() => handleMenuItemClick('edit-profile')}>
+                Edit Profile
+                </li>
+                <li className={selectedMenuItem === 'help-and-support' ? 'active' : ''} onClick={() => handleMenuItemClick('help-and-support')}>
+                  Help And Support
+                </li>
+                <li className={selectedMenuItem === 'faq' ? 'active' : ''} onClick={() => handleMenuItemClick('faq')}>
+                  FAQs
+                </li>
+                <li className={selectedMenuItem === 'privacy-policy' ? 'active' : ''} onClick={() => handleMenuItemClick('privacy-policy')}>
+                  Privacy Policy
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className='col-lg-9'>
+            <div className="main-content">
+              {renderComponent()}
+            </div>
+          </div>
         </div>
       </section>
     </>

@@ -14,23 +14,6 @@ const CustomerPendingOrder = ({ detail, setDetail, getProductManagmentOderCount 
   const [showAction, setShowAction] = useState(false);
   const [pendingOrderAttributes, setPendingOrderAttributes] = useState([]);
 
-  const updateOrderStatus = (orderId, status) => {
-    setIsLoading(true)
-    OrderServices.updateOrderStatus({ order_id: orderId, status })
-      .then((response) => {
-        getPendingOders();
-        setDetail(false);
-        setShowAction(false);
-        getProductManagmentOderCount()
-        setIsLoading(true)
-      })
-      .catch((error) => {
-        setIsLoading(true)
-        toast.error("Failed to update order status.");
-      });
-    // }
-  };
-
   const getPendingOders = () => {
     OrderServices.customerPendingOrders()
       .then((response) => {
@@ -55,7 +38,8 @@ const CustomerPendingOrder = ({ detail, setDetail, getProductManagmentOderCount 
         let tempArr = []
         for (let i = 0; i < response?.data?.products.length; i++) {
           const attributes = response?.data?.products?.[i]?.attributes;
-          const validJsonString = attributes.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+)(\s*[},])/g, '$1"$2"$3');
+          const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
+          // const validJsonString = attributes.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+)(\s*[},])/g, '$1"$2"$3');
           const normalArray = JSON.parse(validJsonString);
           tempArr.push(normalArray)
         }

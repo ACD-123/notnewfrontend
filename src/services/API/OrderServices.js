@@ -26,7 +26,7 @@ function save(data) {
 }
 
 function update(id, data) {
-  
+
   return request({
     url: baseUrl + `/${id}`,
     data,
@@ -40,51 +40,51 @@ function refund(data) {
     method: 'PATCH',
   })
 }
-function tracking(data){
+function tracking(data) {
   return request({
-    url: baseUrl+'/tracking/'+ data,
+    url: baseUrl + '/tracking/' + data,
     data,
     method: 'GET',
   })
 }
-function packed(data){
+function packed(data) {
   return request({
-    url: baseUrl+'/packed/'+ data,
+    url: baseUrl + '/packed/' + data,
     data,
     method: 'PATCH',
   })
 }
-function rateCalculator(data){
+function rateCalculator(data) {
   return request({
-    url: baseUrl+'/ratecalculator/',
+    url: baseUrl + '/ratecalculator/',
     data,
     method: 'POST',
   })
 }
-function validatePostalCode(data){
+function validatePostalCode(data) {
   return request({
-    url: baseUrl+'/validatePostalCode/',
+    url: baseUrl + '/validatePostalCode/',
     data,
     method: 'POST',
   })
 }
-function validateAddress(data){
+function validateAddress(data) {
   return request({
-    url: baseUrl+'/validateAddress/',
+    url: baseUrl + '/validateAddress/',
     data,
     method: 'POST',
   })
 }
-function updateOrderStatus(data){
+function updateOrderStatus(data) {
   return request({
-    url: ordersApi+'/updateOrderStatus',
+    url: ordersApi + '/updateOrderStatus',
     data,
     method: 'POST',
   })
 }
-function getTrsutedUserData(id){
+function getTrsutedUserData(id) {
   return request({
-    url: baseUrl+'/getTrsutedUserData/'+ id,
+    url: baseUrl + '/getTrsutedUserData/' + id,
     method: 'GET',
   })
 }
@@ -120,7 +120,7 @@ function customerOderReview(data) {
   return request({
     url: `${baseApi}feedback/add`,
     method: 'POST',
-    data: data, 
+    data: data,
   });
 }
 
@@ -128,7 +128,15 @@ function customerReOrder(data) {
   return request({
     url: `${baseApi}cart/reorderweb`,
     method: 'POST',
-    data: {data: data}, 
+    data: { data: data },
+  });
+}
+
+function removeProductFromSearchList(data) {
+  return request({
+    url: `${baseApi}searchHistory/deleteSearchProduct`,
+    method: 'POST',
+    data: data ,
   });
 }
 
@@ -136,7 +144,7 @@ function postHelpAndSupport(data) {
   return request({
     url: `${baseApi}additional_pages/store`,
     method: 'POST',
-    data: data, 
+    data: data,
   });
 }
 
@@ -209,9 +217,24 @@ function sellerOngoingOrders() {
     method: 'GET',
   })
 }
+
 function customerPendingOrders() {
   return request({
     url: `${ordersApi}/activecustomer`,
+    method: 'GET',
+  })
+}
+
+function getMyBidsAndOffers(user_id) {
+  return request({
+    url: `${baseApi}bidding/userbids?user_id=${user_id}`,
+    method: 'GET',
+  })
+}
+
+function getRecentlySearchedItems(user_id) {
+  return request({
+    url: `${baseApi}searchHistory/getProducts?user_id=${user_id}`,
     method: 'GET',
   })
 }
@@ -338,7 +361,10 @@ const OrderServices = {
   customerReOrder,
   customerSellerShops,
   customerActiveFavProducts,
-  postHelpAndSupport
+  postHelpAndSupport,
+  getMyBidsAndOffers,
+  getRecentlySearchedItems,
+  removeProductFromSearchList
 }
 
 export default OrderServices

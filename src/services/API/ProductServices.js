@@ -34,6 +34,13 @@ function save(data) {
     method: 'POST',
   })
 }
+function addSearchProduct(data) {
+  return request({
+    url: `${baseApi}searchHistory/saveProducts`,
+    data,
+    method: 'POST',
+  })
+}
 function isFavorite(data) {
   return request({
     url: `${baseApi}favourites/save`,
@@ -425,7 +432,8 @@ const ProductServices = {
   createSellerProduct,
   updateProduct,
   getProductManagmentOderCount,
-  deleteSellerProduct
+  deleteSellerProduct,
+  addSearchProduct
 }
 
 export default ProductServices

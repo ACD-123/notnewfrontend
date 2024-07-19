@@ -17,6 +17,7 @@ import HomeService from "../services/API/HomeService";
 import HeaderArrowRightSvg from "./Shared/Svgs/HeaderArrowRightSvg";
 import Skeleton from "react-skeleton-loader";
 import NoDataFound from "./Shared/NoDataFound";
+import ProductServices from "../services/API/ProductServices";
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
@@ -96,12 +97,16 @@ const Header = () => {
     setSearchLoading(true)
     setInputSearch(e.target.value)
     HomeService.getSearchProducts(e.target.value).then((res) => {
-      // setCategories(res);
-      console.log(res?.data, 'getSearchProducts');
       setSearchProduct(res?.data)
       setSearchLoading(false)
     }).catch((error) => {
       setSearchLoading(false)
+    });
+  }
+  const addSearchProduct = (product_id) => {
+    ProductServices.addSearchProduct({user_id : user_details?.id , product_id : product_id})
+    .then((res) => {
+    }).catch((error) => {
     });
   }
 
@@ -489,6 +494,7 @@ const Header = () => {
                                           {searchProduct?.products?.slice(0, 5)?.map((data, index) => {
                                             return (
                                               <li key={index} onClick={() => {
+                                                addSearchProduct(data?.id);
                                                 if (data?.auctioned) {
                                                   navigate(`/auctionproduct/${data?.guid}`)
                                                 } else {
@@ -562,89 +568,26 @@ const Header = () => {
                             {userDropdown &&
                               <div className="user-drop-dropdown">
                                 <ul>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("my-orders")
-                                    }
-                                  >
+                                  <li onClick={() => handleDropdownItemClick("my-orders")}>
                                     My Orders
                                   </li>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("my-favourites")
-                                    }
-                                  >
+                                  <li onClick={() => handleDropdownItemClick("my-bids-and-offers")}>
+                                    My Bids And Offers
+                                  </li>
+                                  <li onClick={() => handleDropdownItemClick("my-favourites")}>
                                     My Favourites
                                   </li>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("help-and-support")
-                                    }
-                                  >
+                                  <li onClick={() => handleDropdownItemClick("recently-searched-items")}>
+                                    Recently Searched Items
+                                  </li>
+                                  <li onClick={() => handleDropdownItemClick("help-and-support")}>
                                     Help And Support
                                   </li>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("recently-viewed")
-                                    }
-                                  >
-                                    Recently viewed
+                                  <li onClick={() => handleDropdownItemClick("faq")}>
+                                    FAQs
                                   </li>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("bids-offers")
-                                    }
-                                  >
-                                    Bids/Offers
-                                  </li>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("wishlist")
-                                    }
-                                  >
-                                    Wishlist
-                                  </li>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("purchase-history")
-                                    }
-                                  >
-                                    purchase history
-                                  </li>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("buy-again")
-                                    }
-                                  >
-                                    buy again
-                                  </li>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("selling-hub")
-                                    }
-                                  >
-                                    selling Hub
-                                  </li>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("saved-searches")
-                                    }
-                                  >
-                                    saved searches{" "}
-                                  </li>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("saved-sellers")
-                                    }
-                                  >
-                                    saved sellers
-                                  </li>
-                                  <li
-                                    onClick={() =>
-                                      handleDropdownItemClick("messages")
-                                    }
-                                  >
-                                    messages
+                                  <li onClick={() => handleDropdownItemClick("privacy-policy")}>
+                                    Privacy Policy
                                   </li>
                                   <li onClick={signOut}>Sign Out</li>
                                 </ul>

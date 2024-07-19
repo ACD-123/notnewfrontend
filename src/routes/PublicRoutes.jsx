@@ -27,7 +27,6 @@ import CompleteOrderManagement from "../components/OrderManagement/CompleteOrder
 import MyTransactions from "../components/AccountsSetting/SellerSetup/MyTransactions"
 import InStock from "../components/AccountsSetting/SellerSetup/InStock"
 import OutStock from "../components/AccountsSetting/SellerSetup/InStock"
-import Watchlist from "../components/CustomerDashboard/Watchlist"
 import Auctions from "../components/Products/Archive/Auctions"
 import ProductUpload from "../components/Products/ProductUpload"
 import NotFound from "../pages/NotFound"
@@ -40,6 +39,7 @@ import HotDeals from "../pages/HotDeals"
 import MySellerAccount from "../pages/MySellerAccount"
 import SearchProduct from "../pages/SearchProduct"
 import TopSellingProducts from "../pages/TopSellingProducts"
+import PersonalInformation from "../pages/PersonalInformation"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -70,6 +70,7 @@ const PublicRoutes = () => {
 					<Route path="/sub-category" element={<SubCategory />} />
 					<Route path="/auctions" element={<Auctions />} />
 					<Route path="/product-filter" element={<AllProducts />} />
+					<Route path="/personal-info" element={<PersonalInformation />} />
 					<Route path="/AllNewProducts" element={<AllNewProducts/>} />
 					<Route path="/forget-password" element={<PasswordRecovery />} />
 					<Route path="/forgotverification/:email" element={<ForgotVerification />} />
@@ -93,7 +94,6 @@ const PublicRoutes = () => {
 					<Route path="/transactions" element={<MyTransactions/>} />
 					<Route path="/instock" element={<InStock/>} />
 					<Route path="/outstock" element={<OutStock/>} />
-					<Route path="/watchlist" element={<Watchlist/>}/>
 					<Route path="/productupload" element={<ProductUpload/>} />
 					<Route path="/my-seller-account" element={<MySellerAccount/>} />
 					<Route path="/search-product" element={<SearchProduct/>} />
