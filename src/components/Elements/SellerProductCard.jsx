@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ProductServices from '../../services/API/ProductServices';
 import { Spinner } from 'react-bootstrap';
 import SellerProductCard from '../Shared/Cards/SellerProductCard';
+import NoDataFound from '../Shared/NoDataFound';
+import LoadingComponents from '../Shared/LoadingComponents';
 
 const SellerProductCard = ({ setSubmitted, setProductId }) => {
   const [activeProducts, setActiveProducts] = useState([]);
@@ -29,14 +31,11 @@ const SellerProductCard = ({ setSubmitted, setProductId }) => {
       <div className='container'>
         <div className='row'>
           {isLoading ? (
-            <div className="loader-container text-center">
-              <Spinner animation="border" role="status">
-              </Spinner>
-            </div>
+            <LoadingComponents/>
           ) : (
             <>
               {activeProducts.length === 0 ? (
-                <div>No Active Products</div>
+                <NoDataFound title={'No Active Products'}/>
               ) : (
                 <>
                   {activeProducts.map((product) => (

@@ -24,7 +24,6 @@ const RecentViewedItems = ({ title }) => {
   const [loading, setLoading] = useState(true);
 
   const handleToggleFavourite = (index) => {
-    console.log('calling');
     const updatedProducts = [...productData];
     updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
     setProductData(updatedProducts);

@@ -11,16 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.pranker{
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-.selectorStatus{
+
+.selectorStatus {
   padding: 10px;
   width: 100%;
   border-radius: 9px;
 }
+
 .price .input-group .input-group-prepend button.btn {
   padding: 10px;
   height: 30px;
@@ -29,35 +26,56 @@ code {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #000;
   font-size: 18px;
   margin: 0px;
-  box-shadow: 0px 0px 4px 0px white;
+  box-shadow: 0px 0px 4px 0px #000;
   border: none;
 }
-.carousel-container .carousel-image{
+
+.carousel-container .carousel-image {
   object-fit: contain;
 }
+
 .price .input-group {
-  background: #000000a1;
+  background: #00C3C9;
   width: max-content;
-  padding: 0px 8px;
+  padding: 0px 6px;
   display: flex;
   border-radius: 50px;
   justify-content: center;
   align-items: center;
-  height: 50px;
+  height: 40px;
+  width: 100%;
+  justify-content: space-between;
 }
+
+.price input {
+  color: #000 !important;
+}
+
+.price .input-group .input-group-prepend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 0;
+}
+
+.price .input-group .input-group-prepend button {}
+
 .carousel-container .carousel-item.fade {
   opacity: inherit;
 }
-.divider{
+
+.divider {
   background: #fbfbfb;
   padding: 14px;
   border-radius: 10px;
   box-shadow: 0px 0px 5px 0px #cfcaca;
   margin-bottom: 20px;
 }
+
 .price .input-group input.form-control {
   max-width: 100px;
   width: 100px;

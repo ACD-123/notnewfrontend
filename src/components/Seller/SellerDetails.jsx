@@ -13,6 +13,9 @@ import UserServices from "../../services/API/UserServices"; //~/services/API/Aut
 import { setUserDetails, isLoggedin, getUserDetails } from "../../services/Auth"; // ~/services/Auth
 import SellerServices from '../../services/API/SellerServices'
 import { Spinner } from 'react-bootstrap'
+import LoadingComponents from '../Shared/LoadingComponents'
+import NoDataFound from '../Shared/NoDataFound'
+import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa'
 
 const SellerDetails = () => {
   const [shopData, setShopData] = useState([]);
@@ -26,17 +29,14 @@ const SellerDetails = () => {
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
   const handleDropdownItemClick = (componentName) => {
-    // Here, you can navigate to the 'Activity' component and pass the selected component name as a query parameter or state
-    // For example, using query parameter
     navigate(`/customerdashboard?component=${componentName}`)
   };
   const getProduct = () => {
     ProductServices.get(id).then((res) => {
       setProductData(res);
-      console.log('feedback', res.data.shop);
       setFeedbacks(res.data.seller.feedback.feedbacks);
+      console.log(res.data.seller.feedback.feedbacks, 'res.data.seller.feedback.feedbacks');
       setShopData(res.data.seller);
-      console.log('setShopData detail', res.data);
       setProductData(res.data);
       setShopGuid(res.data.shop);
       setShopGuidSave(res.data.shop.guid);
@@ -44,13 +44,11 @@ const SellerDetails = () => {
       HomeService.getshopData(res?.shop_id)
         .then((response) => {
           if (response.status) {
-            console.log('shopData', response)
             setShopData(response.data)
           }
         }).catch((e) => {
           console.log(e)
         });
-      //   setShopData(res.shop_id);
     });
   };
   const getItemSold = () => {
@@ -60,9 +58,8 @@ const SellerDetails = () => {
   };
   useEffect(() => {
     getProduct();
-    // getItemSold();
   }, []);
-  const itemsPerPage = 4; // Number of items to display per page
+  const itemsPerPage = 4;
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -133,15 +130,12 @@ const SellerDetails = () => {
         type: "2"
       };
       const res = await ProductServices.isFavorite(data);
-      if (res.status) {
-        // Update shopData directly after API call
-        setShopData((prevShopData) => ({
-          ...prevShopData,
-          is_favourite: !prevShopData.is_favourite // Toggle is_favourite
-        }));
-        toast.success("Seller added to favorites!");
-        setFavData(res.data);
-      }
+      setShopData((prevShopData) => ({
+        ...prevShopData,
+        is_favourite: !prevShopData.is_favourite
+      }));
+      toast.success("Seller added to favorites!");
+      setFavData(res.data);
     } catch (error) {
       console.error("Error adding to favorites:", error);
       toast.error("Failed to add seller to favorites.");
@@ -158,99 +152,135 @@ const SellerDetails = () => {
     }
   }, []);
   return (
-    <div className='sellerdetails' style={{ padding: "50px 0px" }}>
-      {isLoading ? ( // Render loader if isLoading is true
-        <div className="loader-container text-center">
-          <Spinner animation="border" role="status">
-            {/* <span className="sr-only">Loading...</span> */}
-          </Spinner>
-        </div>
+    <div className='sellerdetails'>
+      {isLoading ? (
+        <LoadingComponents />
       ) : (
         <>
-          {shopData ? (
-            <>
-              <div className='container'>
-                <div className='row align-items-center'>
-                  <div className='col-lg-9'>
-                    <div className='profile-details-seller'>
-                      <div className='image'>
-                        <img src={`${shopData.sellerImage}`} width="100" height="100" />
-                      </div>
-                      <div className='profile-record'>
-                        <h4>{shopData.sellerName}</h4>
-                        <ul>
-                          <li>{shopData.positivefeedback}% Positive feedbackss</li>
-                          <li>125k Followers</li>
-                          <li>{productData.is_sold} Items Sold</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className='col-lg-3'>
-                    <div className='seller-callto-actions'>
-                      <Link to={`/sellershop/${shopGuid.guid}`}><button>Visit Seller Shop</button></Link>
-                      <Link>
-                        {shopData.is_favourite === true ? (
-                          <button onClick={() => addToFavorites(shopGuidSave)}>Un Save this seller</button>
-                        ) : (
-                          <button onClick={() => addToFavorites(shopGuidSave)} className='saveseller'>Save this seller</button>
-                        )}
-                      </Link>
-                      <Link><button onClick={() => handleDropdownItemClick('componentI')} className='messageseller'>Message seller</button></Link>
-                    </div>
-                  </div>
-                </div>
-                {/* SECOND ROW */}
-                <div className='row'
-                  style={{ padding: "40px 0px" }}
-                >
-                  <div className='col-lg-6 review'>
-                    <h2>Detailed Seller Ratings</h2>
-                    <p className='monthtext'>Last 12 months</p>
-                    <ReviewSection />
-                    <PopularProductSearch shopId={shopData.id} />
-                  </div>
-                  <div className='col-lg-6'>
-                    <div className="seller-feedback">
-                      <h2>Seller Feedback</h2>
-                      <div className="feedback-container">
-                        {currentItems.length === 0 ? (
-                          <div>No Feedbacks Available</div>
-                        ) : (
-                          <>
-                            {currentItems.map((feedback) => (
-                              <div key={feedback.id} className="feedback-item">
-                                <img src={`${BASE_URL}/${feedback.user.image}`} alt='user image' />
-                                <div className="feedback-content">
-                                  <h3>{feedback.user.name}</h3>
-                                  <p>{feedback.comments}</p>
-                                </div>
-                              </div>
-                            ))}
-                          </>
-                        )}
-                      </div>
-                      <div className="pagination">
-                        {Array.from({ length: totalPages }, (_, index) => (
-                          <button
-                            key={index + 1}
-                            onClick={() => changePage(index + 1)}
-                            className={currentPage === index + 1 ? 'active' : ''}
-                          >
-                            {index + 1}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* SECOND ROW */}
+          <div className="sellerdetails-wrap">
+            <div className='profile-details-seller'>
+              <div className='image'>
+                <img src={`${shopData.sellerImage}`} width="100" height="100" />
               </div>
-            </>
-          ) : (<></>)}
+              <div className='profile-record'>
+                <h4>{shopData.sellerName}</h4>
+                <ul>
+                  <li>{shopData.positivefeedback}% Positive feedbackss</li>
+                  <li>{productData.is_sold} Items Sold</li>
+                </ul>
+              </div>
+            </div>
+            <div className='seller-callto-actions'>
+              <Link to={`/sellershop/${shopGuid.guid}`}><button>Visit Seller Shop</button></Link>
+              <Link>
+                {shopData.is_favourite === true ? (
+                  <button onClick={() => addToFavorites(shopGuidSave)}>Un Save this seller</button>
+                ) : (
+                  <button onClick={() => addToFavorites(shopGuidSave)} className='saveseller'>Save this seller</button>
+                )}
+              </Link>
+              <Link><button onClick={() => handleDropdownItemClick('componentI')} className='messageseller'>Message seller</button></Link>
+            </div>
+          </div>
+
+          {/* <div className='col-lg-6 review'>
+              <h2>Detailed Seller Ratings</h2>
+              <p className='monthtext'>Last 12 months</p>
+              <ReviewSection />
+              <PopularProductSearch shopId={shopData.id} />
+            </div> */}
+          <div className="customer-feedback">
+            <h2>Feedbacks</h2>
+            <div className="feedback-container">
+              {currentItems.length === 0 ? (
+                <NoDataFound title={'No Feedbacks Available'} />
+              ) : (
+                <>
+                  <div className="row">
+                    {currentItems.map((feedback) => (
+                      <div className="col-lg-6">
+                        <div key={feedback.id} className="feedback-item">
+                          <div className="feedback-item-left">
+                            <div className="feedback-item-left-left">
+                              <img src={`${BASE_URL}/${feedback.user.image}`} alt='user image' />
+                            </div>
+                            <div className="feedback-item-left-right">
+                              <h3>{feedback.user.name}</h3>
+                              <p>{feedback.comments}</p>
+                            </div>
+                          </div>
+                          <div className="feedback-item-right">
+                          <h3>{feedback.user.period}</h3>
+                          <p>
+                          {+feedback.ratings === 5 &&
+                      <>
+                        <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
+                      </>
+                    }
+                    {+feedback.ratings === 4 &&
+                      <>
+                        <FaStar /><FaStar /><FaStar /><FaStar /><FaRegStar />
+                      </>
+                    }
+                    {+feedback.ratings === 3 &&
+                      <>
+                        <FaStar /><FaStar /><FaStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {+feedback.ratings === 2 &&
+                      <>
+                        <FaStar /><FaStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {+feedback.ratings === 1 &&
+                      <>
+                        <FaStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {+feedback.ratings === 0 &&
+                      <>
+                        <FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {+feedback.ratings > 0 && +feedback.ratings < 1 &&
+                      <>
+                        <FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {+feedback.ratings > 1 && +feedback.ratings < 2 &&
+                      <>
+                        <FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {+feedback.ratings > 2 && +feedback.ratings < 3 &&
+                      <>
+                        <FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar />
+                      </>
+                    }
+                    {+feedback.ratings > 3 && +feedback.ratings < 4 &&
+                      <>
+                        <FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar />
+                      </>
+                    }
+                    {+feedback.ratings > 4 && +feedback.ratings < 5 &&
+                      <>
+                        <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt />
+                      </>
+                    }
+                    <span>({feedback.ratings})</span>
+                          </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
         </>
       )}
-    </div>
+    </div >
   )
 }
 

@@ -1,26 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Secureimage1 from "../../../../assets/Images/Singleproduct/Sidebar/1.png";
 import Secureimage2 from "../../../../assets/Images/Singleproduct/Sidebar/2.png";
 import Secureimage3 from "../../../../assets/Images/Singleproduct/Sidebar/3.png";
 import Secureimage4 from "../../../../assets/Images/Singleproduct/Sidebar/4.png";
-import Image from "../../../../assets/Images/Singleproduct/Sidebar/notnew.png";
-import Heart from "../../../../assets/Images/Singleproduct/Sidebar/heart.png";
-import {
-  FaHeart,
-  FaRegHeart
-} from "react-icons/fa";
-import ProductServices from "../../../../services/API/ProductServices"; //~/services/API/ProductServices
-import SellerServices from "../../../../services/API/SellerServices"; //~/services/API/SellerServices
-import UserServices from "../../../../services/API/UserServices"; //~/services/API/AuthService
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import ProductServices from "../../../../services/API/ProductServices";
+import SellerServices from "../../../../services/API/SellerServices";
+import UserServices from "../../../../services/API/UserServices";
 import { toast } from "react-toastify";
 import { Spinner } from "react-bootstrap";
-import { setUserDetails, isLoggedin, getUserDetails } from "../../../../services/Auth"; // ~/services/Auth
+import { setUserDetails, isLoggedin } from "../../../../services/Auth";
 
 const SingleProductSidebar = () => {
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
-
   const [productData, setProductData] = useState([]);
   const [shopData, setShopData] = useState([]);
   const [shopGuid, setShopGuid] = useState([]);
@@ -83,7 +76,7 @@ const SingleProductSidebar = () => {
     UserServices.detail()
       .then((response) => {
         setUserDetails(response);
-        console.log('user_details',response);
+        console.log('user_details', response);
         setUser(response.id);
         localStorage.setItem("user_details", JSON.stringify(response));
       })
@@ -100,15 +93,13 @@ const SingleProductSidebar = () => {
         type: "2"
       };
       const res = await ProductServices.isFavorite(data);
-      if (res.status) {
-        // Update shopData directly after API call
-        setShopData((prevShopData) => ({
-          ...prevShopData,
-          is_favourite: !prevShopData.is_favourite // Toggle is_favourite
-        }));
-        toast.success("Seller added to favorites!");
-        setFavData(res.data);
-      }
+
+      setShopData((prevShopData) => ({
+        ...prevShopData,
+        is_favourite: !prevShopData.is_favourite
+      }));
+      toast.success("Seller added to favorites!");
+      setFavData(res.data);
     } catch (error) {
       console.error("Error adding to favorites:", error);
       toast.error("Failed to add seller to favorites.");
@@ -132,66 +123,67 @@ const SingleProductSidebar = () => {
           <Spinner animation="border" role="status"></Spinner>
         </div>
       ) : (
-        <div className="singleproduct-sidebar">
-          <div className="secure">
-            <div className="image">
-              <img src={Secureimage2} />
+        <div className="p-d-w-r-s-b">
+          <div className="p-d-w-r-s-b-w">
+            <div className="secure">
+              <div className="image">
+                <img src={Secureimage2} />
+              </div>
+              <div className="text-secure">
+                <h4>Safe payments</h4>
+                <p>It is a long established fact that a reader will be distracted</p>
+              </div>
             </div>
-            <div className="text-secure">
-              <h4>Safe payments</h4>
-              <p>It is a long established fact that a reader will be distracted</p>
-            </div>
-          </div>
 
-          <div className="secure">
-            <div className="image">
-              <img src={Secureimage3} />
+            <div className="secure">
+              <div className="image">
+                <img src={Secureimage3} />
+              </div>
+              <div className="text-secure">
+                <h4>Security & privacy</h4>
+                <p>It is a long established fact that a reader will be distracted</p>
+              </div>
             </div>
-            <div className="text-secure">
-              <h4>Security & privacy</h4>
-              <p>It is a long established fact that a reader will be distracted</p>
-            </div>
-          </div>
 
-          <div className="secure">
-            <div className="image">
-              <img src={Secureimage4} />
+            <div className="secure">
+              <div className="image">
+                <img src={Secureimage4} />
+              </div>
+              <div className="text-secure">
+                <h4>Buyer Protection</h4>
+                <p>It is a long established fact that a reader will be distracted</p>
+              </div>
             </div>
-            <div className="text-secure">
-              <h4>Buyer Protection</h4>
-              <p>It is a long established fact that a reader will be distracted</p>
+            <hr />
+            <div className="store">
+              <img src={`${shopData.sellerImage}`} />
+              <h2>{productData.fullname}</h2>
             </div>
-          </div>
-          <hr />
-          <div className="store">
-            <img width="150" height="100" src={`${shopData.sellerImage}`} />
-            <h2>{productData.fullname}</h2>
-          </div>
-          <div className="storecontactdetails">
-            <ul>
-              <li>
-                <div className="textersaveSeller" onClick={() => addToFavorites(shopGuidSave)}>
-                  {shopData.is_favourite === true ? (
-                    <span style={{ fontSize: "15px", display: "flex", alignItems: "center", gap: "6px", color: '#2994F8' }}>
+            <div className="storecontactdetails">
+              <h3>{shopData?.sellerName} Store</h3>
+              <ul>
+                <li>
+                  {shopData.is_favourite === true ?
+                    <div className="textersaveSeller" onClick={() => addToFavorites(shopGuidSave)}>
                       <FaHeart /> UnSave this Seller
-                    </span>
-                  ) : (
-                    <span style={{ fontSize: "15px", display: "flex", alignItems: "center", gap: "6px" }}>
+                    </div>
+                    :
+                    <div className="textersaveSeller" onClick={() => addToFavorites(shopGuidSave)}>
                       <FaRegHeart /> Save this Seller
-                    </span>
-                  )}
-                </div>
-              </li>
-              <li>
-                <a href={`tel:${shopData.phone}`} >{shopData.phone}</a>
-              </li>
-              <li>
-                <Link to={`/sellershop/${shopGuid.guid}`}>Visit Seller Shop</Link>
-              </li>
-              <li>
-                <Link to="#">View Other Products</Link>
-              </li>
-            </ul>
+                    </div>
+                  }
+                </li>
+                <li>
+                  <a href={`tel:${shopGuid.phone}`} >{shopGuid.phone}</a>
+                </li>
+                <li>
+                  <Link to={`/sellershop/${shopGuid.guid}`}>Visit Seller Shop</Link>
+                </li>
+                <li>
+                  <Link to={`/sellershop/${shopGuid.guid}`}>View Other Products</Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       )}

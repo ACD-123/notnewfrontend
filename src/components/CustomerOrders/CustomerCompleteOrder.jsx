@@ -53,7 +53,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
             [`star${i}`]: 0
           }));
           const attributes = response?.data?.products?.[i]?.attributes;
-          const validJsonString = attributes.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+)(\s*[},])/g, '$1"$2"$3');
+          const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
           const normalArray = JSON.parse(validJsonString);
           tempArr.push(normalArray)
         }
@@ -100,7 +100,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
     for (let i = 0; i < oderDetailResponse.length; i++) {
       let tempArr = []
       const attributes = oderDetailResponse[i].attributes;
-      const validJsonString = attributes.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+)(\s*[},])/g, '$1"$2"$3');
+      const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
       const normalArray = JSON.parse(validJsonString);
       tempArr.push(normalArray)
       OrderServices.customerReOrder(JSON.stringify([{

@@ -1,47 +1,23 @@
 import React, { useState, useEffect, useRef } from "react";
-import Profile from "../../../assets/Images/PersonalInfo/profile.png";
-import blankuser from "../../../assets/Images/User/blankuser.jpg";
-import UserServices from "../../../services/API/UserServices"; //~/services/API/UserServices
-import {
-  setUserDetails,
-  isLoggedin,
-  getUserDetails,
-} from "../../../services/Auth"; // ~/services/Auth
+import UserServices from "../../../services/API/UserServices";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../../services/Constant";
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
-import { Form, Spinner } from "react-bootstrap";
 import { IoIosCamera } from "react-icons/io";
 import LoadingComponents from "../../Shared/LoadingComponents";
 
 const libraries = ["places"];
 const PersonalInfo = () => {
-  const inputRef = useRef();
-  const [user, setUser] = useState({});
-  const [name, setName] = useState("");
-  const [lastname, setLastName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAd] = useState("");
-  const [emails, setEmail] = useState("");
-  const [cities, setCity] = useState("City");
-  const [states, setState] = useState("State");
-  const [addresses, setAddress] = useState("");
-  const [countries, setCountry] = useState("Country");
-  const [site, setSite] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
-  const [zip, setZip] = useState("Zip");
-  const [profilepic, setProfileImage] = useState("");
-  const [profilePic, setProfilePic] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
+  const inputRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [enabled, setEnabled] = useState(false);
-  const [editaddress, setEditAddress] = useState(false);
-  const [formData, setFormData] = useState({
-    phone: "",
-    address: "",
-    email: "",
-    site: "",
+  const [editImage, setEditImage] = useState(false);
+  const [inputError, setInputError] = useState(false);
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
+    libraries,
   });
+
   const [userFormData, setUserFormData] = useState({
     name: '',
     lastname: '',
@@ -55,10 +31,46 @@ const PersonalInfo = () => {
     address: '',
     file: ''
   });
-  const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
-    libraries,
-  });
+
+  const handlePlaceChanged = () => {
+    console.log(inputRef.current.getPlaces(), 'getPlaces');
+    const [place] = inputRef.current.getPlaces();
+    if (place) {
+      setUserFormData(prev => ({
+        ...prev,
+        address: place.formatted_address
+      }));
+      let political, administrative_area_level_1, postalCode;
+      for (let i = 0; i < place.address_components.length; i++) {
+        const component = place.address_components[i];
+        for (let j = 0; j < component.types.length; j++) {
+          if (component.types[j] === 'country') {
+            political = component.long_name;
+          } else if (component.types[j] === 'administrative_area_level_1') {
+            administrative_area_level_1 = component.long_name;
+          } else if (component.types[j] === 'postal_code') {
+            postalCode = component.long_name;
+          }
+        }
+      }
+      setUserFormData(prev => ({
+        ...prev,
+        country: political,
+        states: administrative_area_level_1,
+        city: place.name,
+        zip: postalCode,
+      }));
+    }
+  };
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      setUserFormData(prev => ({ ...prev, [name]: checked }));
+    } else {
+      setUserFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
 
   useEffect(() => {
     getUser();
@@ -80,16 +92,6 @@ const PersonalInfo = () => {
         address: response?.address,
         file: response?.profile_image
       })
-      console.log(response?.profile_image?.includes('images'), 'userFormData?.file');
-      console.log(response?.profile_image?.includes('http'), 'userFormData?.file');
-      setProfileImage(response.profile_image);
-      setEmail(response.email);
-      setName(response.name);
-      setLastName(response.last_name);
-      setPhone(response.phone);
-      setAd(response.address);
-      setSite(response.site);
-      setUser(response);
       setIsLoading(false);
     }).catch(error => {
       console.error('Error fetching user data:', error);
@@ -97,217 +99,168 @@ const PersonalInfo = () => {
     });
   };
 
-  const handlePhone = (e) => {
-    setPhone(e.target.value);
-  };
-
-  const handleAdd = (e) => {
-    setAd(e.target.value);
-  };
-
-  const handleEmail = (e) => {
-    setEmail(e.target.vaue);
-  };
-
-  const handleSite = (e) => {
-    setSite(e.target.value);
-  };
-
-  const handleName = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleLastName = (e) => {
-    setLastName(e.target.value);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
+    setInputError(true);
+
+    // Check if any field is non-empty
+    const hasValidInput = Object.values(userFormData).some(field => field !== "");
+console.log(hasValidInput , 'hasValidInput');
+    if (!hasValidInput) {
+      setEnabled(true);
+      setIsLoading(true);
+
+      const formData = new FormData();
+      if (editImage) {
+        formData.append("file", userFormData.file);
+      }
+
+      // Append all form data
+      Object.keys(userFormData).forEach(key => {
+        formData.append(key, userFormData[key]);
+      });
+
+      UserServices.updateProfile(formData)
+        .then((response) => {
+          setIsLoading(false);
+          setInputError(false);
+          setEnabled(false);
+        })
+        .catch((error) => {
+          console.error("Profile update failed:", error);
+          setIsLoading(false);
+          setInputError(false);
+          setEnabled(false);
+        });
+    }
   };
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    setProfilePic(selectedFile);
-  };
-
-  const handlePlaceChanged = () => {
-    const [place] = inputRef.current.getPlaces();
-    if (place) {
-      setAddress(place.formatted_address);
-      setLatitude(place.geometry.location.lat());
-      setLongitude(place.geometry.location.lng());
-      for (var i = 0; i < place.address_components.length; i++) {
-        for (var j = 0; j < place.address_components[i].types.length; j++) {
-          if (place.address_components[i].types[j] == "postal_code") {
-            setZip(place.address_components[i].long_name);
-          }
-          if (place.address_components[i].types[0] == "locality") {
-            setCity(place.address_components[i].long_name);
-          }
-          if (
-            place.address_components[i].types[0] ==
-            "administrative_area_level_1"
-          ) {
-            setState(place.address_components[i].long_name);
-          }
-          if (place.address_components[i].types[0] == "country") {
-            setCountry(place.address_components[i].long_name);
-          }
-        }
-      }
-    }
-  };
-
-  const handleAddAddress = () => {
-    setEditAddress(true);
-    formData.address = addresses;
+    setUserFormData((prev) => ({ ...prev, file: event.target.files[0] }))
+    setEditImage(true)
   };
 
   return (
     <>
-      <div class="main-content">
-        <div class="seller-new-transaction">
-          <div class="title">Profile Information</div>
-          <div className="peronsinfo-form">
 
-          </div>
-          <div className="peronsinfo-form">
-            <div className="pranker">
-              <div className="profile-pic-wrapper">
-                <div className="pic-holder">
-                  {userFormData?.file?.includes('images') ? (
-                    userFormData?.file?.includes('http') ? (
-                      <img
-                        id="profilePic"
-                        className="pic"
-                        src={user.profile_image}
-                      />
-                    ) : (
-                      <img
-                        id="profilePic"
-                        className="pic"
-                        src={`${BASE_URL}/${profilepic}`}
-                      />
-                    )
-                  ) : (
-                    <></>
-                    // <img id="profilePic" className="pic" src={URL.createObjectURL(userFormData?.file)}/>
-                  )}
-
-                  <input
-                    className="uploadProfileInput"
-                    type="file"
-                    accept="image/png, image/jpeg"
-                    name="profile_pic"
-                    style={{ display: "none" }}
-                    id="newProfilePhoto"
-                    onChange={handleFileChange}
-                  />
-                  <label
-                    htmlFor="newProfilePhoto"
-                    className="upload-file-block"
-                  >
-                    <div className="text-center">
-                      <div className="mb-2">
-                        <i className="fa fa-camera fa-2x"></i>
-                      </div>
-                      <div className="text-uppercase">
-                        <IoIosCamera />
-                        {/* Upload <br /> Profile Photo */}
-                      </div>
-                    </div>
-                  </label>
-                </div>
-              </div>
-              <div>
-                <h2>{user.name}</h2>
-                <h6>
-                  <a
-                    style={{ textTransform: "lowercase" }}
-                    href={`mailto:${user.email}`}
-                  >
-                    {user.email}
-                  </a>
-                </h6>
-              </div>
-            </div>
-            <h5>Profile Information</h5>
-            <div className="prnform">
-              <form onSubmit={handleSubmit} encType="multipart/form-data">
-                {/* Other input fields */}
-                <input
-                  type="text"
-                  name="name"
-                  value={name}
-                  onChange={handleName}
-                  required
-                  placeholder="Name"
-                />
-                <br />
-                <input
-                  type="text"
-                  name="last_name"
-                  value={lastname}
-                  onChange={handleLastName}
-                  required
-                  placeholder="Last Name"
-                />
-                <br />
-                <input
-                  type="text"
-                  name="phone"
-                  value={phone}
-                  onChange={handlePhone}
-                  required
-                  placeholder="Phone:"
-                />
-                <br />
-                {/* Render the address input directly */}
-                <Form.Control
-                  placeholder={address}
-                  style={{ height: "150px" }}
-                  as="textarea"
-                  rows={3}
-                  value={address}
-                  onChange={(e) => setAd(e.target.value)}
-                />
-                <br />
-                <input
-                  type="email"
-                  name="email"
-                  value={emails}
-                  onChange={handleEmail}
-                  placeholder="Email:"
-                  required
-                />
-
-                <br />
-
-                <input
-                  type="text"
-                  name="site"
-                  value={site}
-                  onChange={handleSite}
-                  placeholder="Web Site"
-                />
-
-                <br />
-                <button type="submit" disabled={enabled}>
-                  {isLoading ? "loading.." : "Submit"}
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
       {isLoading ? (
         <LoadingComponents />
       ) : (
         <section id="prsnlinfo">
           <div className="row">
             <div className="col-lg-12">
+              <div class="main-content">
+                <div class="seller-new-transaction">
+                  <div class="title">Profile Information</div>
+                  <div className="peronsinfo-form">
+                    <div className="pranker">
+                      <div className="profile-pic-wrapper">
+                        <div className="pic-holder">
+                          {!editImage ? (
+                            userFormData?.file?.includes('http') ? (
+                              <img
+                                id="profilePic"
+                                className="pic"
+                                src={userFormData.file}
+                              />
+                            ) : (
+                              <img
+                                id="profilePic"
+                                className="pic"
+                                src={`${BASE_URL}/${userFormData?.file}`}
+                              />
+                            )
+                          ) : (
+                            <img id="profilePic" className="pic" src={URL.createObjectURL(userFormData?.file)} />
+                          )}
 
+                          <input
+                            className="uploadProfileInput"
+                            type="file"
+                            accept="image/png, image/jpeg"
+                            name="profile_pic"
+                            style={{ display: "none" }}
+                            id="newProfilePhoto"
+                            onChange={handleFileChange}
+                          />
+                          <label htmlFor="newProfilePhoto" className="upload-file-block">
+                            <div className="text-center">
+                              <div className="text-uppercase">
+                                <IoIosCamera />
+                              </div>
+                            </div>
+                          </label>
+                        </div>
+                      </div>
+                      <div>
+                        <h2>{userFormData.name}</h2>
+                        <h6><a href={`mailto:${userFormData.email}`}>{userFormData.email}</a></h6>
+                      </div>
+                    </div>
+                    <div className="prnform">
+                      <form onSubmit={handleSubmit}>
+                        <div className="input-wrap">
+                          <div className="input">
+                            <input type="text" name="name" value={userFormData.name} onChange={handleChange} placeholder="Enter name" />
+                            {inputError && userFormData.name === '' && <div className="error-input">Name is required</div>}
+                          </div>
+
+                          <div className="input">
+                            <input type="text" name="lastname" value={userFormData.lastname} onChange={handleChange} placeholder="Enter last Name" />
+                            {inputError && userFormData.lastname === '' && <div className="error-input">Last name is required</div>}
+                          </div>
+                        </div>
+                        <div className="input-wrap">
+                          <div className="input">
+                            <input type="tel" name="phone" value={userFormData.phone} onChange={handleChange} placeholder="Enter phone number" />
+                            {inputError && userFormData.phone === '' && <div className="error-input">Phone number is required</div>}
+                          </div>
+
+                          <div className="input">
+                            {isLoaded && (
+                              <StandaloneSearchBox onLoad={(ref) => (inputRef.current = ref)} onPlacesChanged={handlePlaceChanged}>
+                                <input type="text" value={userFormData.address} placeholder={userFormData.address} />
+                              </StandaloneSearchBox>
+                            )}
+                            {userFormData.address === "" && inputError && <div className="error-input">Address is required</div>}
+                          </div>
+                        </div>
+                        <div className="input-wrap">
+                          <div className="input">
+                            <input name="country" readOnly onChange={handleChange} value={userFormData.country} placeholder="Enter country" />
+                            {userFormData.country === "" && inputError && <div className="error-input">Country is required</div>}
+                          </div>
+
+                          <div className="input">
+                            <input name="states" readOnly onChange={handleChange} value={userFormData.states} placeholder="Enter State" />
+                            {userFormData.states === "" && inputError && <div className="error-input">State is required</div>}
+                          </div>
+
+                          <div className="input">
+                            <input name="city" readOnly onChange={handleChange} value={userFormData.city} placeholder="Enter city" />
+                            {userFormData.city === "" && inputError && <div className="error-input">City is required</div>}
+                          </div>
+                        </div>
+                        <div className="input-wrap">
+                          <div className="input">
+                            <input name="email" readOnly onChange={handleChange} value={userFormData.email} placeholder="Enter email" />
+                            {userFormData.email === "" && inputError && <div className="error-input">Email is required</div>}
+                          </div>
+
+                          <div className="input">
+                            <input name="site" onChange={handleChange} value={userFormData.site} placeholder="Enter site" />
+                            {userFormData.site === "" && inputError && <div className="error-input">Site is required</div>}
+                          </div>
+                        </div>
+                        <button type="submit" disabled={enabled}>
+                          {isLoading ? "loading.." : "Submit"}
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>

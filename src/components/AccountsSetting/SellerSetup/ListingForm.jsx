@@ -424,7 +424,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           latitude: response?.data?.latitude,
           longitude: response?.data?.longitude,
           country: response?.data?.return_country,
-          state: response?.data?.return_state,
+          state: response?.data?.state,
           city: response?.data?.city,
           zip: response?.data?.zip,
           shippingprice: response?.data?.shipping_price,
@@ -658,9 +658,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                               checked={productManagment.sellingNow}
                               onClick={() => {
                                 if (productManagment.sellingNow) {
-                                  setProductManagments(prev => ({ ...prev, sellingNow: false , price : '' , saleprice : '' , minpurchase : '' , listing : ''}))
+                                  setProductManagments(prev => ({ ...prev, sellingNow: false, price: '', saleprice: '', minpurchase: '', listing: '' }))
                                 } else {
-                                  setProductManagments(prev => ({ ...prev, sellingNow: true , price : '' , saleprice : '' , minpurchase : '' , listing : ''}))
+                                  setProductManagments(prev => ({ ...prev, sellingNow: true, price: '', saleprice: '', minpurchase: '', listing: '' }))
                                 }
                               }}
                             />
@@ -685,9 +685,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                               checked={productManagment.auctioned}
                               onClick={() => {
                                 if (productManagment.auctioned) {
-                                  setProductManagments(prev => ({ ...prev, auctioned: false , bids : ""  , durations : 0 , hours: "" , auctionListing:"" , end_listing: "" }))
+                                  setProductManagments(prev => ({ ...prev, auctioned: false, bids: "", durations: 0, hours: "", auctionListing: "", end_listing: "" }))
                                 } else {
-                                  setProductManagments(prev => ({ ...prev, auctioned: true , bids : ""  , durations : 0 , hours: "" , auctionListing:"" , end_listing: ""}))
+                                  setProductManagments(prev => ({ ...prev, auctioned: true, bids: "", durations: 0, hours: "", auctionListing: "", end_listing: "" }))
                                 }
                               }}
                             />
@@ -836,10 +836,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                     {productId ?
                       <>
                         {isLoaded && (
-                          <StandaloneSearchBox
-                            onPlacesChanged={handlePlaceChanged}
-                            style={{ width: '100%' }}
-                          >
+                          <StandaloneSearchBox onPlacesChanged={handlePlaceChanged} style={{ width: '100%' }}>
                             <input type="text" value={productManagment.address} placeholder={productManagment.address} />
                           </StandaloneSearchBox>
                         )}

@@ -34,7 +34,7 @@ const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }
         setIsLoading(false);
         console.log(response?.data?.products?.[0]?.attributes);
         const attributes = response?.data?.products?.[0]?.attributes
-        const validJsonString = attributes.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+)(\s*[},])/g, '$1"$2"$3');
+        const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
         const normalArray = JSON.parse(validJsonString);
         setRejectedOrderAttributes(normalArray)
         console.log(normalArray, 'normalArray');

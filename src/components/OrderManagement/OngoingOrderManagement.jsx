@@ -35,7 +35,7 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
         let tempArr = []
         for (let i = 0; i < response?.data?.products.length; i++) {
           const attributes = response?.data?.products?.[i]?.attributes;
-          const validJsonString = attributes.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+)(\s*[},])/g, '$1"$2"$3');
+          const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
           const normalArray = JSON.parse(validJsonString);
           tempArr.push(normalArray)
         }

@@ -11,12 +11,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { saveCupon, deleteCupon } from "../../../../store/slices/cupon";
 import EditListingForm from "../../../AccountsSetting/SellerSetup/EditListingForm";
 import { Spinner } from "react-bootstrap";
+import Select from 'react-select';
 import { useNavigate } from "react-router-dom";
 
-const ProductInformation = () => {
+const ProductInformation = ({getMoreToLove , setProductId}) => {
   const dispatch = useDispatch();
   const [productData, setProductData] = useState([]);
-  console.log('productData',productData)
+  console.log('productData', productData)
   const [gettags, setTags] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true); // Set initial value to true
@@ -28,8 +29,24 @@ const ProductInformation = () => {
   const loggedInUsers = JSON.parse(loggedInUser);
   const navigate = useNavigate();
 
+  // ali monis
+  const [ProductAttribute, SetproductAttribute] = useState([])
+
+  const handelAddonsChange = (e, data, index) => {
+    const updatedArray = [...ProductAttribute];
+
+    updatedArray[index] = {
+      name: data.name,
+      selected: e,
+      options: data?.options,
+      selectToSend: e.label
+    };
+
+    SetproductAttribute(updatedArray);
+  }
+
   let incNum = () => {
-    if (quantity < 10) {
+    if (quantity < productData?.stockcapacity) {
       setQuantity(Number(quantity) + 1);
     }
   };
@@ -38,9 +55,6 @@ const ProductInformation = () => {
       setQuantity(quantity - 1);
     }
   };
-  // let handleQuantity = (e) => {
-
-  // };
 
   const saveRecentView = () => {
     let data = {
@@ -54,15 +68,21 @@ const ProductInformation = () => {
     ProductServices.get(id)
       .then((res) => {
         setProductData(res.data);
-        let tags = JSON.parse(res.data.tags);
-        let allTags = [];
-        // {
-        //   tags.map((tag, index) => allTags.push(tag.tag));
-        // }
-        setTags(allTags);
+        const categoryAddons = res?.data?.attributes?.map(attribute => ({
+          name: attribute.key,
+          selected: null,
+          options: attribute.options.map((option, index) => ({
+            value: index + 1,
+            label: option
+          })),
+          selectToSend: []
+        }));
+        SetproductAttribute(categoryAddons);
+        console.log(res?.data , 'getProduct');
+        getMoreToLove(res?.data?.id)
+        setProductId(res?.data?.id)
       })
       .finally(() => {
-        // Set isLoading to false once data fetching is complete
         setIsLoading(false);
       });
   };
@@ -75,7 +95,7 @@ const ProductInformation = () => {
     }
     setIsLoading(true);
     setEnabled(true);
-    navigate("/checkout-buynow/"+productData.guid);
+    navigate("/checkout-buynow/" + productData.guid);
     let arributes = localStorage.getItem("arributes");
     arributes = JSON.parse(arributes);
     let inputData = {
@@ -91,7 +111,7 @@ const ProductInformation = () => {
     CheckoutServices.save(inputData)
       .then((response) => {
         console.log(response)
-        if(response.success){
+        if (response.success) {
           toast.success('buy now added')
         }
 
@@ -114,7 +134,6 @@ const ProductInformation = () => {
   const addToCart = (e) => {
     e.preventDefault();
     if (!loggedInUsers) {
-      // User is not logged in, navigate to the sign-in page
       navigate("/signin");
       return;
     }
@@ -149,7 +168,7 @@ const ProductInformation = () => {
         setEnabled(false);
       });
   };
-  const handleDropdownItemClick = (componentName) => {};
+  const handleDropdownItemClick = (componentName) => { };
   const hanldeWishList = (guid) => {
     ProductServices.saved(guid, productData)
       .then((response) => {
@@ -162,9 +181,10 @@ const ProductInformation = () => {
       });
   };
   const handleQuantity = (e) => {
-    setQuantity(e.target.value);
-    e.preventDefault();
-    setQuantity(e.target.value);
+    if (e.target.value <= productData?.stockcapacity) {
+      setQuantity(e.target.value);
+    }
+
   };
   const handleEdit = (e) => {
     e.preventDefault();
@@ -176,131 +196,107 @@ const ProductInformation = () => {
   }, []);
   return (
     <>
-      {isLoading ? ( // Render loader if isLoading is true
+      {isLoading ? (
         <div className="loader-container">
           <Spinner animation="border" role="status">
           </Spinner>
         </div>
       ) : (
-        <div className="product-info">
-          {/* {productData.length > 0 ?(
-        <> */}
-          <h3>{productData.name}</h3>
-          {(() => {
-            if (productData.shipping_price === 0) {
-              return <p>Free Shipping and Returns</p>;
-            } else {
+        <div className="p-i">
+          <div className="p-i-1">
+            <h3 className="p-i-t">{productData.name}</h3>
+            <hr />
+          </div>
+          <div className="p-i-2">
+            <div className="p-i-2-w">
+              <div className="p-i-2-w-l">Condition</div>
+              <div className="p-i-2-w-r">{productData?.condition}</div>
+            </div>
+            <div className="p-i-2-w">
+              <div className="p-i-2-w-l">Brand</div>
+              <div className="p-i-2-w-r">{productData?.brand?.name}</div>
+            </div>
+            <div className="p-i-2-w">
+              <div className="p-i-2-w-l">Model</div>
+              <div className="p-i-2-w-r">{productData?.model}</div>
+            </div>
+            <div className="p-i-2-w">
+              <div className="p-i-2-w-l">Descriptions</div>
+              <div className="p-i-2-w-r">{productData?.description}</div>
+            </div>
+
+            {ProductAttribute.map((data, index) => {
               return (
-                <div>
-                  <p>Shipment Cost : $ {productData.shipping_price}</p>
+                <div className="p-i-2-w" key={index}>
+                  <div className="p-i-2-w-l">{data?.name}</div>
+                  <div className="p-i-2-w-r">
+                    <Select
+                      // defaultValue={selected}
+                      value={data?.selected}
+                      onChange={(e) => { handelAddonsChange(e, data, index) }}
+                      options={ProductAttribute?.[index]?.options}
+                      placeholder={`Select ${data?.name}`}
+                    />
+                  </div>
                 </div>
-              );
-            }
-          })()}
-          {/* <Attribute /> */}
-          <div className="price">
-            <div class="input-group">
-              <div class="input-group-prepend">
-                <button class="btn" type="button" onClick={decNum}>
-                  -
-                </button>
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                value={quantity}
-                onChange={handleQuantity}
-              />
-              <div class="input-group-prepend">
-                <button class="btn" type="button" onClick={incNum}>
-                  +
-                </button>
+
+              )
+            })}
+            <div className="p-i-2-w">
+              <div className="p-i-2-w-l">Quantity {productData?.stockcapacity} available</div>
+              <div className="p-i-2-w-r">
+                <div className="price">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <button class="btn" type="button" onClick={decNum}>
+                        -
+                      </button>
+                    </div>
+                    <input
+                      type="text"
+                      class="form-control"
+                      value={quantity}
+                      onChange={handleQuantity}
+                    />
+                    <div class="input-group-prepend">
+                      <button class="btn" type="button" onClick={incNum}>
+                        +
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
+            <hr />
           </div>
-          {/* Quantity: <input type="number" min="1" value={quantity} onChange={handleQuantity} /> */}
-          <hr />
-          <div className="price-product">
-            <h5>
-              Price: <span>$ {productData.price}</span>
-            </h5>
-          </div>
-          {loggedInUsers ? (
-            <>
-              {(() => {
-                if (productData.user_id === loggedInUsers.id) {
-                  return (
-                    <div className="pay-buttons">
-                      <button onClick={handleEdit}>Edit</button>
-                      {/* <Link onClick={() => handleDropdownItemClick('component')}><button>Edit</button></Link> */}
-                    </div>
-                  );
-                } else if (productData.user_id !== loggedInUsers.id) {
-                  return (
-                    <div className="pay-buttons">
-                      {/* <Link to={`/checkouts/${productData.guid}`}> */}
-                      <button onClick={addByNow}>Buy It Now</button>
-                      {/* </Link> */}
-                      <button onClick={addToCart} disabled={enabled}>
-                        {isLoading ? "loading.." : "Add to Cart"}
-                      </button>
-                      {/* <Link to="/shoppingcart"><button>Add to Cart</button></Link> */}
-                      {/* <Link onClick={() => handleDropdownItemClick('componentC')}><button>Add to Wishlist</button></Link> */}
-                      <Link onClick={() => hanldeWishList(productData.guid)}>
-                        <button>Add to Wishlist</button>
-                      </Link>
-                    </div>
-                  );
-                }
-              })()}
-            </>
-          ) : (
-            <>
-              <div className="pay-buttons">
-                {/* <Link to={`/checkouts/${productData.guid}`}> */}
-                <button onClick={addByNow}>Buy It Now</button>
-                {/* </Link> */}
-                <button onClick={addToCart} disabled={enabled}>
-                  {isLoading ? "loading.." : "Add to Cart"}
-                </button>
-                {/* <Link to="/shoppingcart"><button>Add to Cart</button></Link> */}
-                {/* <Link onClick={() => handleDropdownItemClick('componentC')}><button>Add to Wishlist</button></Link> */}
-                <Link onClick={() => hanldeWishList(productData.guid)}>
-                  <button>Add to Wishlist</button>
-                </Link>
-              </div>
-            </>
-          )}
-
-          {/* <br /> */}
-          {/* <h3>Tags</h3>
-          <ul className="tagsList">
-            {gettags.map((tag) => {
-              return (
+          <div className="p-i-3">
+            <div className="p-i-3-w">
+              {loggedInUsers ? (
                 <>
-                  <li>{tag}</li>
+                  <div className="p-p">
+                    <div className="p-p">Price</div>
+                    <div className="p-p">${productData.price}</div>
+                  </div>
+                  <div className="pay-buttons">
+                    <button onClick={addByNow}>Buy It Now</button>
+                    <button onClick={addToCart} disabled={enabled}>{isLoading ? "loading.." : "Add to Cart"}</button>
+                  </div>
                 </>
-              );
-            })}
-          </ul> */}
-          <br />
-          <br />
-          <h3>Descriptions</h3>
-          {productData.description}
-          <ShippingPolicyData />
-          {/* </>
-      ):('')} */}
-          <div className="popup">
-            {/* Popup for successful product activation */}
-            {showPopup && (
-              <div className="listing-activated">
-                <div className="innerlisting-activated">
-                  <EditListingForm />
-                  <button onClick={() => setShowPopup(false)}>Close</button>
-                </div>
-              </div>
-            )}
+              ) : (
+                <>
+                  <div className="p-p">
+                    <div className="p-p">Price</div>
+                    <div className="p-p">${productData.price}</div>
+                  </div>
+                  <div className="pay-buttons">
+                    <button onClick={addToCart} disabled={enabled}>{isLoading ? "loading.." : "Add to Cart"}</button>
+                  </div>
+                </>
+              )}
+            </div>
+            <hr />
           </div>
+          <ShippingPolicyData />
         </div>
       )}
     </>

@@ -365,6 +365,13 @@ function getSavedSellerDetails(id) {
     method: 'GET',
   })
 }
+
+function getMoreToLove(product_id) {
+  return request({
+    url: `${baseApi}products/getRelatedProducts/${product_id}`,
+    method: 'GET',
+  })
+}
 function getProductManagmentOderCount() {
   return request({
     url: `${baseApi}orders/counts`,
@@ -433,7 +440,8 @@ const ProductServices = {
   updateProduct,
   getProductManagmentOderCount,
   deleteSellerProduct,
-  addSearchProduct
+  addSearchProduct,
+  getMoreToLove
 }
 
 export default ProductServices

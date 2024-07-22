@@ -4,22 +4,7 @@ import { BASE_URL } from "../../../../services/Constant";
 import blank from "../../../../assets/Images/Productcard/blank.jpg";
 
 const ProductGallery = () => {
-  // // Sample product data
-  // const products = [
-  //   { id: 1, name: 'Product 1', image: ProductImage1 },
-  //   { id: 2, name: 'Product 2', image: ProductImage2 },
-  //   { id: 3, name: 'Product 3', image: ProductImage3 },
-  //   { id: 4, name: 'Product 4', image: ProductImage4 },
-  //   // Add more products as needed
-  // ];
-
-  // const [selectedImage, setSelectedImage] = useState(products[0].image);
-
-  // const handleThumbnailClick = (image) => {
-  //   setSelectedImage(image);
-  // };
   const [product, setProductData] = useState([]);
-  // const [selectedImage, setSelectedImage] = useState(product[0].image);
   const [selectedImage, setSelectedImage] = useState("");
 
   const { pathname } = window.location;
@@ -30,7 +15,7 @@ const ProductGallery = () => {
   };
   const getProduct = () => {
     ProductServices.get(id).then((response) => {
-      if(response.data.media.length > 0){
+      if (response.data.media.length > 0) {
         setProductData(response.data.media);
         setSelectedImage(response.data.media[0].name);
       }
@@ -42,48 +27,36 @@ const ProductGallery = () => {
   }, []);
 
   return (
-    <div className="product-gallery">
-    <div className="thumbnails">
-      {product.length > 0 ? (
-        <>
-          {product.map((image) => {
-            return (
-              <>
-                <img
-                  key={image.id}
-                  src={`${image.name}`}
-                  alt={image.name}
-                  onClick={() => handleThumbnailClick(image.name)}
-                  className={selectedImage === image.name ? "active" : ""}
-                />
-              </>
-            );
-          })}
-        </>
-      ) : (
-          <>
-            <img
-              src={blank}
-              alt='blank'
-              width="300"
-              height="500"
-            />
-          </>
-
-      )}
-    </div>
-    {selectedImage ? (
-      <>
-        <div className="gallery-images">
-          <img
-            // src={`${BASE_URL}/image/product/${selectedImage}`}
-            src={`${selectedImage}`}
-            alt="Selected Product"
-          />
+    <div className="p-g">
+      {product.length > 1 &&
+        <div className="p-g-t">
+          {product.length > 0 &&
+            <>
+              {product?.slice(0, 5)?.map((image) => {
+                return (
+                  <>
+                    <div>
+                      <img key={image.id} src={`${image.name}`} alt={image.name} onClick={() => handleThumbnailClick(image.name)}
+                        className={selectedImage === image.name ? "active" : ""} />
+                    </div>
+                  </>
+                );
+              })}
+            </>
+          }
         </div>
-      </>
-    ):('')}
-  </div>
+      }
+      {selectedImage ? (
+        <>
+          <div className="g-i">
+            <img
+              src={`${selectedImage}`}
+              alt="Selected Product"
+            />
+          </div>
+        </>
+      ) : ('')}
+    </div>
 
   );
 };

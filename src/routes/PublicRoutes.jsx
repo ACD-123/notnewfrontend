@@ -40,6 +40,7 @@ import MySellerAccount from "../pages/MySellerAccount"
 import SearchProduct from "../pages/SearchProduct"
 import TopSellingProducts from "../pages/TopSellingProducts"
 import PersonalInformation from "../pages/PersonalInformation"
+import { MoreToLove } from "../pages/MoreToLove"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -62,6 +63,7 @@ const PublicRoutes = () => {
 					{/* <Route path="/emailverification/:id/:guid/:expires/:email" element={<EmailVerification />} /> */}
 					<Route path="/emailverification/:email" element={<EmailVerification />} />
 					<Route path="/signin" element={<SignIn />} />
+					<Route path="/more-to-love" element={<MoreToLove />} />
 					<Route path="/top-category" element={<TopCategory />} />
 					<Route path="/top-sellers" element={<Topsellers />} />
 					<Route path="/top-selling-prodcuts" element={<TopSellingProducts />} />

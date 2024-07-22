@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ProductServices from '../../services/API/ProductServices';
 import { Spinner } from 'react-bootstrap';
 import SellerProductCard from '../Shared/Cards/SellerProductCard';
+import LoadingComponents from '../Shared/LoadingComponents';
+import NoDataFound from '../Shared/NoDataFound';
 
 const ProductCard = ({ setSubmitted, setProductId }) => {
   const [activeProducts, setActiveProducts] = useState([]);
@@ -11,10 +13,8 @@ const ProductCard = ({ setSubmitted, setProductId }) => {
   const activeProductData = async () => {
     try {
       const res = await ProductServices.sellerActiveProducts();
-      if (res.status) {
         setActiveProducts(res.data);
         setIsLoading(false)
-      }
     } catch (error) {
       setIsLoading(false)
       console.error("Error fetching product data:", error);
@@ -39,14 +39,11 @@ const ProductCard = ({ setSubmitted, setProductId }) => {
       <div className='container'>
         <div className='row'>
           {isLoading ? (
-            <div className="loader-container text-center">
-              <Spinner animation="border" role="status">
-              </Spinner>
-            </div>
+            <LoadingComponents/>
           ) : (
             <>
               {activeProducts.length === 0 ? (
-                <div>No Active Products</div>
+                <NoDataFound title={'No Active Products'}/>
               ) : (
                 <>
                   {activeProducts.map((product) => (
