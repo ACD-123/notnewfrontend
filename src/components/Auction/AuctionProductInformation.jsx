@@ -11,34 +11,82 @@ import BidsServices from "../../services/API/BidsServices"; //~/services/API/Bid
 import WatchListServices from "../../services/API/WatchListServices"; //~/services/API/WatchListServices
 import { toast } from "react-toastify";
 import moment from "moment";
-import { Spinner } from "react-bootstrap";
+import { Modal, Spinner, Toast } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import Select from 'react-select';
+import UserService from "../../services/API/UserServices";
+
+const CountdownTimer = ({ initialTimeMicroseconds }) => {
+  const [remainingTime, setRemainingTime] = useState(initialTimeMicroseconds);
+
+  useEffect(() => {
+    if (remainingTime > 0) {
+      const timerId = setInterval(() => {
+        setRemainingTime(prevTime => prevTime - 1);
+      }, 1000);
+
+      return () => clearInterval(timerId);
+    }
+  }, [remainingTime]);
+
+  const convertSecondsToTime = (seconds) => {
+    let minutes = Math.floor(seconds / 60);
+    let hours = Math.floor(minutes / 60);
+    seconds = seconds % 60;
+    minutes = minutes % 60;
+
+    hours = String(hours).padStart(2, '0');
+    minutes = String(minutes).padStart(2, '0');
+    seconds = String(seconds).padStart(2, '0');
+
+    return `${hours} : ${minutes} : ${seconds}`;
+  }
+
+  const timeString = convertSecondsToTime(remainingTime);
+
+  return (
+    timeString
+  );
+}
 
 
-const AuctionProductInformation = () => {
+const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
   const [requestSentVisible, setRequestSentVisible] = useState({});
   const [editBidVisible, setEditBidVisible] = useState({});
-  const [confirmBidVisible, setConfirmBidVisible] = useState(false);
   const [additionalPopupVisible, setAdditionalPopupVisible] = useState(false);
   const [productData, setProductData] = useState([]);
   const [totalbids, setTotalBids] = useState(0);
-  const [totalproductbids, setTotalProductBids] = useState(0);
   const [productbids, setProductBids] = useState(0);
   const [placedbids, setPlacedBids] = useState(false);
-  const [hour, setHour] = useState("");
-  const [minutes, setMinutes] = useState("");
+  const [showPlacedbids, setShowPlacedBids] = useState(false);
   const [bestoffer, setBestOffer] = useState(0);
   const [currenttime, setCurrentTime] = useState("");
   const [shippingprice, setShippingPrice] = useState(0);
-  const [isLoading, setIsLoading] = useState(true); // Set initial value to true
-  const [enabled, setEnabled] = useState(false);
-  const [totalBid, setTotalBid] = useState(0); // State to hold the total bid value
+  const [isLoading, setIsLoading] = useState(true);
+  const [customBidPrice, setCustomBidPrice] = useState('');
   const [errors, setErrors] = useState({});
   const [bid, setBids] = useState({});
   const navigate = useNavigate()
+  let loggedInUser = localStorage.getItem("user_details");
+  const loggedInUsers = JSON.parse(loggedInUser);
+  const [ProductAttribute, SetproductAttribute] = useState([])
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
+
+  const handelAddonsChange = (e, data, index) => {
+    const updatedArray = [...ProductAttribute];
+
+    updatedArray[index] = {
+      name: data.name,
+      selected: e,
+      options: data?.options,
+      selectToSend: e.label
+    };
+
+    SetproductAttribute(updatedArray);
+  }
+
   const saveRecentView = () => {
     let data = {
       id: id,
@@ -47,90 +95,33 @@ const AuctionProductInformation = () => {
       console.log("response", response);
     });
   };
-  const getBestOffer = () => {
-    BidsServices.getMaxBids(id).then((response) => {
-      setBestOffer(response);
-    });
-  }
-  const getTotalBids = () => {
-    BidsServices.getProductBids(id).then((response) => {
-      console.log('s', response)
-      // setTotalProductBids(response)
-    });
-  }
+
   const handleCallback = (childData) => {
     setTotalBids(childData)
   }
   const handleMaxBids = (e) => {
     setTotalBids(e.target.value);
   }
-  const addWatchList = () => {
-    let token = localStorage.getItem('access_token');
-    if (token == "" || token == null) {
-      navigate("/signin")
-    } else {
-      let data = {
-        "product_id": id
-      }
-      WatchListServices.save(data).then((response) => {
-        toast.success(response);
-      })
-        .catch((e) => {
-          console.log('error', e)
-        });
-    }
-  }
+
   const getProduct = () => {
     ProductServices.get(id).then((response) => {
-      console.log('product data', response)
-      setProductData(response);
+      setProductData(response?.data);
       setShippingPrice(response.shipping_price);
       setProductBids(response.bids);
-      var date = new Date();
-      var date1 = moment(date).format('MM/DD/YYYY');
-      var date2 = moment(response.auction_listing).format('MM/DD/YYYY');//moment(moment(response.auction_listing).toDate(), 'MM/DD/YYYY'); 
-      if (date1 === date2) {
-        console.log('auction_listing', response.auction_listing)
-        console.log('auction_End_listing', response.auction_End_listing)
-        //for date difference
-        // console.log('diff', moment(response.auction_listing).diff(response.auction_End_listing, 'days'))
-        // var startTime1 = moment('12:16:59 am', 'HH:mm:ss a');
-        // var endTime1 = moment('06:12:07 pm', 'HH:mm:ss a');
-        var startTime = moment(response.auction_listing).format("hh:mm:ss a");
-        var endTime = moment(response.auction_End_listing).format("hh:mm:ss a");
-        var startTime1 = moment(startTime, 'HH:mm:ss a');
-        var endTime1 = moment(endTime, 'HH:mm:ss a');
-        console.log('startTime', startTime)
-        console.log('endTime', endTime)
-        console.log('startTime1', startTime1)
-        console.log('endTime1', endTime1)
-        // calculate total duration
-        var duration = moment.duration(endTime1.diff(startTime1));
-        // duration in hours
-        var hours = parseInt(duration.asHours());
-
-        // duration in minutes
-        var minutes = parseInt(duration.asMinutes()) % 60;
-
-        console.log(hours + ' hour and ' + minutes + ' minutes.');
-      }
-      // console.log('aucrtioned Product', moment(response.auction_listing).format('MM/DD/YYYY'))
-      // console.log('date', moment(date).format('MM/DD/YYYY'))
-
-      // var duration = moment.duration(date2.diff(date1));
-      // var hours = duration.asHours(); 
-      // // var minutes = duration.asMinutes(); 
-      // // console.log('minutes', remianing.toString().split(".")[1]) 
-      // var minutes = hours.toFixed(2);
-      // setHour(hours.toString().split(".")[0]);
-      setHour(hours);
-      // setMinutes(minutes.toString().split(".")[1]);
-      setMinutes(minutes);
-      const currDate = new Date();//.toLocaleTimeString;
-      setCurrentTime(moment(currDate).format('hh:mm A'))
+      getMoreToLove(response?.data?.id)
+      setProductId(response?.data?.id)
+      const categoryAddons = response?.data?.attributes?.map(attribute => ({
+        name: attribute.key,
+        selected: null,
+        options: attribute.options.map((option, index) => ({
+          value: index + 1,
+          label: option
+        })),
+        selectToSend: []
+      }));
+      SetproductAttribute(categoryAddons);
     })
       .finally(() => {
-        // Set isLoading to false once data fetching is complete
         setIsLoading(false);
       });
   };
@@ -146,6 +137,7 @@ const AuctionProductInformation = () => {
       });
     }
   };
+
   const handleEditBidClick = (elementId) => {
     setEditBidVisible({
       ...editBidVisible,
@@ -163,6 +155,7 @@ const AuctionProductInformation = () => {
       [elementId]: false,
     });
   };
+
   const handleSubmitDetails = (elementId) => {
     const newErrors = {};
     if (!totalbids) {
@@ -208,13 +201,6 @@ const AuctionProductInformation = () => {
     }
   };
 
-  const handleCloseRequestSent = (elementId) => {
-    setRequestSentVisible({
-      ...requestSentVisible,
-      [elementId]: false,
-    });
-  };
-
   const handleCloseAdditionalPopup = () => {
     setAdditionalPopupVisible(false); // Close additional popup
     navigate(`/bidView/${id}`)
@@ -240,37 +226,144 @@ const AuctionProductInformation = () => {
         console.log(e);
       });
   };
-  const handleDropdownItemClick = (componentName) => {
-    navigate(`/customerdashboard?component=${componentName}`)
+  const [inputError, setInputError] = useState(false);
+  const placeAbid = (e) => {
+    e.preventDefault();
+    setInputError(true)
+    if (customBidPrice != "" && customBidPrice > productData.max_bid
+    ) {
+      const requestData = {
+        product_id: productData?.id,
+        bid_value: customBidPrice,
+        user_id: loggedInUsers?.id,
+      };
+
+      UserService.placeABid(requestData)
+        .then((response) => {
+          setShowPlacedBids(false);
+          getProduct()
+          toast.success(response?.message)
+        })
+        .catch((error) => {
+          console.error('Error adding coupon:', error);
+        });
+    }
   };
+
   useEffect(() => {
     saveRecentView();
     getProduct();
-    // getTotalBids(); 
-    getBestOffer();
   }, []);
+
+
   return (
     <>
-      {isLoading ? ( // Render loader if isLoading is true
+      {isLoading ? (
         <div className="loader-container">
           <Spinner animation="border" role="status">
           </Spinner>
         </div>
       ) : (
+        <div className="p-i">
+          <div className="p-i-1">
+            <h3 className="p-i-t">{productData.name}</h3>
+            <hr />
+          </div>
+          <div className="p-i-2">
+            <div className="p-i-2-w">
+              <div className="p-i-2-w-l">Condition</div>
+              <div className="p-i-2-w-r">{productData?.condition}</div>
+            </div>
+            <div className="p-i-2-w">
+              <div className="p-i-2-w-l">Brand</div>
+              <div className="p-i-2-w-r">{productData?.brand?.name}</div>
+            </div>
+            <div className="p-i-2-w">
+              <div className="p-i-2-w-l">Model</div>
+              <div className="p-i-2-w-r">{productData?.model}</div>
+            </div>
+            <div className="p-i-2-w">
+              <div className="p-i-2-w-l">Descriptions</div>
+              <div className="p-i-2-w-r">{productData?.description}</div>
+            </div>
+            <div className="p-i-2-w">
+              <div className="p-i-2-w-l">Auction time left</div>
+              <div className="p-i-2-w-r"><CountdownTimer initialTimeMicroseconds={productData?.auction_remainig_time} /></div>
+            </div>
+
+            {ProductAttribute.map((data, index) => {
+              return (
+                <div className="p-i-2-w" key={index}>
+                  <div className="p-i-2-w-l">{data?.name}</div>
+                  <div className="p-i-2-w-r">
+                    <Select
+                      value={data?.selected}
+                      onChange={(e) => { handelAddonsChange(e, data, index) }}
+                      options={ProductAttribute?.[index]?.options}
+                      placeholder={`Select ${data?.name}`}
+                    />
+                  </div>
+                </div>
+
+              )
+            })}
+            <hr />
+          </div>
+          <div className="p-i-4">
+            <div className="p-i-3-w">
+              {loggedInUsers ? (
+                <>
+                  <div className="p-p-w">
+                    <div className="p-p">
+                      <div className="p-p">Starting Bid</div>
+                      <div className="p-p">${productData.bids}</div>
+                    </div>
+                    {productData.bids != productData.max_bid &&
+                      <div className="p-p">
+                        <div className="p-p">Best Offer</div>
+                        <div className="p-p">${productData.max_bid}</div>
+                      </div>
+                    }
+                  </div>
+                  <div className="pay-buttons">
+                    <button onClick={() => { setShowPlacedBids(true) }}>Place a Bid</button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="p-p-w">
+                    <div className="p-p">
+                      <div className="p-p">Starting Bid</div>
+                      <div className="p-p">${productData.bids}</div>
+                    </div>
+                    {productData.bids != productData.max_bid &&
+                      <div className="p-p">
+                        <div className="p-p">Best Offer</div>
+                        <div className="p-p">${productData.max_bid}</div>
+                      </div>
+                    }
+                  </div>
+                  <div className="pay-buttons">
+                    <button onClick={() => { navigate('/signin') }}>Place a Bid</button>
+                  </div>
+                </>
+              )}
+            </div>
+            <hr />
+          </div>
+          <ShippingPolicyData />
+        </div>
+      )}
+      {isLoading ? (
+        <div className="loader-container">
+          <Spinner animation="border" role="status"></Spinner>
+        </div>
+      ) : (
         <>
           {productData ? (
             <>
-              <div className="product-info">
+              {/* <div className="product-info">
                 <h3>{productData.name}</h3>
-                {productData.shipping_price > 0 ? (
-                  <><b>Shipping Price: $ {productData.shipping_price}</b></>
-                ) : (<p>Free Shipping</p>)}
-                <br />
-                {productData.return_shipping_price > 0 ? (<>
-                  <b>Shiping Return: $ {productData.return_shipping_price}</b>
-                </>) : (
-                  <p>Free Shipping Returns</p>
-                )}
                 <hr />
                 <div className="auction-time">
                   <ul>
@@ -280,8 +373,6 @@ const AuctionProductInformation = () => {
                     <li>
                       <span>Auction time left</span>{" "}
                       <em style={{ color: "red" }}>{hour}h {minutes}m | Today {currenttime}</em>
-                      {/* 05:43 AM */}
-                      {/* {moment(productData.auction_listing).format("HH:mm")} */}
                     </li>
                   </ul>
                 </div>
@@ -318,16 +409,13 @@ const AuctionProductInformation = () => {
                           Place a Bid
                         </button>
                       </Link>
-                      <Link onClick={() => addWatchList()}>
-                        <button>Add to Watchlist</button>
-                      </Link>
                     </div>
                   </div>
                 </div>
                 <h3>Description</h3>
                 {productData.description}
                 <ShippingPolicyData />
-              </div>
+              </div> */}
 
               {/* BIDDING POPUP START */}
               <div className="row">
@@ -424,6 +512,34 @@ const AuctionProductInformation = () => {
           )}
         </>
       )}
+      <Modal
+        show={showPlacedbids}
+        onHide={setShowPlacedBids}
+        className='place-a-bid-modal'
+      >
+        <div className='c-c-body'>
+          <div className="title">Place Your Bid</div>
+          <div className="options">
+            <ul>
+              <li onClick={() => { setCustomBidPrice(productData.max_bid + 100) }}>${productData.max_bid + 100}</li>
+              <li onClick={() => { setCustomBidPrice(productData.max_bid + 200) }}>${productData.max_bid + 200}</li>
+              <li onClick={() => { setCustomBidPrice(productData.max_bid + 300) }}>${productData.max_bid + 300}</li>
+            </ul>
+          </div>
+          <form onSubmit={placeAbid}>
+            <div className="input">
+              <input type="number" value={customBidPrice} placeholder="Enter custom bid price" onChange={(e) => { setCustomBidPrice(e.target.value) }} />
+              {productData.max_bid > customBidPrice && inputError &&
+                <div class="error-input">Your bid price must be greater then {productData.max_bid}</div>
+              }
+            </div>
+            <p>By bidding, you are Afree to pay the seller price if you win</p>
+            <div className="button">
+              <button type='submit'>Place A Bid</button>
+            </div>
+          </form>
+        </div>
+      </Modal>
     </>
   );
 };

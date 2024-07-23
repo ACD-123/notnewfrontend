@@ -14,7 +14,7 @@ import { Spinner } from "react-bootstrap";
 import Select from 'react-select';
 import { useNavigate } from "react-router-dom";
 
-const ProductInformation = ({getMoreToLove , setProductId}) => {
+const ProductInformation = ({ getMoreToLove, setProductId }) => {
   const dispatch = useDispatch();
   const [productData, setProductData] = useState([]);
   console.log('productData', productData)
@@ -26,6 +26,7 @@ const ProductInformation = ({getMoreToLove , setProductId}) => {
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
   let loggedInUser = localStorage.getItem("user_details");
+  const [inputError, setInputError] = useState(false);
   const loggedInUsers = JSON.parse(loggedInUser);
   const navigate = useNavigate();
 
@@ -51,7 +52,7 @@ const ProductInformation = ({getMoreToLove , setProductId}) => {
     }
   };
   let decNum = () => {
-    if (quantity > 0) {
+    if (quantity > 1) {
       setQuantity(quantity - 1);
     }
   };
@@ -75,10 +76,10 @@ const ProductInformation = ({getMoreToLove , setProductId}) => {
             value: index + 1,
             label: option
           })),
-          selectToSend: []
+          selectToSend: null
         }));
         SetproductAttribute(categoryAddons);
-        console.log(res?.data , 'getProduct');
+        console.log(res?.data, 'getProduct');
         getMoreToLove(res?.data?.id)
         setProductId(res?.data?.id)
       })
@@ -89,7 +90,6 @@ const ProductInformation = ({getMoreToLove , setProductId}) => {
   const addByNow = (e) => {
     e.preventDefault();
     if (!loggedInUsers) {
-      // User is not logged in, navigate to the sign-in page
       navigate("/signin");
       return;
     }
@@ -101,27 +101,13 @@ const ProductInformation = ({getMoreToLove , setProductId}) => {
     let inputData = {
       product_id: productData.id,
       quantity: 1,
-      // price: productData.price,
-      // quantity: 1,
-      // product_id: productData.id,
-      // attributes: arributes,
-      // shop_id: productData.shop?.id,
     };
-    // console.log(productData.id)
     CheckoutServices.save(inputData)
       .then((response) => {
         console.log(response)
         if (response.success) {
           toast.success('buy now added')
         }
-
-        // if (response.success) {
-        //   CartServices.count().then((response) => {
-        //     dispatch(saveCupon(response));
-        //   });
-        // } else {
-        //   toast.error(response.message);
-        // }
       })
       .catch((e) => {
         toast.error(e.message);
@@ -131,65 +117,60 @@ const ProductInformation = ({getMoreToLove , setProductId}) => {
         setEnabled(false);
       });
   };
+
   const addToCart = (e) => {
     e.preventDefault();
+    setInputError(true)
     if (!loggedInUsers) {
       navigate("/signin");
-      return;
+    } else {
+      for (let i = 0; i < ProductAttribute.length; i++) {
+        if (ProductAttribute[i].selectToSend === null) {
+          return
+        }
+      }
+      setIsLoading(true);
+      setEnabled(true);
+      const formData = new FormData();
+      if (ProductAttribute?.length > 0) {
+        let attributes = [];
+        for (let i = 0; i < ProductAttribute?.length; i++) {
+            attributes.push({ key: ProductAttribute[i].name, value: ProductAttribute[i].selectToSend })
+        }
+        formData.append('attributes', JSON.stringify(attributes));
+      }
+      formData.append('price', productData.price)
+      formData.append('quantity', quantity)
+      formData.append('product_id', productData.id)
+      formData.append('shop_id', productData.shop?.id,)
+      CartServices.save(formData)
+        .then((response) => {
+          if (response.success) {
+            CartServices.count().then((response) => {
+              dispatch(saveCupon(response));
+            });
+            toast.success(response.message);
+          } else {
+            toast.error(response.message);
+          }
+        })
+        .catch((e) => {
+          toast.error(e.message);
+        })
+        .finally(() => {
+          setIsLoading(false);
+          setEnabled(false);
+        });
     }
 
-    setIsLoading(true);
-    setEnabled(true);
-    let arributes = localStorage.getItem("arributes");
-    arributes = JSON.parse(arributes);
-    let inputData = {
-      price: productData.price,
-      quantity: quantity,
-      product_id: productData.id,
-      attributes: arributes,
-      shop_id: productData.shop?.id,
-    };
-    CartServices.save(inputData)
-      .then((response) => {
-        if (response.success) {
-          CartServices.count().then((response) => {
-            dispatch(saveCupon(response));
-          });
-          toast.success(response.message);
-        } else {
-          toast.error(response.message);
-        }
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setEnabled(false);
-      });
   };
-  const handleDropdownItemClick = (componentName) => { };
-  const hanldeWishList = (guid) => {
-    ProductServices.saved(guid, productData)
-      .then((response) => {
-        if (response.status) {
-          toast.success(response.message);
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
+
   const handleQuantity = (e) => {
     if (e.target.value <= productData?.stockcapacity) {
       setQuantity(e.target.value);
     }
+  };
 
-  };
-  const handleEdit = (e) => {
-    e.preventDefault();
-    setShowPopup(true);
-  };
   useEffect(() => {
     saveRecentView();
     getProduct();
@@ -231,12 +212,12 @@ const ProductInformation = ({getMoreToLove , setProductId}) => {
                   <div className="p-i-2-w-l">{data?.name}</div>
                   <div className="p-i-2-w-r">
                     <Select
-                      // defaultValue={selected}
                       value={data?.selected}
                       onChange={(e) => { handelAddonsChange(e, data, index) }}
                       options={ProductAttribute?.[index]?.options}
                       placeholder={`Select ${data?.name}`}
                     />
+                    {data?.selectToSend === null && inputError && <div class="error-input">{data.name} is required</div>}
                   </div>
                 </div>
 
@@ -256,7 +237,8 @@ const ProductInformation = ({getMoreToLove , setProductId}) => {
                       type="text"
                       class="form-control"
                       value={quantity}
-                      onChange={handleQuantity}
+                      readOnly
+                    // onChange={handleQuantity}
                     />
                     <div class="input-group-prepend">
                       <button class="btn" type="button" onClick={incNum}>

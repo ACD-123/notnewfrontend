@@ -1,46 +1,30 @@
 import React, { useState, useEffect } from "react";
 import Payment from "../../assets/Images/Shoppingcart/payment.png";
-import Productimage from "../../assets/Images/Productcard/1.png";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Category from "../../components/Products/Archive/Category";
 import Arrowright from "../../assets/Images/Shoppingcart/arrowright.png";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import CartServices from "../../services/API/CartServices"; //~/services/API/CartServices
 import SaveLaterServices from "../../services/API/SaveLaterServices"; //~/services/API/SaveLaterServices
-import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
 import PriceServices from "../../services/API/PriceServices"; //~/services/API/PriceServices
-import CheckoutServices from "../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
 import { toast } from "react-toastify";
-import {
-  setUserDetails,
-  isLoggedin,
-  getUserDetails,
-} from "../../services/Auth"; // ~/services/Auth
-import {useDispatch, useSelector} from 'react-redux'
-import {saveCupon, deleteCupon} from '../../store/slices/cupon'
+import { useDispatch } from 'react-redux'
 import blank from "../../assets/Images/Productcard/blank.jpg";
-import { BASE_URL } from "../../services/Constant";
 import { Spinner } from "react-bootstrap";
+import ProductServices from "../../services/API/ProductServices";
+import LoadingComponents from "../../components/Shared/LoadingComponents";
 
 const ShoppingCart = () => {
   const dispatch = useDispatch()
   const [showDiscountField, setShowDiscountField] = useState(false);
   const [discountCode, setDiscountCode] = useState("");
   const [cart, setCart] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
-  const [cartitem, setCartItems] = useState(0);
-  const [prices, setPrices] = useState([]);
-  const [availableprices, setAvailablePrices] = useState({});
-  const [savedLater, setSavedLater] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [subTotal, setsubTotal] = useState(0);
-  const [shippingprice, setShippingPrice] = useState(0);
-  const [discountPrices, setDiscountPrices] = useState(0);
-  const [adminprices, setAdminPrices] = useState(0);
-  const [amountaddingprices, setAmountAddingPrices] = useState(0);
-  const [coverpicture, setCoverPicture] = useState("");
-  const [cartids, setCartIds] = useState([]);
+  const [cartFullResponse, setCartFullResponse] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [inputError, setInputError] = useState(false);
+  const [couponeCode, setCouponeCode] = useState('');
+  const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
   const navigate = useNavigate()
   let cart_ids = [];
   const toggleDiscountField = () => {
@@ -48,271 +32,174 @@ const ShoppingCart = () => {
   };
 
   const getCart = () => {
-    setIsLoading(true); // Start loading
-    CartServices.self().then((res) => {
-      setCart(res);
-      setIsLoading(false); // Stop loading when data is fetched
-      var cartPrice = [];
-      var shippingPrice = [];
-      var allPrices = [];
-      if (res.length > 0) {
-        res.map((cat) => {
-          cartPrice.push(cat.price);
-          shippingPrice.push(cat.products.shipping_price);
-        });
-      }
-      let discountPrice = 0;
-      if (prices.length > 0) {
-        prices.map((price) => {
-          if (price.name !== "Discount") {
-            allPrices.push(price.value);
-          } else if (price.name === "Discount") {
-            setDiscountPrices(price.value);
-            discountPrice = price.value
-          }
-        });
-      }
-      let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
-      let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
-      setsubTotal(subttal);
-      setShippingPrice(shippingprice);
-      let adminPric = allPrices.reduce((a, v) => (a = a + v), 0)
-      setAdminPrices(adminPric);
-      var amountAfterDiscount = subttal - discountPrice;
-      var amountbyaddingprices = amountAfterDiscount + adminPric + shippingprice;
-      // var amountbyaddingprices = subttal + shippingprice;
-      setAmountAddingPrices(amountbyaddingprices);
-    });
-  };
-  const handleCheckOut = (e) => {
-    e.preventDefault();
-    // let data = {
-    //   dicount_code: localStorage.getItem("discountCode"),
-    //   items_number: cartitem,
-    //   sub_total: amountaddingprices,
-    //   shipping_total: shippingprice,
-    //   admin_prices: JSON.stringify(availableprices),
-    //   order_total: amountaddingprices,
-    // };
-    // CheckoutServices.save(data).then((response) => {
-    //   if (response.success) {
-      navigate("/checkout")
-    //   }
-    // });
-  };
-  const handleDiscountSubmit = () => {
-    // Logic to handle applying the discount code
-    localStorage.setItem("discountCode", discountCode);
-    // console.log("Discount code applied:", discountCode);
-    // You can implement further logic like API calls or validation here
+    CartServices.self()
+      .then((res) => {
+        console.log(res?.data[0]?.products?.media.length, 'resres');
+        setCart(res?.data);
+        setCartFullResponse(res)
+        setIsLoading(false);
+      }).catch((error) => {
+        setIsLoading(false);
+      })
   };
 
-  const handleRemoveSection = (e, id) => {
+  const handleCheckOut = () => {
+    navigate("/checkout")
+  };
+
+  const handleDiscountSubmit = async (e) => {
     e.preventDefault();
-    let req ={
-      "cart_id": id
+    setInputError(true)
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    if (couponeCode != "") {
+      try {
+        const data = {
+          coupon_code: couponeCode,
+          user_id: loggedInUser?.id,
+          date: `${year}-${month}-${day}`
+        };
+        const res = await ProductServices.addCouponeCode(data);
+        getCart()
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
+      }
     }
-    CartServices.remove(req).then((response) => {
-      if (response.success) {
-        toast.success(response.message);
-        // CartServices.count()
-        // .then((response) => {
-        //   dispatch(saveCupon(response));
-        // })
-        dispatch(deleteCupon);
-        getCart();
-
-      } else {
-        toast.error(response.message);
-      }
-    });
-
-    // const sectionToRemove = document.getElementById("sectionToRemove");
-    // if (sectionToRemove) {
-    //   sectionToRemove.remove();
-    // }
-    // You might want to add further logic, such as updating the cart state, etc.
   };
-  const getForSavedLater = () => {
-    SaveLaterServices.getByUser().then((response) => {
-      response.map((crt) => {
-        cart_ids.push(crt.cart_id);
-      });
-      setCartIds(cart_ids);
-    });
-  };
-  const handleSaveLater = (e, cartId) => {
-    e.preventDefault();
-    let data = {
-      cart_id: cartId,
-    };
-    SaveLaterServices.add(data).then((response) => {
+
+  const handleRemoveSection = (id) => {
+    let req = {
+      cart_id: id
+    }
+    CartServices.remove(req)
+    .then((response) => {
       toast.success(response.message);
-      setSavedLater(true);
-      getForSavedLater();
+      getCart()
+    }).catch((error) => {
+      toast.error(error.response.data.message);
     });
   };
-  const cartCount = () => {
-    CartServices.count().then((response) => {
-      setCartItems(response);
-    });
-  };
-  const getShopData = () => {
-    // console.log(cart)
-  };
-  const getPrices = () => {
-    PriceServices.all().then((response) => {
-      var availablePrices = [];
-      response.map((price) => {
-        availablePrices[price.name] = price.value;
-      });
-      setPrices(response);
-      setAvailablePrices(availablePrices);
-    });
-  };
-  const handlePrices = () => {
-    var cartPrice = [];
-    var shippingPrice = [];
-    var allPrices = [];
-    if (cart.length > 0) {
-      cart.map((cat) => {
-        cartPrice.push(cat.price);
-        shippingPrice.push(cat.products.shipping_price);
-      });
+
+  const addToFavorites = async (productId) => {
+    try {
+      const data = {
+        favourite_against_id: productId,
+        user_id: loggedInUser?.id,
+        type: "1",
+      };
+      const res = await ProductServices.isFavorite(data);
+      getCart()
+    } catch (error) {
+      toast.error("Failed to add product to favorites.");
     }
-    if (prices.length > 0) {
-      prices.map((price) => {
-        if (price.name !== "Discount") {
-          allPrices.push(price.value);
-        } else if (price.name === "Discount") {
-          setDiscountPrices(price.value);
-        }
-      });
-    }
-    let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
-    let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
-    setsubTotal(subttal);
-    setShippingPrice(shippingprice);
-    setAdminPrices(allPrices.reduce((a, v) => (a = a + v), 0));
-    var amountAfterDiscount = subTotal - discountPrices;
-    // var amountbyaddingprices = amountAfterDiscount + adminprices;
-    var amountbyaddingprices = subttal + shippingprice;
-    setAmountAddingPrices(amountbyaddingprices);
   };
+
+  const updateCartQuantity = (quantity, id, data) => {
+    if (quantity > 0 && quantity <= data?.products?.stockcapacity) {
+      CartServices.updateCart({ quantity: quantity }, id)
+        .then((res) => {
+          getCart()
+        }).catch((error) => {
+
+        })
+    }
+  }
+
   useEffect(() => {
     getCart();
-    getShopData();
-    cartCount();
-    getPrices();
-    // handlePrices();
-    getForSavedLater();
   }, []);
   return (
     <>
-      {/* Header */}
       <Header />
-      {/* Header */}
-      <section id="cart-details" style={{ padding: "20px 0px" }}>
+      <section id="cart-details">
         <div className="container">
-          <h2>Shopping Cart</h2>
-          <div className="row">
-            <div className="col-lg-8">
-            {isLoading ? ( // Show loader while fetching cart items
-                <div className="loader-container">
-                  <Spinner animation="border" role="status" />
-                </div>
-              ) : (
+          <h2 className="page-title">Cart</h2>
+          {isLoading ? (
+            <div className="loader-wrap">
+              <LoadingComponents />
+            </div>
+          ) : (
+            <div className="row">
+              <div className="col-lg-8">
                 <>
-              {cart.length > 0 ? (
-                <>
-                  {cart.map((cat, index) => {
-                    console.log('sss',cart);
-                    let attributes = JSON.parse(cat.attributes);
-                    const isSaved = cartids.includes(cat.id);
-                    let coverpic;
-                    if(cat.products.media.length > 0){
-                      coverpic = cat.products.media[0].name;
-                    }
-                    return (
-                      <>
+                  {cart.length > 0 ?
+                    cart.map((data, index) => {
+                      return (
                         <div className="order-details" id="sectionToRemove" key={index}>
-                        <div className='py-3'>
-                          <h3 id="storetitle"> {cat.shop?.fullname}</h3>
-                          </div>
+                          <div><h3 id="storetitle">Seller Shop : {data.shop?.fullname}</h3></div>
                           <div className="row">
-                            <div className="col-lg-9">
+                            <div className="col-lg-12">
                               <div className="product-detail">
                                 <div className="product-image">
-                                  {coverpic ? (
-                                    <>
-                                  <img
-                                  src={coverpic}
-                                  alt={cat.name}
-                                  height="150" 
-                                  width="150"
-                                  />
-                                    </>
-                                  ):(
-                                    <>
-                                      <img
-                                        src={blank}
-                                        alt="blank"
-                                        width="150"
-                                        height="170"
-                                      />
-                                    </>
-                                  )}
-                                  {/* <img src={Productimage} /> */}
+                                  <>
+                                    {data?.products?.media?.length > 0 ? (
+                                      <img src={data.products.media[0].name} />
+                                    ) : (
+                                      <img src={blank} alt="blank" />
+                                    )}
+                                  </>
                                 </div>
                                 <div className="product-order-details">
-                        <h5>{cat.products.name} </h5>
-                        <span>Size : 9.5 , Color: Red</span>
-                        <div className="quantitypadding">
-                          <p>
-                            <b>
-                            <span>QTY: {cat.quantity}</span>
-                            </b>
-                          </p>
-                        </div>
-                        <span className="unter">
-                                    {/* International(have to work) */}
-                                    {cat.products?.location? (
-                                      <>
-                                        <br /> Shipping from
-                                        <br /> {cat.products?.location}
-                                      </>
-                                    ):(
-                                      <></>
-                                    )}
+                                  <div className="name">Name: <span>{data.products.name}</span></div>
+                                  <div className="attribute">Attributes: <span>
+                                    <ul>
+                                      {data?.attributes.map((attribute, index) => {
+                                        return (
+                                          <li key={index}>{attribute.key}: <span>{attribute.value}</span>{data?.attributes.length - 1 !== index ? ',' : ''}</li>
+                                        )
+                                      })}
+                                    </ul>
                                   </span>
-                      </div>
-                              </div>
-                            </div>
-                            <div className="col-lg-3">
-                              <div className="prices-order-details">
-                                <h4>US $ {cat.products?.price}</h4>
-                                <span>
-                                  +US $
-                                  {cat.products?.price +
-                                    cat.products?.shipping_price}
-                                </span>
+                                  </div>
+                                  {/* <div className="quantity">Quantity: <span>{data.quantity}</span></div> */}
+                                  <div className="price">Price: <span>${data.products?.price}</span></div>
+                                  <div className="price">Quantity available: <span>{data.products?.stockcapacity}</span></div>
+                                  <div className="p-i-2-w">
+                                    <div className="p-i-2-w-r">
+                                      <div className="price">
+                                        <div class="input-group">
+                                          <div class="input-group-prepend">
+                                            <button class="btn" type="button" onClick={() => { updateCartQuantity(data.quantity - 1, data.id, data) }}>
+                                              -
+                                            </button>
+                                          </div>
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            value={data.quantity}
+                                            readOnly
+                                          // onChange={handleQuantity}
+                                          />
+                                          <div class="input-group-prepend">
+                                            <button class="btn" type="button" onClick={() => { updateCartQuantity(data.quantity + 1, data.id, data) }}>
+                                              +
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
                           <hr className="dashed" />
                           <div className="buttonright">
-                            {isSaved ? (
+                            {data?.products?.is_favourite ? (
                               <button
                                 className="btn btn-info btn-lg transparent"
                                 type="button"
+                                onClick={(e) => addToFavorites(data?.products?.guid)}
                               >
-                                Saved for later
+                                Saved
                               </button>
                             ) : (
                               <button
                                 className="btn btn-info btn-lg transparent"
                                 type="button"
-                                onClick={(e) => handleSaveLater(e, cat.id)}
+                                onClick={(e) => addToFavorites(data?.products?.guid)}
                               >
                                 Save for later
                               </button>
@@ -320,166 +207,95 @@ const ShoppingCart = () => {
                             <button
                               className="btn btn-info btn-lg danger"
                               type="button"
-                              onClick={(e) => handleRemoveSection(e, cat.id)}
+                              onClick={(e) => handleRemoveSection(data?.products?.id)}
                             >
                               Remove
                             </button>
                           </div>
                         </div>
-                      </>
-                    );
-                  })}
-                </>
-              ) : (
-                <>
-                  <div className="order-details" id="sectionToRemove">
-                    <h3 id="storetitle">Cart Items: </h3>
-                    <div className="row">
-                      <div className="col-lg-9">
-                        <div className="product-detail">
-                          <div className="product-order-details">
-                            <span className="unter">
-                              Your Cart is Empty!
-                              <br />
-                            </span>
+                      );
+                    })
+                    :
+                    <>
+                      <div className="order-details" id="sectionToRemove">
+                        <h3 id="storetitle">Cart Items: </h3>
+                        <div className="row">
+                          <div className="col-lg-9">
+                            <div className="product-detail">
+                              <div className="product-order-details">
+                                <span className="unter">
+                                  Your Cart is Empty!
+                                  <br />
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="col-lg-3">
+                            <div className="prices-order-details">&nbsp;</div>
                           </div>
                         </div>
                       </div>
-                      <div className="col-lg-3">
-                        <div className="prices-order-details">&nbsp;</div>
-                      </div>
-                    </div>
-                  </div>
+                    </>
+                  }
                 </>
-              )}
-              </>
-              )}
-              {cart.length > 0 ? (
-                <>
-                  <div className="order-details" id="border-order-details">
-                    <h5 onClick={toggleDiscountField}>
-                      Applied Discount{" "}
-                      <div id="iconrightaligin">
-                        {" "}
-                        <img src={Arrowright} />
-                      </div>
-                    </h5>
-                    {showDiscountField && (
-                      <div className="discountfields">
-                        <input
-                          type="text"
-                          placeholder="Enter discount code"
-                          value={discountCode}
-                          onChange={(e) => setDiscountCode(e.target.value)}
-                        />
-                        <button onClick={handleDiscountSubmit}>Apply</button>
-                      </div>
-                    )}
-                  </div>
-                </>
-              ) : (
-                ""
-              )}
-            </div>
 
-            <div className="col-lg-4">
-              {cart.length > 0 ? (
-                <>
-                  <div className="order-details" id="totalordervalue">
-                    <h3>Order Total</h3>
-                    <table style={{ width: "100%" }}>
-                      <tr>
-                        <th className="boldthtotal">
-                          Subtotal ( {cartitem} items )
-                        </th>
-                        <td className="boldthtotal">$ {subTotal}</td>
-                      </tr>
-                      <tr>
-                        <th>Shipping</th>
-                        <td>$ {shippingprice}</td>
-                      </tr>
-                      {/* <tr>
-                            <th>Income Tax</th>
-                            <td>$ 4.0</td>
-                          </tr> */}
-
-                      {prices.length > 0 ? (
-                        <>
-                          {prices.map((price, index) => {
-                            return (
-                              <>
-                                <tr>
-                                  <th>{price.name}</th>
-                                  <td>
-                                    ${" "}
-                                    {price.name == "Discount" ? (
-                                      <>- {price.value}</>
-                                    ) : (
-                                      price.value
-                                    )}
-                                  </td>
-                                </tr>
-                              </>
-                            );
-                          })}
-                        </>
-                      ) : (
-                        ""
+                {cart.length > 0 ? (
+                  <>
+                    <div className="order-details" id="border-order-details">
+                      <h5 onClick={toggleDiscountField}>
+                        Applied Discount{" "}
+                        <div id="iconrightaligin">
+                          {" "}
+                          <img src={Arrowright} />
+                        </div>
+                      </h5>
+                      {showDiscountField && (
+                        <div className="discountfields">
+                          <input
+                            type="text"
+                            placeholder="Enter discount code"
+                            value={couponeCode}
+                            onChange={(e) => setCouponeCode(e.target.value)}
+                          />
+                          <button onClick={handleDiscountSubmit}>Apply</button>
+                        </div>
                       )}
-                      <tr>
-                        <th className="totalthtextbold">Order Total</th>
-                        <td className="totalthtextbold">
-                          $ {amountaddingprices}
-                        </td>
-                      </tr>
-                    </table>
-                    <div className="imgtoop">
-                      <img src={Payment} alt="" />
-                      <button
-                        className="btn btn-info btn-lg gradientbtncolor"
-                        type="button"
-                        onClick={handleCheckOut}
-                      >
-                        Proceed to Checkout
-                      </button>
-                      {/* <Link to="/checkout">
+                    </div>
+                  </>
+                ) : (
+                  null
+                )}
+              </div>
 
-                      </Link> */}
-                    </div>
+              <div className="col-lg-4">
+                <div className="order-details" id="totalordervalue">
+                  <h3>Order Total</h3>
+                  <table style={{ width: "100%" }}>
+                    <tr><th className="boldthtotal">Subtotal ( {cartFullResponse?.product_count ? cartFullResponse?.product_count : 0} items )</th>
+                      <td className="boldthtotal">$ {cartFullResponse?.sub_total ? cartFullResponse?.sub_total : 0}</td>
+                    </tr>
+                    <tr>
+                      <th>Shipping</th>
+                      <td>$ {cartFullResponse?.shipping ? cartFullResponse?.shipping : 0}</td>
+                    </tr>
+                    <tr>
+                      <th className="totalthtextbold">Order Total</th>
+                      <td className="totalthtextbold">$ {cartFullResponse?.total ? cartFullResponse?.total : 0}</td>
+                    </tr>
+                  </table>
+                  <div className="imgtoop">
+                    <img src={Payment} alt="" />
+                    <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={handleCheckOut}>
+                      Proceed to Checkout
+                    </button>
                   </div>
-                </>
-              ) : (
-                <>
-                  <div className="order-details" id="totalordervalue">
-                    <h3>Order Total</h3>
-                    <table style={{ width: "100%" }}>
-                      <tr>
-                        <th className="boldthtotal">Subtotal</th>
-                        <td className="boldthtotal">$00.00</td>
-                      </tr>
-                      <tr>
-                        <th className="totalthtextbold">Order Total</th>
-                        <td className="totalthtextbold">$ 00.00</td>
-                      </tr>
-                    </table>
-                    <div className="imgtoop">
-                      <img src={Payment} alt="" />
-                    </div>
-                  </div>
-                </>
-              )}
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      </section>
-
-      {/* Category Include */}
-      <Category />
-      {/* Category Include */}
-
-      {/* Footer */}
+      </section >
       <Footer />
-      {/* Footer */}
     </>
   );
 };

@@ -77,7 +77,7 @@ const PublicRoutes = () => {
 					<Route path="/forget-password" element={<PasswordRecovery />} />
 					<Route path="/forgotverification/:email" element={<ForgotVerification />} />
 					<Route path="/resetpassword/:email" element={<ResetPassword />} />
-					<Route path="/shoppingcart" element={<ShoppingCart />} />
+					<Route path="/cart" element={<ShoppingCart />} />
 					<Route path="/categorykeyword/:guid" element={<CategoryKeyword />} />
 					<Route path="/checkout" element={<Checkout />} />
 					<Route path="/checkout-buynow/:guid" element={<CheckoutBuyNow />} />

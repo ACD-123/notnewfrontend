@@ -153,7 +153,7 @@ const Stripe = (props) => {
               <Link to="#">
                 <button className="genrate-invoice">Generate invoice</button>
               </Link>
-              <Link to="/shoppingcart">
+              <Link to="/cart">
                 <button className="order-detail-btun">Order Details</button>
               </Link>
               <Link to="/">

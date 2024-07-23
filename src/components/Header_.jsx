@@ -80,7 +80,7 @@ const Header_ = () => {
                   <div className="cart-user">
                     <div className="cart">
                       {cart_items}
-                      <Link to="/shoppingcart">
+                      <Link to="/cart">
                         <img src={Cart} />
                       </Link>
                     </div>
@@ -206,7 +206,7 @@ const Header_ = () => {
               <div className="col-md-4 col-sm-4 col">
                 <div className="cart-user">
                   <div className="cart">
-                    <Link to="/shoppingcart">
+                    <Link to="/cart">
                       <img src={Cart} />
                     </Link>
                   </div>

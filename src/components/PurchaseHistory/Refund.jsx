@@ -105,7 +105,7 @@ const Refunds = () => {
             <button className="refund" onClick={() => refundOrder(order)}>
               Want Refund
             </button>
-            <Link to="/shoppingcart">
+            <Link to="/cart">
               <button>Re order</button>
             </Link>
           </div>

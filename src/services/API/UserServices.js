@@ -232,6 +232,15 @@ function addCoupons(data){
     method: "POST"
   })
 }
+
+function placeABid(data){
+  return request({
+    url: `${baseUrlChat}bidding/save`,
+    data,
+    method: "POST"
+  })
+}
+
 function updateCoupon(data){
   return request({
     url: `${BASE_API}coupons/update`,
@@ -296,7 +305,8 @@ const UserService = {
   getCouponsById,
   updateCoupon,
   getSellerActiveDetails,
-  acceptSellerActiveBid
+  acceptSellerActiveBid,
+  placeABid
   // depositfund,
 }
 

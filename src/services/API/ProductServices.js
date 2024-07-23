@@ -41,9 +41,18 @@ function addSearchProduct(data) {
     method: 'POST',
   })
 }
+
 function isFavorite(data) {
   return request({
     url: `${baseApi}favourites/save`,
+    data,
+    method: 'POST',
+  })
+}
+
+function addCouponeCode(data) {
+  return request({
+    url: `${baseApi}cart/applyCoupon`,
     data,
     method: 'POST',
   })
@@ -441,7 +450,8 @@ const ProductServices = {
   getProductManagmentOderCount,
   deleteSellerProduct,
   addSearchProduct,
-  getMoreToLove
+  getMoreToLove,
+  addCouponeCode
 }
 
 export default ProductServices

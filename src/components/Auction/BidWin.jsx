@@ -63,7 +63,7 @@ const BidWin = () => {
             </div>
             <div className="col-lg-2">
               <div className="increase-bid-button">
-              <Link to="/shoppingcart">
+              <Link to="/cart">
                 <button>
                 Go Back To Shopping
                 </button>

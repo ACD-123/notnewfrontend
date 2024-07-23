@@ -68,7 +68,7 @@ const AllProducts = () => {
   const [selectedCategories, setSelectedCategories] = useState(null);
   const [showDropdown, setShowDropdown] = useState({ price: false, brand: false });
   const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
-  const pageSize = 10;
+  const pageSize = 12;
   const [maxprice, setMaxPrice] = useState(0);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 0 });
   const [selectedRange, setSelectedRange] = useState([0, 0]);
@@ -514,7 +514,7 @@ const AllProducts = () => {
                               <path d="M0.39853 3V0.202939H2.61842V3H0.39853ZM5.38461 3V0.202939H7.6045V3H5.38461ZM10.3707 3V0.202939H12.5906V3H10.3707ZM15.3568 3V0.202939H17.5767V3H15.3568ZM20.3429 3V0.202939H22.5627V3H20.3429ZM25.3289 3V0.202939H27.5488V3H25.3289ZM30.315 3V0.202939H32.5349V3H30.315Z" fill="#A7A7A7" />
                             </svg>
                           </li>
-                          <li className={`${(+products?.pagination?.page) === products?.pagination?.total_pages - 2 ? 'active' : ''}`}
+                          {/* <li className={`${(+products?.pagination?.page) === products?.pagination?.total_pages - 2 ? 'active' : ''}`}
                             onClick={() => {
                               getFilterProducts(
                                 loggedInUser?.id,
@@ -541,7 +541,7 @@ const AllProducts = () => {
                                 pageSize,
                                 products?.pagination?.total_pages - 1)
                             }}
-                          >{products?.pagination?.total_pages - 1}</li>
+                          >{products?.pagination?.total_pages - 1}</li> */}
                           <li className={`${(+products?.pagination?.page) === products?.pagination?.total_pages ? 'active' : ''}`}
                             onClick={() => {
                               getFilterProducts(

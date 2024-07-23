@@ -4,7 +4,7 @@ import { BASE_API } from '../Constant'
 const baseUrl = `${BASE_API}cart`
 function self(params = {}) {
   return request({
-    url: `${baseUrl}/`,
+    url: `${baseUrl}/self`,
     params,
   })
 }
@@ -19,7 +19,15 @@ function save(data) {
 
 function remove(data) {
   return request({
-    url: `${baseUrl}/destroy/`,
+    url: `${baseUrl}/destroy`,
+    data,
+    method: 'POST',
+  })
+}
+
+function updateCart(data , id) {
+  return request({
+    url: `${baseUrl}/update/${id}`,
     data,
     method: 'POST',
   })
@@ -35,7 +43,8 @@ const CartServices = {
   self,
   save,
   remove,
-  count
+  count,
+  updateCart
 }
 
 export default CartServices

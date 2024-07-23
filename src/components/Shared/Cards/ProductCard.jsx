@@ -30,7 +30,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
         <>
             {data?.product?.id != '' && data?.product?.id != null && data?.product?.id != undefined ?
                 <div className="productlist">
-                    {isLoggedin ? (
+                    {/* {isLoggedin ? ( */}
                         <>
                             <Link
                                 to={data?.product?.auctioned ? `/auctionproduct/${data?.product?.guid}` : `/singleproduct/${data?.product?.guid}`}>
@@ -42,7 +42,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                 />
                             </Link>
                         </>
-                    ) : (
+                    {/* ) : (
                         <>
                             <Link to="/signin">
                                 <img
@@ -51,10 +51,10 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                 />
                             </Link>
                         </>
-                    )}
+                    )} */}
                     {data?.product?.auctioned ? (<span className="auction-badge">Auction</span>) : null}
                     <div className="px-2">
-                        {isLoggedin ? (
+                        {/* {isLoggedin ? ( */}
                             <>
                                 <Link
                                     to={
@@ -82,7 +82,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
 
                                 </Link>
                             </>
-                        ) : (
+                        {/* ) : (
                             <>
                                 <Link to="/signin">
                                     <h3>{data?.product?.name}</h3>
@@ -104,7 +104,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
 
                                 </Link>
                             </>
-                        )}
+                        )} */}
                         {isLoggedin ? (
                             <>
                                 {!data?.product?.auctioned && (
@@ -127,7 +127,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                 </div>
                 :
                 <div className="productlist">
-                    {isLoggedin ? (
+                    {/* {isLoggedin ? ( */}
                         <>
                             <Link
                                 to={data?.auctioned ? `/auctionproduct/${data?.guid}` : `/singleproduct/${data?.guid}`}>
@@ -139,7 +139,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                 />
                             </Link>
                         </>
-                    ) : (
+                    {/* ) : (
                         <>
                             <Link to="/signin">
                                 <img
@@ -148,10 +148,10 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                 />
                             </Link>
                         </>
-                    )}
+                    )} */}
                     {data?.auctioned ? (<span className="auction-badge">Auction</span>) : null}
                     <div className="px-2">
-                        {isLoggedin ? (
+                        {/* {isLoggedin ? ( */}
                             <>
                                 <Link
                                     to={
@@ -182,7 +182,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                     }
                                 </Link>
                             </>
-                        ) : (
+                        {/* ) : (
                             <>
                                 <Link to="/signin">
                                     <h3>{data?.name}</h3>
@@ -208,7 +208,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
 
                                 </Link>
                             </>
-                        )}
+                        )} */}
                         {isLoggedin ? (
                             <>
                                 {/* {!data?.auctioned && ( */}
