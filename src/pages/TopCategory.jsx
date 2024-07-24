@@ -6,7 +6,7 @@ import CategoriesListing from "../components/Elements/CategoriesListing"
 import HomeService from '../services/API/HomeService';
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 
-const TopCategory = () => {
+const TopCategory = ({cartFullResponse}) => {
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +29,7 @@ const TopCategory = () => {
   }, [])
   return (
     <>
-      <Header />
+      <Header cartFullResponse={cartFullResponse}/>
       <div className="top-category">
         <div className="top-category-wrap">
           <div className="container">

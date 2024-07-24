@@ -7,7 +7,7 @@ import ProductSkeletonLoader from '../components/Shared/ProductSkeletonLoader';
 import ProductCard from '../components/Shared/Cards/ProductCard';
 import NoDataFound from '../components/Shared/NoDataFound';
 
-export const MoreToLove = () => {
+export const MoreToLove = ({cartFullResponse}) => {
     const [moreToLove , setMoreToLove] = useState([])
     const [Loader, setLoader] = useState(true)
     const user_details = JSON.parse(localStorage.getItem('user_details'));
@@ -37,7 +37,7 @@ export const MoreToLove = () => {
       };
     return (
         <>
-            <Header />
+            <Header cartFullResponse={cartFullResponse}/>
             <div className="top-sellers">
                 <div className="top-sellers-wrap" id='productcard'>
                     <div className="container">

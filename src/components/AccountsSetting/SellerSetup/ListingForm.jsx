@@ -28,14 +28,21 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
   });
   const productCondition = [
     { id: "BrandNew", name: "BrandNew" },
-    { id: "Used", name: "Used" },
-    { id: "Refurbished", name: "Refurbished" },
-    { id: "Vintage", name: "Vintage" },
+    { id: "Used", name: "Used" }
+  ];
+
+  const productUserCondition = [
+    { value: 1, label: "Brand Used" },
+    { value: 2, label: "Good" },
+    { value: 3, label: "Fair" },
+    { value: 4, label: "Acceptable" }
   ];
 
   const [productManagment, setProductManagments] = useState({
     file: [],
     condition: "",
+    used_condition: null,
+    underage: 0,
     attributes: [],
     old_files: [],
     termsdescription: "",
@@ -68,11 +75,11 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     city: "",
     zip: "",
     old_files: [],
-    shippingprice: "",
-    shipingdurations: "",
-    returnshippingprice: "",
-    returndurationlimit: "",
-    returnshippingpaidby: "",
+    shippingprice: 0,
+    shipingdurations: 0,
+    returnshippingprice: 0,
+    returndurationlimit: 0,
+    returnshippingpaidby: 0,
     returnshippinglocation: "asds",
     returncountry: "asdasd",
     returnstate: "returnstate",
@@ -131,7 +138,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       });
   };
 
-  const [selected, setSelected] = []
   const handelCategoryChange = (data, apiAttributes) => {
     setProductManagments(prev => ({ ...prev, category: data }));
     Category.productAttributes(data.value)
@@ -188,10 +194,15 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
   }
 
+  const handelUsedConsitionChange = (data) => {
+    setProductManagments(prev => ({ ...prev, used_condition: data }));
+  }
+
   useEffect(() => {
     setProductManagments(prev => ({ ...prev }));
   },
     [productManagment.attributes])
+
   const handelAddonsChange = (e, data, index) => {
     const updatedArray = [...productManagment.attributes];
     const labelsArray = e.map(option => option.label);
@@ -258,11 +269,12 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       productManagment.category === null || productManagment.stockCapacity === "" || productManagment.brand_id === null ||
       productManagment.model === "" || productManagment.description === "" || productManagment.address === "" ||
       productManagment.latitude === "" || productManagment.longitude === "" || productManagment.country === "" ||
-      productManagment.state === "" || productManagment.city === "" || productManagment.zip === "" ||
-      productManagment.shippingprice === "" || productManagment.shippingprice === 0 || productManagment.shipingdurations === "" ||
-      productManagment.shipingdurations === 0 || productManagment.returnshippingprice === "" || productManagment.returnshippingprice === 0 ||
-      productManagment.returndurationlimit === "" || productManagment.returndurationlimit === 0 || productManagment.returnshippingpaidby === "" ||
-      productManagment.returnshippingpaidby === 0) {
+      productManagment.state === "" || productManagment.city === "" || productManagment.zip === ""
+      // productManagment.shippingprice === "" || productManagment.shippingprice === 0 || productManagment.shipingdurations === "" ||
+      // productManagment.shipingdurations === 0 || productManagment.returnshippingprice === "" || productManagment.returnshippingprice === 0 ||
+      // productManagment.returndurationlimit === "" || productManagment.returndurationlimit === 0 || productManagment.returnshippingpaidby === "" ||
+      // productManagment.returnshippingpaidby === 0
+    ) {
       setIsFromLoading(false)
       return false;
     }
@@ -289,6 +301,13 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       }
     }
 
+    if (productManagment.condition === "Used") {
+      if (productManagment.used_condition === null) {
+        setIsFromLoading(false)
+        return false;
+      }
+    }
+
     const formData = new FormData();
     console.log(productManagment.file, 'productManagment.file');
     productManagment.file.forEach((image_file) => {
@@ -298,7 +317,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       }
     });
 
+    formData.append("underage", productManagment.underage);
     formData.append("condition", productManagment.condition);
+    formData.append("used_condition", productManagment.used_condition.label);
     if (productManagment?.attributes?.length > 0) {
       let attributes = [];
       for (let i = 0; i < productManagment?.attributes?.length; i++) {
@@ -398,6 +419,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           ...prev,
           file: [...response?.data?.media],
           condition: response?.data?.condition,
+          used_condition: response?.data?.used_condition,
+          underage: response?.data?.underage,
           termsdescription: response?.data?.termsdescription,
           title: response?.data?.name,
           category: { value: response?.data?.category?.id, label: response?.data?.category?.name },
@@ -623,6 +646,21 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                   </div>
                 </div>
                 <div className="two-field">
+                  {productManagment?.condition === "Used" &&
+                    <div className="two-field-left">
+                      <label>Used Condition</label>
+                      <Select
+                        defaultValue={productUserCondition?.find(option => option?.value === productManagment?.used_condition?.value)}
+                        value={productUserCondition?.find(option => option?.value === productManagment?.used_condition?.value)}
+                        onChange={handelUsedConsitionChange}
+                        options={productUserCondition}
+                        placeholder={'Select used condition'}
+                      />
+                      {productManagment.condition === "Used" && productManagment.used_condition === null && inputError &&
+                        <div className="error-input">User condition is required</div>
+                      }
+                    </div>
+                  }
                   <div className="two-field-left">
                     <label>Item model</label>
                     <input type="text" name="model" value={productManagment?.model} onChange={handleChange} placeholder="Enter item model" />
@@ -630,8 +668,10 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                       <div className="error-input">Item model is required</div>
                     }
                   </div>
-                  <div className="two-field-left">
-                  </div>
+                  {productManagment?.condition != "Used" &&
+                    <div className="two-field-left">
+                    </div>
+                  }
                 </div>
                 <div className="two-field">
                   <div className="two-field-left">
@@ -640,6 +680,21 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                     {productManagment.description === "" && inputError &&
                       <div className="error-input">Description is required</div>
                     }
+                  </div>
+                </div>
+                <div className="two-field">
+                  <div className="two-field-left">
+                    <label>Underage</label>
+                    <div className="p-m-p-c">
+                      <ul>
+                        <li onClick={() => { setProductManagments((prev) => ({ ...prev, underage: productManagment?.underage === 0 ? 1 : 0 })) }}>
+                          <div className={`check ${productManagment?.underage === 1 ? 'active' : ''}`}>
+                            <div className="check-wrap"></div>
+                          </div>
+                          <p className={`${productManagment?.underage === 1 ? 'active' : ''}`}>Underage</p>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -884,7 +939,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                     }
                   </div>
                 </div>
-                <div className="two-field">
+                {/* <div className="two-field">
                   <div className="two-field-left">
                     <label>Shipping price</label>
                     <input type="number" name="shippingprice" value={productManagment?.shippingprice} onChange={handleChange} placeholder="Enter shipping price" />
@@ -925,7 +980,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                   </div>
                   <div className="two-field-left">
                   </div>
-                </div>
+                </div> */}
               </div>
               <div className="p-m-s-b">
                 <button

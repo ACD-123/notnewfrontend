@@ -10,7 +10,7 @@ import GetSurprisedBanner from "../components/Elements/GetSurprisedBanner"
 import FeaturedProducts from "../components/Products/Archive/FeaturedProducts"
 import underConstruction from "../assets/Images/under-construction.png"
 
-const NotFound = () => {
+const NotFound = ({cartFullResponse}) => {
 	// window.onunload = function (e) {
 	// 	const newTabCount = localStorage.getItem('tabsOpen')
 	// 	if (newTabCount !== null) {
@@ -20,7 +20,7 @@ const NotFound = () => {
 	return (
 		<>
 			{/* Header Include */}
-			<Header />
+			<Header cartFullResponse={cartFullResponse}/>
 			{/* Header Include */}
 			<div>
 				<center>

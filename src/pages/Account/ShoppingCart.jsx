@@ -14,11 +14,10 @@ import blank from "../../assets/Images/Productcard/blank.jpg";
 import { Spinner } from "react-bootstrap";
 import ProductServices from "../../services/API/ProductServices";
 import LoadingComponents from "../../components/Shared/LoadingComponents";
+import NoDataFound from "../../components/Shared/NoDataFound";
 
-const ShoppingCart = () => {
-  const dispatch = useDispatch()
+const ShoppingCart = ({ getCartCount, cartFullResponses }) => {
   const [showDiscountField, setShowDiscountField] = useState(false);
-  const [discountCode, setDiscountCode] = useState("");
   const [cart, setCart] = useState([]);
   const [cartFullResponse, setCartFullResponse] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,6 +26,7 @@ const ShoppingCart = () => {
   const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
   const navigate = useNavigate()
   let cart_ids = [];
+
   const toggleDiscountField = () => {
     setShowDiscountField(!showDiscountField);
   };
@@ -63,6 +63,7 @@ const ShoppingCart = () => {
         };
         const res = await ProductServices.addCouponeCode(data);
         getCart()
+        getCartCount()
       } catch (error) {
         toast.error(error?.response?.data?.message);
       }
@@ -74,12 +75,24 @@ const ShoppingCart = () => {
       cart_id: id
     }
     CartServices.remove(req)
-    .then((response) => {
-      toast.success(response.message);
-      getCart()
-    }).catch((error) => {
-      toast.error(error.response.data.message);
-    });
+      .then((response) => {
+        toast.success(response.message);
+        getCart()
+        getCartCount()
+      }).catch((error) => {
+        toast.error(error.response.data.message);
+      });
+  };
+
+  const clearAllCart = () => {
+    CartServices.clearAllCart()
+      .then((response) => {
+        toast.success(response.message);
+        getCart()
+        getCartCount()
+      }).catch((error) => {
+        toast.error(error.response.data.message);
+      });
   };
 
   const addToFavorites = async (productId) => {
@@ -91,6 +104,7 @@ const ShoppingCart = () => {
       };
       const res = await ProductServices.isFavorite(data);
       getCart()
+      getCartCount()
     } catch (error) {
       toast.error("Failed to add product to favorites.");
     }
@@ -101,6 +115,7 @@ const ShoppingCart = () => {
       CartServices.updateCart({ quantity: quantity }, id)
         .then((res) => {
           getCart()
+          getCartCount()
         }).catch((error) => {
 
         })
@@ -112,7 +127,7 @@ const ShoppingCart = () => {
   }, []);
   return (
     <>
-      <Header />
+      <Header cartFullResponse={cartFullResponses} />
       <section id="cart-details">
         <div className="container">
           <h2 className="page-title">Cart</h2>
@@ -121,62 +136,59 @@ const ShoppingCart = () => {
               <LoadingComponents />
             </div>
           ) : (
-            <div className="row">
-              <div className="col-lg-8">
-                <>
-                  {cart.length > 0 ?
-                    cart.map((data, index) => {
-                      return (
-                        <div className="order-details" id="sectionToRemove" key={index}>
-                          <div><h3 id="storetitle">Seller Shop : {data.shop?.fullname}</h3></div>
-                          <div className="row">
-                            <div className="col-lg-12">
-                              <div className="product-detail">
-                                <div className="product-image">
-                                  <>
-                                    {data?.products?.media?.length > 0 ? (
-                                      <img src={data.products.media[0].name} />
-                                    ) : (
-                                      <img src={blank} alt="blank" />
-                                    )}
-                                  </>
+            cart.length > 0 ?
+              <div className="row">
+                <div className="col-lg-8">
+                  {cart.map((data, index) => {
+                    return (
+                      <div className="order-details" id="sectionToRemove" key={index}>
+                        <div><h3 id="storetitle">Seller Shop : {data.shop?.fullname}</h3></div>
+                        <div className="row">
+                          <div className="col-lg-12">
+                            <div className="product-detail">
+                              <div className="product-image">
+                                <>
+                                  {data?.products?.media?.length > 0 ? (
+                                    <img src={data.products.media[0].name} />
+                                  ) : (
+                                    <img src={blank} alt="blank" />
+                                  )}
+                                </>
+                              </div>
+                              <div className="product-order-details">
+                                <div className="name">Name: <span>{data.products.name}</span></div>
+                                <div className="attribute">Attributes: <span>
+                                  <ul>
+                                    {data?.attributes.map((attribute, index) => {
+                                      return (
+                                        <li key={index}>{attribute.key}: <span>{attribute.value}</span>{data?.attributes.length - 1 !== index ? ',' : ''}</li>
+                                      )
+                                    })}
+                                  </ul>
+                                </span>
                                 </div>
-                                <div className="product-order-details">
-                                  <div className="name">Name: <span>{data.products.name}</span></div>
-                                  <div className="attribute">Attributes: <span>
-                                    <ul>
-                                      {data?.attributes.map((attribute, index) => {
-                                        return (
-                                          <li key={index}>{attribute.key}: <span>{attribute.value}</span>{data?.attributes.length - 1 !== index ? ',' : ''}</li>
-                                        )
-                                      })}
-                                    </ul>
-                                  </span>
-                                  </div>
-                                  {/* <div className="quantity">Quantity: <span>{data.quantity}</span></div> */}
-                                  <div className="price">Price: <span>${data.products?.price}</span></div>
-                                  <div className="price">Quantity available: <span>{data.products?.stockcapacity}</span></div>
-                                  <div className="p-i-2-w">
-                                    <div className="p-i-2-w-r">
-                                      <div className="price">
-                                        <div class="input-group">
-                                          <div class="input-group-prepend">
-                                            <button class="btn" type="button" onClick={() => { updateCartQuantity(data.quantity - 1, data.id, data) }}>
-                                              -
-                                            </button>
-                                          </div>
-                                          <input
-                                            type="text"
-                                            class="form-control"
-                                            value={data.quantity}
-                                            readOnly
-                                          // onChange={handleQuantity}
-                                          />
-                                          <div class="input-group-prepend">
-                                            <button class="btn" type="button" onClick={() => { updateCartQuantity(data.quantity + 1, data.id, data) }}>
-                                              +
-                                            </button>
-                                          </div>
+                                <div className="price">Price: <span>${data.products?.price}</span></div>
+                                <div className="price">Quantity available: <span>{data.products?.stockcapacity}</span></div>
+                                <div className="p-i-2-w">
+                                  <div className="p-i-2-w-r">
+                                    <div className="price">
+                                      <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <button class="btn" type="button" onClick={() => { updateCartQuantity(data.quantity - 1, data.id, data) }}>
+                                            -
+                                          </button>
+                                        </div>
+                                        <input
+                                          type="text"
+                                          class="form-control"
+                                          value={data.quantity}
+                                          readOnly
+                                        // onChange={handleQuantity}
+                                        />
+                                        <div class="input-group-prepend">
+                                          <button class="btn" type="button" onClick={() => { updateCartQuantity(data.quantity + 1, data.id, data) }}>
+                                            +
+                                          </button>
                                         </div>
                                       </div>
                                     </div>
@@ -185,113 +197,87 @@ const ShoppingCart = () => {
                               </div>
                             </div>
                           </div>
-                          <hr className="dashed" />
-                          <div className="buttonright">
-                            {data?.products?.is_favourite ? (
-                              <button
-                                className="btn btn-info btn-lg transparent"
-                                type="button"
-                                onClick={(e) => addToFavorites(data?.products?.guid)}
-                              >
-                                Saved
-                              </button>
-                            ) : (
-                              <button
-                                className="btn btn-info btn-lg transparent"
-                                type="button"
-                                onClick={(e) => addToFavorites(data?.products?.guid)}
-                              >
-                                Save for later
-                              </button>
-                            )}
-                            <button
-                              className="btn btn-info btn-lg danger"
-                              type="button"
-                              onClick={(e) => handleRemoveSection(data?.products?.id)}
-                            >
-                              Remove
-                            </button>
-                          </div>
                         </div>
-                      );
-                    })
-                    :
-                    <>
-                      <div className="order-details" id="sectionToRemove">
-                        <h3 id="storetitle">Cart Items: </h3>
-                        <div className="row">
-                          <div className="col-lg-9">
-                            <div className="product-detail">
-                              <div className="product-order-details">
-                                <span className="unter">
-                                  Your Cart is Empty!
-                                  <br />
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="col-lg-3">
-                            <div className="prices-order-details">&nbsp;</div>
-                          </div>
+                        <hr className="dashed" />
+                        <div className="buttonright">
+                          {data?.products?.is_favourite ? (
+                            <button
+                              className="btn btn-info btn-lg transparent"
+                              type="button"
+                              onClick={(e) => addToFavorites(data?.products?.guid)}
+                            >
+                              Saved
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-info btn-lg transparent"
+                              type="button"
+                              onClick={(e) => addToFavorites(data?.products?.guid)}
+                            >
+                              Save for later
+                            </button>
+                          )}
+                          <button
+                            className="btn btn-info btn-lg danger"
+                            type="button"
+                            onClick={(e) => handleRemoveSection(data?.id)}
+                          >
+                            Remove
+                          </button>
                         </div>
                       </div>
-                    </>
-                  }
-                </>
-
-                {cart.length > 0 ? (
-                  <>
-                    <div className="order-details" id="border-order-details">
-                      <h5 onClick={toggleDiscountField}>
-                        Applied Discount{" "}
-                        <div id="iconrightaligin">
-                          {" "}
-                          <img src={Arrowright} />
-                        </div>
-                      </h5>
-                      {showDiscountField && (
-                        <div className="discountfields">
-                          <input
-                            type="text"
-                            placeholder="Enter discount code"
-                            value={couponeCode}
-                            onChange={(e) => setCouponeCode(e.target.value)}
-                          />
-                          <button onClick={handleDiscountSubmit}>Apply</button>
-                        </div>
-                      )}
+                    );
+                  })}
+                  <div><button onClick={() => { clearAllCart() }}>clear Cart</button></div>
+                  <div className="order-details" id="border-order-details">
+                    <h5 onClick={toggleDiscountField}>
+                      Applied Discount{" "}
+                      <div id="iconrightaligin">
+                        {" "}
+                        <img src={Arrowright} />
+                      </div>
+                    </h5>
+                    {showDiscountField && (
+                      <div className="discountfields">
+                        <input
+                          type="text"
+                          placeholder="Enter discount code"
+                          value={couponeCode}
+                          onChange={(e) => setCouponeCode(e.target.value)}
+                        />
+                        <button onClick={handleDiscountSubmit}>Apply</button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="col-lg-4">
+                  <div className="order-details" id="totalordervalue">
+                    <h3>Order Total</h3>
+                    <table style={{ width: "100%" }}>
+                      <tr>
+                        <th className="boldthtotal">Subtotal ( {cartFullResponse?.product_count ? cartFullResponse?.product_count : 0} items )</th>
+                        <td className="boldthtotal">$ {cartFullResponse?.sub_total ? cartFullResponse?.sub_total : 0}</td>
+                      </tr>
+                      <tr>
+                        <th className="boldthtotal">Shipping</th>
+                        <td className="boldthtotal">$ {cartFullResponse?.shipping ? cartFullResponse?.shipping : 0}</td>
+                      </tr>
+                      <tr>
+                        <th className="totalthtextbold">Order Total</th>
+                        <td className="totalthtextbold">$ {cartFullResponse?.total ? cartFullResponse?.total : 0}</td>
+                      </tr>
+                    </table>
+                    <div className="imgtoop">
+                      <img src={Payment} alt="" />
+                      <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={handleCheckOut}>
+                        Proceed to Checkout
+                      </button>
                     </div>
-                  </>
-                ) : (
-                  null
-                )}
-              </div>
-
-              <div className="col-lg-4">
-                <div className="order-details" id="totalordervalue">
-                  <h3>Order Total</h3>
-                  <table style={{ width: "100%" }}>
-                    <tr><th className="boldthtotal">Subtotal ( {cartFullResponse?.product_count ? cartFullResponse?.product_count : 0} items )</th>
-                      <td className="boldthtotal">$ {cartFullResponse?.sub_total ? cartFullResponse?.sub_total : 0}</td>
-                    </tr>
-                    <tr>
-                      <th>Shipping</th>
-                      <td>$ {cartFullResponse?.shipping ? cartFullResponse?.shipping : 0}</td>
-                    </tr>
-                    <tr>
-                      <th className="totalthtextbold">Order Total</th>
-                      <td className="totalthtextbold">$ {cartFullResponse?.total ? cartFullResponse?.total : 0}</td>
-                    </tr>
-                  </table>
-                  <div className="imgtoop">
-                    <img src={Payment} alt="" />
-                    <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={handleCheckOut}>
-                      Proceed to Checkout
-                    </button>
                   </div>
                 </div>
               </div>
-            </div>
+              :
+              <NoDataFound title={'Cart is empty'} />
           )}
         </div>
       </section >

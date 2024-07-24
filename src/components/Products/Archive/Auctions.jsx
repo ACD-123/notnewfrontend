@@ -7,7 +7,7 @@ import ProductCard from '../../../components/Shared/Cards/ProductCard';
 import GetSurprisedBanner from '../../../components/Elements/GetSurprisedBanner';
 import NoDataFound from '../../Shared/NoDataFound';
 
-const Auctions = () => {
+const Auctions = ({cartFullResponse}) => {
     const [auctionProducts, setAuctionProducts] = useState([]);
     const [Loader, setLoader] = useState(true)
     const user_details = JSON.parse(localStorage.getItem('user_details'));
@@ -35,7 +35,7 @@ const Auctions = () => {
     };
     return (
         <>
-            <Header />
+            <Header cartFullResponse={cartFullResponse}/>
             <div className="top-sellers">
                 <div className="top-sellers-wrap" id='productcard'>
                     <div className="container">

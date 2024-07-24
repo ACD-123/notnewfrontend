@@ -8,7 +8,7 @@ import ProductCard from '../components/Shared/Cards/ProductCard';
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 import NoDataFound from '../components/Shared/NoDataFound';
 
-const HotDeals = () => {
+const HotDeals = ({cartFullResponse}) => {
     const [hotProducts, setHotProducts] = useState([]);
     const [Loader, setLoader] = useState(true)
     const getTopSellers = () => {
@@ -36,7 +36,7 @@ const HotDeals = () => {
     };
     return (
         <>
-            <Header />
+            <Header cartFullResponse={cartFullResponse}/>
             <div className="top-sellers">
                 <div className="top-sellers-wrap" id='productcard'>
                     <div className="container">

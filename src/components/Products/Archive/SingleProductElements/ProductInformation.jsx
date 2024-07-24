@@ -14,7 +14,7 @@ import { Spinner } from "react-bootstrap";
 import Select from 'react-select';
 import { useNavigate } from "react-router-dom";
 
-const ProductInformation = ({ getMoreToLove, setProductId }) => {
+const ProductInformation = ({ getCartCount, getMoreToLove, setProductId }) => {
   const dispatch = useDispatch();
   const [productData, setProductData] = useState([]);
   console.log('productData', productData)
@@ -35,14 +35,12 @@ const ProductInformation = ({ getMoreToLove, setProductId }) => {
 
   const handelAddonsChange = (e, data, index) => {
     const updatedArray = [...ProductAttribute];
-
     updatedArray[index] = {
       name: data.name,
       selected: e,
       options: data?.options,
       selectToSend: e.label
     };
-
     SetproductAttribute(updatedArray);
   }
 
@@ -51,6 +49,7 @@ const ProductInformation = ({ getMoreToLove, setProductId }) => {
       setQuantity(Number(quantity) + 1);
     }
   };
+
   let decNum = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
@@ -89,33 +88,44 @@ const ProductInformation = ({ getMoreToLove, setProductId }) => {
   };
   const addByNow = (e) => {
     e.preventDefault();
+    setInputError(true)
     if (!loggedInUsers) {
       navigate("/signin");
       return;
-    }
-    setIsLoading(true);
-    setEnabled(true);
-    navigate("/checkout-buynow/" + productData.guid);
-    let arributes = localStorage.getItem("arributes");
-    arributes = JSON.parse(arributes);
-    let inputData = {
-      product_id: productData.id,
-      quantity: 1,
-    };
-    CheckoutServices.save(inputData)
-      .then((response) => {
-        console.log(response)
-        if (response.success) {
-          toast.success('buy now added')
+    } else {
+      for (let i = 0; i < ProductAttribute.length; i++) {
+        if (ProductAttribute[i].selectToSend === null) {
+          return
         }
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setEnabled(false);
-      });
+      }
+      setIsLoading(true);
+      setEnabled(true);
+      const formData = new FormData();
+      if (ProductAttribute?.length > 0) {
+        let attributes = [];
+        for (let i = 0; i < ProductAttribute?.length; i++) {
+          attributes.push({ key: ProductAttribute[i].name, value: ProductAttribute[i].selectToSend })
+        }
+        formData.append('attributes', JSON.stringify(attributes));
+      } else {
+        formData.append('attributes', JSON.stringify([]));
+      }
+      formData.append('product_id', productData.id)
+      formData.append('quantity', quantity)
+
+      CheckoutServices.save(formData)
+        .then((response) => {
+          console.log(response)
+          navigate('/checkout-buynow')
+          setIsLoading(false);
+          setEnabled(false);
+        })
+        .catch((e) => {
+          toast.error(e.message);
+          setIsLoading(false);
+          setEnabled(false);
+        })
+    }
   };
 
   const addToCart = (e) => {
@@ -135,9 +145,11 @@ const ProductInformation = ({ getMoreToLove, setProductId }) => {
       if (ProductAttribute?.length > 0) {
         let attributes = [];
         for (let i = 0; i < ProductAttribute?.length; i++) {
-            attributes.push({ key: ProductAttribute[i].name, value: ProductAttribute[i].selectToSend })
+          attributes.push({ key: ProductAttribute[i].name, value: ProductAttribute[i].selectToSend })
         }
         formData.append('attributes', JSON.stringify(attributes));
+      } else {
+        formData.append('attributes', JSON.stringify([]));
       }
       formData.append('price', productData.price)
       formData.append('quantity', quantity)
@@ -145,14 +157,8 @@ const ProductInformation = ({ getMoreToLove, setProductId }) => {
       formData.append('shop_id', productData.shop?.id,)
       CartServices.save(formData)
         .then((response) => {
-          if (response.success) {
-            CartServices.count().then((response) => {
-              dispatch(saveCupon(response));
-            });
-            toast.success(response.message);
-          } else {
-            toast.error(response.message);
-          }
+          toast.success(response.message);
+          getCartCount()
         })
         .catch((e) => {
           toast.error(e.message);

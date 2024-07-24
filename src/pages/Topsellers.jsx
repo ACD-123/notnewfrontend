@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import ProductSkeletonLoader from '../components/Shared/ProductSkeletonLoader';
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 
-const Topsellers = () => {
+const Topsellers = ({cartFullResponse}) => {
     const [seller, setSeller] = useState([])
     const [Loader, setLoader] = useState(true)
     const user_details = JSON.parse(localStorage.getItem('user_details'));
@@ -27,7 +27,7 @@ const Topsellers = () => {
     }, [])
     return (
         <>
-            <Header />
+            <Header cartFullResponse={cartFullResponse}/>
             <div className="top-sellers" id='productcard'>
                 <div className="top-sellers-wrap">
                     <div className="container">

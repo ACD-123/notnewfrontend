@@ -6,7 +6,7 @@ import Footer from '../../components/Footer'
 import HomeService from "../../services/API/HomeService"; //~/services/API/Home
 import { BASE_URL } from "../../services/Constant";
 import { Spinner } from 'react-bootstrap';
-const CategoryPage = () => {
+const CategoryPage = ({cartFullResponse}) => {
   const [categories, setCategoryData] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Set initial value to true
   const getCategory = () => {
@@ -22,7 +22,7 @@ const CategoryPage = () => {
   }, [])
   return (
     <>
-      <Header />
+      <Header cartFullResponse={cartFullResponse}/>
       <section id='category-page-main'>
         <div className='container'>
           <div className='row'>

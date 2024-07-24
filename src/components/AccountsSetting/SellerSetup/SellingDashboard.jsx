@@ -3,16 +3,14 @@ import SellerImage from '../../../assets/Images/Seller/sellerimage.png';
 import SetupSellerAccount from './SetupSellerAccount';
 import SellingDetailsDashBoard from './SellingDetailsDashBoard';
 
-const Selling = (props) => {
+const Selling = () => {
   const [showComponentTwo, setShowComponentTwo] = useState(false);
   const [trustedseller, setTrustedseller] = useState(false);
   const handleGetStartedClick = () => {
     // Toggle the state to switch between components
     setShowComponentTwo(true);
   };
-  const handleCallback = (childData) => {
-    props.parentCallback(childData)
-  }
+
   useEffect(() => {
     let loggedInUser = localStorage.getItem("user_details");
     if (loggedInUser) {
@@ -25,7 +23,7 @@ const Selling = (props) => {
   return (
     <div className='selling-activity'>
       {trustedseller ? (
-        <SellingDetailsDashBoard parentCallback={handleCallback} />
+        <SellingDetailsDashBoard />
       ) : (
         <>
           {showComponentTwo ? (

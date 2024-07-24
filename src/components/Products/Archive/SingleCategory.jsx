@@ -25,7 +25,7 @@ const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
 
-const SingleCategory = () => {
+const SingleCategory = ({cartFullResponse}) => {
   const [cardsPerPage] = useState(6);
   const [categoryProducts, setCategoryProducts] = useState([]);
   const [categorySubCategories, setCategorySubCategories] = useState([]);
@@ -163,7 +163,7 @@ const SingleCategory = () => {
 
   return (
     <>
-      <Header />
+      <Header cartFullResponse={cartFullResponse}/>
       <div className="category-page">
         <div className="category-page-wrap">
           <div className="container">

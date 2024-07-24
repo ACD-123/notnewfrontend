@@ -13,7 +13,7 @@ import UserServices from "../../services/API/UserServices"; //~/services/API/Use
 import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
 import moment from "moment";
 
-const BidView = () => {
+const BidView = ({cartFullResponse}) => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
   const [requestSentVisible, setRequestSentVisible] = useState({});
   const [editBidVisible, setEditBidVisible] = useState({});
@@ -230,7 +230,7 @@ const BidView = () => {
   return (
     <>
       {/* Header */}
-      <Header />
+      <Header cartFullResponse={cartFullResponse}/>
       <section id="product-recents-viewed">
         <div className="container">
           {bids ? (

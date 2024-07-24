@@ -3,6 +3,7 @@ import request from '../request'
 import { BASE_API } from '../Constant'
 // @todo this file name should be product service
 const baseUrl = `${BASE_API}checkout`
+const baseApi = `${BASE_API}`
 function all(params = {}) {
   return request({
     url: `${baseUrl}/`,
@@ -14,6 +15,28 @@ function self(params = {}) {
   return request({
     url: `${baseUrl}/self_`,
     params,
+  })
+}
+
+function getBuyItNowData() {
+  return request({
+    url: `${baseUrl}/buynow_`,
+    method: 'GET'
+  })
+}
+
+function getShippingData(to_country , topostalcode , weight ,deliverycompany) {
+  return request({
+    url: `${baseApi}testshipengine?to_country=${to_country}&to_postal_code=${topostalcode}&weight=${weight}&delivery_company=${deliverycompany}`,
+    method: 'GET'
+  })
+}
+
+function checkoutButItNow(data) {
+  return request({
+    url: `${baseApi}order`,
+    method: 'POST',
+    data: data
   })
 }
 
@@ -36,7 +59,10 @@ const CheckoutServices = {
   all,
   self,
   save,
-  remove
+  remove,
+  getBuyItNowData,
+  getShippingData,
+  checkoutButItNow
 }
 
 export default CheckoutServices

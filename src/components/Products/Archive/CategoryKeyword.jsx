@@ -12,7 +12,7 @@ import Heart from "../../../assets/Images/Heart.png"
 import { Link } from 'react-router-dom';
 import Checkimage from "../../../assets/Images/check.png"
 
-const CategoryKeyword = () => {
+const CategoryKeyword = ({cartFullResponse}) => {
 
   
   const [currentPage, setCurrentPage] = useState(1);
@@ -58,7 +58,7 @@ const CategoryKeyword = () => {
   return (
     <>
       {/* Header */}
-      <Header />
+      <Header cartFullResponse={cartFullResponse}/>
       {/* Header */}
 
       <section id='singlecategory'>

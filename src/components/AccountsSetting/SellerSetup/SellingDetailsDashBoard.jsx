@@ -3,7 +3,7 @@ import OrderServices from "../../../services/API/OrderServices"; //~/services/AP
 import { Spinner } from "react-bootstrap";
 import Select from 'react-select';
 
-const SellingDetailsDashBoard = (props) => {
+const SellingDetailsDashBoard = () => {
   const [dashboard, setDashboard] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const Months = [

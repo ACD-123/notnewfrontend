@@ -8,11 +8,10 @@ import RecentViewedItems from "../RecentViewedItems";
 import ProductTabs from "./SingleProductElements/ProductTabs";
 import SellerDetails from "../../Seller/SellerDetails";
 
-const SubCategory = () => {
+const SubCategory = ({cartFullResponse}) => {
   return (
     <>
-      <Header />
-
+      <Header cartFullResponse={cartFullResponse}/>
       <section id="single-product" style={{ padding: "40px 0px" }}>
         <div className="container">
           <div className="row">

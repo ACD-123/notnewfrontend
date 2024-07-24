@@ -15,7 +15,7 @@ import TopSellingProducts from "../components/Products/TopSellingProducts";
 import HotSellingProducts from "../components/Products/HotSellingProducts";
 import HomeCategorySlider from "../components/Shared/Sliders/HomeCategorySlider";
 
-const Home = () => {
+const Home = ({cartFullResponse}) => {
 	const [user, setUser] = useState({});
 	const [data, setData] = useState([]);
 	const [banners, setBanners] = useState([]);
@@ -46,7 +46,7 @@ const Home = () => {
 
 	return (
 		<>
-			<Header />
+			<Header cartFullResponse={cartFullResponse}/>
 			<Banner data={banners} loading={loading} />
 			<HomeCategorySlider/>
 			<Items title={'New Items'} />

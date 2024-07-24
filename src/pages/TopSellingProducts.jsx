@@ -15,7 +15,7 @@ import ProductCard from '../components/Shared/Cards/ProductCard';
 // import NoDataFound from '../../Shared/NoDataFound';
 // import ProductCard from '../components/Shared/Cards/ProductCard';
 
-const TopSellingProducts = () => {
+const TopSellingProducts = ({cartFullResponse}) => {
     const [user, setUser] = useState({});
 	const [data, setData] = useState([]);
 	const [banners, setBanners] = useState([]);
@@ -50,7 +50,7 @@ const TopSellingProducts = () => {
     };
     return (
         <>
-            <Header />
+            <Header cartFullResponse={cartFullResponse}/>
             <div className="top-sellers" id='productcard'>
                 <div className="top-sellers-wrap">
                     <div className="container">

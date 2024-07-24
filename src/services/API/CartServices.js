@@ -25,6 +25,13 @@ function remove(data) {
   })
 }
 
+function clearAllCart() {
+  return request({
+    url: `${baseUrl}/clear`,
+    method: 'POST',
+  })
+}
+
 function updateCart(data , id) {
   return request({
     url: `${baseUrl}/update/${id}`,
@@ -44,7 +51,8 @@ const CartServices = {
   save,
   remove,
   count,
-  updateCart
+  updateCart,
+  clearAllCart
 }
 
 export default CartServices

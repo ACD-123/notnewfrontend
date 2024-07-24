@@ -10,7 +10,7 @@ import SellerAbout from "./SellerAbout";
 import SellerFeedbackNew from "./SellerFeedBackNew";
 import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
 
-const SellerShop = () => {
+const SellerShop = ({cartFullResponse}) => {
   const [activeTab, setActiveTab] = useState("seller1");
   const [shopdata, setShopData] = useState([]);
   const { pathname } = window.location;
@@ -24,7 +24,7 @@ console.log('id',id)
   return (
     <>
       {/* HEADER */}
-      <Header />
+      <Header cartFullResponse={cartFullResponse}/>
       {/* HEADER */}
       <section id="sellershop">
         <div className="container">

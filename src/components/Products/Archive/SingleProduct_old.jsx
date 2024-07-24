@@ -11,7 +11,7 @@ import ProductServices from '../../../services/API/ProductServices'
 import ProductCard from '../../Shared/Cards/ProductCard'
 import { Link } from 'react-router-dom'
 import LoadingComponents from '../../Shared/LoadingComponents'
-const SingleProduct_old = () => {
+const SingleProduct_old = ({getCartCount , cartFullResponse}) => {
   const [moreToLove, setMoreToLove] = useState([])
   const [productId, setProductId] = useState('')
   const [loading, setLoading] = useState(true)
@@ -33,9 +33,11 @@ const SingleProduct_old = () => {
     updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
     setMoreToLove(updatedProducts);
   };
+
+
   return (
     <>
-      <Header />
+      <Header cartFullResponse={cartFullResponse}/>
       <section id='single-product' className='single-product-detail'>
         {/* {loading ?
           <LoadingComponents />
@@ -46,8 +48,8 @@ const SingleProduct_old = () => {
                 <div className="product-detail-wrap">
                   <div className="p-d-w-1">
                     <div className="p-d-w-l"><ProductGallery /></div>
-                    <div className="p-d-w-c"><ProductInformation getMoreToLove={getMoreToLove} setProductId={setProductId} /></div>
-                    <div className="p-d-w-r"><SingleProductSidebar /></div>
+                    <div className="p-d-w-c"><ProductInformation getCartCount={getCartCount} getMoreToLove={getMoreToLove} setProductId={setProductId} /></div>
+                    {/* <div className="p-d-w-r"><SingleProductSidebar /></div> */}
                   </div>
                 </div>
               </div>

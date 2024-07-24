@@ -1,349 +1,298 @@
 import React, { useState, useEffect } from "react";
 import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
-import SellerServices from "../../services/API/SellerServices"; //~/services/API/SellerServices
 import CheckoutServices from "../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
-import CartServices from "../../services/API/CartServices"; //~/services/API/CartServices
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { saveCupon, deleteCupon } from "../../store/slices/cupon";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
-import Productimage from '../../assets/Images/Categorylisting/1.png';
-import { Modal, Button } from 'react-bootstrap';
 import Payment from "../../assets/Images/Shoppingcart/payment.png"
-import Checkpay from "../../assets/Images/check-pay.png"
-import UserServices from "../../services/API/UserServices";
+import blank from "../../assets/Images/Productcard/blank.jpg";
+import applyPay from "../../assets/Images/paymentCard/apply-pay.png"
+import Visa from "../../assets/Images/paymentCard/Visa.png"
+import Mastercard from "../../assets/Images/paymentCard/Mastercard.png"
+import Arrowright from "../../assets/Images/Shoppingcart/arrowright.png";
+import Select from 'react-select';
 
-const CheckoutBuyNow = () => {
+const CheckoutBuyNow = ({ cartFullResponse }) => {
   const dispatch = useDispatch();
-  const [productData, setProductData] = useState([]);
-  const [productShopData, setProductShopData] = useState([]);
-  console.log('productData',productData)
-  const [gettags, setTags] = useState([]);
-  const [quantity, setQuantity] = useState(1);
-  const [isLoading, setIsLoading] = useState(true); // Set initial value to true
-  const [enabled, setEnabled] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
-  const [userDetails, setUserDetails] = useState(null); // State to store user details
-
+  const [userDetails, setUserDetails] = useState(null);
+  const [butItNowData, setButItNowData] = useState([]);
+  const [shippingData, setShippingData] = useState({ postalCode: "", country: null });
+  const [shipping, setShipping] = useState([]);
+  const [country, setCountry] = useState(null);
+  const countrys = [{ value: 1, label: 'US' }]
+  const [paymentMethod, setPaymentMethod] = useState(0);
+  const [couponeCode, setCouponeCode] = useState('');
+  const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+  const [inputError, setInputError] = useState(false);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
-  let loggedInUser = localStorage.getItem("user_details");
-  const loggedInUsers = JSON.parse(loggedInUser);
   const navigate = useNavigate();
 
-  let incNum = () => {
-    if (quantity < 10) {
-      setQuantity(Number(quantity) + 1);
+  const getBuyItNowData = async () => {
+    try {
+      const response = await CheckoutServices.getBuyItNowData();
+      setButItNowData(response)
+    } catch (error) {
+      console.error('Error fetching user details:', error);
     }
-  };
-  let decNum = () => {
-    if (quantity > 0) {
-      setQuantity(quantity - 1);
-    }
-  };
-  // let handleQuantity = (e) => {
-    useEffect(() => {
-        // Fetch user details when the component mounts
-        const fetchUserDetails = async () => {
-          try {
-            const response = await UserServices.detail();
-            console.log('user Data:', response); // Log the checkout data
-            setUserDetails(response);
-          } catch (error) {
-            console.error('Error fetching user details:', error);
-          }
-        };
-        
-    
-        fetchUserDetails();
-      }, []); // Empty dependency array to run the effect only once when the component mounts
-  // };
+  }
 
-  const saveRecentView = () => {
-    let data = {
-      id: id,
-    };
-    SellerServices.createRecent(data).then((response) => {
-      console.log("response", response);
-    });
-  };
-  const getProduct = () => {
-    ProductServices.get(id)
-      .then((res) => {
-        console.log('res',res)
-        setProductData(res.data);
-        setProductShopData(res.data.shop);
-        let tags = JSON.parse(res.data.tags);
-        let allTags = [];
-        // {
-        //   tags.map((tag, index) => allTags.push(tag.tag));
-        // }
-        setTags(allTags);
-      })
-      .finally(() => {
-        // Set isLoading to false once data fetching is complete
-        setIsLoading(false);
-      });
-  };
-  const calculateTotalPrice = () => {
-    if (productData) {
-      const subtotal = productData.price;
-      const shipping = productData.shipping_price;
-      return subtotal + shipping;
+  const getShippingData = async () => {
+    setInputError(true)
+    if (shippingData.postalCode != "" && shippingData.country != null) {
+      try {
+        const response = await CheckoutServices.getShippingData(shippingData.country.label, shippingData.postalCode, butItNowData?.weight, 'Fedex');
+        console.log(response?.data, 'getBuyItNowData');
+        setShipping(response?.data)
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
     }
-    return 0;
-  };
-  const addByNow = (e) => {
-    e.preventDefault();
-    if (!loggedInUsers) {
-      // User is not logged in, navigate to the sign-in page
-      navigate("/signin");
-      return;
-    }
-    setIsLoading(true);
-    setEnabled(true);
-    navigate("/checkout-buynow/"+productData.guid);
-    let arributes = localStorage.getItem("arributes");
-    arributes = JSON.parse(arributes);
-    let inputData = {
-      product_id: productData.id,
-      quantity: 1,
-      // price: productData.price,
-      // quantity: 1,
-      // product_id: productData.id,
-      // attributes: arributes,
-      // shop_id: productData.shop?.id,
-    };
-    // console.log(productData.id)
-    CheckoutServices.save(inputData)
-      .then((response) => {
-        console.log(response)
-        if(response.success){
-          toast.success('buy now added')
-        }
+  }
 
-        // if (response.success) {
-        //   CartServices.count().then((response) => {
-        //     dispatch(saveCupon(response));
-        //   });
-        // } else {
-        //   toast.error(response.message);
-        // }
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setEnabled(false);
-      });
-  };
-  const addToCart = (e) => {
-    e.preventDefault();
-    if (!loggedInUsers) {
-      // User is not logged in, navigate to the sign-in page
-      navigate("/signin");
-      return;
-    }
+  const checkoutButItNow = async () => {
 
-    setIsLoading(true);
-    setEnabled(true);
-    let arributes = localStorage.getItem("arributes");
-    arributes = JSON.parse(arributes);
-    let inputData = {
-      price: productData.price,
-      quantity: quantity,
-      product_id: productData.id,
-      attributes: arributes,
-      shop_id: productData.shop?.id,
-    };
-    CartServices.save(inputData)
-      .then((response) => {
-        if (response.success) {
-          CartServices.count().then((response) => {
-            dispatch(saveCupon(response));
-          });
-          toast.success(response.message);
-        } else {
-          toast.error(response.message);
-        }
-      })
-      .catch((e) => {
-        toast.error(e.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-        setEnabled(false);
-      });
+    const orderItems = {
+      product_id: butItNowData?.data?.[0]?.products?.[0]?.id,
+      price: butItNowData?.data?.[0]?.products?.[0]?.buynowprice,
+      quantity: butItNowData?.data?.[0]?.products?.[0]?.buynowquantity,
+      attributes: JSON.stringify(butItNowData?.data?.[0]?.products?.[0]?.attributes),
+    }
+    const formData = {
+      payment_type: "Card",
+      discountcode: "discount",
+      subtotal_cost: "10",
+      service_code: shipping.service_code,
+      weight: butItNowData?.weight,
+      shipping_cost: shipping.shipping_amount?.other_amount ? shipping.shipping_amount?.other_amount : 0,
+      order_total: butItNowData.total,
+      payment_intents: "pi_3Oj5IqBL2ne1CK3D0hkRy72C",
+      Currency: "2",
+      order_type: "BuyNow",
+      orderItems: JSON.stringify(orderItems),
+      other_address: "false",
+      secondaddress: ""
+    }
+    try {
+      const response = await CheckoutServices.checkoutButItNow(formData);
+      navigate('/')
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+    }
+  }
+
+  const [showDiscountField, setShowDiscountField] = useState(false);
+
+  const toggleDiscountField = () => {
+    setShowDiscountField(!showDiscountField);
   };
-  const handleDropdownItemClick = (componentName) => {};
-  const hanldeWishList = (guid) => {
-    ProductServices.saved(guid, productData)
-      .then((response) => {
-        if (response.status) {
-          toast.success(response.message);
-        }
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  };
-  const handleQuantity = (e) => {
-    setQuantity(e.target.value);
-    e.preventDefault();
-    setQuantity(e.target.value);
-  };
-  const handleEdit = (e) => {
-    e.preventDefault();
-    setShowPopup(true);
-  };
+
   useEffect(() => {
-    saveRecentView();
-    getProduct();
+    getBuyItNowData();
+  }, []);
+
+  const handleDiscountSubmit = async (e) => {
+    e.preventDefault();
+    setInputError(true)
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    if (couponeCode != "") {
+      try {
+        const data = {
+          coupon_code: couponeCode,
+          user_id: loggedInUser?.id,
+          date: `${year}-${month}-${day}`
+        };
+        const res = await ProductServices.addCouponeCode(data);
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
+      }
+    }
+  };
+
+
+
+  useEffect(() => {
   }, []);
   return (
     <>
-    <Header />
-    
-    <section id="cart-details">
+      <Header cartFullResponse={cartFullResponse} />
+      <section id="cart-details">
         <div class="container">
-            <h1>Checkout</h1>
-            
-            <div class="row">
-                
-                <div class="col-lg-8">
-                <div class="order-details" id="order-detailsid">
-                <h3>Pay with</h3>
-                <h6>Credit or Debit card</h6>
-                <span>
-                  Your payements are secured, Your Details are confedentials
-                </span>
-                
-                {userDetails?.address ? (<>
-                  <p>Billing Address</p>
-                <span class="tabstop">{userDetails?.address}</span>
-
-                </>):(<></>)}
-                {/* <div class="tabs-check">
-                 
-                <Elements stripe={stripePromise} options={options}>
-                    <Stripe
-                      changeAdds={changeAdds}
-                      parentCallback={handleCallback}
-                      zip={zip}
-                      subtotal={subTotal}
-                      secondAddress={secondaddress}
-                      cart={cart}
-                      bidcart={bidcart}
-                      orderType={ordertype}
-                      adminprices={adminprices}
-                      shippingprice={shippingprice}
-                      total={amountaddingprices}
-                      changeaddress={changeAdds}
-                      ordertype={ordertyp}
-                      address={userDetails?.street_address}
-                    />
-                  </Elements>
-                </div> */}
-              </div>
-                    <div class="order-details" id="order-detailsid">
-                        <h3>Shipping Details</h3>
-                        <div class="shipping-details">
-                       
-                        <table style={{width: "100%"}}>
-                            <tr>
-                              <th class="boldthtotallight">Full Name :</th>
-                              <td class="boldthtotallight">Sallu Roy</td>
-                            </tr>
-                            <tr>
-                              <th class="boldthtotallight">Phone :</th>
-                              <td>02184548845</td>
-                            </tr>
-                            <tr>
-                              <th class="boldthtotallight">Address :</th>
-                              <td>{productData.postal_address}</td>
-                            </tr>
-                          </table>
-                          <p class="gradienttextcolor">Change Address</p>
+          <h2 className="page-title">Buy Now Checkout</h2>
+          <div class="row">
+            <div class="col-lg-8">
+              <div className="order-details" id="sectionToRemove">
+                <div><h3 id="storetitle">Seller Shop : {butItNowData?.[0]?.storename}</h3></div>
+                <div className="row">
+                  <div className="col-lg-12">
+                    <div className="product-detail">
+                      <div className="product-image">
+                        <>
+                          {butItNowData?.data?.[0]?.products?.[0]?.media?.length > 0 ? (
+                            <img src={butItNowData?.data?.[0]?.products?.[0]?.media?.[0]?.name} />
+                          ) : (
+                            <img src={blank} alt="blank" />
+                          )}
+                        </>
+                      </div>
+                      <div className="product-order-details">
+                        <div className="name">Name: <span>{butItNowData?.data?.[0]?.products?.[0]?.name}</span></div>
+                        <div className="attribute">Attributes: <span>
+                          <ul>
+                            {butItNowData?.data?.[0]?.products?.[0]?.attributes.map((attribute, index) => {
+                              return (
+                                <li key={index}>{attribute.key}: <span>{attribute.value}</span>{butItNowData?.data?.[0]?.products?.[0]?.attributes?.length - 1 !== index ? ',' : ''}</li>
+                              )
+                            })}
+                          </ul>
+                        </span>
                         </div>
+                        <div className="price">Price: <span>${butItNowData?.data?.[0]?.products?.[0]?.buynowprice}</span></div>
+                        <div className="price">Quantity available: <span>{butItNowData?.data?.[0]?.products?.[0]?.buynowquantity}</span></div>
+                        <div className="price">Shipping Weight: <span>{butItNowData?.weight}</span></div>
+                      </div>
                     </div>
-                    <div class="order-details">
-                        <h3 id="storetitle">Seller: {productShopData.fullname}</h3>
-                        <div class="row mt-2">
-                            <div class="col-lg-9">
-                                <div class="product-detail">
-                                   
-                                <div className="product-image" style={{ width: '35%' }}>
-  {productData.media && productData.media.length > 0 && (
-    <img
-      src={productData.media[0].name}
-      alt="Product Image"
-      style={{ width: '100%', objectFit: 'contain' }}
-    />
-  )}
-</div>
-
-                                    <div class="product-order-details">
-                                        <h5>{productData.name}</h5>
-                                        <span>Size : 9.5 , Color: Red</span>
-                                        <div class="quantitypadding"><p><b><span>QTY: 01</span></b></p></div>
-                                        <span class="unter">{productShopData.address}</span>
-                                    </div>
-                                      
-                                </div>
-                            </div>
-                            <div class="col-lg-3">
-                                <div class="prices-order-details">
-                                    <h4>US ${productData.price}</h4>
-                                    <span>+US ${productData.shipping_price}</span>
-                                </div>
-                            </div>
+                  </div>
+                </div>
+              </div>
+              <div className="order-details" id="border-order-details">
+                <div><h3 id="storetitle">Pay with</h3></div>
+                <div className="b-w-p-w">
+                  <div className="b-w-p-w-l">SELECT A PAYMENT OPTION</div>
+                  <div className="b-w-p-w-r">ADD NEW CARD</div>
+                </div>
+                <div className="b-w-c-o">
+                  <ul>
+                    <li>
+                      <div className="b-w-c-o-l" onClick={() => { setPaymentMethod(0) }}>
+                        <div className={`b-w-c-o-l-c ${paymentMethod === 0 ? 'active' : ''}`}></div>
+                      </div>
+                      <div className="b-w-c-o-r">
+                        <div className="b-w-c-o-r-l">
+                          <img src={applyPay} alt="" />
                         </div>
-                        <hr class="dashed" />
-                    {/* <div class="buttonright">
-                    <button class="btn btn-info btn-lg transparent" type="button"  >Save for later</button>   
-                    <button class="btn btn-info btn-lg danger" type="button"  >Save for later</button>  
-                    </div> */}
-                     
-                        
+                        <div className="b-w-c-o-r-r">APPLE PAY</div>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="b-w-c-o-l" onClick={() => { setPaymentMethod(1) }}>
+                        <div className={`b-w-c-o-l-c ${paymentMethod === 1 ? 'active' : ''}`}></div>
+                      </div>
+                      <div className="b-w-c-o-r">
+                        <div className="b-w-c-o-r-l">
+                          <img src={Visa} alt="" />
+                        </div>
+                        <div className="b-w-c-o-r-r">VISE PREMIUM</div>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="b-w-c-o-l" onClick={() => { setPaymentMethod(2) }}>
+                        <div className={`b-w-c-o-l-c ${paymentMethod === 2 ? 'active' : ''}`}></div>
+                      </div>
+                      <div className="b-w-c-o-r">
+                        <div className="b-w-c-o-r-l">
+                          <img src={Mastercard} alt="" />
+                        </div>
+                        <div className="b-w-c-o-r-r">MASTER CARD</div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
+              </div>
+              <div className="order-details" id="border-order-details">
+                <h5 onClick={toggleDiscountField}>
+                  Coupons, Vouchers, Discount Codes
+                  <div id="iconrightaligin">
+                    <img src={Arrowright} />
+                  </div>
+                </h5>
+                {showDiscountField && (
+                  <div className="discountfields">
+                    <input
+                      type="text"
+                      placeholder="Enter discount code"
+                      value={couponeCode}
+                      onChange={(e) => setCouponeCode(e.target.value)}
+                    />
+                    <button onClick={handleDiscountSubmit}>Apply</button>
+                  </div>
+                )}
+              </div>
+              <div className="order-details" id="border-order-details">
+                <div><h3 id="storetitle">Shipping</h3></div>
+                <div className="b-w-s-i-f">
+                  <div className="two-field">
 
+                    <div className="two-field-left">
+                      <label>Postal code</label>
+                      <input
+                        type="number"
+                        name="postalCode"
+                        value={shippingData.postalCode}
+                        onChange={(e) => { setShippingData({ ...shippingData, postalCode: e.target.value }) }} placeholder="Enter quantity" />
+                      {shippingData.postalCode === "" && inputError &&
+                        <div className="error-input">Postal code is required</div>
+                      }
+                    </div>
+                    <div className="two-field-left">
+                      <label>To Country</label>
+                      <Select
+                        value={shippingData.country}
+                        onChange={(e) => { setShippingData({ ...shippingData, country: e }) }}
+                        options={countrys}
+                        placeholder={'Select country'}
+                      />
+                      {shippingData.country === null && inputError &&
+                        <div className="error-input">Country is required</div>
+                      }
+                    </div>
+                  </div>
                 </div>
-                <div class="col-lg-4">
-                <div class="order-details" id="totalordervalue">
-                <h3>Order Total</h3>
-                    <table style={{width: "100%"}}>
-                        <tr>
-                            <th class="boldthtotal">Subtotal ( 1 item )</th>
-                            <td class="boldthtotal">${productData.price}</td>
-                            </tr>
-                            <tr>
-                            <th>Shipping</th>
-                            <td>${productData.shipping_price}</td>
-                            </tr>
-                            <tr>
-                            <th class="totalthtextbold">Order Total</th>
-                            <td class="totalthtextbold">$ {calculateTotalPrice()}</td>
-                        </tr>
-                      </table>
-                      <div class="imgtoop">
-          <img src={Payment} alt="" />
-          <button class="btn btn-info btn-lg gradientbtncolor"  type="button">
-            Confirm & Pay
-          </button>
-        </div>
+                <div className="b-w-p-w">
+                  <div className="b-w-p-w-l"></div>
+                  <div className="b-w-p-w-r" onClick={() => { getShippingData() }}>Shipping</div>
                 </div>
+              </div>
 
-            </div> 
-         
-        </div>
-        
             </div>
-            
-    </section>
-    <Footer />
+            <div class="col-lg-4">
+              <div class="order-details" id="totalordervalue">
+                <h3>Order Total</h3>
+                <table style={{ width: "100%" }}>
+                  <tr>
+                    <th class="boldthtotal">Subtotal ( 1 item )</th>
+                    <td class="boldthtotal">${butItNowData?.data?.[0]?.products?.[0]?.buynowprice}</td>
+                  </tr>
+                  <tr>
+                    <th class="boldthtotal">Shipping</th>
+                    <td class="boldthtotal">${shipping?.shipping_amount?.other_amount ? shipping?.shipping_amount?.other_amount : 0}</td>
+                  </tr>
+                  <tr>
+                    <th class="totalthtextbold">Order Total</th>
+                    <td class="totalthtextbold">${butItNowData.total}</td>
+                  </tr>
+                </table>
+                <div class="imgtoop">
+                  <img src={Payment} alt="" />
+                  <button class="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() =>{checkoutButItNow()}}>
+                    Confirm & Pay
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+      <Footer />
     </>
   )
 }

@@ -18,7 +18,7 @@ import HeaderArrowRightSvg from "./Shared/Svgs/HeaderArrowRightSvg";
 import Skeleton from "react-skeleton-loader";
 import NoDataFound from "./Shared/NoDataFound";
 import ProductServices from "../services/API/ProductServices";
-const Header = () => {
+const Header = ({ cartFullResponse }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [searchProduct, setSearchProduct] = useState([]);
@@ -36,6 +36,8 @@ const Header = () => {
   const cart_items = items ? items : 0;
   const path = location.pathname;
   const search = location.search;
+
+  // console.log(cartFullResponse?.data?.length , 'cartFullResponse?.data?.length');
 
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -104,312 +106,15 @@ const Header = () => {
     });
   }
   const addSearchProduct = (product_id) => {
-    ProductServices.addSearchProduct({user_id : user_details?.id , product_id : product_id})
-    .then((res) => {
-    }).catch((error) => {
-    });
+    ProductServices.addSearchProduct({ user_id: user_details?.id, product_id: product_id })
+      .then((res) => {
+      }).catch((error) => {
+      });
   }
 
 
   return (
     <>
-      {/* <header id="desktop-header">
-        <div className="header-top">
-          <div className="container">
-            <div className="row align-items-center">
-              <div className="col-lg-4">
-                <div className="logo">
-                  <Link to="/">
-                    <img src={Logo} width="20%" height="100%" />
-                  </Link>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <SearchwithCategories />
-              </div>
-              <div className="col-lg-2" style={{ textAlign: 'end' }}>
-                {isLoggedin() ? (
-                  <div className="cart-user">
-                    <div className="cart">
-                      <span className="cartitmes">
-                        {cart_items ? cart_items : cartitems}
-                      </span>
-                      <Link to="/shoppingcart">
-                        <img src={Cart} />
-                      </Link>
-                    </div>
-                    <div className="user">
-                      <div
-                        className="avatar-container"
-                        onClick={toggleDropdown}
-                      >
-                        {profilepic ? (
-                          <>
-                            {(() => {
-                              if (user.register_type === 'google' || user.register_type === 'facebook') {
-                                return (
-                                  <div>
-                                    <img src={user_details?.profile_image} width="50" height="50" style={{ borderRadius: "40px" }} alt={user.name} />
-                                  </div>
-                                );
-                              } else if (user.register_type == 'email') {
-                                return (
-                                  <div>
-                                    <img src={`${BASE_URL}/${user_details?.profile_image}`} width="50" height="50" style={{ borderRadius: "40px" }} alt={user.name} />
-                                  </div>
-                                )
-                              }
-                            })()}
-                          </>
-                        ) : (
-                          <>
-                            <img src={blankUser} width="50" height="50" style={{ borderRadius: "40px" }} alt="User Avatar" />
-                          </>
-                        )}
-                      </div>
-                      {showDropdown && (
-                        <div className="dropdown-content">
-                          <ul>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("dashboard")
-                              }
-                            >
-                              Dashboard
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("recently-viewed")
-                              }
-                            >
-                              Recently viewed
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("bids-offers")
-                              }
-                            >
-                              Bids/Offers
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("wishlist")
-                              }
-                            >
-                              Wishlist
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("purchase-history")
-                              }
-                            >
-                              purchase history
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("buy-again")
-                              }
-                            >
-                              buy again
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("selling-hub")
-                              }
-                            >
-                              selling Hub
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("saved-searches")
-                              }
-                            >
-                              saved searches{" "}
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("saved-sellers")
-                              }
-                            >
-                              saved sellers
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("messages")
-                              }
-                            >
-                              messages
-                            </li>
-                            <li onClick={signOut}>Sign Out</li>
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <a href="/signin" className="login" >Sign In</a>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="nav-bar">
-          <NavBar />
-        </div>
-      </header>
-      <header id="mobile-header">
-        <div className="header-top">
-          <div className="container">
-            <div
-              className="row align-items-center"
-              style={{ paddingTop: "20px" }}
-            >
-              <div className="col-md-2 col-sm-2 col">
-                <div className="logo">
-                  <Link to="/">
-                    <img src={Logo} width="100%" height="100%" />
-                  </Link>
-                </div>
-              </div>
-              <div className="col-md-4 col-sm-4 col">
-                {isLoggedin() ? (
-                  <div className="cart-user">
-                    <div className="cart">
-                      <span className="cartitmes">
-                        {cart_items}
-                      </span>
-                      <Link to="/shoppingcart">
-                        <img src={Cart} />
-                      </Link>
-                    </div>
-                    <div className="user">
-                      <div
-                        className="avatar-container"
-                        onClick={toggleDropdown}
-                      >
-                        {profilepic ? (
-                          <>
-                            {(() => {
-                              if (user.register_type === 'google' || user.register_type === 'facebook') {
-                                return (
-                                  <div>
-                                    <img src={profilepic} width="50" height="50" style={{ borderRadius: "40px" }} alt={user.name} />
-                                  </div>
-                                );
-                              } else if (user.register_type == 'email') {
-                                return (
-                                  <div>
-                                    <img src={`${BASE_URL}/${profilepic}`} width="50" height="50" style={{ borderRadius: "40px" }} alt={user.name} />
-                                  </div>
-                                )
-                              }
-                            })()}
-                          </>
-                        ) : (
-                          <>
-                            <img src={blankUser} width="50" height="50" style={{ borderRadius: "40px" }} alt="User Avatar" />
-                          </>
-                        )}
-
-                      </div>
-                      {showDropdown && (
-                        <div className="dropdown-content">
-                          <ul>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("dashboard")
-                              }
-                            >
-                              Dashboard
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("recently-viewed")
-                              }
-                            >
-                              Recently viewed
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("bids-offers")
-                              }
-                            >
-                              Bids/Offers
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("wishlist")
-                              }
-                            >
-                              Wishlist
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("purchase-history")
-                              }
-                            >
-                              purchase history
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("buy-again")
-                              }
-                            >
-                              buy again
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("selling-hub")
-                              }
-                            >
-                              selling Hub
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("saved-searches")
-                              }
-                            >
-                              saved searches{" "}
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("saved-sellers")
-                              }
-                            >
-                              saved sellers
-                            </li>
-                            <li
-                              onClick={() =>
-                                handleDropdownItemClick("messages")
-                              }
-                            >
-                              messages
-                            </li>
-                            <li onClick={signOut}>Sign Out</li>
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <a href="/signin" className="login" >Sign In</a>
-                )}
-              </div>
-
-              <div className="col-md-4 col-sm-4 col">
-                <div className="nav-bar">
-                  <NavBar />
-                </div>
-              </div>
-            </div>
-
-            <div className="row" style={{ padding: "20px 20px" }}>
-              <SearchwithCategories />
-            </div>
-          </div>
-        </div>
-      </header> */}
-
       <header>
         <div className="header-wrap">
           <div className="header-wrap-top">
@@ -533,12 +238,16 @@ const Header = () => {
                       </div>
                       {isLoggedin() ? (
                         <>
-                          <div className="cart">
-                            <div className="cart-count">
-                              <div className="cart-count-wrap">
-                                2
+                          <div className="cart" onClick={() =>{navigate('/cart')}}>
+                            {cartFullResponse?.data?.length > 0 ?
+                              <div className="cart-count">
+                                <div className="cart-count-wrap">
+                                  {cartFullResponse?.data?.length}
+                                </div>
                               </div>
-                            </div>
+                              :
+                              null
+                            }
                             <img src={Cart} />
                           </div>
                           <div className="user" onClick={() => { setUserDropdown(!userDropdown) }}>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom"
 import Home from "../pages/Home"
 import SignUp from "../pages/Account/SignUp"
@@ -41,65 +41,76 @@ import SearchProduct from "../pages/SearchProduct"
 import TopSellingProducts from "../pages/TopSellingProducts"
 import PersonalInformation from "../pages/PersonalInformation"
 import { MoreToLove } from "../pages/MoreToLove"
+import CartServices from "../services/API/CartServices"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
-  
 	useEffect(() => {
-	  // Scroll to the top whenever pathname changes
-	  window.scrollTo(0, 0);
+		window.scrollTo(0, 0);
 	}, [pathname]);
-  
+
 	return null;
-  }
+}
 const PublicRoutes = () => {
+	const [cartFullResponse, setCartFullResponse] = useState([]);
+
+	const getCartCount = () => {
+		CartServices.self()
+			.then((res) => {
+				setCartFullResponse(res)
+				console.log(res , 'cartFullResponse?.data?.length');
+			}).catch((error) => {
+			})
+	};
+
+	useEffect(() =>{getCartCount()} , [])
 	return (
 		<>
 			<BrowserRouter>
-			<ScrollToTop />
+				<ScrollToTop />
 				<Routes>
-					<Route path="/" element={<Home />} />
-					<Route path="/signup" element={<SignUp />} />
+					<Route path="/" element={<Home cartFullResponse={cartFullResponse} />} />
+					<Route path="/signup" element={<SignUp/>} />
 					{/* <Route path="/emailverification/:id/:guid/:expires/:email" element={<EmailVerification />} /> */}
 					<Route path="/emailverification/:email" element={<EmailVerification />} />
 					<Route path="/signin" element={<SignIn />} />
-					<Route path="/more-to-love" element={<MoreToLove />} />
-					<Route path="/top-category" element={<TopCategory />} />
-					<Route path="/top-sellers" element={<Topsellers />} />
-					<Route path="/top-selling-prodcuts" element={<TopSellingProducts />} />
-					<Route path="/hot-deals" element={<HotDeals />} />
-					<Route path="/category" element={<SingleCategory />} />
-					<Route path="/sub-category" element={<SubCategory />} />
-					<Route path="/auctions" element={<Auctions />} />
-					<Route path="/product-filter" element={<AllProducts />} />
-					<Route path="/personal-info" element={<PersonalInformation />} />
-					<Route path="/AllNewProducts" element={<AllNewProducts/>} />
+					<Route path="/more-to-love" element={<MoreToLove cartFullResponse={cartFullResponse} />} />
+					<Route path="/top-category" element={<TopCategory cartFullResponse={cartFullResponse} />} />
+					<Route path="/top-sellers" element={<Topsellers cartFullResponse={cartFullResponse} />} />
+					<Route path="/top-selling-prodcuts" element={<TopSellingProducts cartFullResponse={cartFullResponse} />} />
+					<Route path="/hot-deals" element={<HotDeals cartFullResponse={cartFullResponse} />} />
+					<Route path="/category" element={<SingleCategory cartFullResponse={cartFullResponse} />} />
+					<Route path="/sub-category" element={<SubCategory cartFullResponse={cartFullResponse} />} />
+					<Route path="/auctions" element={<Auctions cartFullResponse={cartFullResponse} />} />
+					<Route path="/product-filter" element={<AllProducts cartFullResponse={cartFullResponse} />} />
+					<Route path="/personal-info" element={<PersonalInformation cartFullResponse={cartFullResponse} />} />
+					<Route path="/AllNewProducts" element={<AllNewProducts cartFullResponse={cartFullResponse} />} />
 					<Route path="/forget-password" element={<PasswordRecovery />} />
-					<Route path="/forgotverification/:email" element={<ForgotVerification />} />
+					<Route path="/forgotverification/:email" element={<ForgotVerification/>} />
 					<Route path="/resetpassword/:email" element={<ResetPassword />} />
-					<Route path="/cart" element={<ShoppingCart />} />
-					<Route path="/categorykeyword/:guid" element={<CategoryKeyword />} />
-					<Route path="/checkout" element={<Checkout />} />
-					<Route path="/checkout-buynow/:guid" element={<CheckoutBuyNow />} />
-					<Route path="/checkouts/:guid" element={<Checkout />} />
-					<Route path="/singleproduct/:guid" element={<SingleProduct />} />
-					<Route path="/customerdashboard" element={<MainDashboard />} />
-					<Route path="/bidView/:guid" element={<BidView />} />
-					<Route path="/allcategories" element={<CategoryPage />} />
-					<Route path="/sellershop/:guid" element={<SellerShop />} />
-					<Route path="/auctionproduct/:guid" element={<AuctionSingleProductPage />} />
-					<Route path="/bidwin/:guid" element={<BidWin />} />
-					<Route path="/searchhistory" element={<SearchHistory />} />
-					<Route path="/ongoingorder/:guid" element={<OngoingOrderManagement/>} />
+					<Route path="/cart" element={<ShoppingCart getCartCount={getCartCount} cartFullResponses={cartFullResponse}/>} />
+					<Route path="/categorykeyword/:guid" element={<CategoryKeyword cartFullResponse={cartFullResponse} />} />
+					<Route path="/checkout" element={<Checkout cartFullResponse={cartFullResponse} />} />
+					<Route path="/checkout-buynow" element={<CheckoutBuyNow cartFullResponse={cartFullResponse} />} />
+					<Route path="/checkouts/:guid" element={<Checkout cartFullResponse={cartFullResponse} />} />
+					<Route path="/singleproduct/:guid" element={<SingleProduct getCartCount={getCartCount} cartFullResponse={cartFullResponse} />} />
+					<Route path="/customerdashboard" element={<MainDashboard cartFullResponse={cartFullResponse} />} />
+					<Route path="/bidView/:guid" element={<BidView cartFullResponse={cartFullResponse} />} />
+					<Route path="/allcategories" element={<CategoryPage cartFullResponse={cartFullResponse} />} />
+					<Route path="/sellershop/:guid" element={<SellerShop cartFullResponse={cartFullResponse} />} />
+					<Route path="/auctionproduct/:guid" element={<AuctionSingleProductPage cartFullResponse={cartFullResponse} />} />
+					<Route path="/bidwin/:guid" element={<BidWin cartFullResponse={cartFullResponse} />} />
+					<Route path="/searchhistory" element={<SearchHistory/>} />
+					<Route path="/ongoingorder/:guid" element={<OngoingOrderManagement />} />
 					<Route path="/completedorder/:guid" element={<CompleteOrderManagement/>} />
-					<Route path="/refund/:guid" element={<Refund/>} />
+					<Route path="/refund/:guid" element={<Refund cartFullResponse={cartFullResponse} />} />
 					<Route path="/transactions" element={<MyTransactions/>} />
-					<Route path="/instock" element={<InStock/>} />
+					<Route path="/instock" element={<InStock />} />
 					<Route path="/outstock" element={<OutStock/>} />
 					<Route path="/productupload" element={<ProductUpload/>} />
-					<Route path="/my-seller-account" element={<MySellerAccount/>} />
-					<Route path="/search-product" element={<SearchProduct/>} />
-					<Route path="*" element={<NotFound/>} />
+					<Route path="/my-seller-account" element={<MySellerAccount cartFullResponse={cartFullResponse} />} />
+					<Route path="/search-product" element={<SearchProduct cartFullResponse={cartFullResponse} />} />
+					<Route path="*" element={<NotFound cartFullResponse={cartFullResponse} />} />
 				</Routes>
 			</BrowserRouter>
 		</>

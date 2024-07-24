@@ -10,7 +10,7 @@ import SizeToggle from "../../Elements/FilterAttributes/Size"
 import ProductServices from '../../../services/API/ProductServices'; //~/services/API/ProductServices
 import AllProductListing from '../../Elements/AllProductListing';
 
-const AllNewProducts = () => {
+const AllNewProducts = ({cartFullResponse}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(6); // Change this value to adjust items per page
   const [products, setProductData] = useState([]);
@@ -106,10 +106,7 @@ const AllNewProducts = () => {
   }, []);
   return (
     <>
-      {/* Header */}
-      <Header />
-      {/* Header */}
-
+      <Header cartFullResponse={cartFullResponse}/>
       <section id='AllProducts'>
         <div className='container'>
           <div className='row'>

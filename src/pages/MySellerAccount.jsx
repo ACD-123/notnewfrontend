@@ -12,7 +12,9 @@ import Header from '../components/Header';
 import OderManagments from '../components/AccountsSetting/SellerSetup/OderManagments';
 import ShopSetting from '../components/AccountsSetting/SellerSetup/ShopSetting';
 
-const MySellerAccount = (props) => {
+const MySellerAccount = ({props , cartFullResponse}) => {
+// const MySellerAccount = (props) => {
+    console.log(props , 'propspropsprops');
     const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
@@ -66,7 +68,7 @@ const MySellerAccount = (props) => {
     const renderComponent = () => {
         switch (selectedMenuItem) {
             case 'dashboard':
-                return <Selling orderid={props.orderid} parentCallback={handleCallbacks} />;
+                return <Selling parentCallback={handleCallbacks} />;
             case 'product-management':
                 return <ProductManagement setSubmitted={setSubmitted} submitted={submitted} productId={productId} setProductId={setProductId} />;
             case 'order-management':
@@ -90,7 +92,7 @@ const MySellerAccount = (props) => {
 
     return (
         <>
-            <Header />
+            <Header cartFullResponse={cartFullResponse}/>
             <section id="main-dashboard">
                 <div class="container">
                     <div class="row">

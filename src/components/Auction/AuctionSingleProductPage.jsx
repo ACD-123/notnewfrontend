@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom'
 import ProductCard from '../Shared/Cards/ProductCard'
 import NoDataFound from '../Shared/NoDataFound'
 
-const AuctionSingleProductPage = () => {
+const AuctionSingleProductPage = ({cartFullResponse}) => {
   const [moreToLove, setMoreToLove] = useState([])
   const [productId, setProductId] = useState('')
   const [loading, setLoading] = useState(true)
@@ -36,7 +36,7 @@ const AuctionSingleProductPage = () => {
   };
   return (
     <>
-      <Header />
+      <Header cartFullResponse={cartFullResponse}/>
       <section id='single-product' className='single-product-detail'>
         {/* {loading ?
           <LoadingComponents />
@@ -48,7 +48,7 @@ const AuctionSingleProductPage = () => {
                 <div className="p-d-w-1">
                   <div className="p-d-w-l"><ProductGallery /></div>
                   <div className="p-d-w-c"><AuctionProductInformation getMoreToLove={getMoreToLove} setProductId={setProductId} /></div>
-                  <div className="p-d-w-r"><SingleProductSidebar /></div>
+                  {/* <div className="p-d-w-r"><SingleProductSidebar /></div> */}
                 </div>
               </div>
             </div>

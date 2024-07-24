@@ -28,7 +28,7 @@ import CartServices from "../../services/API/CartServices";
 import SaveLaterServices from "../../services/API/SaveLaterServices";
 import { toast } from "react-toastify";
 
-const Checkout = () => {
+const Checkout = ({cartFullResponse}) => {
   const [userDetails, setUserDetails] = useState(null); // State to store user details
   const [checkoutData, setCheckoutData] = useState(); // State to store checkout data
   const [showModal, setShowModal] = useState(false);
@@ -241,7 +241,7 @@ const Checkout = () => {
 
   return (
     <>
-      <Header />
+      <Header cartFullResponse={cartFullResponse}/>
       {isLoading ? ( // Render loader if isLoading is true
         <div className="py-2 container">Loading...</div>
       ) : (

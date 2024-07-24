@@ -57,7 +57,7 @@ const PageNumbers = ({
   );
 };
 
-const AllProducts = () => {
+const AllProducts = ({cartFullResponse}) => {
   const [categoryProducts, setCategoryProducts] = useState([]);
   const [categoryAttributes, setCategoryAttributes] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -281,7 +281,7 @@ const AllProducts = () => {
 
   return (
     <>
-      <Header />
+      <Header cartFullResponse={cartFullResponse}/>
       <div className="category-page">
         <div className="category-page-wrap">
           <div className="container">
