@@ -57,7 +57,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     sellingNow: false,
     listing: "",
     price: "",
-    minpurchase: "",
+    minpurchase: 0,
     auctioned: false,
     bids: "",
     durations: 0,
@@ -85,10 +85,10 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     returnstate: "returnstate",
     returncity: "dsasd",
     returnzip: "000",
-    weight: "12.0",
-    height: "200.0",
-    length: "2",
-    width: "1.00"
+    weight: "",
+    height: "",
+    length: "",
+    width: ""
   })
 
   const handleUploadClick = () => {
@@ -113,7 +113,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       .then((response) => {
         console.log(response, 'category');
         let tempCategoryArray = []
-        for (let i = 0; i < response.length; i++) {
+        for (let i = 0; i < response?.length; i++) {
           tempCategoryArray.push({ value: response[i].id, label: response[i].name })
         }
         setCategories(tempCategoryArray);
@@ -128,7 +128,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       .then((response) => {
         console.log(response, 'category');
         let tempCategoryArray = []
-        for (let i = 0; i < response.length; i++) {
+        for (let i = 0; i < response?.length; i++) {
           tempCategoryArray.push({ value: response[i].id, label: response[i].name })
         }
         setBrands(tempCategoryArray);
@@ -162,9 +162,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
             let updateAddons = []
             let selectedd = []
             let selectToSendd = []
-            for (let i = 0; i < categoryAddons.length; i++) {
-              for (let j = 0; j < categoryAddons[i].options.length; j++) {
-                for (let k = 0; k < apiAttributes[i].options.length; k++) {
+            for (let i = 0; i < categoryAddons?.length; i++) {
+              for (let j = 0; j < categoryAddons[i].options?.length; j++) {
+                for (let k = 0; k < apiAttributes[i].options?.length; k++) {
                   if (apiAttributes[i].options[k] === categoryAddons[i].options[j].label) {
                     selectedd.push({
                       value: k + 1,
@@ -238,9 +238,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       }));
       let political, administrative_area_level_1, postalCode;
 
-      for (let i = 0; i < place.address_components.length; i++) {
+      for (let i = 0; i < place.address_components?.length; i++) {
         const component = place.address_components[i];
-        for (let j = 0; j < component.types.length; j++) {
+        for (let j = 0; j < component.types?.length; j++) {
           if (component.types[j] === 'country') {
             political = component.long_name;
           } else if (component.types[j] === 'administrative_area_level_1') {
@@ -269,11 +269,10 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       productManagment.category === null || productManagment.stockCapacity === "" || productManagment.brand_id === null ||
       productManagment.model === "" || productManagment.description === "" || productManagment.address === "" ||
       productManagment.latitude === "" || productManagment.longitude === "" || productManagment.country === "" ||
-      productManagment.state === "" || productManagment.city === "" || productManagment.zip === ""
-      // productManagment.shippingprice === "" || productManagment.shippingprice === 0 || productManagment.shipingdurations === "" ||
-      // productManagment.shipingdurations === 0 || productManagment.returnshippingprice === "" || productManagment.returnshippingprice === 0 ||
-      // productManagment.returndurationlimit === "" || productManagment.returndurationlimit === 0 || productManagment.returnshippingpaidby === "" ||
-      // productManagment.returnshippingpaidby === 0
+      productManagment.state === "" || productManagment.city === "" || productManagment.zip === "" ||
+      productManagment.weight === "" || productManagment.weight === 0 || productManagment.width === "" ||
+      productManagment.width === 0 || productManagment.height === "" || productManagment.height === 0 ||
+      productManagment.length === "" || productManagment.length === 0 
     ) {
       setIsFromLoading(false)
       return false;
@@ -317,13 +316,15 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       }
     });
 
-    formData.append("underage", productManagment.underage);
-    formData.append("condition", productManagment.condition);
-    formData.append("used_condition", productManagment.used_condition.label);
+    formData.append("underage", productManagment?.underage);
+    formData.append("condition", productManagment?.condition);
+  if(productManagment?.condition === "Used" ){
+    formData.append("used_condition", productManagment?.used_condition?.label);
+  }
     if (productManagment?.attributes?.length > 0) {
       let attributes = [];
       for (let i = 0; i < productManagment?.attributes?.length; i++) {
-        for (let j = 0; j < productManagment.attributes[i].selectToSend.length; j++) {
+        for (let j = 0; j < productManagment.attributes[i].selectToSend?.length; j++) {
           attributes.push({ key: productManagment.attributes[i].name, value: productManagment.attributes[i].selectToSend[j] })
         }
       }
@@ -419,7 +420,13 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           ...prev,
           file: [...response?.data?.media],
           condition: response?.data?.condition,
-          used_condition: response?.data?.used_condition,
+          used_condition: {
+            label: response?.data?.used_condition,
+            value: response?.data?.used_condition === 'Brand Used' ? 1 :
+              response?.data?.used_condition === "Good" ? 2 :
+                response?.data?.used_condition === "Fair" ? 3 :
+                  4
+          },
           underage: response?.data?.underage,
           termsdescription: response?.data?.termsdescription,
           title: response?.data?.name,
@@ -460,10 +467,10 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           returnstate: "returnstate",
           returncity: "dsasd",
           returnzip: "000",
-          weight: "12.0",
-          height: "200.0",
-          length: "2",
-          width: "1.00"
+          weight: response?.data?.weight,
+          height: response?.data?.height,
+          length: response?.data?.length,
+          width: response?.data?.width
         }))
         handelCategoryChange({ value: response?.data?.category?.id, label: response?.data?.category?.name }, response?.data?.attributes)
       })
@@ -538,14 +545,14 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                     />
                   </div>
                 </div>
-                {productManagment.file.length === 0 && inputError && <div className="error-input">Atleast  one image is required</div>}
+                {productManagment?.file?.length === 0 && inputError && <div className="error-input">Atleast  one image is required</div>}
                 <p>
                   <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8.39744 6.53134H10.2635V4.66524H8.39744M9.33048 16.7949C5.21574 16.7949 1.8661 13.4452 1.8661 9.33048C1.8661 5.21574 5.21574 1.8661 9.33048 1.8661C13.4452 1.8661 16.7949 5.21574 16.7949 9.33048C16.7949 13.4452 13.4452 16.7949 9.33048 16.7949ZM9.33048 0C8.10519 0 6.89189 0.24134 5.75986 0.710241C4.62784 1.17914 3.59925 1.86642 2.73284 2.73284C0.98303 4.48264 0 6.85589 0 9.33048C0 11.8051 0.98303 14.1783 2.73284 15.9281C3.59925 16.7945 4.62784 17.4818 5.75986 17.9507C6.89189 18.4196 8.10519 18.661 9.33048 18.661C11.8051 18.661 14.1783 17.6779 15.9281 15.9281C17.6779 14.1783 18.661 11.8051 18.661 9.33048C18.661 8.10519 18.4196 6.89189 17.9507 5.75986C17.4818 4.62784 16.7945 3.59925 15.9281 2.73284C15.0617 1.86642 14.0331 1.17914 12.9011 0.710241C11.7691 0.24134 10.5558 0 9.33048 0ZM8.39744 13.9957H10.2635V8.39744H8.39744V13.9957Z" fill="#989595" />
                   </svg>
                   Add minimum 5 images covering all angles of the item that describes well
                 </p>
-                {productManagment.file.length > 0 ?
+                {productManagment?.file?.length > 0 ?
                   <div className="selected-images">
                     <div className="row">
                       {productManagment.file.map((image, index) => {
@@ -642,6 +649,38 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                     <input type="number" name="stockCapacity" value={productManagment?.stockCapacity} onChange={handleChange} placeholder="Enter quantity" />
                     {productManagment.stockCapacity === "" && inputError &&
                       <div className="error-input">Stock capacity is required</div>
+                    }
+                  </div>
+                </div>
+                <div className="two-field">
+                  <div className="two-field-left">
+                    <label>Weight</label>
+                    <input type="text" name="weight" value={productManagment?.weight} onChange={handleChange} placeholder="Enter weight" />
+                    {productManagment.weight === "" && inputError &&
+                      <div className="error-input">Weight is required</div>
+                    }
+                  </div>
+                  <div className="two-field-left">
+                    <label>Height</label>
+                    <input type="text" name="height" value={productManagment?.height} onChange={handleChange} placeholder="Enter height" />
+                    {productManagment.height === "" && inputError &&
+                      <div className="error-input">Height is required</div>
+                    }
+                  </div>
+                </div>
+                <div className="two-field">
+                  <div className="two-field-left">
+                    <label>Length</label>
+                    <input type="text" name="length" value={productManagment?.length} onChange={handleChange} placeholder="Enter length" />
+                    {productManagment?.length === "" && inputError &&
+                      <div className="error-input">Length is required</div>
+                    }
+                  </div>
+                  <div className="two-field-left">
+                    <label>Width</label>
+                    <input type="text" name="width" value={productManagment?.width} onChange={handleChange} placeholder="Enter width" />
+                    {productManagment.width === "" && inputError &&
+                      <div className="error-input">Width is required</div>
                     }
                   </div>
                 </div>

@@ -57,6 +57,30 @@ function addCouponeCode(data) {
     method: 'POST',
   })
 }
+
+function deleteCouponeCode(data) {
+  return request({
+    url: `${baseApi}cart/deleteCoupon`,
+    data,
+    method: 'POST',
+  })
+}
+
+function deleteGuestCouponeCode(data) {
+  return request({
+    url: `${baseApi}guest-cart/deleteCoupon`,
+    data,
+    method: 'POST',
+  })
+}
+
+function addGuestCouponeCode(data) {
+  return request({
+    url: `${baseApi}guest-cart/applyCoupon`,
+    data,
+    method: 'POST',
+  })
+}
 function deleteSellerProduct(id) {
   return request({
     url: `${baseApi}products/deleteProduct/${id}`,
@@ -451,7 +475,10 @@ const ProductServices = {
   deleteSellerProduct,
   addSearchProduct,
   getMoreToLove,
-  addCouponeCode
+  addCouponeCode,
+  addGuestCouponeCode,
+  deleteCouponeCode,
+  deleteGuestCouponeCode
 }
 
 export default ProductServices

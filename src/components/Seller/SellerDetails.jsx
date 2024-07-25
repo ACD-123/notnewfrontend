@@ -25,6 +25,7 @@ const SellerDetails = () => {
   const [trendingProduct, setTrendingProduct] = useState(0);
   const [savedSeller, setSavedSeller] = useState(0);
   const [user, setUser] = useState({});
+  const token = localStorage.getItem('access_token');
 
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
@@ -176,10 +177,28 @@ const SellerDetails = () => {
                 {shopData.is_favourite === true ? (
                   <button onClick={() => addToFavorites(shopGuidSave)}>Un Save this seller</button>
                 ) : (
-                  <button onClick={() => addToFavorites(shopGuidSave)} className='saveseller'>Save this seller</button>
+                  token === null ?
+                    <button
+                      onClick={() => {
+                        navigate(`/signup`);
+                        localStorage.setItem('redirectionPage', pathname)
+                      }}
+                      className='saveseller'>Save this seller</button>
+                    :
+                    <button onClick={() => addToFavorites(shopGuidSave)} className='saveseller'>Save this seller</button>
+
                 )}
               </Link>
-              <Link><button onClick={() => handleDropdownItemClick('componentI')} className='messageseller'>Message seller</button></Link>
+              {token === null ?
+                <Link><button
+                  onClick={() => {
+                    navigate(`/signup`);
+                    localStorage.setItem('redirectionPage', pathname)
+                  }}
+                  className='messageseller'>Message seller</button></Link>
+                :
+                <Link><button onClick={() => handleDropdownItemClick('componentI')} className='messageseller'>Message seller</button></Link>
+              }
             </div>
           </div>
 
@@ -210,65 +229,65 @@ const SellerDetails = () => {
                             </div>
                           </div>
                           <div className="feedback-item-right">
-                          <h3>{feedback.user.period}</h3>
-                          <p>
-                          {+feedback.ratings === 5 &&
-                      <>
-                        <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
-                      </>
-                    }
-                    {+feedback.ratings === 4 &&
-                      <>
-                        <FaStar /><FaStar /><FaStar /><FaStar /><FaRegStar />
-                      </>
-                    }
-                    {+feedback.ratings === 3 &&
-                      <>
-                        <FaStar /><FaStar /><FaStar /><FaRegStar /><FaRegStar />
-                      </>
-                    }
-                    {+feedback.ratings === 2 &&
-                      <>
-                        <FaStar /><FaStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                      </>
-                    }
-                    {+feedback.ratings === 1 &&
-                      <>
-                        <FaStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                      </>
-                    }
-                    {+feedback.ratings === 0 &&
-                      <>
-                        <FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                      </>
-                    }
-                    {+feedback.ratings > 0 && +feedback.ratings < 1 &&
-                      <>
-                        <FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                      </>
-                    }
-                    {+feedback.ratings > 1 && +feedback.ratings < 2 &&
-                      <>
-                        <FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar />
-                      </>
-                    }
-                    {+feedback.ratings > 2 && +feedback.ratings < 3 &&
-                      <>
-                        <FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar />
-                      </>
-                    }
-                    {+feedback.ratings > 3 && +feedback.ratings < 4 &&
-                      <>
-                        <FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar />
-                      </>
-                    }
-                    {+feedback.ratings > 4 && +feedback.ratings < 5 &&
-                      <>
-                        <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt />
-                      </>
-                    }
-                    <span>({feedback.ratings})</span>
-                          </p>
+                            <h3>{feedback.user.period}</h3>
+                            <p>
+                              {+feedback.ratings === 5 &&
+                                <>
+                                  <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
+                                </>
+                              }
+                              {+feedback.ratings === 4 &&
+                                <>
+                                  <FaStar /><FaStar /><FaStar /><FaStar /><FaRegStar />
+                                </>
+                              }
+                              {+feedback.ratings === 3 &&
+                                <>
+                                  <FaStar /><FaStar /><FaStar /><FaRegStar /><FaRegStar />
+                                </>
+                              }
+                              {+feedback.ratings === 2 &&
+                                <>
+                                  <FaStar /><FaStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                                </>
+                              }
+                              {+feedback.ratings === 1 &&
+                                <>
+                                  <FaStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                                </>
+                              }
+                              {+feedback.ratings === 0 &&
+                                <>
+                                  <FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                                </>
+                              }
+                              {+feedback.ratings > 0 && +feedback.ratings < 1 &&
+                                <>
+                                  <FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                                </>
+                              }
+                              {+feedback.ratings > 1 && +feedback.ratings < 2 &&
+                                <>
+                                  <FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar />
+                                </>
+                              }
+                              {+feedback.ratings > 2 && +feedback.ratings < 3 &&
+                                <>
+                                  <FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar />
+                                </>
+                              }
+                              {+feedback.ratings > 3 && +feedback.ratings < 4 &&
+                                <>
+                                  <FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar />
+                                </>
+                              }
+                              {+feedback.ratings > 4 && +feedback.ratings < 5 &&
+                                <>
+                                  <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt />
+                                </>
+                              }
+                              <span>({feedback.ratings})</span>
+                            </p>
                           </div>
                         </div>
                       </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Attribute from "./Attributes";
 import ShippingPolicyData from "./ShippingPolicyData";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ProductServices from "../../../../services/API/ProductServices"; //~/services/API/ProductServices
 import SellerServices from "../../../../services/API/SellerServices"; //~/services/API/SellerServices
 import CheckoutServices from "../../../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
@@ -13,8 +13,9 @@ import EditListingForm from "../../../AccountsSetting/SellerSetup/EditListingFor
 import { Spinner } from "react-bootstrap";
 import Select from 'react-select';
 import { useNavigate } from "react-router-dom";
+import { isLoggedin } from "../../../../services/Auth";
 
-const ProductInformation = ({ getCartCount, getMoreToLove, setProductId }) => {
+const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCartCountGuest }) => {
   const dispatch = useDispatch();
   const [productData, setProductData] = useState([]);
   console.log('productData', productData)
@@ -29,7 +30,7 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId }) => {
   const [inputError, setInputError] = useState(false);
   const loggedInUsers = JSON.parse(loggedInUser);
   const navigate = useNavigate();
-
+  
   // ali monis
   const [ProductAttribute, SetproductAttribute] = useState([])
 
@@ -131,9 +132,7 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId }) => {
   const addToCart = (e) => {
     e.preventDefault();
     setInputError(true)
-    if (!loggedInUsers) {
-      navigate("/signin");
-    } else {
+    if (isLoggedin()) {
       for (let i = 0; i < ProductAttribute.length; i++) {
         if (ProductAttribute[i].selectToSend === null) {
           return
@@ -159,11 +158,47 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId }) => {
         .then((response) => {
           toast.success(response.message);
           getCartCount()
+          setIsLoading(false);
+          setEnabled(false);
         })
         .catch((e) => {
           toast.error(e.message);
+          setIsLoading(false);
+          setEnabled(false);
+        });
+    } else {
+      const guest_user_id = localStorage.getItem('guest_user_id');
+      for (let i = 0; i < ProductAttribute.length; i++) {
+        if (ProductAttribute[i].selectToSend === null) {
+          return
+        }
+      }
+      setIsLoading(true);
+      setEnabled(true);
+      const formData = new FormData();
+      if (ProductAttribute?.length > 0) {
+        let attributes = [];
+        for (let i = 0; i < ProductAttribute?.length; i++) {
+          attributes.push({ key: ProductAttribute[i].name, value: ProductAttribute[i].selectToSend })
+        }
+        formData.append('attributes', JSON.stringify(attributes));
+      } else {
+        formData.append('attributes', JSON.stringify([]));
+      }
+      formData.append('price', productData.price)
+      formData.append('quantity', quantity)
+      formData.append('product_id', productData.id)
+      formData.append('shop_id', productData.shop?.id)
+      formData.append('user_id', guest_user_id)
+      CartServices.saveGuest(formData)
+        .then((response) => {
+          toast.success(response.message);
+          getCartCountGuest()
+          setIsLoading(false);
+          setEnabled(false);
         })
-        .finally(() => {
+        .catch((e) => {
+          toast.error(e.message);
           setIsLoading(false);
           setEnabled(false);
         });
@@ -259,7 +294,7 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId }) => {
           </div>
           <div className="p-i-3">
             <div className="p-i-3-w">
-              {loggedInUsers ? (
+              {isLoggedin() ? (
                 <>
                   <div className="p-p">
                     <div className="p-p">Price</div>
@@ -277,6 +312,12 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId }) => {
                     <div className="p-p">${productData.price}</div>
                   </div>
                   <div className="pay-buttons">
+                    <button 
+                    onClick={() => {
+                      navigate(`/signup`);
+                      localStorage.setItem('redirectionPage', pathname)
+                    }}
+                    >Buy It Now</button>
                     <button onClick={addToCart} disabled={enabled}>{isLoading ? "loading.." : "Add to Cart"}</button>
                   </div>
                 </>

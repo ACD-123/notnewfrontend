@@ -51,6 +51,7 @@ const Header = ({ cartFullResponse }) => {
         setProfilePic(response.profile_image)
         setUserDetails(response);
         setUser(response);
+        console.log(response, 'user_details');
         localStorage.setItem('user_details', JSON.parse(response));
       })
       .catch((e) => {
@@ -74,7 +75,7 @@ const Header = ({ cartFullResponse }) => {
     e.preventDefault();
     const user_details = getUserDetails();
     localStorage.clear();
-    navigate(`/`)
+    window.location.href=`/`;
   };
   useEffect(() => {
     if (isLoggedin()) {
@@ -236,38 +237,33 @@ const Header = ({ cartFullResponse }) => {
                           </div>
                         }
                       </div>
+                      <div className="cart" onClick={() => { navigate('/cart') }}>
+                        {cartFullResponse?.data?.length > 0 ?
+                          <div className="cart-count">
+                            <div className="cart-count-wrap">
+                              {cartFullResponse?.data?.length}
+                            </div>
+                          </div>
+                          :
+                          null
+                        }
+                        <img src={Cart} />
+                      </div>
                       {isLoggedin() ? (
                         <>
-                          <div className="cart" onClick={() =>{navigate('/cart')}}>
-                            {cartFullResponse?.data?.length > 0 ?
-                              <div className="cart-count">
-                                <div className="cart-count-wrap">
-                                  {cartFullResponse?.data?.length}
-                                </div>
-                              </div>
-                              :
-                              null
-                            }
-                            <img src={Cart} />
-                          </div>
                           <div className="user" onClick={() => { setUserDropdown(!userDropdown) }}>
-                            {profilepic ? (
+                            {user?.profile_image ? (
                               <>
-                                {(() => {
-                                  if (user.register_type === 'google' || user.register_type === 'facebook') {
-                                    return (
-                                      <div>
-                                        <img src={user_details?.profile_image} width="50" height="50" style={{ borderRadius: "40px" }} alt={user.name} />
-                                      </div>
-                                    );
-                                  } else if (user.register_type == 'email') {
-                                    return (
-                                      <div>
-                                        <img src={`${BASE_URL}/${user_details?.profile_image}`} width="50" height="50" style={{ borderRadius: "40px" }} alt={user.name} />
-                                      </div>
-                                    )
-                                  }
-                                })()}
+                                {user?.profile_image.includes("http") ?
+                                  <div>
+                                    <img src={user_details?.profile_image} width="50" height="50" style={{ borderRadius: "40px" }} alt={user.name} />
+                                  </div>
+                                  :
+                                  <div>
+                                    <img src={`${BASE_URL}/${user_details?.profile_image}`} width="50" height="50" style={{ borderRadius: "40px" }} alt={user.name} />
+                                  </div>
+
+                                }
                               </>
                             ) : (
                               <>

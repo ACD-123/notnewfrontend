@@ -36,10 +36,6 @@ const PersonalInfo = () => {
     console.log(inputRef.current.getPlaces(), 'getPlaces');
     const [place] = inputRef.current.getPlaces();
     if (place) {
-      setUserFormData(prev => ({
-        ...prev,
-        address: place.formatted_address
-      }));
       let political, administrative_area_level_1, postalCode;
       for (let i = 0; i < place.address_components.length; i++) {
         const component = place.address_components[i];
@@ -55,6 +51,7 @@ const PersonalInfo = () => {
       }
       setUserFormData(prev => ({
         ...prev,
+        address: place.formatted_address,
         country: political,
         states: administrative_area_level_1,
         city: place.name,
@@ -87,10 +84,10 @@ const PersonalInfo = () => {
         city: response?.city_id,
         zip: response?.zip,
         email: response?.email,
-        phone: response?.phone,
+        phone: response?.phone ? response?.phone : '',
         site: "profilesite",
         address: response?.address,
-        file: response?.profile_image
+        file: response?.profile_image ? response?.profile_image : ''
       })
       setIsLoading(false);
     }).catch(error => {
@@ -105,8 +102,21 @@ const PersonalInfo = () => {
 
     // Check if any field is non-empty
     const hasValidInput = Object.values(userFormData).some(field => field !== "");
-console.log(hasValidInput , 'hasValidInput');
-    if (!hasValidInput) {
+    console.log(userFormData, 'hasValidInput');
+    console.log(hasValidInput, 'hasValidInput');
+    if (
+      userFormData?.address != "" &&
+      userFormData?.city != "" &&
+      userFormData?.country != "" &&
+      userFormData?.email != "" &&
+      userFormData?.file != "" &&
+      userFormData?.lastname != "" &&
+      userFormData?.name != "" &&
+      userFormData?.phone != "" &&
+      userFormData?.city != "" &&
+      userFormData?.states != "" &&
+      userFormData?.zip != ""
+    ) {
       setEnabled(true);
       setIsLoading(true);
 
@@ -158,19 +168,22 @@ console.log(hasValidInput , 'hasValidInput');
                       <div className="profile-pic-wrapper">
                         <div className="pic-holder">
                           {!editImage ? (
-                            userFormData?.file?.includes('http') ? (
-                              <img
-                                id="profilePic"
-                                className="pic"
-                                src={userFormData.file}
-                              />
-                            ) : (
-                              <img
-                                id="profilePic"
-                                className="pic"
-                                src={`${BASE_URL}/${userFormData?.file}`}
-                              />
-                            )
+                            userFormData?.file ?
+                              userFormData?.file?.includes('http') ? (
+                                <img
+                                  id="profilePic"
+                                  className="pic"
+                                  src={userFormData.file}
+                                />
+                              ) : (
+                                <img
+                                  id="profilePic"
+                                  className="pic"
+                                  src={`${BASE_URL}/${userFormData?.file}`}
+                                />
+                              )
+                              :
+                              null
                           ) : (
                             <img id="profilePic" className="pic" src={URL.createObjectURL(userFormData?.file)} />
                           )}
@@ -220,7 +233,7 @@ console.log(hasValidInput , 'hasValidInput');
                           <div className="input">
                             {isLoaded && (
                               <StandaloneSearchBox onLoad={(ref) => (inputRef.current = ref)} onPlacesChanged={handlePlaceChanged}>
-                                <input type="text" value={userFormData.address} placeholder={userFormData.address} />
+                                <input type="text" defaultValue={userFormData.address} placeholder={userFormData.address} />
                               </StandaloneSearchBox>
                             )}
                             {userFormData.address === "" && inputError && <div className="error-input">Address is required</div>}

@@ -19,6 +19,7 @@ import MyBidsAndOffers from './MyBidsAndOffers';
 import RecentlySearchedItems from './RecentlySearchedItems';
 import CustomerFaqs from './CustomerFaqs';
 import PrivacyPolicy from './PrivacyPolicy';
+import EditProfileSetup from '../AccountsSetting/SellerSetup/EditProfileSetup';
 const Activity = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard'); // Initial menu selection
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
@@ -56,6 +57,8 @@ const Activity = () => {
         return <RecentlySearchedItems />;
       case 'my-favourites':
         return <MyFavCustomer />;
+      // case 'edit-profile':
+      //   return <EditProfileSetup />;
       case 'help-and-support':
         return <HelpAndSupport />;
       case 'faq':
@@ -93,9 +96,9 @@ const Activity = () => {
               </ul>
               <div className="title-customer-side-2">Account</div>
               <ul>
-                <li className={selectedMenuItem === 'edit-profile' ? 'active' : ''} onClick={() => handleMenuItemClick('edit-profile')}>
+                {/* <li className={selectedMenuItem === 'edit-profile' ? 'active' : ''} onClick={() => handleMenuItemClick('edit-profile')}>
                 Edit Profile
-                </li>
+                </li> */}
                 <li className={selectedMenuItem === 'help-and-support' ? 'active' : ''} onClick={() => handleMenuItemClick('help-and-support')}>
                   Help And Support
                 </li>

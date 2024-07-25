@@ -28,6 +28,7 @@ const SignIn = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    guest_user_id: ""
   });
   const [remember, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
@@ -38,23 +39,26 @@ const SignIn = () => {
   const [data, setData] = useState({});
   const [picture, setPicture] = useState('');
   const navigate = useNavigate()
+  const guest_user_id = localStorage.getItem('guest_user_id');
+  const redirectionPage = localStorage.getItem('redirectionPage');
+  const ProductId = localStorage.getItem('ProductId');
   const responseFacebook = (response) => {
     console.log('fb_response', response);
-    if(response.status !== "unknown"){
-          AuthServices.facebookLogin(response)
-              .then(
-                  response => {
-                  })
-              .catch(error => {
-                      console.log(error.response);
-                  });
-          setData(response);
-          setPicture(response.picture.data.url);
-          if (response.accessToken) {
-            setLogin(true);
-          } else {
-            setLogin(false);
-          }
+    if (response.status !== "unknown") {
+      AuthServices.facebookLogin(response)
+        .then(
+          response => {
+          })
+        .catch(error => {
+          console.log(error.response);
+        });
+      setData(response);
+      setPicture(response.picture.data.url);
+      if (response.accessToken) {
+        setLogin(true);
+      } else {
+        setLogin(false);
+      }
     }
   }
 
@@ -75,7 +79,20 @@ const SignIn = () => {
             "access_token",
             res.token
           );
-          navigate('/')
+          if (redirectionPage === "singleproduct") {
+            localStorage.removeItem('redirectionPage');
+            localStorage.removeItem('ProductId');
+            localStorage.removeItem('guest_user_id');
+            window.location.href = `/${redirectionPage}/${ProductId}`;
+          } else if (redirectionPage === "cart") {
+            localStorage.removeItem('redirectionPage');
+            localStorage.removeItem('ProductId');
+            localStorage.removeItem('guest_user_id');
+            window.location.href = `/${redirectionPage}`;
+          } else {
+            localStorage.removeItem('guest_user_id');
+            window.location.href = `/`;
+          }
         })
         .catch((error) => {
           console.log("ERROR:: ", error.response);
@@ -110,33 +127,32 @@ const SignIn = () => {
   };
   const fbInit = (response) => {
     window.fbAsyncInit = function () {
-        FB.init({
-          appId: "855777062581776",
-          cookie: true, 
-          xfbml: true,
-          status: true,
-          oauth: true,
-          channelUrl: 'https://notnew.testingwebsitelink.com/',
-          version: "v17.0",
-        });
-        FB.AppEvents.logPageView();
-      };
-    
-      (function (d, s, id) {
-        var js,
-          fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-          return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      })(document, "script", "facebook-jssdk");
+      FB.init({
+        appId: "855777062581776",
+        cookie: true,
+        xfbml: true,
+        status: true,
+        oauth: true,
+        channelUrl: 'https://notnew.testingwebsitelink.com/',
+        version: "v17.0",
+      });
+      FB.AppEvents.logPageView();
+    };
+
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {
+        return;
+      }
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "facebook-jssdk");
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Perform validation here (e.g., check for empty fields)
     const newErrors = {};
     if (!formData.email) {
       newErrors.email = "Email Name is required";
@@ -145,11 +161,13 @@ const SignIn = () => {
       newErrors.password = "Password is required";
     }
     formData.remember_me = remember;
+    // formData.guest_user_id = guest_user_id;
+
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
       setEnabled(true);
-      AuthServices.login(formData)
+      AuthServices.login({ ...formData, guest_user_id: guest_user_id })
         .then((response) => {
           if (response == "NotExits") {
             toast.error("User Does not Exits!");
@@ -163,8 +181,17 @@ const SignIn = () => {
             } else {
               localStorage.removeItem("user_details");
             }
+
             setTimeout(() => {
-              navigate("/")
+              if (redirectionPage === null) {
+                localStorage.removeItem('guest_user_id');
+                window.location.href = `/`;
+              } else {
+                localStorage.removeItem('redirectionPage');
+                localStorage.removeItem('guest_user_id');
+                window.location.href = `${redirectionPage}`;
+
+              }
             }, 1500);
             setAccessToken(response.token);
           }
@@ -224,8 +251,8 @@ const SignIn = () => {
                     <ul>
                       <li>
                         <GoogleLogin
-                        theme="filled_black"
-                        text="signin_with"
+                          theme="filled_black"
+                          text="signin_with"
                           onSuccess={(credentialResponse) => {
                             // console.log('google',credentialResponse);
                             AuthServices.googleLogin(credentialResponse)
@@ -254,15 +281,15 @@ const SignIn = () => {
                       </li>
                       <li>
                         <FacebookLogin
-                            appId="855777062581776"
-                            autoLoad={false}
-                            fields="id,name,email,picture"
-                            textButton="Sign in with Facebook"
-                            // scope="public_profile,email,user_friends"
-                            scope={['email']}
-                            callback={responseFacebook}
-                            icon="fa-facebook" />
-                          {/* <img src={Facebook} /> */}
+                          appId="855777062581776"
+                          autoLoad={false}
+                          fields="id,name,email,picture"
+                          textButton="Sign in with Facebook"
+                          // scope="public_profile,email,user_friends"
+                          scope={['email']}
+                          callback={responseFacebook}
+                          icon="fa-facebook" />
+                        {/* <img src={Facebook} /> */}
                       </li>
                     </ul>
                   </div>

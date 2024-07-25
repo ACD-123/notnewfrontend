@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Signupimage from "../../assets/Images/Accountimages/signup.png";
 import Logo from "../../assets/Images/logo.png";
 import Avatarprofile from "../../assets/Images/avatarsignup.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import CountryServices from "../../services/API/CountryServices"; //~/services/API/CountryServices
 import State from "../../services/API/State"; //~/services/API/State
 import City from "../../services/API/City"; //~/services/API/City

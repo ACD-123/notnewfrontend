@@ -43,7 +43,7 @@ const CheckoutBuyNow = ({ cartFullResponse }) => {
     setInputError(true)
     if (shippingData.postalCode != "" && shippingData.country != null) {
       try {
-        const response = await CheckoutServices.getShippingData(shippingData.country.label, shippingData.postalCode, butItNowData?.weight, 'Fedex');
+        const response = await CheckoutServices.getShippingData(shippingData.country.label, shippingData.postalCode, butItNowData?.weight, '3');
         console.log(response?.data, 'getBuyItNowData');
         setShipping(response?.data)
       } catch (error) {
@@ -66,12 +66,12 @@ const CheckoutBuyNow = ({ cartFullResponse }) => {
       subtotal_cost: "10",
       service_code: shipping.service_code,
       weight: butItNowData?.weight,
-      shipping_cost: shipping.shipping_amount?.other_amount ? shipping.shipping_amount?.other_amount : 0,
+      shipping_cost: shipping.shipping_amount?.amount,
       order_total: butItNowData.total,
       payment_intents: "pi_3Oj5IqBL2ne1CK3D0hkRy72C",
       Currency: "2",
       order_type: "BuyNow",
-      orderItems: JSON.stringify(orderItems),
+      orderItems: JSON.stringify([orderItems]),
       other_address: "false",
       secondaddress: ""
     }
@@ -270,7 +270,7 @@ const CheckoutBuyNow = ({ cartFullResponse }) => {
                   </tr>
                   <tr>
                     <th class="boldthtotal">Shipping</th>
-                    <td class="boldthtotal">${shipping?.shipping_amount?.other_amount ? shipping?.shipping_amount?.other_amount : 0}</td>
+                    <td class="boldthtotal">${shipping?.shipping_amount?.amount ? shipping?.shipping_amount?.amount : 0}</td>
                   </tr>
                   <tr>
                     <th class="totalthtextbold">Order Total</th>

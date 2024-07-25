@@ -25,6 +25,13 @@ function getBuyItNowData() {
   })
 }
 
+function getCheckoutData() {
+  return request({
+    url: `${baseUrl}/self_`,
+    method: 'GET'
+  })
+}
+
 function getShippingData(to_country , topostalcode , weight ,deliverycompany) {
   return request({
     url: `${baseApi}testshipengine?to_country=${to_country}&to_postal_code=${topostalcode}&weight=${weight}&delivery_company=${deliverycompany}`,
@@ -33,6 +40,14 @@ function getShippingData(to_country , topostalcode , weight ,deliverycompany) {
 }
 
 function checkoutButItNow(data) {
+  return request({
+    url: `${baseApi}order`,
+    method: 'POST',
+    data: data
+  })
+}
+
+function checkout(data) {
   return request({
     url: `${baseApi}order`,
     method: 'POST',
@@ -62,7 +77,9 @@ const CheckoutServices = {
   remove,
   getBuyItNowData,
   getShippingData,
-  checkoutButItNow
+  checkoutButItNow,
+  getCheckoutData,
+  checkout
 }
 
 export default CheckoutServices

@@ -58,19 +58,36 @@ const PublicRoutes = () => {
 		CartServices.self()
 			.then((res) => {
 				setCartFullResponse(res)
-				console.log(res , 'cartFullResponse?.data?.length');
+				console.log(res, 'cartFullResponse?.data?.length');
 			}).catch((error) => {
 			})
 	};
 
-	useEffect(() =>{getCartCount()} , [])
+	const getCartCountGuest = () => {
+		const guest_user_id = localStorage.getItem('guest_user_id');
+		CartServices.selfGuest(guest_user_id)
+			.then((res) => {
+				setCartFullResponse(res)
+				console.log(res, 'cartFullResponse?.data?.length');
+			}).catch((error) => {
+			})
+	};
+
+	useEffect(() => {
+		const token = localStorage.getItem('access_token');
+		if (token === null) {
+			getCartCountGuest()
+		} else {
+			getCartCount()
+		}
+	}, [])
 	return (
 		<>
 			<BrowserRouter>
 				<ScrollToTop />
 				<Routes>
 					<Route path="/" element={<Home cartFullResponse={cartFullResponse} />} />
-					<Route path="/signup" element={<SignUp/>} />
+					<Route path="/signup" element={<SignUp />} />
 					{/* <Route path="/emailverification/:id/:guid/:expires/:email" element={<EmailVerification />} /> */}
 					<Route path="/emailverification/:email" element={<EmailVerification />} />
 					<Route path="/signin" element={<SignIn />} />
@@ -86,28 +103,28 @@ const PublicRoutes = () => {
 					<Route path="/personal-info" element={<PersonalInformation cartFullResponse={cartFullResponse} />} />
 					<Route path="/AllNewProducts" element={<AllNewProducts cartFullResponse={cartFullResponse} />} />
 					<Route path="/forget-password" element={<PasswordRecovery />} />
-					<Route path="/forgotverification/:email" element={<ForgotVerification/>} />
+					<Route path="/forgotverification/:email" element={<ForgotVerification />} />
 					<Route path="/resetpassword/:email" element={<ResetPassword />} />
-					<Route path="/cart" element={<ShoppingCart getCartCount={getCartCount} cartFullResponses={cartFullResponse}/>} />
+					<Route path="/cart" element={<ShoppingCart getCartCount={getCartCount} cartFullResponses={cartFullResponse} getCartCountGuest={getCartCountGuest} />} />
 					<Route path="/categorykeyword/:guid" element={<CategoryKeyword cartFullResponse={cartFullResponse} />} />
 					<Route path="/checkout" element={<Checkout cartFullResponse={cartFullResponse} />} />
 					<Route path="/checkout-buynow" element={<CheckoutBuyNow cartFullResponse={cartFullResponse} />} />
 					<Route path="/checkouts/:guid" element={<Checkout cartFullResponse={cartFullResponse} />} />
-					<Route path="/singleproduct/:guid" element={<SingleProduct getCartCount={getCartCount} cartFullResponse={cartFullResponse} />} />
+					<Route path="/singleproduct/:guid" element={<SingleProduct getCartCount={getCartCount} getCartCountGuest={getCartCountGuest} cartFullResponse={cartFullResponse} />} />
 					<Route path="/customerdashboard" element={<MainDashboard cartFullResponse={cartFullResponse} />} />
 					<Route path="/bidView/:guid" element={<BidView cartFullResponse={cartFullResponse} />} />
 					<Route path="/allcategories" element={<CategoryPage cartFullResponse={cartFullResponse} />} />
 					<Route path="/sellershop/:guid" element={<SellerShop cartFullResponse={cartFullResponse} />} />
 					<Route path="/auctionproduct/:guid" element={<AuctionSingleProductPage cartFullResponse={cartFullResponse} />} />
 					<Route path="/bidwin/:guid" element={<BidWin cartFullResponse={cartFullResponse} />} />
-					<Route path="/searchhistory" element={<SearchHistory/>} />
+					<Route path="/searchhistory" element={<SearchHistory />} />
 					<Route path="/ongoingorder/:guid" element={<OngoingOrderManagement />} />
-					<Route path="/completedorder/:guid" element={<CompleteOrderManagement/>} />
+					<Route path="/completedorder/:guid" element={<CompleteOrderManagement />} />
 					<Route path="/refund/:guid" element={<Refund cartFullResponse={cartFullResponse} />} />
-					<Route path="/transactions" element={<MyTransactions/>} />
+					<Route path="/transactions" element={<MyTransactions />} />
 					<Route path="/instock" element={<InStock />} />
-					<Route path="/outstock" element={<OutStock/>} />
-					<Route path="/productupload" element={<ProductUpload/>} />
+					<Route path="/outstock" element={<OutStock />} />
+					<Route path="/productupload" element={<ProductUpload />} />
 					<Route path="/my-seller-account" element={<MySellerAccount cartFullResponse={cartFullResponse} />} />
 					<Route path="/search-product" element={<SearchProduct cartFullResponse={cartFullResponse} />} />
 					<Route path="*" element={<NotFound cartFullResponse={cartFullResponse} />} />

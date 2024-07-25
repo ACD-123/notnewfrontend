@@ -269,7 +269,7 @@ const DiscountAndCoupens = () => {
                             {couponData.title === "" && inputError && <div className="error-input">Coupon name is required</div>}
                         </div>
                         <div>
-                            <input className='form-control' type="number" name="code" value={couponData.code} onChange={handleInputChange} placeholder="Coupon Code" />
+                            <input className='form-control' type="text" name="code" value={couponData.code} onChange={handleInputChange} placeholder="Coupon Code" />
                             {couponData.code === "" && inputError && <div className="error-input">Coupon code is required</div>}
                         </div>
                         <div className='end-date'>
