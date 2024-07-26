@@ -72,7 +72,9 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
   const loggedInUsers = JSON.parse(loggedInUser);
   const [ProductAttribute, SetproductAttribute] = useState([])
   const { pathname } = window.location;
+  const token = localStorage.getItem('access_token');
   const id = pathname.split("/").pop();
+
 
   const handelAddonsChange = (e, data, index) => {
     const updatedArray = [...ProductAttribute];
@@ -126,17 +128,6 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
       });
   };
 
-  const handleRefundClick = (elementId) => {
-    let token = localStorage.getItem('access_token');
-    if (token == "" || token == null) {
-      navigate("/signin")
-    } else {
-      setRefundDetailsVisible({
-        ...refundDetailsVisible,
-        [elementId]: true,
-      });
-    }
-  };
 
   const handleEditBidClick = (elementId) => {
     setEditBidVisible({
@@ -311,7 +302,7 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
           </div>
           <div className="p-i-4">
             <div className="p-i-3-w">
-              {loggedInUsers ? (
+              {token === null ? (
                 <>
                   <div className="p-p-w">
                     <div className="p-p">
@@ -325,8 +316,11 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
                       </div>
                     }
                   </div>
-                  <div className="pay-buttons">
-                    <button onClick={() => { setShowPlacedBids(true) }}>Place a Bid</button>
+                  <div className="pay-buttons" onClick={() => {
+                    navigate(`/signup`);
+                    localStorage.setItem('redirectionPage', pathname)
+                  }}>
+                    <button>Place a Bid</button>
                   </div>
                 </>
               ) : (
@@ -344,7 +338,7 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
                     }
                   </div>
                   <div className="pay-buttons">
-                    <button onClick={() => { navigate('/signin') }}>Place a Bid</button>
+                    <button onClick={() => { setShowPlacedBids(true) }}>Place a Bid</button>
                   </div>
                 </>
               )}

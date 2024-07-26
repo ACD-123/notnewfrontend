@@ -42,6 +42,7 @@ import TopSellingProducts from "../pages/TopSellingProducts"
 import PersonalInformation from "../pages/PersonalInformation"
 import { MoreToLove } from "../pages/MoreToLove"
 import CartServices from "../services/API/CartServices"
+import { UserNotification } from "../pages/UserNotification"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -118,6 +119,7 @@ const PublicRoutes = () => {
 					<Route path="/auctionproduct/:guid" element={<AuctionSingleProductPage cartFullResponse={cartFullResponse} />} />
 					<Route path="/bidwin/:guid" element={<BidWin cartFullResponse={cartFullResponse} />} />
 					<Route path="/searchhistory" element={<SearchHistory />} />
+					<Route path="/notification" element={<UserNotification />} />
 					<Route path="/ongoingorder/:guid" element={<OngoingOrderManagement />} />
 					<Route path="/completedorder/:guid" element={<CompleteOrderManagement />} />
 					<Route path="/refund/:guid" element={<Refund cartFullResponse={cartFullResponse} />} />

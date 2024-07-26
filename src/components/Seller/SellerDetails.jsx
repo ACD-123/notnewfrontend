@@ -173,11 +173,11 @@ const SellerDetails = () => {
             </div>
             <div className='seller-callto-actions'>
               <Link to={`/sellershop/${shopGuid.guid}`}><button>Visit Seller Shop</button></Link>
-              <Link>
-                {shopData.is_favourite === true ? (
+              <div>
+                {shopData.is_favourite === true ? 
                   <button onClick={() => addToFavorites(shopGuidSave)}>Un Save this seller</button>
-                ) : (
-                  token === null ?
+                 : 
+                 (token === null ?
                     <button
                       onClick={() => {
                         navigate(`/signup`);
@@ -188,16 +188,16 @@ const SellerDetails = () => {
                     <button onClick={() => addToFavorites(shopGuidSave)} className='saveseller'>Save this seller</button>
 
                 )}
-              </Link>
+              </div>
               {token === null ?
-                <Link><button
+                <div><button
                   onClick={() => {
                     navigate(`/signup`);
                     localStorage.setItem('redirectionPage', pathname)
                   }}
-                  className='messageseller'>Message seller</button></Link>
+                  className='messageseller'>Message seller</button></div>
                 :
-                <Link><button onClick={() => handleDropdownItemClick('componentI')} className='messageseller'>Message seller</button></Link>
+                <div><button onClick={() => handleDropdownItemClick('componentI')} className='messageseller'>Message seller</button></div>
               }
             </div>
           </div>

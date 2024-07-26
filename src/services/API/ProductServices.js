@@ -50,6 +50,13 @@ function isFavorite(data) {
   })
 }
 
+function getNotification(user_id , type , size , page) {
+  return request({
+    url: `${baseApi}notifications/user-notification?user_id=${user_id}&type=${type}&page=${page}&page_size=${size}`,
+    method: 'GET',
+  })
+}
+
 function addCouponeCode(data) {
   return request({
     url: `${baseApi}cart/applyCoupon`,
@@ -478,7 +485,8 @@ const ProductServices = {
   addCouponeCode,
   addGuestCouponeCode,
   deleteCouponeCode,
-  deleteGuestCouponeCode
+  deleteGuestCouponeCode,
+  getNotification
 }
 
 export default ProductServices

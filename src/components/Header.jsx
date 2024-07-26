@@ -18,6 +18,7 @@ import HeaderArrowRightSvg from "./Shared/Svgs/HeaderArrowRightSvg";
 import Skeleton from "react-skeleton-loader";
 import NoDataFound from "./Shared/NoDataFound";
 import ProductServices from "../services/API/ProductServices";
+import { IoNotifications } from "react-icons/io5";
 const Header = ({ cartFullResponse }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
@@ -75,7 +76,7 @@ const Header = ({ cartFullResponse }) => {
     e.preventDefault();
     const user_details = getUserDetails();
     localStorage.clear();
-    window.location.href=`/`;
+    window.location.href = `/`;
   };
   useEffect(() => {
     if (isLoggedin()) {
@@ -237,6 +238,13 @@ const Header = ({ cartFullResponse }) => {
                           </div>
                         }
                       </div>
+                      {isLoggedin() &&
+                        <div className="notification" onClick={() =>{navigate('/notification')}}>
+                          <div className="notification-wrap">
+                            <IoNotifications />
+                          </div>
+                        </div>
+                      }
                       <div className="cart" onClick={() => { navigate('/cart') }}>
                         {cartFullResponse?.data?.length > 0 ?
                           <div className="cart-count">
@@ -314,7 +322,11 @@ const Header = ({ cartFullResponse }) => {
               </div>
             </div>
           </div>
-          {(search.includes('tab') || search.includes('component') || path.includes('category') && !path.includes('top-category')) ? null :
+          {(search.includes('tab') || 
+          search.includes('component') || 
+          path.includes('notification') || 
+          path.includes('category') && 
+          !path.includes('top-category')) ? null :
             <div className="header-wrap-bottom">
               <div className="container">
                 <div className="row">

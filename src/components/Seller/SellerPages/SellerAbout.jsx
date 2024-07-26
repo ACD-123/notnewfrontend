@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import SellerServices from "../../../services/API/SellerServices";
 import { Spinner } from "react-bootstrap";
+import LoadingComponents from "../../Shared/LoadingComponents";
+import { MdOutlineFlag, MdOutlineReportOff } from "react-icons/md";
+import { AiOutlineLike , AiOutlineDislike } from "react-icons/ai";
 
 const sellersData = [
   { id: 1, name: "Seller 1", joinedSince: "2022-05-10", location: "New York" },
@@ -18,60 +21,64 @@ const SellerAbout = () => {
   const getAbout = () => {
     SellerServices.getShopDetailAbout(id)
       .then((res) => {
-        console.log('About',res.data);
+        console.log('About', res.data);
         setDetails(res.data);
         setIsLoading(false);
-        // let tags = JSON.parse(res.data.tags);
-        // let allTags = [];
-        // {
-        //   tags.map((tag, index) => allTags.push(tag.tag));
-        // }
-        // setTags(allTags);
       })
       .finally(() => {
-        // Set isLoading to false once data fetching is complete
         setIsLoading(false);
       });
   };
-  // Mock data for products (replace this with your actual data)
   useEffect(() => {
     getAbout();
-    // getTrending();
   }, []);
   return (
     <>
-    {isLoading ? ( // Render loader if isLoading is true
-        <div className="loader-container text-center">
-          <Spinner animation="border" role="status">
-            {/* <span className="sr-only">Loading...</span> */}
-          </Spinner>
-        </div>
+      {isLoading ? (
+        <LoadingComponents />
       ) : (
         <>
-      <div className="row">
-        <h3>About us</h3>
-        <p>
-          {details.description}
-        </p>
-        <br/>
-        <h3>Email</h3>
-        <p>
-          {details.email}
-        </p>
-      </div>
-      <div className="seller-joining-details">
-        {/* {sellersData.map((seller) => ( */}
-          <div className="row">
-            <ul>
-              <li>Seller: <span>{details.name}</span></li>
-              <li>Joined Since: <span>{details.joined}</span></li>
-              <li>Location: <span>{details.location}</span></li>
-              <li>Phone: <span>{details.phone}</span></li>
-            </ul>
+          <div className="seller-about-section">
+            <div className="seller-about-section-1">
+              <p>
+                {details.description}
+              </p>
+              <button>Report
+                <MdOutlineFlag />
+              </button>
+            </div>
+            <div className="seller-about-section-2">
+              <ul>
+                <li>Seller:{details.name}</li>
+                <li>Location:{details.location}</li>
+                <li>Phone:{details.phone}</li>
+                <li>Joined since:{details.joined}</li>
+              </ul>
+            </div>
+            <div className="seller-about-section-3">
+              <button>Contact</button>
+            </div>
+            <div className="seller-about-section-4">
+              <h2>Our Top Related Seller</h2>
+              <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
+            </div>
+            <div className="seller-about-section-5">
+              <p>Do you like our store experience?</p>
+              <ul>
+                <li>
+                  <div>
+                  <AiOutlineLike />
+                  </div>
+                </li>
+                <li>
+                  <div>
+                  <AiOutlineDislike />
+                  </div>
+                </li>
+              </ul>
+            </div>
           </div>
-        {/* ))} */}
-      </div>
-      </>
+        </>
       )}
     </>
   );

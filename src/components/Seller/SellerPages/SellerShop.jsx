@@ -10,86 +10,43 @@ import SellerAbout from "./SellerAbout";
 import SellerFeedbackNew from "./SellerFeedBackNew";
 import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
 
-const SellerShop = ({cartFullResponse}) => {
+const SellerShop = ({ cartFullResponse }) => {
   const [activeTab, setActiveTab] = useState("seller1");
+  const [tab, setTab] = useState(0);
   const [shopdata, setShopData] = useState([]);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
-console.log('id',id)
-  
+
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
-  
+
   return (
     <>
-      {/* HEADER */}
-      <Header cartFullResponse={cartFullResponse}/>
-      {/* HEADER */}
+      <Header cartFullResponse={cartFullResponse} />
       <section id="sellershop">
         <div className="container">
           <div className="row">
-            <SellerProfileDetails />
+            <SellerProfileDetails id={id} />
           </div>
           <div className="row">
-            <div className="category-shop-about">
-              <div
-                className="main-dasboard-tabs seller-shop">
-                {/* <div className="whatyouthink">
-                  <Search />
-                </div> */}
-                <div className="tab-buttons">
-                  <button
-                    onClick={() => handleTabClick("seller1")}
-                    className={activeTab === "seller1" ? "active" : ""}
-                  >
-                    <img src={Nav} /> Products
-                  </button>
-                  {/* <button
-                    onClick={() => handleTabClick("seller2")}
-                    className={activeTab === "seller2" ? "active" : ""}
-                  >
-                    Shop
-                  </button> */}
-                  <button
-                    onClick={() => handleTabClick("seller3")}
-                    className={activeTab === "seller3" ? "active" : ""}
-                  >
-                    About
-                  </button>
-                  <button
-                    onClick={() => handleTabClick("seller4")}
-                    className={activeTab === "seller4" ? "active" : ""}
-                  >
-                    Feedback
-                  </button>
-                </div>
-                <div className="tab-content">
-                  {activeTab === "seller1" && (
-                    <div>
-                      <SellerCategories />
-                    </div>
-                  )}
-                  {/* {activeTab === "seller2" && (
-                    <div>
-                      <SellerCategoryShop />
-                    </div>
-                  )} */}
-                  {activeTab === "seller3" && (
-                    <div>
-                      <SellerAbout />
-                    </div>
-                  )}
-                  {activeTab === 'seller4' && <div><SellerFeedbackNew /></div>}
-                </div>
+            <div className="tab-buttons">
+              <div className="t-b-b">
+                <button className={`${tab === 0 ? "active" : ''}`} onClick={() =>{setTab(0)}}>Shop</button>
+                <button className={`${tab === 1 ? "active" : ''}`} onClick={() =>{setTab(1)}}>About Us</button>
+                <button className={`${tab === 2 ? "active" : ''}`} onClick={() =>{setTab(2)}}>FeedBack</button>
               </div>
+              <div className="t-b-w">{tab === 0 ?"Shop" : tab === 1 ? "About Us" : "FeedBack"}</div>
             </div>
+          </div>
+          <div className="row">
+            {tab === 0 && <SellerCategories />}
+            {tab === 1 && <SellerAbout />}
+            {tab === 2 && <SellerFeedbackNew />}
           </div>
         </div>
       </section>
-      {/* FOOTER */}
       <Footer />
-      {/* FOOTER */}
     </>
   );
 };

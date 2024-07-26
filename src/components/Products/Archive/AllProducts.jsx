@@ -28,7 +28,9 @@ const PageNumbers = ({
   priceRangeMin,
   priceRangeMax,
   pageSize,
-  products }) => {
+  products,
+  usedCondition,
+  underage }) => {
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
@@ -47,7 +49,9 @@ const PageNumbers = ({
                 priceRangeMin,
                 priceRangeMax,
                 pageSize,
-                number)
+                number,
+                usedCondition,
+                underage)
             }}>
             {number}
           </li>
@@ -57,7 +61,7 @@ const PageNumbers = ({
   );
 };
 
-const AllProducts = ({cartFullResponse}) => {
+const AllProducts = ({ cartFullResponse }) => {
   const [categoryProducts, setCategoryProducts] = useState([]);
   const [categoryAttributes, setCategoryAttributes] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -74,24 +78,38 @@ const AllProducts = ({cartFullResponse}) => {
   const [selectedRange, setSelectedRange] = useState([0, 0]);
   const productCondition = [
     { value: "1", label: "BrandNew" },
-    { value: "2", label: "Used" },
-    { value: "3", label: "Refurbished" },
-    { value: "4", label: "Vintage" },
-    { value: "5", label: "All Condition" }
+    { value: "2", label: "Used" }
+    // { value: "3", label: "Refurbished" },
+    // { value: "4", label: "Vintage" },
+    // { value: "5", label: "All Condition" }
+  ];
+
+  const productUserCondition = [
+    { value: 1, label: "Brand Used" },
+    { value: 2, label: "Good" },
+    { value: 3, label: "Fair" },
+    { value: 4, label: "Acceptable" }
+  ];
+
+  const underage = [
+    { value: 0, label: "Yes" },
+    { value: 1, label: "No" }
   ];
   const [selectedProductCondition, setSelectedProductCondition] = useState(null)
+  const [selectedUsedProductCondition, setSelectedUsedProductCondition] = useState(null)
+  const [selectedUnderage, setSelectedUnderage] = useState(null)
 
   const handleSliderChange = (value) => {
     setSelectedRange(value)
   };
 
-  const getFilterProducts = (user_id, category, brand, condition, attribute, min_price, max_price, page_size, page) => {
+  const getFilterProducts = (user_id, category, brand, condition, attribute, min_price, max_price, page_size, page , usedCondition , underage) => {
     if (Loading) {
 
     } else {
       setLoading(true)
     }
-    HomeService.getFilterProducts(user_id, category, brand, condition, attribute, min_price, max_price, page_size, page)
+    HomeService.getFilterProducts(user_id, category, brand, condition, attribute, min_price, max_price, page_size, page , usedCondition , underage)
       .then((response) => {
         setProducts(response?.data)
         setLoading(false)
@@ -170,7 +188,9 @@ const AllProducts = ({cartFullResponse}) => {
           0,
           max,
           pageSize,
-          1)
+          1,
+          selectedUsedProductCondition?.label,
+          selectedUnderage?.value)
 
       })
       .catch((e) => {
@@ -194,7 +214,10 @@ const AllProducts = ({cartFullResponse}) => {
       selectedRange[0],
       selectedRange[1],
       pageSize,
-      1)
+      1,
+      selectedUsedProductCondition?.label,
+      selectedUnderage?.value
+    )
     setSelectedCategories(data);
     getCategoryAttributes(data.value)
     Category.productAttributes(data.value)
@@ -229,7 +252,9 @@ const AllProducts = ({cartFullResponse}) => {
       selectedRange[0],
       selectedRange[1],
       pageSize,
-      1
+      1,
+      selectedUsedProductCondition?.label,
+      selectedUnderage?.value
     )
     setSelectedBrands(data)
   }
@@ -244,9 +269,45 @@ const AllProducts = ({cartFullResponse}) => {
       selectedRange[0],
       selectedRange[1],
       pageSize,
-      1
+      1,
+      selectedUsedProductCondition?.label,
+      selectedUnderage?.value
     )
     setSelectedProductCondition(data)
+  }
+
+  const handelUsedCondtionChange = (data) => {
+    getFilterProducts(
+      loggedInUser?.id,
+      selectedCategories?.value,
+      selectedBrands?.value,
+      selectedProductCondition?.label,
+      categoryAttributes,
+      selectedRange[0],
+      selectedRange[1],
+      pageSize,
+      1,
+      data?.label,
+      selectedUnderage?.value
+    )
+    setSelectedUsedProductCondition(data)
+  }
+
+  const handelUnderage = (data) => {
+    getFilterProducts(
+      loggedInUser?.id,
+      selectedCategories?.value,
+      selectedBrands?.value,
+      selectedProductCondition?.label,
+      categoryAttributes,
+      selectedRange[0],
+      selectedRange[1],
+      pageSize,
+      1,
+      selectedUsedProductCondition?.label,
+      data?.value
+    )
+    setSelectedUnderage(data)
   }
 
   const handelAddonsChange = (e, data, index) => {
@@ -268,7 +329,9 @@ const AllProducts = ({cartFullResponse}) => {
       selectedRange[0],
       selectedRange[1],
       pageSize,
-      1
+      1,
+      selectedUsedProductCondition?.label,
+      selectedUnderage?.value
     )
     setCategoryAttributes(updatedArray);
   }
@@ -281,7 +344,7 @@ const AllProducts = ({cartFullResponse}) => {
 
   return (
     <>
-      <Header cartFullResponse={cartFullResponse}/>
+      <Header cartFullResponse={cartFullResponse} />
       <div className="category-page">
         <div className="category-page-wrap">
           <div className="container">
@@ -353,6 +416,37 @@ const AllProducts = ({cartFullResponse}) => {
                     />
                   </div>
                 </div>
+                {selectedProductCondition?.label === "Used" &&
+                  <div className="p-p">
+                    <div className="p-p-v-a">
+                      <div className="v">Used Condition</div>
+                      <div className="a"></div>
+                    </div>
+                    <div className="p-p-b-v">
+                      <Select
+                        defaultValue={productUserCondition?.find(option => option?.value === selectedUsedProductCondition?.value)}
+                        value={productUserCondition?.find(option => option?.value === selectedUsedProductCondition?.value)}
+                        onChange={handelUsedCondtionChange}
+                        options={productUserCondition}
+                        placeholder={'Select Used Condition'}
+                      />
+                    </div>
+                  </div>
+                }
+                <div className="p-p">
+                  <div className="p-p-v-a">
+                    <div className="v">Undarage</div>
+                    <div className="a"></div>
+                  </div>
+                  <div className="p-p-b-v">
+                    <Select
+                      defaultValue={selectedUnderage}
+                      onChange={handelUnderage}
+                      options={underage}
+                      placeholder={'Select Underage'}
+                    />
+                  </div>
+                </div>
                 <div className="p-p">
                   <div className="p-p-v-a">
                     <div className="v">Price</div>
@@ -382,23 +476,25 @@ const AllProducts = ({cartFullResponse}) => {
                   </div>
                 </div>
                 {+selectedRange[0] > 0 || +selectedRange[1] < maxprice ?
-                <div className="p-p-f-b">
-                  <button
-                  onClick={() => {
-                    getFilterProducts(
-                      loggedInUser?.id,
-                      selectedCategories?.value,
-                      selectedBrands?.value,
-                      selectedProductCondition?.label,
-                      categoryAttributes,
-                      selectedRange[0],
-                      selectedRange[1],
-                      pageSize,
-                      1)
-                  }}
-                  >Filter</button>
-                </div>
-                : null
+                  <div className="p-p-f-b">
+                    <button
+                      onClick={() => {
+                        getFilterProducts(
+                          loggedInUser?.id,
+                          selectedCategories?.value,
+                          selectedBrands?.value,
+                          selectedProductCondition?.label,
+                          categoryAttributes,
+                          selectedRange[0],
+                          selectedRange[1],
+                          pageSize,
+                          1,
+                          selectedUsedProductCondition?.label,
+                          selectedUnderage?.value)
+                      }}
+                    >Filter</button>
+                  </div>
+                  : null
                 }
               </div>
               <div className="d-p-r">
@@ -461,7 +557,9 @@ const AllProducts = ({cartFullResponse}) => {
                           selectedRange[0],
                           selectedRange[1],
                           pageSize,
-                          (+products?.pagination?.page) - 1)
+                          (+products?.pagination?.page) - 1,
+                          selectedUsedProductCondition?.label,
+                          selectedUnderage?.value)
                       }}
                     >Previous</div>
                     {products?.pagination?.total_pages > 10 ?
@@ -478,7 +576,9 @@ const AllProducts = ({cartFullResponse}) => {
                                 selectedRange[0],
                                 selectedRange[1],
                                 pageSize,
-                                1)
+                                1,
+                                selectedUsedProductCondition?.label,
+                                selectedUnderage?.value)
                             }}
                           >1</li>
                           <li className={`${(+products?.pagination?.page) === 2 ? 'active' : ''}`}
@@ -492,7 +592,9 @@ const AllProducts = ({cartFullResponse}) => {
                                 selectedRange[0],
                                 selectedRange[1],
                                 pageSize,
-                                2)
+                                2,
+                                selectedUsedProductCondition?.label,
+                                selectedUnderage?.value)
                             }}
                           >2</li>
                           <li className={`${(+products?.pagination?.page) === 3 ? 'active' : ''}`}
@@ -506,7 +608,9 @@ const AllProducts = ({cartFullResponse}) => {
                                 selectedRange[0],
                                 selectedRange[1],
                                 pageSize,
-                                3)
+                                3,
+                                selectedUsedProductCondition?.label,
+                                selectedUnderage?.value)
                             }}
                           >3</li>
                           <li>
@@ -514,34 +618,6 @@ const AllProducts = ({cartFullResponse}) => {
                               <path d="M0.39853 3V0.202939H2.61842V3H0.39853ZM5.38461 3V0.202939H7.6045V3H5.38461ZM10.3707 3V0.202939H12.5906V3H10.3707ZM15.3568 3V0.202939H17.5767V3H15.3568ZM20.3429 3V0.202939H22.5627V3H20.3429ZM25.3289 3V0.202939H27.5488V3H25.3289ZM30.315 3V0.202939H32.5349V3H30.315Z" fill="#A7A7A7" />
                             </svg>
                           </li>
-                          {/* <li className={`${(+products?.pagination?.page) === products?.pagination?.total_pages - 2 ? 'active' : ''}`}
-                            onClick={() => {
-                              getFilterProducts(
-                                loggedInUser?.id,
-                                selectedCategories?.value,
-                                selectedBrands?.value,
-                                selectedProductCondition?.label,
-                                categoryAttributes,
-                                selectedRange[0],
-                                selectedRange[1],
-                                pageSize,
-                                products?.pagination?.total_pages - 2)
-                            }}
-                          >{products?.pagination?.total_pages - 2}</li>
-                          <li className={`${(+products?.pagination?.page) === products?.pagination?.total_pages - 1 ? 'active' : ''}`}
-                            onClick={() => {
-                              getFilterProducts(
-                                loggedInUser?.id,
-                                selectedCategories?.value,
-                                selectedBrands?.value,
-                                selectedProductCondition?.label,
-                                categoryAttributes,
-                                selectedRange[0],
-                                selectedRange[1],
-                                pageSize,
-                                products?.pagination?.total_pages - 1)
-                            }}
-                          >{products?.pagination?.total_pages - 1}</li> */}
                           <li className={`${(+products?.pagination?.page) === products?.pagination?.total_pages ? 'active' : ''}`}
                             onClick={() => {
                               getFilterProducts(
@@ -553,7 +629,9 @@ const AllProducts = ({cartFullResponse}) => {
                                 selectedRange[0],
                                 selectedRange[1],
                                 pageSize,
-                                products?.pagination?.total_pages)
+                                products?.pagination?.total_pages,
+                                selectedUsedProductCondition?.label,
+                                selectedUnderage?.value)
                             }}
                           >{products?.pagination?.total_pages}</li>
                         </ul>
@@ -571,6 +649,8 @@ const AllProducts = ({cartFullResponse}) => {
                         priceRangeMax={priceRange.max}
                         pageSize={pageSize}
                         products={products}
+                        usedCondition={selectedUsedProductCondition?.label}
+                        underage={selectedUnderage?.value}
                       />
                     }
                     <div className="next-page"
@@ -585,7 +665,9 @@ const AllProducts = ({cartFullResponse}) => {
                           priceRange.min,
                           priceRange.max,
                           pageSize,
-                          (+products?.pagination?.page) + 1)
+                          (+products?.pagination?.page) + 1,
+                          selectedUsedProductCondition?.label,
+                          selectedUnderage?.value)
                       }}
                     >Next</div>
                   </div>

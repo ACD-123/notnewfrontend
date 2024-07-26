@@ -39,7 +39,7 @@ function getSearchProducts(search) {
   })
 }
 
-function getFilterProducts(user_id, category, brand, condition, attribute, min_price, max_price , page_size , page) {
+function getFilterProducts(user_id, category, brand, condition, attribute, min_price, max_price , page_size , page , usedCondition , underage) {
   let attributes = [];
   for (let i = 0; i < attribute?.length; i++) {
     // for (let j = 0; j < attribute[i].selectToSend.length; j++) {
@@ -56,6 +56,8 @@ function getFilterProducts(user_id, category, brand, condition, attribute, min_p
     &max_price=${max_price}
     &page_size=${page_size}
     &page=${page}
+    &used_condition=${usedCondition}
+    &underage=${underage}
     `
   })
 }

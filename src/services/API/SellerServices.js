@@ -91,9 +91,9 @@ function setBank(data) {
       method: 'GET',
     })
   }
-  function getShopDetailProducts(guid) {
+  function getShopDetailProducts(guid , search) {
     return request({
-      url: `${baseUrl}seller/getShopDetailProducts/${guid}`, // Modify the endpoint to include the GUID
+      url: `${baseUrl}seller/getShopDetailProducts/${guid}?search_key=${search}`, // Modify the endpoint to include the GUID
       method: 'GET',
     })
   }
