@@ -192,7 +192,7 @@ const SignUp = () => {
           }
         })
         .catch((error) => {
-          if (e.response.status == "409") {
+          if (error.response.status == "409") {
             toast.error("Email Already Exists");
             // toast.error(e.response?.data.message);
           } else {
