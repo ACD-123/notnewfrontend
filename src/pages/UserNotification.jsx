@@ -17,14 +17,14 @@ export const UserNotification = () => {
                         <div className="row">
                             <div className="col-lg-12">
                                 {/* <div className="title">Notifications</div> */}
-                                <div class="tab-buttons">
-                                    <div class="t-b-b">
-                                        <button class={`${tab === 0 ? 'active' : ''}`} onClick={() => { setTab(0) }}>Important</button>
-                                        <button class={`${tab === 1 ? 'active' : ''}`} onClick={() => { setTab(1) }}>Selling</button>
-                                        <button class={`${tab === 2 ? 'active' : ''}`} onClick={() => { setTab(2) }}>Auctions</button>
-                                        <button class={`${tab === 3 ? 'active' : ''}`} onClick={() => { setTab(3) }}>Buying</button>
+                                <div className="tab-buttons">
+                                    <div className="t-b-b">
+                                        <button className={`${tab === 0 ? 'active' : ''}`} onClick={() => { setTab(0) }}>Important</button>
+                                        <button className={`${tab === 1 ? 'active' : ''}`} onClick={() => { setTab(1) }}>Selling</button>
+                                        <button className={`${tab === 2 ? 'active' : ''}`} onClick={() => { setTab(2) }}>Auctions</button>
+                                        <button className={`${tab === 3 ? 'active' : ''}`} onClick={() => { setTab(3) }}>Buying</button>
                                     </div>
-                                    <div class="t-b-w">Notifications</div>
+                                    <div className="t-b-w">Notifications</div>
                                 </div>
                                 {tab === 0 && <ImportentNotification />}
                                 {tab === 1 && <SellingNotification />}

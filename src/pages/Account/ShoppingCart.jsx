@@ -38,12 +38,12 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest }) =>
   const getCart = () => {
     CartServices.self()
       .then((res) => {
-        console.log(res?.data[0]?.products?.media?.length, 'resres');
         setCouponeCode(res?.coupon)
         setCart(res?.data);
         setCartFullResponse(res)
         setIsLoading(false);
       }).catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       })
   };
@@ -52,12 +52,12 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest }) =>
     const guest_user_id = localStorage.getItem('guest_user_id');
     CartServices.selfGuest(guest_user_id)
       .then((res) => {
-        console.log(res?.data[0]?.products?.media?.length, 'resres');
         setCouponeCode(res?.coupon)
         setCart(res?.data);
         setCartFullResponse(res)
         setIsLoading(false);
       }).catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       })
   };
@@ -158,7 +158,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest }) =>
           getCartGuest()
           getCartCountGuest()
         }).catch((error) => {
-          toast.error(error.response.data.message);
+          toast.error(error?.response?.data?.message);
         });
     } else {
       CartServices.remove(req)
@@ -167,7 +167,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest }) =>
           getCart()
           getCartCount()
         }).catch((error) => {
-          toast.error(error.response.data.message);
+          toast.error(error?.response?.data?.message);
         });
     }
   };
@@ -181,7 +181,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest }) =>
           getCartGuest()
           getCartCountGuest()
         }).catch((error) => {
-          toast.error(error.response.data.message);
+          toast.error(error?.response?.data?.message);
         });
     } else {
       CartServices.clearAllCart()
@@ -190,7 +190,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest }) =>
           getCart()
           getCartCount()
         }).catch((error) => {
-          toast.error(error.response.data.message);
+          toast.error(error?.response?.data?.message);
         });
     }
   };
@@ -218,7 +218,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest }) =>
             getCartGuest()
             getCartCountGuest()
           }).catch((error) => {
-            toast.error(error.response.data.message)
+            toast.error(error?.response?.data?.message)
           })
       }
     } else {
@@ -228,7 +228,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest }) =>
             getCart()
             getCartCount()
           }).catch((error) => {
-            toast.error(error.response.data.message)
+            toast.error(error?.response?.data?.message)
           })
       }
     }
@@ -289,21 +289,21 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest }) =>
                                 <div className="p-i-2-w">
                                   <div className="p-i-2-w-r">
                                     <div className="price">
-                                      <div class="input-group">
-                                        <div class="input-group-prepend">
-                                          <button class="btn" type="button" onClick={() => { updateCartQuantity(data.quantity - 1, data.id, data) }}>
+                                      <div className="input-group">
+                                        <div className="input-group-prepend">
+                                          <button className="btn" type="button" onClick={() => { updateCartQuantity(data.quantity - 1, data.id, data) }}>
                                             -
                                           </button>
                                         </div>
                                         <input
                                           type="text"
-                                          class="form-control"
+                                          className="form-control"
                                           value={data.quantity}
                                           readOnly
                                         // onChange={handleQuantity}
                                         />
-                                        <div class="input-group-prepend">
-                                          <button class="btn" type="button" onClick={() => { updateCartQuantity(data.quantity + 1, data.id, data) }}>
+                                        <div className="input-group-prepend">
+                                          <button className="btn" type="button" onClick={() => { updateCartQuantity(data.quantity + 1, data.id, data) }}>
                                             +
                                           </button>
                                         </div>

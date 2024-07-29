@@ -26,8 +26,8 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
         setCompletedOrders(response?.data);
         setIsLoading(false);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       });
   };
@@ -59,8 +59,8 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
         }
         setPendingOrderAttributes(tempArr)
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       });
   };
@@ -69,7 +69,6 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
     e.preventDefault();
     setSelectedIndex(i);
     setInputError(true)
-    console.log(description[`description${i}`], 'description[`description${i}`]');
     if (description[`description${i}`] != "") {
       OrderServices.customerOderReview({
         product_id: id,
@@ -84,8 +83,8 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
           toast.success(response.data);
           setReviewStar(0)
         })
-        .catch((e) => {
-          toast.error(e.message);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
         });
     }
   }
@@ -110,11 +109,9 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
         attributes: JSON.stringify(tempArr)
       }]))
         .then((response) => {
-          console.log(response?.message, 'dasdadasd');
           toast.success(response?.message);
         })
         .catch((error) => {
-          // console.log(error?.response?.data?.message , 'dasdadasd');
           toast.error(error?.response?.data?.message);
         });
 
@@ -133,7 +130,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
               <div className="p-o-m-w-l">
                 {completedOders?.map((data, index) => {
                   return (
-                    <ul>
+                    <ul key={index}>
                       <li>
                         <div className="p-o-m-w-l-l">
                           <div className="p-o-m-w-l-l-l">
@@ -254,7 +251,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
               <div className="d-4-1">
                 {pendingOrderDetail?.products?.map((data, index) => {
                   return (
-                    <div className="d-4-1-w">
+                    <div className="d-4-1-w" key={index}>
                       <div className="d-4-1-l">
                         <img src={data?.media?.[0]?.name} alt="Product" />
                       </div>

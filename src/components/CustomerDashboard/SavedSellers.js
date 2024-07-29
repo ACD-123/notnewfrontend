@@ -25,21 +25,18 @@ const SavedSellers = () => {
   const [shopData, setShopData] = useState([]);
   const [favData, setFavData] = useState([]);
 
-// console.log(saveSeller);
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
-        console.log("loginsaved", response.id);
         setUserDetails(response);
         setUser(response.id);
-        console.log('user all detail',response.id);
         localStorage.setItem("user_details", JSON.parse(response));
         setIsLoading(false); // Set isLoading to false when data is fetched
 
       })
-      .catch((e) => {
-        console.log("error", e);
-        // toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
+        // toast.error(error?.response?.data?.message)
         setIsLoading(false); // Set isLoading to false when data is fetched
 
       });
@@ -51,11 +48,10 @@ const SavedSellers = () => {
           setIsLoading(false);
           setSaveSeller(response.data); // Assuming the API returns an array of saved sellers
           setSellerShop(response.data); // Assuming the API returns an array of saved sellers
-          console.log('saved sellers',response);
         })
         .catch((error) => {
           setIsLoading(false);
-          console.error('Error fetching saved sellers:', error);
+          toast.error(error?.response?.data?.message)
         });
     // }
   };
@@ -78,7 +74,7 @@ const SavedSellers = () => {
         setFavData(res.data);
       }
     } catch (error) {
-      console.error("Error adding to favorites:", error);
+      toast.error(error?.response?.data?.message)
       toast.error("Failed to add seller to favorites.");
     }
   };
@@ -95,13 +91,13 @@ const SavedSellers = () => {
   return (
     <>
       <section id="savedsellers">
-        <div class="row align-items-center">
-          <div class="col-lg-6">
+        <div className="row align-items-center">
+          <div className="col-lg-6">
             <h3>Saved sellers</h3>
             <p>{saveSeller.length} Saved sellers</p>
           </div>
-          <div class="col-lg-6">
-            <div class="sorting">
+          <div className="col-lg-6">
+            <div className="sorting">
               <button>List View</button>
               <select id="sort">
                 <option value="name">Sort by Names</option>
@@ -110,11 +106,11 @@ const SavedSellers = () => {
             </div>
           </div>
         </div>
-        <div class="row" style={{paddingTop: '10px'}}>
-          <div class="saved-profile">
+        <div className="row" style={{paddingTop: '10px'}}>
+          <div className="saved-profile">
             <div>
-              <div class="grid">
-                <div class="grid-profile row">
+              <div className="grid">
+                <div className="grid-profile row">
                 {isLoading ? ( // Render loader if isLoading is true
         <div className="loader-container text-center">
           <Spinner animation="border" role="status">
@@ -132,8 +128,8 @@ const SavedSellers = () => {
                     className="profile-innerdetails col-lg-6"
                     style={{marginBottom: '20px'}}
                   >
-                    <div class="prf-id-name" style={{marginRight: '20px'}}>
-                      <div class="profileimagesid">
+                    <div className="prf-id-name" style={{marginRight: '20px'}}>
+                      <div className="profileimagesid">
                         <img
                           src={`${BASE_URL}/${seller.seller.cover_image}`}
                           alt="Bil Smith"
@@ -142,7 +138,7 @@ const SavedSellers = () => {
                       <div>
                         <h3>{seller.seller.fullname}</h3>
                         {/* <img
-                          class="heart"
+                          className="heart"
                           src={Heart}
                           alt="Heart"
                         /> */}

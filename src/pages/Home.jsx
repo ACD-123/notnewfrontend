@@ -14,6 +14,7 @@ import HomeService from "../services/API/HomeService"; //~/services/API/AuthServ
 import TopSellingProducts from "../components/Products/TopSellingProducts";
 import HotSellingProducts from "../components/Products/HotSellingProducts";
 import HomeCategorySlider from "../components/Shared/Sliders/HomeCategorySlider";
+import { toast } from "react-toastify";
 
 const Home = ({cartFullResponse}) => {
 	const [user, setUser] = useState({});
@@ -35,8 +36,8 @@ const Home = ({cartFullResponse}) => {
 					setLoading(false)
 				}, 1000);
 			})
-			.catch((e) => {
-				console.log('error', e)
+			.catch((error) => {
+				toast.error(error?.response?.data?.message)
 			});
 	};
 

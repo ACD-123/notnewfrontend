@@ -58,20 +58,18 @@
 //     const fetchUserDetails = async () => {
 //       try {
 //         const response = await UserServices.detail();
-//         console.log("user Data:", response);
 //         setUserDetails(response);
 //       } catch (error) {
-//         console.error("Error fetching user details:", error);
+//         toast.error(error?.response?.data?.message)
 //       }
 //     };
 
 //     const fetchCheckoutData = async () => {
 //       try {
 //         const response = await CheckoutServices.self();
-//         console.log("Checkout Data:", response.data);
 //         setCheckoutData(response.data);
 //       } catch (error) {
-//         console.error("Error fetching checkout data:", error);
+//         toast.error(error?.response?.data?.message)
 //       }
 //     };
 
@@ -95,7 +93,6 @@
 
 //     setIsLoading(true);
 //     if (bidProduct) {
-//       console.log("bidProduct", JSON.parse(bidProduct));
 //       setBidCartImage(JSON.parse(bidProduct).media);
 //       setBidCart(JSON.parse(bidProduct));
 //       setQuantity(1);
@@ -157,7 +154,6 @@
 //   };
 
 //   const handleSaveLater = (e, cartId) => {
-//     console.log("cart", cartId);
 //     e.preventDefault();
 //     let data = {
 //       cart_id: cartId,
@@ -210,11 +206,11 @@
 //         <>
 //           {userDetails && (
 //             <section id="cart-details">
-//               <div class="container">
+//               <div className="container">
 //                 <h1>Checkout</h1>
-//                 <div class="row">
-//                   <div class="col-lg-8">
-//                     <div class="order-details" id="order-detailsid">
+//                 <div className="row">
+//                   <div className="col-lg-8">
+//                     <div className="order-details" id="order-detailsid">
 //                       <h3>Pay with</h3>
 //                       <h6>Credit or Debit card</h6>
 //                       <span>
@@ -225,12 +221,12 @@
 //                       {userDetails?.address ? (
 //                         <>
 //                           <p>Billing Address</p>
-//                           <span class="tabstop">{userDetails?.address}</span>
+//                           <span className="tabstop">{userDetails?.address}</span>
 //                         </>
 //                       ) : (
 //                         <></>
 //                       )}
-//                       <div class="tabs-check">
+//                       <div className="tabs-check">
 
 //                         <Elements stripe={stripePromise} options={options}>
 //                           <Stripe
@@ -252,31 +248,31 @@
 //                         </Elements>
 //                       </div>
 //                     </div>
-//                     <div class="order-details" id="order-detailsid">
+//                     <div className="order-details" id="order-detailsid">
 //                       <h3>Shipping Details</h3>
-//                       <div class="shipping-details">
+//                       <div className="shipping-details">
 //                         <table style={{ width: "100%" }}>
 //                           <tr>
-//                             <th class="boldthtotallight">Full Name :</th>
-//                             <td class="boldthtotallight">{userDetails.name}</td>
+//                             <th className="boldthtotallight">Full Name :</th>
+//                             <td className="boldthtotallight">{userDetails.name}</td>
 //                           </tr>
 //                           <tr>
-//                             <th class="boldthtotallight">Phone :</th>
+//                             <th className="boldthtotallight">Phone :</th>
 //                             <td>{userDetails.phone}</td>
 //                           </tr>
 //                           <tr>
-//                             <th class="boldthtotallight">Address :</th>
+//                             <th className="boldthtotallight">Address :</th>
 //                             {changeAdds ? (
 //                               <>
 //                                 <td>
 //                                   <textarea
-//                                     class="form-control"
+//                                     className="form-control"
 //                                     onChange={handleChngeAdd}
 //                                   ></textarea>
 //                                 </td>
 //                                 <td>
 //                                   <p
-//                                     class="gradienttextcolor"
+//                                     className="gradienttextcolor"
 //                                     style={{ cursor: "pointer" }}
 //                                     onClick={(e) => changeAddress(e, false)}
 //                                   >
@@ -291,7 +287,7 @@
 //                                 </td>
 //                                 <td>
 //                                   <p
-//                                     class="gradienttextcolor"
+//                                     className="gradienttextcolor"
 //                                     style={{ cursor: "pointer" }}
 //                                     onClick={(e) => changeAddress(e, true)}
 //                                   >
@@ -304,12 +300,12 @@
 //                           {changeAdds ? (
 //                             <>
 //                               <tr>
-//                                 <th class="boldthtotallight">Zip :</th>
+//                                 <th className="boldthtotallight">Zip :</th>
 //                                 <td>
 //                                   <input
 //                                     type="text"
 //                                     name="zip"
-//                                     class="form-control"
+//                                     className="form-control"
 //                                     onChange={handleZip}
 //                                     id="zip"
 //                                   />
@@ -329,7 +325,6 @@
 //                           <h3 id="storetitle">{order.storename}</h3>
 //                           {order.products.map((product, productIndex) => {
 //                             const isSaved = cartids.includes(product.cartid);
-//                             console.log("cartid", product.cartid);
 //                             return (
 //                               <div key={productIndex} className="order-details">
 //                                 <div className="row">
@@ -402,7 +397,7 @@
 //                         </div>
 //                       ))}
 //                   </div>
-//                   <div class="col-lg-4">
+//                   <div className="col-lg-4">
 //                     {cart.length > 0 ? (
 //                       <>
 //                         <div className="order-details" id="totalordervalue">
@@ -521,7 +516,7 @@ const Checkout = ({ cartFullResponse }) => {
       const response = await CheckoutServices.getCheckoutData();
       setButItNowData(response)
     } catch (error) {
-      console.error('Error fetching user details:', error);
+      toast.error(error?.response?.data?.message)
     }
   }
 
@@ -530,10 +525,9 @@ const Checkout = ({ cartFullResponse }) => {
     if (shippingData.postalCode != "" && shippingData.country != null) {
       try {
         const response = await CheckoutServices.getShippingData(shippingData.country.label, shippingData.postalCode, butItNowData?.weight, '3');
-        console.log(response?.data, 'getBuyItNowData');
         setShipping(response?.data)
       } catch (error) {
-        console.error('Error fetching user details:', error);
+        toast.error(error?.response?.data?.message)
       }
     }
   }
@@ -576,7 +570,7 @@ const Checkout = ({ cartFullResponse }) => {
       const response = await CheckoutServices.checkout(formData);
       navigate('/')
     } catch (error) {
-      console.error('Error fetching user details:', error);
+      toast.error(error?.response?.data?.message)
     }
   }
 
@@ -619,10 +613,10 @@ const Checkout = ({ cartFullResponse }) => {
     <>
       <Header cartFullResponse={cartFullResponse} />
       <section id="cart-details">
-        <div class="container">
+        <div className="container">
           <h2 className="page-title">Checkout</h2>
-          <div class="row">
-            <div class="col-lg-8">
+          <div className="row">
+            <div className="col-lg-8">
               {butItNowData?.data?.map((data, index) => {
                 return (
                   <div className="order-details" id="sectionToRemove" key={index}>
@@ -630,8 +624,8 @@ const Checkout = ({ cartFullResponse }) => {
                     <div className="c-o-s-p">
                       {data?.products?.map((product, i) => {
                         return (
-                          <div className="c-o-s-p">
-                            <div className="row" key={i}>
+                          <div className="c-o-s-p" key={i}>
+                            <div className="row">
                               <div className="col-lg-12">
                                 <div className="product-detail">
                                   <div className="product-image">
@@ -768,26 +762,26 @@ const Checkout = ({ cartFullResponse }) => {
               </div>
 
             </div>
-            <div class="col-lg-4">
-              <div class="order-details" id="totalordervalue">
+            <div className="col-lg-4">
+              <div className="order-details" id="totalordervalue">
                 <h3>Order Total</h3>
                 <table style={{ width: "100%" }}>
                   <tr>
-                    <th class="boldthtotal">Subtotal ( {butItNowData?.data?.[0]?.products?.length} item )</th>
-                    <td class="boldthtotal">${butItNowData?.total}</td>
+                    <th className="boldthtotal">Subtotal ( {butItNowData?.data?.[0]?.products?.length} item )</th>
+                    <td className="boldthtotal">${butItNowData?.total}</td>
                   </tr>
                   <tr>
-                    <th class="boldthtotal">Shipping</th>
-                    <td class="boldthtotal">${shipping?.shipping_amount?.amount ? shipping?.shipping_amount?.amount : 0}</td>
+                    <th className="boldthtotal">Shipping</th>
+                    <td className="boldthtotal">${shipping?.shipping_amount?.amount ? shipping?.shipping_amount?.amount : 0}</td>
                   </tr>
                   <tr>
-                    <th class="totalthtextbold">Order Total</th>
-                    <td class="totalthtextbold">${butItNowData?.total}</td>
+                    <th className="totalthtextbold">Order Total</th>
+                    <td className="totalthtextbold">${butItNowData?.total}</td>
                   </tr>
                 </table>
-                <div class="imgtoop">
+                <div className="imgtoop">
                   <img src={Payment} alt="" />
-                  <button class="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() => { checkout() }}>
+                  <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() => { checkout() }}>
                     Confirm & Pay
                   </button>
                 </div>

@@ -35,7 +35,7 @@ const CheckoutBuyNow = ({ cartFullResponse }) => {
       const response = await CheckoutServices.getBuyItNowData();
       setButItNowData(response)
     } catch (error) {
-      console.error('Error fetching user details:', error);
+      toast.error(error?.response?.data?.message)
     }
   }
 
@@ -44,10 +44,9 @@ const CheckoutBuyNow = ({ cartFullResponse }) => {
     if (shippingData.postalCode != "" && shippingData.country != null) {
       try {
         const response = await CheckoutServices.getShippingData(shippingData.country.label, shippingData.postalCode, butItNowData?.weight, '3');
-        console.log(response?.data, 'getBuyItNowData');
         setShipping(response?.data)
       } catch (error) {
-        console.error('Error fetching user details:', error);
+        toast.error(error?.response?.data?.message)
       }
     }
   }
@@ -79,7 +78,7 @@ const CheckoutBuyNow = ({ cartFullResponse }) => {
       const response = await CheckoutServices.checkoutButItNow(formData);
       navigate('/')
     } catch (error) {
-      console.error('Error fetching user details:', error);
+      toast.error(error?.response?.data?.message)
     }
   }
 
@@ -122,10 +121,10 @@ const CheckoutBuyNow = ({ cartFullResponse }) => {
     <>
       <Header cartFullResponse={cartFullResponse} />
       <section id="cart-details">
-        <div class="container">
+        <div className="container">
           <h2 className="page-title">Buy Now Checkout</h2>
-          <div class="row">
-            <div class="col-lg-8">
+          <div className="row">
+            <div className="col-lg-8">
               <div className="order-details" id="sectionToRemove">
                 <div><h3 id="storetitle">Seller Shop : {butItNowData?.[0]?.storename}</h3></div>
                 <div className="row">
@@ -260,26 +259,26 @@ const CheckoutBuyNow = ({ cartFullResponse }) => {
               </div>
 
             </div>
-            <div class="col-lg-4">
-              <div class="order-details" id="totalordervalue">
+            <div className="col-lg-4">
+              <div className="order-details" id="totalordervalue">
                 <h3>Order Total</h3>
                 <table style={{ width: "100%" }}>
                   <tr>
-                    <th class="boldthtotal">Subtotal ( 1 item )</th>
-                    <td class="boldthtotal">${butItNowData?.data?.[0]?.products?.[0]?.buynowprice}</td>
+                    <th className="boldthtotal">Subtotal ( 1 item )</th>
+                    <td className="boldthtotal">${butItNowData?.data?.[0]?.products?.[0]?.buynowprice}</td>
                   </tr>
                   <tr>
-                    <th class="boldthtotal">Shipping</th>
-                    <td class="boldthtotal">${shipping?.shipping_amount?.amount ? shipping?.shipping_amount?.amount : 0}</td>
+                    <th className="boldthtotal">Shipping</th>
+                    <td className="boldthtotal">${shipping?.shipping_amount?.amount ? shipping?.shipping_amount?.amount : 0}</td>
                   </tr>
                   <tr>
-                    <th class="totalthtextbold">Order Total</th>
-                    <td class="totalthtextbold">${butItNowData.total}</td>
+                    <th className="totalthtextbold">Order Total</th>
+                    <td className="totalthtextbold">${butItNowData.total}</td>
                   </tr>
                 </table>
-                <div class="imgtoop">
+                <div className="imgtoop">
                   <img src={Payment} alt="" />
-                  <button class="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() =>{checkoutButItNow()}}>
+                  <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() =>{checkoutButItNow()}}>
                     Confirm & Pay
                   </button>
                 </div>

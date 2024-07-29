@@ -7,6 +7,7 @@ import HomeService from '../services/API/HomeService';
 import ProductCard from '../components/Shared/Cards/ProductCard';
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 import NoDataFound from '../components/Shared/NoDataFound';
+import { toast } from 'react-toastify';
 
 const HotDeals = ({cartFullResponse}) => {
     const [hotProducts, setHotProducts] = useState([]);
@@ -15,13 +16,12 @@ const HotDeals = ({cartFullResponse}) => {
         const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
         HomeService.getTopSelling(loggedInUser?.id)
             .then((response) => {
-                console.log(response?.data, 'topseller');
                 setHotProducts(response?.data?.hot)
                 setLoader(false)
             })
-            .catch((e) => {
+            .catch((error) => {
                 setLoader(false)
-                console.log('error', e)
+                toast.error(error?.response?.data?.message)
             });
     };
 

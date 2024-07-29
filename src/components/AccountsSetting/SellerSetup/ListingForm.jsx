@@ -111,30 +111,28 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
   const fetchCategory = () => {
     Category.all()
       .then((response) => {
-        console.log(response, 'category');
         let tempCategoryArray = []
         for (let i = 0; i < response?.length; i++) {
           tempCategoryArray.push({ value: response[i].id, label: response[i].name })
         }
         setCategories(tempCategoryArray);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
   const getBrands = () => {
     HomeService.getbrands()
       .then((response) => {
-        console.log(response, 'category');
         let tempCategoryArray = []
         for (let i = 0; i < response?.length; i++) {
           tempCategoryArray.push({ value: response[i].id, label: response[i].name })
         }
         setBrands(tempCategoryArray);
       })
-      .catch((e) => {
-        console.log(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -188,7 +186,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        toast.error(error?.response?.data?.message)
         setIsLoading(false)
       });
 
@@ -219,7 +217,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(checked, 'checked');
     if (type === 'checkbox') {
       setProductManagments(prev => ({ ...prev, [name]: checked }));
     } else {
@@ -264,7 +261,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     e.preventDefault();
     setInputError(true)
     setIsFromLoading(true)
-    console.log(productManagment, 'productManagment');
     if (productManagment.file.length === 0 || productManagment.condition === "" || productManagment.attributes.length === 0 ||
       productManagment.category === null || productManagment.stockCapacity === "" || productManagment.brand_id === null ||
       productManagment.model === "" || productManagment.description === "" || productManagment.address === "" ||
@@ -308,7 +304,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     }
 
     const formData = new FormData();
-    console.log(productManagment.file, 'productManagment.file');
     productManagment.file.forEach((image_file) => {
       if (image_file?.name?.includes('http')) {
       } else {
@@ -380,7 +375,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     if (productId !== '' && productId !== null && productId !== undefined) {
       ProductServices.updateProduct(productId, formData)
         .then((res) => {
-          console.log(res, 'setAttribnutes');
           setSuccess(true)
           setProductId('')
           setPopupText('Product updated Sucessfully')
@@ -390,13 +384,12 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           setIsFromLoading(false)
         })
         .catch((error) => {
-          console.log(error);
+          toast.error(error?.response?.data?.message)
           setIsFromLoading(false)
         });
     } else {
       ProductServices.createSellerProduct(formData)
         .then((res) => {
-          console.log(res, 'setAttribnutes');
           setSuccess(true)
           setPopupText('Product Listed Sucessfully')
           setTimeout(() => {
@@ -405,8 +398,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           setIsFromLoading(false)
         })
         .catch((error) => {
-          console.log(error);
           setIsFromLoading(false)
+          toast.error(error?.response?.data?.message)
         });
 
     }
@@ -474,8 +467,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
         }))
         handelCategoryChange({ value: response?.data?.category?.id, label: response?.data?.category?.name }, response?.data?.attributes)
       })
-      .catch((e) => {
-        console.log(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -491,7 +484,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
   useEffect(() => {
     if (productId !== "") {
-      console.log(productId, 'product id found');
       getProductDetail(productId)
     }
   }, [productId])
@@ -559,15 +551,15 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                         return (
 
                           image?.name?.includes('http') ?
-                            <div className="col-lg-2">
-                              <div className="selected-images-box" key={index}>
+                            <div className="col-lg-2" key={index}>
+                              <div className="selected-images-box">
                                 <img src={image?.name} alt="" />
                                 <span onClick={() => { handleDeleteImage(index); oldImagesDelete(image?.id) }}><MdDelete /></span>
                               </div>
                             </div>
                             :
-                            <div className="col-lg-2">
-                              <div className="selected-images-box" key={index}>
+                            <div className="col-lg-2" key={index}>
+                              <div className="selected-images-box">
                                 <img src={URL.createObjectURL(image)} alt="" />
                                 <span onClick={() => { handleDeleteImage(index) }}><MdDelete /></span>
                               </div>
@@ -612,7 +604,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                     {productManagment?.attributes?.map((data, index) => {
                       return (
                         <>
-                          <div className="two-field-left">
+                          <div className="two-field-left" key={index}>
                             <label htmlFor="Price">{data?.name}</label>
                             <Select
                               // defaultValue={selected}

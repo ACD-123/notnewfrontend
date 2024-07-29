@@ -43,6 +43,7 @@ import PersonalInformation from "../pages/PersonalInformation"
 import { MoreToLove } from "../pages/MoreToLove"
 import CartServices from "../services/API/CartServices"
 import { UserNotification } from "../pages/UserNotification"
+import { toast } from "react-toastify"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -59,8 +60,8 @@ const PublicRoutes = () => {
 		CartServices.self()
 			.then((res) => {
 				setCartFullResponse(res)
-				console.log(res, 'cartFullResponse?.data?.length');
 			}).catch((error) => {
+				toast.error(error?.response?.data?.message)
 			})
 	};
 
@@ -69,8 +70,8 @@ const PublicRoutes = () => {
 		CartServices.selfGuest(guest_user_id)
 			.then((res) => {
 				setCartFullResponse(res)
-				console.log(res, 'cartFullResponse?.data?.length');
 			}).catch((error) => {
+				toast.error(error?.response?.data?.message)
 			})
 	};
 

@@ -15,7 +15,6 @@ const BidsOffer = () => {
   const [requestSentVisible, setRequestSentVisible] = useState({});
   
   const renderOrderBlock = (orderData, index) => {
-    console.log('custimer bids', orderData)
     const { orderNumber, productNames, imagess, bid, max_bids, result } = "";
     const productName = orderData.product.name;
     const productGuid = orderData.product.guid;

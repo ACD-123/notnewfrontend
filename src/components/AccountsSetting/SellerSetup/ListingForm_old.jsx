@@ -146,12 +146,6 @@ const ListingForm = (props) => {
     product.shippingstart = shippingStart;
     product.shippingend = shippingEnd;
     product.shippingdurations = shippingEnd;
-
-    // Your existing code for handling the product activation goes here
-    console.log("Submitted product:", product);
-
-    // Show the popup after activating the product
-    // setShowPopup(true);
   };
   const handleShippingStartChange = (e) => {
     product.shippingstart = e.target.value;
@@ -235,23 +229,7 @@ const ListingForm = (props) => {
     product.category = e.target.value;
     setCategory(cat);
   };
-  const handleShop = (e) => {
-    product.store = e.target.value;
-    setShop(e.target.value);
-  };
-  const removeAttributes = (e, color) => {
-    e.preventDefault();
-    product.sizes?.map((attr, index) => {
-      if (color === attr.color) {
-        product.sizes.splice(index, 1);
-        const updatedSizes = [...product.sizes];
-        setProduct({ ...product, sizes: updatedSizes });
-      } else {
-        console.log("color not exists");
-      }
-      console.log("product.sizes", product.sizes);
-    });
-  };
+
   const removeTags = (e, tags) => {
     e.preventDefault();
     product.tags?.map((tag, index) => {
@@ -300,8 +278,6 @@ const handleAddAddress =()=>{
     if (name === "size" || name === "quantity" || name === "color") {
       const updatedSizes = [...product.sizes];
       updatedSizes[index][name] = value;
-      // console.log('updatedSizes', updatedSizes);
-      // setProduct({ ...product, sizes: JSON.stringify(updatedSizes) });
       setProduct({ ...product, sizes: updatedSizes });
     }else {
       setProduct({ ...product, [name]: value });
@@ -355,35 +331,6 @@ const handleAddAddress =()=>{
     } else {
       setFiles([...files, e.target.files[0]]);
     }
-
-    /**
-     * Old Logic Start
-     */
-    // const files = Array.from(e.target.files).slice(0, 5);
-    // imgArray.push(files);
-    // console.log('files', imgArray)
-    // const imageUrls = files.map((file) => URL.createObjectURL(file));
-    // setProduct({ ...product, images: files });
-    /**
-     * Old Logic Ends
-     */
-
-    // { files: [...this.state.files, ...e.target.files] }
-    // const formData = new FormData();
-    // formData.append('images', e.target.files[0]);
-    // const config = {
-    //     headers: {
-    //       'content-type': 'multipart/form-data',
-    //       'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
-    //      }
-    // }
-    // axios.post('https://notnewbackend.testingwebsitelink.com/api/products/upload', formData, config)
-    //   .then(response => {
-    //     localStorage.setItem('product_guid',response.data.product)
-    //   })
-    //   .catch(error => {
-    //       console.log(error);
-    //   });
   };
 
   const handleAddSize = () => {
@@ -408,8 +355,8 @@ const handleAddAddress =()=>{
       .then((response) => {
         setState(response);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
   const handleSubmit = (e) => {
@@ -514,7 +461,6 @@ const handleAddAddress =()=>{
         product.country= country;
         product.city= city;
         product.state= state;
-        // console.log('product', product)
         const formData = new FormData();
         product.condition = localStorage.getItem("product_condition");
         formData.append("title", product.title);
@@ -562,9 +508,6 @@ const handleAddAddress =()=>{
         files.forEach((image_file) => {
           formData.append("file[]", image_file);
         });
-        for (let pair of formData.entries()) {
-          console.log(pair[0] + ", " + pair[1]);
-        }
         const config = {
           headers: {
             "content-type": "multipart/form-data",
@@ -587,36 +530,10 @@ const handleAddAddress =()=>{
             setEnabled(false);
           })
           .catch((error) => {
-            console.log(error);
+            toast.error(error?.response?.data?.message)
           });
-        /**
-         * For Images Uploads Ends
-         */
-
-        /***
-         *
-         */
-        // ProductServices.save(product)
-        // .then((response) => {
-        //   // toast.success(response.message);
-        //   setShowPopup(true);
-        //   setIsLoading(false);
-        //   setEnabled(false);
-        //   localStorage.removeItem('product_condition');
-        //   setTimeout(() => {
-        //     props.parentCallback(null)
-        //   }, 4000);
-        // })
-        // .then(() => {
-        //   setIsLoading(false);
-        //   setEnabled(false);
-        // });
-        /***
-         *
-         */
       }
     }
-    // console.log("Submitted product:", product);
   };
 
   const handlePriceChange = (e) => {
@@ -733,8 +650,8 @@ const handleAddAddress =()=>{
       .then((response) => {
         setCategories(response);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
   const fetchCountries = () => {
@@ -742,8 +659,8 @@ const handleAddAddress =()=>{
       .then((response) => {
         setCountry(response);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
   const handleStateChange = (e) => {
@@ -752,8 +669,8 @@ const handleAddAddress =()=>{
       .then((response) => {
         setCities(response);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
   const fetchStores = () => {
@@ -763,8 +680,8 @@ const handleAddAddress =()=>{
           setShops(response.data);
         }
       })
-      .catch((e) => {
-        console.log(e)
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
   const getProduct = () => {
@@ -773,7 +690,6 @@ const handleAddAddress =()=>{
     }
     setEditProduct(true);
     ProductServices.get(props.guid).then((response) => {
-      console.log('response', response)
       setCategory(response.category_id);
       let productData = {
         store: response.shop_id,
@@ -886,8 +802,8 @@ const handleAddAddress =()=>{
         setdeliveryCompany(res.data);
       }
     })
-    .catch((e) => {
-      console.log(e.message);
+    .catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
   }
   const getBrands = () =>{
@@ -897,8 +813,8 @@ const handleAddAddress =()=>{
       //   // setdeliveryCompany(res.data);
       // }
     })
-    .catch((e) => {
-      console.log(e.message);
+    .catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
   }
   useEffect(() => {
@@ -1092,10 +1008,10 @@ const handleAddAddress =()=>{
           <>
             <h5>Product Condition</h5>
             <ul style={{ padding: "0px", margin: "0px", listStyle: "none" }}>
-              {productCondition?.map((condition) => {
+              {productCondition?.map((condition , index) => {
                 return (
                   <>
-                    <li>
+                    <li key={index}>
                       {conditions == condition.name ? (
                         <>
                           <input
@@ -1133,10 +1049,10 @@ const handleAddAddress =()=>{
             {product_condition}            
            </div> */}
             <ul style={{ padding: "0px", margin: "0px", listStyle: "none" }}>
-              {productCondition?.map((condition) => {
+              {productCondition?.map((condition , index) => {
                 return (
                   <>
-                    <li>
+                    <li key={index}>
                       {product_condition == condition.name ? (
                         <>
                           <input
@@ -1220,10 +1136,10 @@ const handleAddAddress =()=>{
             <option>Select Brands</option>
             {brands.length > 0 ? (
                 <>
-                  {brands?.map((brand) => {
+                  {brands?.map((brand , index) => {
                     return (
                       <>
-                        <option value={brand.id} key={brand.id}>{brand.name}</option>
+                        <option value={brand.id} key={index}>{brand.name}</option>
                       </>
                     );
                   })}
@@ -1242,10 +1158,10 @@ const handleAddAddress =()=>{
               <option value="">All Category</option>
               {categories.length > 0 ? (
                 <>
-                  {categories?.map((cat) => {
+                  {categories?.map((cat , index) => {
                     return (
                       <>
-                        <option value={cat.id}>{cat.name}</option>
+                        <option value={cat.id} key={index}>{cat.name}</option>
                       </>
                     );
                   })}
@@ -1693,8 +1609,8 @@ const handleAddAddress =()=>{
             >
               <option value="">Select Delivery Company</option>
               {deliveryCompany.length > 0 ?(<>
-                {deliveryCompany.map((company) => (
-                  <option key={company.name} value={company.name}>{company.name}</option>
+                {deliveryCompany.map((company , index) => (
+                  <option key={index} value={company.name}>{company.name}</option>
                 ))}
               </>):(
                 <></>
@@ -1857,8 +1773,8 @@ const handleAddAddress =()=>{
               onChange={handleReturnPaidBy}
             >
               <option value="">Select Paid By</option>
-              {paidBy.map((paid) => (
-                <option key={paid.id} value={paid.id}>
+              {paidBy.map((paid ,index) => (
+                <option key={index} value={paid.id}>
                   {paid.name}
                 </option>
               ))}

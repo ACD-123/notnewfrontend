@@ -20,8 +20,8 @@ const CustomerSellerShops = () => {
                 setIsLoading(false);
 
             })
-            .catch((e) => {
-                toast.error(e.message);
+            .catch((error) => {
+                toast.error(error?.response?.data?.message)
                 setIsLoading(false);
             });
     };
@@ -41,7 +41,7 @@ const CustomerSellerShops = () => {
                             <div className="p-o-m-w-l">
                                 {sellerShopList?.map((data, index) => {
                                     return (
-                                        <ul>
+                                        <ul key={index}>
                                             <li>
                                                 <div className="p-o-m-w-l-l">
                                                     <div className="p-o-m-w-l-l-l">

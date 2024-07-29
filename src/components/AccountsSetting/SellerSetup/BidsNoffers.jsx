@@ -86,7 +86,6 @@ const DetailedProductInfo = ({ bid, product }) => {
                     <>
                       {bid[0].totalbids?.map((bid, index) => {
                         let sno = 1;
-                        console.log('bid product', bid)
                         return (
                           <tr key={index}>
                             <td>
@@ -147,6 +146,7 @@ const BidsNoffers = () => {
         setIsLoading(false)
         setBidData(response.data)
       }).catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false)
       })
   }
@@ -217,6 +217,7 @@ const BidsNoffers = () => {
         setRemainingTimeSeconds(response?.data?.product?.auction_remainig_time)
         setAuctionDetail(response.data)
       }).catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false)
       })
   }
@@ -227,6 +228,7 @@ const BidsNoffers = () => {
         setShowAuctionDetail(false)
         getSellerBid()
       }).catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false)
       })
   }
@@ -253,7 +255,7 @@ const BidsNoffers = () => {
                     {biddata?.active?.length > 0 ?
                       biddata?.active?.map((data, index) => {
                         return (
-                          <li>
+                          <li key={index}>
                             <div className="s-n-t-s-l">
                               <img src={data?.media?.[0]?.name} alt="" srcset="" />
                             </div>
@@ -279,7 +281,7 @@ const BidsNoffers = () => {
                     {biddata?.inactive?.length > 0 ?
                       biddata?.inactive?.map((data, index) => {
                         return (
-                          <li>
+                          <li key={index}>
                             <div className="s-n-t-s-l">
                               <img src={data?.media?.[0]?.name} alt="" srcset="" />
                             </div>

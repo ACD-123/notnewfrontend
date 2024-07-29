@@ -7,6 +7,7 @@ import EditBankDetails from './EditBankDetails';
 import SellingNotifications from '../NotificationPreferences/SellingNotifications';
 import SellerServices from '../../../services/API/SellerServices';
 import { BASE_URL } from "../../../services/Constant"
+import { toast } from 'react-toastify';
 
 const ShopSetting = () => {
     const [shopDetails, setShopDetails] = useState([]);
@@ -21,7 +22,8 @@ const ShopSetting = () => {
                 setIsLoading(false);
                 setShopDetails(response?.data)
             })
-            .catch((e) => {
+            .catch((error) => {
+                toast.error(error?.response?.data?.message)
                 setIsLoading(false);
             });
     };

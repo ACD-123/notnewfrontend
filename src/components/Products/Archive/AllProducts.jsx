@@ -30,7 +30,8 @@ const PageNumbers = ({
   pageSize,
   products,
   usedCondition,
-  underage }) => {
+  underage,
+  auctioned }) => {
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
@@ -51,7 +52,8 @@ const PageNumbers = ({
                 pageSize,
                 number,
                 usedCondition,
-                underage)
+                underage,
+                auctioned)
             }}>
             {number}
           </li>
@@ -77,11 +79,8 @@ const AllProducts = ({ cartFullResponse }) => {
   const [priceRange, setPriceRange] = useState({ min: 0, max: 0 });
   const [selectedRange, setSelectedRange] = useState([0, 0]);
   const productCondition = [
-    { value: "1", label: "BrandNew" },
-    { value: "2", label: "Used" }
-    // { value: "3", label: "Refurbished" },
-    // { value: "4", label: "Vintage" },
-    // { value: "5", label: "All Condition" }
+    { value: 1, label: "BrandNew" },
+    { value: 2, label: "Used" }
   ];
 
   const productUserCondition = [
@@ -95,27 +94,32 @@ const AllProducts = ({ cartFullResponse }) => {
     { value: 0, label: "Yes" },
     { value: 1, label: "No" }
   ];
+  const sellingType = [
+    { value: 1, label: "Auction" },
+    { value: 0, label: "Sell It Now" }
+  ];
   const [selectedProductCondition, setSelectedProductCondition] = useState(null)
   const [selectedUsedProductCondition, setSelectedUsedProductCondition] = useState(null)
   const [selectedUnderage, setSelectedUnderage] = useState(null)
+  const [selectedSellingType, setSelectedSellingType] = useState(null)
 
   const handleSliderChange = (value) => {
     setSelectedRange(value)
   };
 
-  const getFilterProducts = (user_id, category, brand, condition, attribute, min_price, max_price, page_size, page , usedCondition , underage) => {
+  const getFilterProducts = (user_id, category, brand, condition, attribute, min_price, max_price, page_size, page , usedCondition , underage , auctioned) => {
     if (Loading) {
 
     } else {
       setLoading(true)
     }
-    HomeService.getFilterProducts(user_id, category, brand, condition, attribute, min_price, max_price, page_size, page , usedCondition , underage)
+    HomeService.getFilterProducts(user_id, category, brand, condition, attribute, min_price, max_price, page_size, page , usedCondition , underage , auctioned)
       .then((response) => {
         setProducts(response?.data)
         setLoading(false)
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setLoading(false)
       });
   };
@@ -129,8 +133,8 @@ const AllProducts = ({ cartFullResponse }) => {
         }
         setCategories(tempCategoryArray);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setLoading(false)
       });
   };
@@ -154,7 +158,7 @@ const AllProducts = ({ cartFullResponse }) => {
       }
       )
       .catch((error) => {
-        console.error(error.response.data.message);
+        toast.error(error?.response?.data?.message)
       });
   }
 
@@ -167,8 +171,8 @@ const AllProducts = ({ cartFullResponse }) => {
         }
         setBrands(tempBrand);
       })
-      .catch((e) => {
-        console.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -190,11 +194,13 @@ const AllProducts = ({ cartFullResponse }) => {
           pageSize,
           1,
           selectedUsedProductCondition?.label,
-          selectedUnderage?.value)
+          selectedUnderage?.value,
+          selectedSellingType?.value
+        )
 
       })
-      .catch((e) => {
-        console.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -216,7 +222,8 @@ const AllProducts = ({ cartFullResponse }) => {
       pageSize,
       1,
       selectedUsedProductCondition?.label,
-      selectedUnderage?.value
+      selectedUnderage?.value,
+      selectedSellingType?.value
     )
     setSelectedCategories(data);
     getCategoryAttributes(data.value)
@@ -236,7 +243,7 @@ const AllProducts = ({ cartFullResponse }) => {
         }
       })
       .catch((error) => {
-        console.error(error);
+        toast.error(error?.response?.data?.message)
         setLoading(false)
       });
 
@@ -254,11 +261,29 @@ const AllProducts = ({ cartFullResponse }) => {
       pageSize,
       1,
       selectedUsedProductCondition?.label,
-      selectedUnderage?.value
+      selectedUnderage?.value,
+      selectedSellingType?.value
     )
     setSelectedBrands(data)
   }
 
+  const handelSellingType = (data) => {
+    getFilterProducts(
+      loggedInUser?.id,
+      selectedCategories?.value,
+      selectedBrands?.value,
+      selectedProductCondition?.label,
+      categoryAttributes,
+      selectedRange[0],
+      selectedRange[1],
+      pageSize,
+      1,
+      selectedUsedProductCondition?.label,
+      selectedUnderage?.value,
+      data.value
+    )
+    setSelectedSellingType(data)
+  }
   const handelCondtionChange = (data) => {
     getFilterProducts(
       loggedInUser?.id,
@@ -271,7 +296,8 @@ const AllProducts = ({ cartFullResponse }) => {
       pageSize,
       1,
       selectedUsedProductCondition?.label,
-      selectedUnderage?.value
+      selectedUnderage?.value,
+      selectedSellingType?.value
     )
     setSelectedProductCondition(data)
   }
@@ -288,7 +314,8 @@ const AllProducts = ({ cartFullResponse }) => {
       pageSize,
       1,
       data?.label,
-      selectedUnderage?.value
+      selectedUnderage?.value,
+      selectedSellingType?.value
     )
     setSelectedUsedProductCondition(data)
   }
@@ -305,7 +332,8 @@ const AllProducts = ({ cartFullResponse }) => {
       pageSize,
       1,
       selectedUsedProductCondition?.label,
-      data?.value
+      data?.value,
+      selectedSellingType?.value
     )
     setSelectedUnderage(data)
   }
@@ -331,7 +359,8 @@ const AllProducts = ({ cartFullResponse }) => {
       pageSize,
       1,
       selectedUsedProductCondition?.label,
-      selectedUnderage?.value
+      selectedUnderage?.value,
+      selectedSellingType?.value
     )
     setCategoryAttributes(updatedArray);
   }
@@ -369,7 +398,7 @@ const AllProducts = ({ cartFullResponse }) => {
                 {categoryAttributes.length > 0 ?
                   (categoryAttributes?.map((data, index) => {
                     return (
-                      <div className="p-p">
+                      <div className="p-p" key={index}>
                         <div className="p-p-v-a">
                           <div className="v">{data?.name}</div>
                           <div className="a"></div>
@@ -449,6 +478,20 @@ const AllProducts = ({ cartFullResponse }) => {
                 </div>
                 <div className="p-p">
                   <div className="p-p-v-a">
+                    <div className="v">Selling Type</div>
+                    <div className="a"></div>
+                  </div>
+                  <div className="p-p-b-v">
+                    <Select
+                      defaultValue={selectedSellingType}
+                      onChange={handelSellingType}
+                      options={sellingType}
+                      placeholder={'Select Selling Type'}
+                    />
+                  </div>
+                </div>
+                <div className="p-p">
+                  <div className="p-p-v-a">
                     <div className="v">Price</div>
                     <div className="a"></div>
                   </div>
@@ -465,13 +508,17 @@ const AllProducts = ({ cartFullResponse }) => {
                   </div>
                   <div className="p-p-s-v">
                     <ul>
-                      <li>${selectedRange[0]}</li>
+                      <li>$
+                        <input type="number" value={selectedRange[0]} onChange={(e) =>{setSelectedRange([e.target.value , selectedRange[1]])}}/>
+                        </li>
                       <li>
                         <svg width="18" height="2" viewBox="0 0 18 2" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M1 1H17" stroke="#767676" stroke-linecap="round" />
                         </svg>
                       </li>
-                      <li>${selectedRange[1]}</li>
+                      <li>$
+                        <input type="number" value={selectedRange[1]} onChange={(e) =>{setSelectedRange([ selectedRange[0] , e.target.value])}}/>
+                        </li>
                     </ul>
                   </div>
                 </div>
@@ -490,7 +537,8 @@ const AllProducts = ({ cartFullResponse }) => {
                           pageSize,
                           1,
                           selectedUsedProductCondition?.label,
-                          selectedUnderage?.value)
+                          selectedUnderage?.value,
+                          selectedSellingType?.value)
                       }}
                     >Filter</button>
                   </div>
@@ -505,7 +553,7 @@ const AllProducts = ({ cartFullResponse }) => {
                         products?.products?.length > 0 ?
                           (products?.products?.map((data, index) => {
                             return (
-                              <div className="col-lg-3">
+                              <div className="col-lg-3" key={index}>
                                 <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
                               </div>
                             )
@@ -559,7 +607,8 @@ const AllProducts = ({ cartFullResponse }) => {
                           pageSize,
                           (+products?.pagination?.page) - 1,
                           selectedUsedProductCondition?.label,
-                          selectedUnderage?.value)
+                          selectedUnderage?.value,
+                          selectedSellingType?.value)
                       }}
                     >Previous</div>
                     {products?.pagination?.total_pages > 10 ?
@@ -578,7 +627,8 @@ const AllProducts = ({ cartFullResponse }) => {
                                 pageSize,
                                 1,
                                 selectedUsedProductCondition?.label,
-                                selectedUnderage?.value)
+                                selectedUnderage?.value,
+                                selectedSellingType?.value)
                             }}
                           >1</li>
                           <li className={`${(+products?.pagination?.page) === 2 ? 'active' : ''}`}
@@ -594,7 +644,8 @@ const AllProducts = ({ cartFullResponse }) => {
                                 pageSize,
                                 2,
                                 selectedUsedProductCondition?.label,
-                                selectedUnderage?.value)
+                                selectedUnderage?.value,
+                                selectedSellingType?.value)
                             }}
                           >2</li>
                           <li className={`${(+products?.pagination?.page) === 3 ? 'active' : ''}`}
@@ -610,7 +661,8 @@ const AllProducts = ({ cartFullResponse }) => {
                                 pageSize,
                                 3,
                                 selectedUsedProductCondition?.label,
-                                selectedUnderage?.value)
+                                selectedUnderage?.value,
+                                selectedSellingType?.value)
                             }}
                           >3</li>
                           <li>
@@ -631,7 +683,8 @@ const AllProducts = ({ cartFullResponse }) => {
                                 pageSize,
                                 products?.pagination?.total_pages,
                                 selectedUsedProductCondition?.label,
-                                selectedUnderage?.value)
+                                selectedUnderage?.value,
+                                selectedSellingType?.value)
                             }}
                           >{products?.pagination?.total_pages}</li>
                         </ul>
@@ -651,6 +704,8 @@ const AllProducts = ({ cartFullResponse }) => {
                         products={products}
                         usedCondition={selectedUsedProductCondition?.label}
                         underage={selectedUnderage?.value}
+                        auctioned={selectedSellingType?.value}
+                        
                       />
                     }
                     <div className="next-page"
@@ -667,7 +722,8 @@ const AllProducts = ({ cartFullResponse }) => {
                           pageSize,
                           (+products?.pagination?.page) + 1,
                           selectedUsedProductCondition?.label,
-                          selectedUnderage?.value)
+                          selectedUnderage?.value,
+                          selectedSellingType?.value)
                       }}
                     >Next</div>
                   </div>

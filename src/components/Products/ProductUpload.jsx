@@ -27,15 +27,11 @@ const ProductUpload = () => {
       }
       axios.post('https://notnewbackend.testingwebsitelink.com/api/products/upload', formData, config)
         .then(response => {
-            console.log(response);
+           
         })
         .catch(error => {
-            console.log(error);
+          toast.error(error?.response?.data?.message)
         });
-      // ProductServices.Imgupload(formData)
-      // .then((response) => {
-      //   console.log('images', response)
-      // })
     }
     useEffect(() => {
     }, []);

@@ -51,8 +51,8 @@ const ResetPassword = () => {
             navigate("/signin")
           }, 1500);
         })
-        .catch((e) => {
-          toast.error(e.message);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
           setIsLoading(false);
           setEnabled(false);
         })

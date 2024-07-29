@@ -16,7 +16,6 @@ const ProductTabs = () => {
   const getProduct = () => {
     setIsLoading(true); // Set loading state to true
     ProductServices.get(id).then((response) => {
-      console.log(response)
       setProductData(response.data);
       setIsLoading(false); // Set loading state to false once data is fetched
     });

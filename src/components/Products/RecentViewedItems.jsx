@@ -20,21 +20,21 @@ const RecentViewedItems = () => {
       ProductServices.recent()
       .then((res) => {
         setProductData(res.slice(0, 4)); // Limit to the first 5 products
-      }).catch(error => console.log(error));
+      }).catch(error => {
+        toast.error(error?.response?.data?.message)
+      });
     };
 
 
     const getUser = () => {
       UserServices.detail()
         .then((response) => {
-        console.log('login',response.id);
         setUserDetails(response);
         setUser(response.id);
         localStorage.setItem('user_details', JSON.parse(response));
         })
-        .catch((e) => {
-        console.log('error', e)
-        // toast.error(e.message);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
         });
       };
     useEffect(() => {
@@ -50,7 +50,6 @@ const RecentViewedItems = () => {
                 user_id: user,
                 type: "1"
             };
-            console.log('hit',data)
             const res = await ProductServices.isFavorite(data);
             if (res.status) {
                 // Optionally, update UI or show a success message
@@ -59,8 +58,7 @@ const RecentViewedItems = () => {
                 setFavData(res.data);
             }
         } catch (error) {
-            console.error("Error adding to favorites:", error);
-            toast.error("Failed to add product to favorites.");
+          toast.error(error?.response?.data?.message)
         }
     };
 

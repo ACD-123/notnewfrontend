@@ -20,6 +20,7 @@ import RecentlySearchedItems from './RecentlySearchedItems';
 import CustomerFaqs from './CustomerFaqs';
 import PrivacyPolicy from './PrivacyPolicy';
 import EditProfileSetup from '../AccountsSetting/SellerSetup/EditProfileSetup';
+import ChangePassword from './ChangePassword';
 const Activity = () => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard'); // Initial menu selection
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
@@ -59,6 +60,8 @@ const Activity = () => {
         return <MyFavCustomer />;
       // case 'edit-profile':
       //   return <EditProfileSetup />;
+      case 'change-password':
+        return <ChangePassword />;
       case 'help-and-support':
         return <HelpAndSupport />;
       case 'faq':
@@ -99,6 +102,9 @@ const Activity = () => {
                 {/* <li className={selectedMenuItem === 'edit-profile' ? 'active' : ''} onClick={() => handleMenuItemClick('edit-profile')}>
                 Edit Profile
                 </li> */}
+                <li className={selectedMenuItem === 'change-password' ? 'active' : ''} onClick={() => handleMenuItemClick('change-password')}>
+                Change Password
+                </li>
                 <li className={selectedMenuItem === 'help-and-support' ? 'active' : ''} onClick={() => handleMenuItemClick('help-and-support')}>
                   Help And Support
                 </li>

@@ -94,7 +94,6 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
       id: id,
     };
     SellerServices.createRecent(data).then((response) => {
-      console.log("response", response);
     });
   };
 
@@ -181,8 +180,8 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
             // }
           }
         })
-          .catch((e) => {
-            console.log('error', e)
+          .catch((error) => {
+            toast.error(error?.response?.data?.message)
           });
         // setRefundDetailsVisible({
         //   ...refundDetailsVisible,
@@ -213,8 +212,8 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
           //   handleDropdownItemClick
           // }, 4000);
         }
-      }).catch((e) => {
-        console.log(e);
+      }).catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
   const [inputError, setInputError] = useState(false);
@@ -236,7 +235,7 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
           toast.success(response?.message)
         })
         .catch((error) => {
-          console.error('Error adding coupon:', error);
+          toast.error(error?.response?.data?.message)
         });
     }
   };
@@ -524,7 +523,7 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
             <div className="input">
               <input type="number" value={customBidPrice} placeholder="Enter custom bid price" onChange={(e) => { setCustomBidPrice(e.target.value) }} />
               {productData.max_bid > customBidPrice && inputError &&
-                <div class="error-input">Your bid price must be greater then {productData.max_bid}</div>
+                <div className="error-input">Your bid price must be greater then {productData.max_bid}</div>
               }
             </div>
             <p>By bidding, you are Afree to pay the seller price if you win</p>

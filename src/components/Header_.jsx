@@ -34,8 +34,8 @@ const Header_ = () => {
         setUser(response);
         localStorage.setItem('user_details', JSON.parse(response));
       })
-      .catch((e) => {
-        console.log('error', e)
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
   const getItems =() =>{
@@ -43,8 +43,8 @@ const Header_ = () => {
     .then((response) => {
       setCartItems(response);
     })
-    .catch((e) => {
-      toast.error(e.message);
+    .catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
   }
   const signOut = (e) => {

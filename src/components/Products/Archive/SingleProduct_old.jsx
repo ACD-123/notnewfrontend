@@ -11,6 +11,7 @@ import ProductServices from '../../../services/API/ProductServices'
 import ProductCard from '../../Shared/Cards/ProductCard'
 import { Link } from 'react-router-dom'
 import LoadingComponents from '../../Shared/LoadingComponents'
+import { toast } from 'react-toastify'
 const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse}) => {
   const [moreToLove, setMoreToLove] = useState([])
   const [productId, setProductId] = useState('')
@@ -22,8 +23,8 @@ const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse}
         setMoreToLove(response.data?.products);
         setLoading(false)
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setLoading(false)
       });
   };

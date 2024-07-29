@@ -6,6 +6,7 @@ import NoDataFound from '../components/Shared/NoDataFound';
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 import Footer from '../components/Footer';
 import ProductCard from '../components/Shared/Cards/ProductCard';
+import { toast } from 'react-toastify';
 // import Footer from '../../../components/Footer';
 // import Header from "../../../components/Header";
 // import ProductSkeletonLoader from '../../../components/Shared/ProductSkeletonLoader';
@@ -33,8 +34,8 @@ const TopSellingProducts = ({cartFullResponse}) => {
 				setHotProducts(response?.data?.hot)
                 setLoading(false)
 			})
-			.catch((e) => {
-				console.log('error', e)
+			.catch((error) => {
+				toast.error(error?.response?.data?.message)
                 setLoading(false)
 			});
 	};

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import Uploadimage from '../../assets/Images/upload.png';
 import OrderServices from '../../services/API/OrderServices';
 import { Spinner } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
 const RefundPopup = (props) => {
   const fileInputRef = useRef(null);
@@ -18,7 +19,7 @@ const RefundPopup = (props) => {
         setIsLoading(false);
       })
       .catch((error) => {
-        console.log('Error fetching order:', error);
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       });
   };
@@ -48,7 +49,7 @@ const RefundPopup = (props) => {
         setImages([...images, ...imageDataArray]);
       })
       .catch((error) => {
-        console.error('Error uploading images: ', error);
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -68,7 +69,6 @@ const RefundPopup = (props) => {
   const handleSubmit = () => {
     // Check if there are selected products, images, and reasons
     if (selectedProducts.length === 0 || images.length === 0 || !reason) {
-      console.log('Please select products, upload images, and provide a reason.');
       return;
     }
   
@@ -84,13 +84,11 @@ const RefundPopup = (props) => {
     // Call the API to submit the refund request
     OrderServices.orderRefund(formData)
       .then((response) => {
-        console.log('Refund request submitted successfully:', response);
         window.location.reload()
         // Reset states or perform any other necessary actions after successful submission
       })
       .catch((error) => {
-        console.error('Error submitting refund request:', error);
-        // Handle errors if needed
+        toast.error(error?.response?.data?.message)
       });
   };
   

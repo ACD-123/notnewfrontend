@@ -254,8 +254,8 @@ const getUserCompletedCount = () => {
     .then((response) => {
       setOrderCount(response);
     })
-    .catch((e) => {
-      toast.error(e.message);
+    .catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
 };
 const getOrderSummary = () =>{
@@ -263,8 +263,8 @@ const getOrderSummary = () =>{
   .then((response) => {
     setOrderSummary(response);
   })
-  .catch((e) => {
-    toast.error(e.message);
+  .catch((error) => {
+    toast.error(error?.response?.data?.message)
   });
 }
 const orderDetails = (index, id) =>{
@@ -272,8 +272,8 @@ const orderDetails = (index, id) =>{
   OrderServices.getSingleOrderSummary(id)
   .then((response) => {
     setSelectedOrder(response);
-  }).catch((e) => {
-    toast.error(e.message);
+  }).catch((error) => {
+    toast.error(error?.response?.data?.message)
   });
   setSelectedProduct(index)
 }
@@ -281,8 +281,8 @@ const getTransactions = () =>{
   TransactionServices.usertransaction()
   .then((response) => {
     setTransaction(response);
-  }).catch((e) => {
-    toast.error(e.message);
+  }).catch((error) => {
+    toast.error(error?.response?.data?.message)
   });
 } 
 

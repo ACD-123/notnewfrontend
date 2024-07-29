@@ -53,7 +53,7 @@ const RecentlySearchedItems = () => {
                                     <div className="row">
                                         {recentlySearchedItemsList?.products?.map((data, index) => {
                                             return (
-                                                <div className="col-lg-4">
+                                                <div className="col-lg-4" key={index}>
                                                     <RecentlySearchCard data={data} removeProductFromSearchList={removeProductFromSearchList} index={index} />
                                                 </div>
                                             )

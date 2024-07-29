@@ -9,6 +9,7 @@ import PriceRange from "../../Elements/FilterAttributes/PriceRange"
 import SizeToggle from "../../Elements/FilterAttributes/Size"
 import ProductServices from '../../../services/API/ProductServices'; //~/services/API/ProductServices
 import AllProductListing from '../../Elements/AllProductListing';
+import { toast } from 'react-toastify';
 
 const AllNewProducts = ({cartFullResponse}) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -22,11 +23,10 @@ const AllNewProducts = ({cartFullResponse}) => {
   const getProduct = () => {
     ProductServices.all()
       .then((response) => {
-        console.log('Response from getProduct:', response);
         setProductData(response); // Make sure response is an array
       })
       .catch((error) => {
-        console.error('Error in getProduct:', error);
+        toast.error(error?.response?.data?.message)
       });
   };
   
@@ -71,7 +71,6 @@ const AllNewProducts = ({cartFullResponse}) => {
   const handleSizeCallback =(childData) => {
     ProductServices.getProductbySize(childData)
     .then((response) => {
-      console.log('response',response)
       // if(response.status){
       //     if(response.data.length > 0){
       //       setProductData(response.data);

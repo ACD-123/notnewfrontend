@@ -25,7 +25,7 @@ const PopularProductSearch = (props) => {
             }
           }) 
       } catch (error) {
-        console.log(error);
+        toast.error(error?.response?.data?.message)
       }
   }
   useEffect(() => {
@@ -38,10 +38,10 @@ const PopularProductSearch = (props) => {
         <ul>
           {categoryList.length > 0 ?(
             <>
-              {categoryList.map((category) => {
+              {categoryList.map((category , index) => {
                   return(
                     <>
-                    <li>{category}</li>
+                    <li key={index}>{category}</li>
                     </>
                   )
                 })}

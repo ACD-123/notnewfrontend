@@ -33,7 +33,6 @@ const PersonalInfo = () => {
   });
 
   const handlePlaceChanged = () => {
-    console.log(inputRef.current.getPlaces(), 'getPlaces');
     const [place] = inputRef.current.getPlaces();
     if (place) {
       let political, administrative_area_level_1, postalCode;
@@ -75,7 +74,6 @@ const PersonalInfo = () => {
 
   const getUser = () => {
     UserServices.self().then((response) => {
-      console.log(response, 'user data');
       setUserFormData({
         name: response?.name,
         lastname: response?.last_name,
@@ -91,7 +89,7 @@ const PersonalInfo = () => {
       })
       setIsLoading(false);
     }).catch(error => {
-      console.error('Error fetching user data:', error);
+      toast.error(error?.response?.data?.message)
       setIsLoading(false);
     });
   };
@@ -102,8 +100,6 @@ const PersonalInfo = () => {
 
     // Check if any field is non-empty
     const hasValidInput = Object.values(userFormData).some(field => field !== "");
-    console.log(userFormData, 'hasValidInput');
-    console.log(hasValidInput, 'hasValidInput');
     if (
       userFormData?.address != "" &&
       userFormData?.city != "" &&
@@ -137,7 +133,7 @@ const PersonalInfo = () => {
           setEnabled(false);
         })
         .catch((error) => {
-          console.error("Profile update failed:", error);
+          toast.error(error?.response?.data?.message)
           setIsLoading(false);
           setInputError(false);
           setEnabled(false);
@@ -160,9 +156,9 @@ const PersonalInfo = () => {
         <section id="prsnlinfo">
           <div className="row">
             <div className="col-lg-12">
-              <div class="main-content">
-                <div class="seller-new-transaction">
-                  <div class="title">Profile Information</div>
+              <div className="main-content">
+                <div className="seller-new-transaction">
+                  <div className="title">Profile Information</div>
                   <div className="peronsinfo-form">
                     <div className="pranker">
                       <div className="profile-pic-wrapper">

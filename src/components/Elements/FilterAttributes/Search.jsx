@@ -14,12 +14,12 @@ const Search = (props) => {
   return (
     <>
     <form id="searchForm">
-    <div class="input-group se">
+    <div className="input-group se">
     <input type="submit" value="Search" 
     style={Searchbg}
     />
   </div>
-  <div class="input-group">
+  <div className="input-group">
     <input type="text" onChange={handleSearch} id="search" name="search" placeholder='Search All 2,656 items' />
   </div>
 </form>

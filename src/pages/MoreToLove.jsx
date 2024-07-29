@@ -6,6 +6,7 @@ import ProductServices from '../services/API/ProductServices';
 import ProductSkeletonLoader from '../components/Shared/ProductSkeletonLoader';
 import ProductCard from '../components/Shared/Cards/ProductCard';
 import NoDataFound from '../components/Shared/NoDataFound';
+import { toast } from 'react-toastify';
 
 export const MoreToLove = ({cartFullResponse}) => {
     const [moreToLove , setMoreToLove] = useState([])
@@ -20,9 +21,9 @@ export const MoreToLove = ({cartFullResponse}) => {
                 setMoreToLove(response.data?.products);
                 setLoader(false)
             })
-            .catch((e) => {
+            .catch((error) => {
                 setLoader(false)
-                console.log('error', e)
+                toast.error(error?.response?.data?.message)
             });
     };
 

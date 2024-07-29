@@ -15,5 +15,5 @@ export const isEmpty = (value, depth = 1, level = 0) => {
 }
 
 export function success($this, props) {
-  return $this.$notification.open({ ...props, class: 'success-notification' })
+  return $this.$notification.open({ ...props, className: 'success-notification' })
 }

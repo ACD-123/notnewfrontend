@@ -21,8 +21,8 @@ const CustomerPendingOrder = ({ detail, setDetail, getProductManagmentOderCount 
         setIsLoading(false);
 
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       });
   };
@@ -32,7 +32,6 @@ const CustomerPendingOrder = ({ detail, setDetail, getProductManagmentOderCount 
     setIsLoading(true)
     OrderServices.getPendingOdersDetail(order_id)
       .then((response) => {
-        console.log(response?.data, 'getPendingOdersDetail');
         setPendingOdrDetail(response?.data)
         setShowAction(false);
         let tempArr = []
@@ -46,8 +45,8 @@ const CustomerPendingOrder = ({ detail, setDetail, getProductManagmentOderCount 
         setPendingOrderAttributes(tempArr)
         setIsLoading(false)
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false)
       });
   };
@@ -70,7 +69,7 @@ const CustomerPendingOrder = ({ detail, setDetail, getProductManagmentOderCount 
                 <div className="p-o-m-w-l">
                   {pendingOdrList?.map((data, index) => {
                     return (
-                      <ul>
+                      <ul key={index}>
                         <li>
                           <div className="p-o-m-w-l-l">
                             <div className="p-o-m-w-l-l-l">
@@ -187,7 +186,7 @@ const CustomerPendingOrder = ({ detail, setDetail, getProductManagmentOderCount 
                 <div className="d-4-1">
                   {pendingOdrDetail?.products?.map((data, index) => {
                     return (
-                      <div className="d-4-1-w">
+                      <div className="d-4-1-w" key={index}>
                         <div className="d-4-1-l">
                           <img src={data?.media?.[0]?.name} alt="Product" />
                         </div>

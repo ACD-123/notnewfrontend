@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import { Link } from 'react-router-dom';
 import ProductServices from '../../../services/API/ProductServices'; //~/services/API/ProductServices
+import { toast } from 'react-toastify';
 
 const SubcategoriesList = (props) => {
   const [categories, setCategoryData] = useState([]);
@@ -14,7 +15,9 @@ const SubcategoriesList = (props) => {
         if(response.status){
           setCategoryData(response.data);
         }
-      }).catch(error => console.log(error)); 
+      }).catch(error => {
+        toast.error(error?.response?.data?.message)
+      }); 
   }
   const handleCategory  = (e, catId) =>{
     e.preventDefault();

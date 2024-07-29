@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
 import { max } from "moment";
+import { toast } from "react-toastify";
 
 
 const PriceRange = (props) => {
@@ -44,7 +45,7 @@ const PriceRange = (props) => {
               let last= arr.at(arr.length - 1);
               return(
                 <>
-                <li>
+                <li key={index}>
                 <label>
                   <input type="radio" name="price" onClick={() => handlePriceSelection(`${first}-${last}`)} />
                     $ {first} to $ {last}
@@ -64,8 +65,8 @@ const PriceRange = (props) => {
     .then((response) => {
       setMinValue(response.data);
     })
-    .catch((e) => {
-      console.log('Error:',e)
+    .catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
   }
   const getMax =() =>{
@@ -73,8 +74,8 @@ const PriceRange = (props) => {
     .then((response) => {
       setMaxValue(response.data);
     })
-    .catch((e) => {
-      console.log('Error:',e)
+    .catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
   }
   const handlePriceChange  = (e) =>{

@@ -39,7 +39,7 @@ const RecentViewedItems = ({ title }) => {
         }, 1000);
       }
     } catch (error) {
-      console.error("Error fetching product data:", error);
+      toast.error(error?.response?.data?.message)
     }
   };
 

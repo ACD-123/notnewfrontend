@@ -69,7 +69,7 @@ const EmailVerification = () => {
           navigate("/signin")
         }, 1500);
       })
-      .catch((e) => {
+      .catch((error) => {
         toast.error("Otp is not Correct");
         setIsLoading(false);
         setEnabled(false);
@@ -93,8 +93,8 @@ const EmailVerification = () => {
         toast.success(response.data)
       }
     })
-    .catch((e) => {
-      console.log('Error:', e)
+    .catch((error) => {
+      toast.error(error?.response?.data?.message)
       setIsLoading(false);
       setEnabled(false);
     }).then(() => {

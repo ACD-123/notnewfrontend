@@ -18,7 +18,6 @@ import { isLoggedin } from "../../../../services/Auth";
 const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCartCountGuest }) => {
   const dispatch = useDispatch();
   const [productData, setProductData] = useState([]);
-  console.log('productData', productData)
   const [gettags, setTags] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(true); // Set initial value to true
@@ -62,7 +61,6 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
       id: id,
     };
     SellerServices.createRecent(data).then((response) => {
-      console.log("response", response);
     });
   };
   const getProduct = () => {
@@ -79,7 +77,6 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
           selectToSend: null
         }));
         SetproductAttribute(categoryAddons);
-        console.log(res?.data, 'getProduct');
         getMoreToLove(res?.data?.id)
         setProductId(res?.data?.id)
       })
@@ -116,13 +113,12 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
 
       CheckoutServices.save(formData)
         .then((response) => {
-          console.log(response)
           navigate('/checkout-buynow')
           setIsLoading(false);
           setEnabled(false);
         })
-        .catch((e) => {
-          toast.error(e.message);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
           setIsLoading(false);
           setEnabled(false);
         })
@@ -161,8 +157,8 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
           setIsLoading(false);
           setEnabled(false);
         })
-        .catch((e) => {
-          toast.error(e.message);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
           setIsLoading(false);
           setEnabled(false);
         });
@@ -197,8 +193,8 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
           setIsLoading(false);
           setEnabled(false);
         })
-        .catch((e) => {
-          toast.error(e.message);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
           setIsLoading(false);
           setEnabled(false);
         });
@@ -258,7 +254,7 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
                       options={ProductAttribute?.[index]?.options}
                       placeholder={`Select ${data?.name}`}
                     />
-                    {data?.selectToSend === null && inputError && <div class="error-input">{data.name} is required</div>}
+                    {data?.selectToSend === null && inputError && <div className="error-input">{data.name} is required</div>}
                   </div>
                 </div>
 
@@ -268,21 +264,21 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
               <div className="p-i-2-w-l">Quantity {productData?.stockcapacity} available</div>
               <div className="p-i-2-w-r">
                 <div className="price">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <button class="btn" type="button" onClick={decNum}>
+                  <div className="input-group">
+                    <div className="input-group-prepend">
+                      <button className="btn" type="button" onClick={decNum}>
                         -
                       </button>
                     </div>
                     <input
                       type="text"
-                      class="form-control"
+                      className="form-control"
                       value={quantity}
                       readOnly
                     // onChange={handleQuantity}
                     />
-                    <div class="input-group-prepend">
-                      <button class="btn" type="button" onClick={incNum}>
+                    <div className="input-group-prepend">
+                      <button className="btn" type="button" onClick={incNum}>
                         +
                       </button>
                     </div>

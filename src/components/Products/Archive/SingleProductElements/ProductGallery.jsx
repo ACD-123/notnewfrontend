@@ -32,10 +32,10 @@ const ProductGallery = () => {
         <div className="p-g-t">
           {product.length > 0 &&
             <>
-              {product?.slice(0, 5)?.map((image) => {
+              {product?.slice(0, 5)?.map((image , index) => {
                 return (
                   <>
-                    <div>
+                    <div key={index}>
                       <img key={image.id} src={`${image.name}`} alt={image.name} onClick={() => handleThumbnailClick(image.name)}
                         className={selectedImage === image.name ? "active" : ""} />
                     </div>

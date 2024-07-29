@@ -58,22 +58,22 @@ const PersonalInformation = ({cartFullResponse}) => {
         <>
             <Header cartFullResponse={cartFullResponse}/>
             <section id="main-dashboard">
-                <div class="container">
-                    <div class="row">
-                        <div class="main-dasboard-tabs">
+                <div className="container">
+                    <div className="row">
+                        <div className="main-dasboard-tabs">
                             <div className="tab-buttons">
                                 <div className="t-b-b">
                                     <button onClick={() => { navigate('/customerdashboard?tab=activity&component=my-orders') }}>Activity</button>
                                     <button onClick={() => { navigate('/customerdashboard?tab=messages') }}>Messages</button>
-                                    <button class="active" onClick={() => { navigate('/customerdashboard?tab=account') }}>Account</button>
+                                    <button className="active" onClick={() => { navigate('/customerdashboard?tab=account') }}>Account</button>
                                 </div>
                                 <div className='t-b-w'>
                                     <Link to="">Tell us what you Think</Link>
                                 </div>
                             </div>
-                            <div class="tab-content">
-                                <div class="account-dashboard">
-                                    <div class="row">
+                            <div className="tab-content">
+                                <div className="account-dashboard">
+                                    <div className="row">
                                         <div>
                                             <section id='activity-main-dashboard'>
                                                 <button className="mobile-menu-toggle" onClick={toggleMenu}>

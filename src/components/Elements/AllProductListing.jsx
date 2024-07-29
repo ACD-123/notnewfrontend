@@ -24,16 +24,15 @@ const AllProductListing = (props) => {
     const getUser = () => {
       UserServices.detail()
         .then((response) => {
-          console.log("login12", response.id);
           setUserDetails(response);
           setUser(response.id);
           localStorage.setItem("user_details", JSON.parse(response));
           setIsLoading(false); // Set isLoading to false when data is fetched
 
         })
-        .catch((e) => {
-          console.log("error", e);
-          // toast.error(e.message);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
+          // toast.error(error?.response?.data?.message)
           setIsLoading(false); // Set isLoading to false when data is fetched
 
         });
@@ -42,13 +41,11 @@ const AllProductListing = (props) => {
     const fetchProductData = async () => {
       try {
         const res = await ProductServices.all(user);
-        console.log('api',res)
         if (res.status) {
           setProductData(res.data); // Limit to the first 5 products
-          console.log("setProductData", res.data);
         }
       } catch (error) {
-        console.error("Error fetching product data:", error);
+        toast.error(error?.response?.data?.message)
       }
     };
    

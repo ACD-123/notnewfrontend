@@ -3,6 +3,7 @@ import ProductServices from '../../services/API/ProductServices';
 import { BASE_URL } from '../../services/Constant';
 import NoDataFound from '../Shared/NoDataFound';
 import LoadingComponents from '../Shared/LoadingComponents';
+import { toast } from 'react-toastify';
 
 const PageNumbers = ({
   totalPages,
@@ -39,12 +40,11 @@ export const BuyingNotification = () => {
   const getNotification = async (page, size) => {
     try {
       const res = await ProductServices.getNotification(user_details?.id, 'buying', page, size);
-      console.log(res?.data, 'getNotification');
       setNotification(res?.data)
       setLoading(false)
     } catch (error) {
       setLoading(false)
-      // toast.error("Failed to add product to favorites.");
+      toast.error(error?.response?.data?.message)
     }
   };
 
@@ -63,7 +63,7 @@ export const BuyingNotification = () => {
             {notification?.notifications?.length > 0 ?
               (notification?.notifications?.map((data, index) => {
                 return (
-                  <div className="col-lg-6">
+                  <div className="col-lg-6" key={index}>
                     <div className="n-l-d">
                       <div className="n-l-d-w">
                         <div className="n-l-d-w-l">

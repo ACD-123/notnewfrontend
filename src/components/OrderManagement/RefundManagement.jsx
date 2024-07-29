@@ -19,8 +19,8 @@ const RefundManagement = ({ detail, setDetail, getProductManagmentOderCount }) =
         setRejectedOrders(response?.data);
         setIsLoading(false);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       });
   };
@@ -32,15 +32,13 @@ const RefundManagement = ({ detail, setDetail, getProductManagmentOderCount }) =
       .then((response) => {
         setRejectedOrderDetail(response?.data)
         setIsLoading(false);
-        console.log(response?.data?.products?.[0]?.attributes);
         const attributes = response?.data?.products?.[0]?.attributes
         const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
         const normalArray = JSON.parse(validJsonString);
         setRejectedOrderAttributes(normalArray)
-        console.log(normalArray, 'normalArray');
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       });
   };
@@ -62,7 +60,7 @@ const RefundManagement = ({ detail, setDetail, getProductManagmentOderCount }) =
               <div className="p-o-m-w-l">
                 {rejectedOders?.map((data, index) => {
                   return (
-                    <ul>
+                    <ul key={index}>
                       <li>
                         <div className="p-o-m-w-l-l">
                           <div className="p-o-m-w-l-l-l">

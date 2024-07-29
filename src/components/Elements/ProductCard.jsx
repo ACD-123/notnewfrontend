@@ -4,11 +4,11 @@ import { Spinner } from 'react-bootstrap';
 import SellerProductCard from '../Shared/Cards/SellerProductCard';
 import LoadingComponents from '../Shared/LoadingComponents';
 import NoDataFound from '../Shared/NoDataFound';
+import { toast } from 'react-toastify';
 
 const ProductCard = ({ setSubmitted, setProductId }) => {
   const [activeProducts, setActiveProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  console.log(setSubmitted, 'setSubmitted');
 
   const activeProductData = async () => {
     try {
@@ -17,7 +17,7 @@ const ProductCard = ({ setSubmitted, setProductId }) => {
         setIsLoading(false)
     } catch (error) {
       setIsLoading(false)
-      console.error("Error fetching product data:", error);
+      toast.error(error?.response?.data?.message)
     }
   };
 

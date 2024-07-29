@@ -6,21 +6,23 @@ import HomeService from '../../../services/API/HomeService';
 import ProductCard from '../../../components/Shared/Cards/ProductCard';
 import GetSurprisedBanner from '../../../components/Elements/GetSurprisedBanner';
 import NoDataFound from '../../Shared/NoDataFound';
+import { toast } from 'react-toastify';
 
 const Auctions = ({cartFullResponse}) => {
     const [auctionProducts, setAuctionProducts] = useState([]);
+    const [latestProducts, setLatestProducts] = useState([]);
     const [Loader, setLoader] = useState(true)
     const user_details = JSON.parse(localStorage.getItem('user_details'));
     const getAuctionProducts = () => {
         HomeService.getAuctionProducts(user_details?.id)
             .then((response) => {
-                console.log(response?.data, 'topseller');
-                setAuctionProducts(response?.data)
+                setAuctionProducts(response?.data?.auctioned)
+                setLatestProducts(response?.data?.latest)
                 setLoader(false)
             })
-            .catch((e) => {
+            .catch((error) => {
                 setLoader(false)
-                console.log('error', e)
+                toast.error(error?.response?.data?.message)
             });
     };
 
@@ -28,7 +30,12 @@ const Auctions = ({cartFullResponse}) => {
         getAuctionProducts(user_details?.id)
     }, [])
 
-    const handleToggleFavourite = (index) => {
+    const handleToggleFavouriteAuction = (index) => {
+        const updatedProducts = [...auctionProducts];
+        updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
+        setAuctionProducts(updatedProducts);
+    };
+    const handleToggleFavouriteLatest = (index) => {
         const updatedProducts = [...auctionProducts];
         updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
         setAuctionProducts(updatedProducts);
@@ -59,11 +66,11 @@ const Auctions = ({cartFullResponse}) => {
                                     </div>
                                 </>
                                 :
-                                (auctionProducts?.latest?.length > 0 ?
-                                    auctionProducts?.latest?.map((data, index) => {
+                                (latestProducts?.length > 0 ?
+                                    latestProducts?.map((data, index) => {
                                         return (
                                             <div className="col-lg-3" key={index}>
-                                                <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
+                                                <ProductCard data={data} handleToggleFavourite={handleToggleFavouriteLatest} index={index} />
                                             </div>
                                         )
                                     })
@@ -92,11 +99,11 @@ const Auctions = ({cartFullResponse}) => {
                                     </div>
                                 </>
                                 :
-                                (auctionProducts?.auctioned?.length > 0 ?
-                                    auctionProducts?.auctioned?.map((data, index) => {
+                                (auctionProducts?.length > 0 ?
+                                    auctionProducts?.map((data, index) => {
                                         return (
                                             <div className="col-lg-3" key={index}>
-                                                <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
+                                                <ProductCard data={data} handleToggleFavourite={handleToggleFavouriteAuction} index={index} />
                                             </div>
                                         )
                                     })

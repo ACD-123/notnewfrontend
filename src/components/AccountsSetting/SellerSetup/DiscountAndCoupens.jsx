@@ -6,6 +6,7 @@ import LoadingComponents from '../../Shared/LoadingComponents';
 import NoDataFound from '../../Shared/NoDataFound';
 import { MdDelete } from "react-icons/md";
 import { FaPencilAlt } from "react-icons/fa";
+import { toast } from 'react-toastify';
 
 const DiscountAndCoupens = () => {
     const [user, setUser] = useState({});
@@ -26,7 +27,8 @@ const DiscountAndCoupens = () => {
                 setUser(response);
                 localStorage.setItem('user_details', JSON.parse(response));
             })
-            .catch((e) => {
+            .catch((error) => {
+                toast.error(error?.response?.data?.message)
                 setIsLoading(false);
             });
     };
@@ -38,13 +40,12 @@ const DiscountAndCoupens = () => {
                 .then((response) => {
                     setIsLoading(false);
                     if (response) {
-                        console.log('data Coupons', response.data);
                         setCopons(response.data);
                     }
                 })
                 .catch((error) => {
                     setIsLoading(false);
-                    console.error('Error fetching coupons:', error);
+                    toast.error(error?.response?.data?.message)
                 });
         }
     };
@@ -91,7 +92,7 @@ const DiscountAndCoupens = () => {
                     setEditCoupon(false)
                 })
                 .catch((error) => {
-                    console.error('Error adding coupon:', error);
+                    toast.error(error?.response?.data?.message)
                 });
         } else {
 
@@ -108,7 +109,7 @@ const DiscountAndCoupens = () => {
                     getSellerBid()
                 })
                 .catch((error) => {
-                    console.error('Error adding coupon:', error);
+                    toast.error(error?.response?.data?.message)
                 });
         }
     };
@@ -119,13 +120,12 @@ const DiscountAndCoupens = () => {
                 getSellerBid()
             })
             .catch((error) => {
-                console.error('Error adding coupon:', error);
+                toast.error(error?.response?.data?.message)
             });
     };
     const getCouponsById = (id) => {
         UserServices.getCouponsById(id)
             .then((response) => {
-                console.log(response?.data, 'getCouponsById');
                 setCouponData({
                     title: response?.data?.title,
                     code: response?.data?.code,
@@ -141,7 +141,7 @@ const DiscountAndCoupens = () => {
 
             })
             .catch((error) => {
-                console.error('Error adding coupon:', error);
+                toast.error(error?.response?.data?.message)
             });
     };
 

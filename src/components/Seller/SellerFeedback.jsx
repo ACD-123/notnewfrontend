@@ -9,6 +9,7 @@ import OrderServices from '../../services/API/OrderServices';
 import NoDataFound from '../Shared/NoDataFound';
 import LoadingComponents from '../Shared/LoadingComponents';
 import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { toast } from 'react-toastify';
 
 const SellerFeedback = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -17,23 +18,15 @@ const SellerFeedback = () => {
   const { pathname } = window.location;
   const shopId = pathname.split("/").pop();
 
-  useEffect(() => {
-    getUserOffersCount(); // Fetch seller shop ID first
-  }, []);
-
-  useEffect(() => {
-    getFeedbacks();
-  }, []); // Run useEffect whenever sellerShopId changes
-
   const getUserOffersCount = () => {
     OrderServices.getuserbidscount()
       .then((res) => {
         setIsLoading(false);
         setSellerShopId(res.data.seller_guid);
       })
-      .catch((e) => {
+      .catch((error) => {
         setIsLoading(false);
-        console.log(e.message);
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -50,6 +43,14 @@ const SellerFeedback = () => {
       });
   };
 
+  useEffect(() => {
+    getUserOffersCount();
+  }, []);
+
+  useEffect(() => {
+    getFeedbacks();
+  }, []);
+
   return (
     <>
       {isLoading ?
@@ -59,8 +60,8 @@ const SellerFeedback = () => {
           <div className="title">Feedback's</div>
           <div className="seller-new-transaction-five">
             <div className="s-n-t-f-l">
-              <h2>Customer Feedback Stats</h2>
-              <p>LAST 12 MONTHS</p>
+              <h2 className='s-f-h'>Customer Feedback Stats</h2>
+              <p className='s-f-d'>LAST 12 MONTHS</p>
               <ul>
                 <li>
                   <ul>

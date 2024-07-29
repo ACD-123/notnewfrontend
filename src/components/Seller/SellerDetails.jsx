@@ -36,7 +36,6 @@ const SellerDetails = () => {
     ProductServices.get(id).then((res) => {
       setProductData(res);
       setFeedbacks(res.data.seller.feedback.feedbacks);
-      console.log(res.data.seller.feedback.feedbacks, 'res.data.seller.feedback.feedbacks');
       setShopData(res.data.seller);
       setProductData(res.data);
       setShopGuid(res.data.shop);
@@ -47,8 +46,8 @@ const SellerDetails = () => {
           if (response.status) {
             setShopData(response.data)
           }
-        }).catch((e) => {
-          console.log(e)
+        }).catch((error) => {
+          toast.error(error?.response?.data?.message)
         });
     });
   };
@@ -93,8 +92,8 @@ const SellerDetails = () => {
           toast.success(response);
           getSellerSavedData(shopGuidSave);
         })
-        .catch((e) => {
-          console.log("Error:", e);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
         });
     } else {
       navigate("/signin")
@@ -106,8 +105,8 @@ const SellerDetails = () => {
       .then((response) => {
         setSavedSeller(response.shop_id);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -118,8 +117,8 @@ const SellerDetails = () => {
         setUser(response.id);
         localStorage.setItem("user_details", JSON.stringify(response));
       })
-      .catch((e) => {
-        console.log("error", e);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -138,8 +137,7 @@ const SellerDetails = () => {
       toast.success("Seller added to favorites!");
       setFavData(res.data);
     } catch (error) {
-      console.error("Error adding to favorites:", error);
-      toast.error("Failed to add seller to favorites.");
+      toast.error(error?.response?.data?.message)
     }
   };
 
@@ -216,8 +214,8 @@ const SellerDetails = () => {
               ) : (
                 <>
                   <div className="row">
-                    {currentItems.map((feedback) => (
-                      <div className="col-lg-6">
+                    {currentItems.map((feedback , index) => (
+                      <div className="col-lg-6" key={index}>
                         <div key={feedback.id} className="feedback-item">
                           <div className="feedback-item-left">
                             <div className="feedback-item-left-left">

@@ -72,7 +72,6 @@ const Checkout_old = () => {
   const getCart = () => {
     var bidProduct = localStorage.getItem('bid_product');
     if(bidProduct){
-      console.log('bidProduct', JSON.parse(bidProduct))
       setBidCartImage(JSON.parse(bidProduct).media)
       setBidCart(JSON.parse(bidProduct));
       setQuantity(1);
@@ -81,37 +80,10 @@ const Checkout_old = () => {
       setShippingPrice(JSON.parse(bidProduct).shipping_price)
       setsubTotal(JSON.parse(bidProduct).bids);
       setOrderType("bids")
-      // console.log('.attribute', JSON.parse(bidProduct.attribute))
-      // setBidCartAttributes(JSON.parse(bidProduct.attribute))
       }else{
         CartServices.self().then((response) => {
           setCart(response);
           setOrderType("normal")
-          // var cartPrice = [];
-          // var shippingPrice = [];
-          // var allPrices = [];
-
-          // if (cart.length > 0) {
-          //   cart.map((cat) => {
-          //     cartPrice.push(cat.price);
-          //     shippingPrice.push(cat.products.shipping_price);
-          //   });
-          // }
-          // if (prices.length > 0) {
-          //   prices.map((price) => {
-          //     if (price.name !== "Discount") {
-          //       allPrices.push(price.value);
-          //     } else if (price.name === "Discount") {
-          //       setDiscountPrices(price.value);
-          //     }
-          //   });
-          // }
-          // setsubTotal(cartPrice.reduce((a, v) => (a = a + v), 0));
-          // setShippingPrice(shippingPrice.reduce((a, v) => (a = a + v), 0));
-          // setAdminPrices(allPrices.reduce((a, v) => (a = a + v), 0));
-          // var amountAfterDiscount = subTotal - discountPrices;
-          // var amountbyaddingprices = amountAfterDiscount + adminprices;
-          // setAmountAddingPrices(amountbyaddingprices);
           var cartPrice = [];
           var shippingPrice = [];
           var allPrices = [];
@@ -220,21 +192,21 @@ const Checkout_old = () => {
     <>
       <Header />
       <section id="cart-details">
-        <div class="container">
+        <div className="container">
           <h1>Checkout</h1>
-          <div class="row">
-            <div class="col-lg-8">
+          <div className="row">
+            <div className="col-lg-8">
               {lastSegment ? (
                 <>
-                  <div class="order-details">
+                  <div className="order-details">
                     {(Object.keys(bidcart).length !== 0)  ? (
                       <>
-                        <div class="row">
-                                <div class="col-lg-9">
-                                  <div class="product-detail">
+                        <div className="row">
+                                <div className="col-lg-9">
+                                  <div className="product-detail">
                                     {bidcartimage.length > 0 ? (
                                       <>
-                                        <div class="product-image">
+                                        <div className="product-image">
                                           <img src={`${bidcart.media[0].name}`}
                                           width="150" height="150" alt={bidcart.media[0].name} />
                                         </div>
@@ -242,7 +214,7 @@ const Checkout_old = () => {
                                     ):(
                                       <></>
                                     )}
-                                    <div class="product-order-details">
+                                    <div className="product-order-details">
                                       <h5>{bidcart?.name}</h5>
                                       {/* <span>Size : 9.5 , Color: Red</span> */}
                                       {/* {attributes.length > 0 ? (
@@ -284,7 +256,7 @@ const Checkout_old = () => {
                                       ) : (
                                         ""
                                       )} */}
-                                      <div class="quantitypadding">
+                                      <div className="quantitypadding">
                                         <p>
                                           <b>
                                             <span>QTY: {bidquantity}</span>
@@ -293,7 +265,7 @@ const Checkout_old = () => {
                                       </div>
                                       {bidcart.location ? (
                                         <>
-                                          <span class="unter">
+                                          <span className="unter">
                                             <br /> Shipping from
                                             <br />
                                             {bidcart.location}
@@ -305,8 +277,8 @@ const Checkout_old = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div class="col-lg-3">
-                                  <div class="prices-order-details">
+                                <div className="col-lg-3">
+                                  <div className="prices-order-details">
                                     <h4>US $ {bidcart.bids}</h4>
                                     <span>
                                       +US $
@@ -325,18 +297,18 @@ const Checkout_old = () => {
                           return (
                             <>
                             {cat.shop ? (<>
-                              <h3 id="storetitle">
+                              <h3 id="storetitle" key={index}>
                                 Seller: {cat.shop?.fullname}
                               </h3>
                             </>):(
                               <></>
                             )}
-                              <div class="row">
-                                <div class="col-lg-9">
-                                  <div class="product-detail">
+                              <div className="row">
+                                <div className="col-lg-9">
+                                  <div className="product-detail">
                                     {cat.products.media.length > 0 ? (
                                       <>
-                                        <div class="product-image">
+                                        <div className="product-image">
                                           <img src={cat.products.media[0].name}
                                           width="150" height="150" alt={cat.products.media[0].name} />
                                         </div>
@@ -344,7 +316,7 @@ const Checkout_old = () => {
                                     ):(
                                       <></>
                                     )}
-                                    <div class="product-order-details">
+                                    <div className="product-order-details">
                                       <h5>{cat.products?.name}</h5>
                                       {/* <span>Size : 9.5 , Color: Red</span> */}
                                       {attributes.length > 0 ? (
@@ -354,7 +326,7 @@ const Checkout_old = () => {
                                               return (
                                                 <>
                                                   {attribute.color}
-                                                  <span>
+                                                  <span key={index}>
                                                     {attribute.size ? (
                                                       <>
                                                         Size : {attribute.size}
@@ -386,14 +358,14 @@ const Checkout_old = () => {
                                       ) : (
                                         ""
                                       )}
-                                      <div class="quantitypadding">
+                                      <div className="quantitypadding">
                                         <p>
                                           <b>
                                             <span>QTY: {cat.quantity}</span>
                                           </b>
                                         </p>
                                       </div>
-                                      <span class="unter">
+                                      <span className="unter">
                                         International
                                         <br /> Shipping from
                                         <br />
@@ -402,8 +374,8 @@ const Checkout_old = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div class="col-lg-3">
-                                  <div class="prices-order-details">
+                                <div className="col-lg-3">
+                                  <div className="prices-order-details">
                                     <h4>US $ {cat.products?.price}</h4>
                                     <span>
                                       +US $
@@ -425,23 +397,23 @@ const Checkout_old = () => {
                 </>
               ) : (
                 <>
-                  <div class="order-details">
+                  <div className="order-details">
                     {cart.length > 0 ? (
                       <>
                         {cart.map((cat, index) => {
                           let attributes = JSON.parse(cat.attributes);
                           return (
                             <>
-                              <h3 id="storetitle">
+                              <h3 id="storetitle" key={index}>
                                 Seller: {cat.shop?.fullname}
                               </h3>
-                              <div class="row">
-                                <div class="col-lg-9">
-                                  <div class="product-detail">
-                                    <div class="product-image">
+                              <div className="row">
+                                <div className="col-lg-9">
+                                  <div className="product-detail">
+                                    <div className="product-image">
                                       <img src={Productimage} />
                                     </div>
-                                    <div class="product-order-details">
+                                    <div className="product-order-details">
                                       <h5>{cat.products?.name}</h5>
                                       {/* <span>Size : 9.5 , Color: Red</span> */}
                                       {attributes.length > 0 ? (
@@ -451,7 +423,7 @@ const Checkout_old = () => {
                                               return (
                                                 <>
                                                   {attribute.color}
-                                                  <span>
+                                                  <span key={index}>
                                                     {attribute.size ? (
                                                       <>
                                                         Size : {attribute.size}
@@ -483,14 +455,14 @@ const Checkout_old = () => {
                                       ) : (
                                         ""
                                       )}
-                                      <div class="quantitypadding">
+                                      <div className="quantitypadding">
                                         <p>
                                           <b>
                                             <span>QTY: {cat.quantity}</span>
                                           </b>
                                         </p>
                                       </div>
-                                      <span class="unter">
+                                      <span className="unter">
                                         International
                                         <br /> Shipping from
                                         <br />
@@ -499,8 +471,8 @@ const Checkout_old = () => {
                                     </div>
                                   </div>
                                 </div>
-                                <div class="col-lg-3">
-                                  <div class="prices-order-details">
+                                <div className="col-lg-3">
+                                  <div className="prices-order-details">
                                     <h4>US $ {cat.products?.price}</h4>
                                     <span>
                                       +US $
@@ -521,25 +493,25 @@ const Checkout_old = () => {
                 </>
               )}
               <br />
-              <div class="order-details" id="order-detailsid">
+              <div className="order-details" id="order-detailsid">
                 <h3>Shipping Details</h3>
-                <div class="shipping-details">
+                <div className="shipping-details">
                   <table style={{ width: "100%" }}>
                     <tr>
-                      <th class="boldthtotallight">Full Name :</th>
-                      <td class="boldthtotallight">{user.name}</td>
+                      <th className="boldthtotallight">Full Name :</th>
+                      <td className="boldthtotallight">{user.name}</td>
                     </tr>
                     <tr>
-                      <th class="boldthtotallight">Phone :</th>
+                      <th className="boldthtotallight">Phone :</th>
                       <td>{user.phone}</td>
                     </tr>
                     <tr>
-                      <th class="boldthtotallight">Address :</th>
+                      <th className="boldthtotallight">Address :</th>
                       {changeAdds ? (
                         <>
                           <td>
                             <textarea
-                              class="form-control"
+                              className="form-control"
                               onChange={handleChngeAdd}
                             ></textarea>
                             {otheraddess ? (
@@ -552,7 +524,7 @@ const Checkout_old = () => {
                           </td>
                           <td>
                             <p
-                              class="gradienttextcolor"
+                              className="gradienttextcolor"
                               style={{ cursor: "pointer" }}
                               onClick={(e) => changeAddress(e, false)}
                             >
@@ -565,7 +537,7 @@ const Checkout_old = () => {
                           <td>{userdetails?.street_address}</td>
                           <td>
                             <p
-                              class="gradienttextcolor"
+                              className="gradienttextcolor"
                               style={{ cursor: "pointer" }}
                               onClick={(e) => changeAddress(e, true)}
                             >
@@ -578,12 +550,12 @@ const Checkout_old = () => {
                     {changeAdds ? (
                       <>
                         <tr>
-                          <th class="boldthtotallight">Zip :</th>
+                          <th className="boldthtotallight">Zip :</th>
                           <td>
                             <input
                               type="text"
                               name="zip"
-                              class="form-control"
+                              className="form-control"
                               onChange={handleZip}
                               id="zip"
                             />
@@ -615,7 +587,7 @@ const Checkout_old = () => {
                 </div>
               </div>
               <br />
-              <div class="order-details" id="order-detailsid">
+              <div className="order-details" id="order-detailsid">
                 <h3>Pay with</h3>
                 <h6>Credit or Debit card</h6>
                 <span>
@@ -624,40 +596,40 @@ const Checkout_old = () => {
                 {/* <input
                   type="text"
                   placeholder="Card Number"
-                  class="form-control"
+                  className="form-control"
                   id="card-number"
                 /> */}
-                {/* <div class="rowcol">
+                {/* <div className="rowcol">
                   <input
                     type="text"
                     placeholder="Expiration Date"
-                    class="form-control"
+                    className="form-control"
                     id="card-number"
                   />
                   <input
                     type="text"
                     placeholder="Security Code"
-                    class="form-control"
+                    className="form-control"
                     id="card-number"
                   />
                 </div> */}
-                {/* <div class="rowcol">
+                {/* <div className="rowcol">
                   <input
                     type="text"
                     placeholder="First Name"
-                    class="form-control"
+                    className="form-control"
                     id="card-number"
                   />
                   <input
                     type="text"
                     placeholder="Last Name"
-                    class="form-control"
+                    className="form-control"
                     id="card-number"
                   />
                 </div> */}
                 {/* <div id="flexCheckDefault">
                   <input
-                    class="form-check-input"
+                    className="form-check-input"
                     type="checkbox"
                     value=""
                     id="coloring"
@@ -666,40 +638,40 @@ const Checkout_old = () => {
                 </div> */}
                 {userdetails?.street_address ? (<>
                   <p>Billing Address</p>
-                <span class="tabstop">{userdetails?.street_address}</span>
+                <span className="tabstop">{userdetails?.street_address}</span>
 
                 </>):(<></>)}
-                <div class="tabs-check">
-                  {/* <div class="form-check">
+                <div className="tabs-check">
+                  {/* <div className="form-check">
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="checkbox"
                       value=""
                       id="flexCheckDefault"
                     />
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <label className="form-check-label" for="flexCheckDefault">
                       Paypal
                     </label>
                   </div> */}
-                  {/* <div class="form-check">
+                  {/* <div className="form-check">
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="checkbox"
                       value=""
                       id="flexCheckChecked"
                     />
-                    <label class="form-check-label" for="flexCheckChecked">
+                    <label className="form-check-label" for="flexCheckChecked">
                       Google pay
                     </label>
                   </div> */}
-                  {/* <div class="form-check">
+                  {/* <div className="form-check">
                     <input
-                      class="form-check-input"
+                      className="form-check-input"
                       type="checkbox"
                       value=""
                       id="flexCheckChecked"
                     />
-                    <label class="form-check-label" for="flexCheckChecked">
+                    <label className="form-check-label" for="flexCheckChecked">
                       Stripe Pay
                     </label>
                   </div> */}
@@ -725,7 +697,7 @@ const Checkout_old = () => {
               </div>
               <br />
             </div>
-            <div class="col-lg-4">
+            <div className="col-lg-4">
               {(Object.keys(bidcart).length !== 0) ? (
                 <>
                   <div className="order-details" id="totalordervalue">
@@ -751,7 +723,7 @@ const Checkout_old = () => {
                           {prices.map((price, index) => {
                             return (
                               <>
-                                <tr>
+                                <tr key={index}>
                                   <th>{price.name}</th>
                                   <td>
                                     ${" "}
@@ -805,7 +777,7 @@ const Checkout_old = () => {
                           {prices.map((price, index) => {
                             return (
                               <>
-                                <tr>
+                                <tr key={index}>
                                   <th>{price.name}</th>
                                   <td>
                                     ${" "}
@@ -848,7 +820,7 @@ const Checkout_old = () => {
                 </>
               )}
               
-              {/* <button class="btn btn-info btn-lg gradientbtncolor" onClick={handleShow} type="button">
+              {/* <button className="btn btn-info btn-lg gradientbtncolor" onClick={handleShow} type="button">
             Confirm & Pay
           </button> */}
             </div>

@@ -52,8 +52,8 @@ const SignSecurity = () => {
           }else{
             setSecretQuestion(true)
           }
-        }).catch((e) => {
-          toast.error(e);
+        }).catch((error) => {
+          toast.error(error?.response?.data?.message)
         });
     }
   }
@@ -88,8 +88,8 @@ const SignSecurity = () => {
         }else{
           setShowPasswordFields(true)
         }
-      }).catch((e) => {
-        toast.error(e);
+      }).catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
     }
   };
@@ -119,8 +119,8 @@ const SignSecurity = () => {
       if(response.status){
         toast.success(response.message);
       }
-    }).catch((e) => {
-      toast.error(e);
+    }).catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
   }
   const handleThirdParty = () =>{
@@ -133,8 +133,8 @@ const SignSecurity = () => {
       if(response.status){
         toast.success(response.message);
       }
-    }).catch((e) => {
-      toast.error(e);
+    }).catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
   }
   const hanleFbAccount=()=>{
@@ -147,8 +147,8 @@ const SignSecurity = () => {
       if(response.status){
         toast.success(response.message);
       }
-    }).catch((e) => {
-      toast.error(e);
+    }).catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
 
   }
@@ -161,7 +161,6 @@ const SignSecurity = () => {
   };
   const getUserInfo =()=>{
     // let user = JSON.parse(localStorage.getItem('user_details'));
-    // console.log('user_details',user)
     UserServices.self()
     .then((res) => {
       setStepVerification(res.twosteps)   
@@ -169,8 +168,8 @@ const SignSecurity = () => {
       setFacebookAccount(res.fbaccount)   
       setSecQuestion(res.secret_question)   
       setSecAns(res.secret_answer)  
-    }).catch((e) => {
-      console.log('error', e)
+    }).catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
   }
   useEffect(() => {
@@ -235,17 +234,17 @@ const SignSecurity = () => {
                   <option value="">Select Secret Question</option>
                     {secretQuest ? (
                       <>
-                      {secretQuest.map((question) => {
+                      {secretQuest.map((question , index) => {
                         return(
                           <>
                           {(() => {
                           if (question.id === secquestion) {
                             return (
-                              <option selected="true" value={question.id}>{question.name}</option>
+                              <option selected="true" value={question.id} key={index}>{question.name}</option>
                             )
                           } else {
                             return (
-                              <option value={question.id}>{question.name}</option>
+                              <option value={question.id} key={index}>{question.name}</option>
                             )
                           }
                         })()}

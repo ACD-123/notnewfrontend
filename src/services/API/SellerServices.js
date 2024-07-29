@@ -156,6 +156,23 @@ function setBank(data) {
       method: 'GET'
     })
   }
+
+  function createSellerReport(data) {
+    return request({
+      url: `${baseUrl}seller/report`,
+      data,
+      method: 'POST',
+    })
+  }
+
+  function changePassword(data) {
+    return request({
+      url: `${baseUrl}user/updatePassword`,
+      data,
+      method: 'POST',
+    })
+  }
+
   function createRecent(data) {
     return request({
       url: `${baseUrl}seller/createRecents`,
@@ -163,6 +180,7 @@ function setBank(data) {
       method: 'POST',
     })
   }
+
   function getShopDetails(id) {
     return request({
       url: `${baseUrl}seller/getshopdetails/${id}`,
@@ -201,7 +219,9 @@ const SellerServices = {
   getBankDetails,
   createRecent,
   getTopSellers,
-  getShopDetail
+  getShopDetail,
+  createSellerReport,
+  changePassword
 }
 
 export default SellerServices

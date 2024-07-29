@@ -3,6 +3,7 @@ import ProductCard from "../../Elements/ProductCard"
 import { Button } from 'react-bootstrap'
 import { Link } from "react-router-dom";
 import SellerServices from '../../../services/API/SellerServices'; //~/services/API/SellerServices
+import { toast } from 'react-toastify';
 
 const FeaturedProducts = () => {
     const [featured, setFeatured] = useState([]);
@@ -10,11 +11,10 @@ const FeaturedProducts = () => {
         
             SellerServices.getFeatured()
           .then((res) => {
-            console.log('res', res)
-            if(res.status){
                 setFeatured(res.data)
-            }
-          }).catch(error =>  console.error('Error fetching product data:', error))
+          }).catch(error =>  {
+            toast.error(error?.response?.data?.message)
+          })
         
       };
       useEffect(() => {
@@ -29,7 +29,7 @@ const FeaturedProducts = () => {
             {featured.map((store, index) => {
                 return(
                     <>
-                        <div className='headings pr-auto'>
+                        <div className='headings pr-auto' key={index}>
                             <h3 style={{color:'white',paddingLeft:'50px',}}>{store.fullname}  Featured Products 
                                 <span style={{float: 'right',paddingLeft: '58px',fontSize: '18px',color: 'white',background: '#723780',paddingRight: '10px',}}>
                                     Sponsored

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
+import { toast } from "react-toastify";
 
 const SizeToggle = (props) => {
   const [showSizes, setShowSizes] = useState(false);
@@ -14,7 +15,9 @@ const SizeToggle = (props) => {
     ProductServices.getSizes()
     .then((response) => {
       setSizes(response.data);
-    }).catch(error => console.log(error))
+    }).catch(error => {
+      toast.error(error?.response?.data?.message)
+    })
   }
   const handleSizeSelect = (size) => {
     setSelectedSize(size);

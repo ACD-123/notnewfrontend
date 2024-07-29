@@ -14,7 +14,6 @@ const SellerProductCard = ({ setSubmitted, setProductId }) => {
   const getProduct = () => {
     SellerServices.getShopDetailProducts(id)
       .then((res) => {
-        console.log('Shop Products', res.data.products);
         setActiveProducts(res.data.products);
         setIsLoading(false)
       })

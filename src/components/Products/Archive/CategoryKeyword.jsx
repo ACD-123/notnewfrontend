@@ -129,9 +129,9 @@ const CategoryKeyword = ({cartFullResponse}) => {
           <div className='email-toggle'>
 
             <div className='toggle'>
-            <div class="form-check form-switch">
-            <label class="form-check-label" for="flexSwitchCheckDefault">Email</label>
-  <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" /></div>
+            <div className="form-check form-switch">
+            <label className="form-check-label" for="flexSwitchCheckDefault">Email</label>
+  <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" /></div>
             </div>
             <input type='submit' value='Confirm' />
           </div>

@@ -64,9 +64,9 @@ const CategoriesListing = () => {
                         <div className="Top-category-card-wrap">
                           {product.media.length > 0 ? (
                             <>
-                              {product.media?.map((media) => {
+                              {product.media?.map((media , index) => {
                                 return (
-                                  <div className="Top-category-card-img">
+                                  <div className="Top-category-card-img" key={index}>
                                     <img
                                       src={`${BASE_URL}/image/category/${media.name}`}
                                       alt={media.name}

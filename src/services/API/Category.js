@@ -17,9 +17,9 @@ function overAll(params = {}) {
     params,
   })
 }
-function getCategoryProductsById(category_id) {
+function getCategoryProductsById(category_id , user_id) {
   return request({
-    url: `${baseUrl}products/category-wise-product/${category_id}`,
+    url: `${baseUrl}products/category-wise-product/${category_id}?user_id=${user_id}`,
     method: 'GET'
   })
 }

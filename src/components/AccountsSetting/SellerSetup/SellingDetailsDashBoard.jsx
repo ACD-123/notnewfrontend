@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import OrderServices from "../../../services/API/OrderServices"; //~/services/API/OrderServices
 import { Spinner } from "react-bootstrap";
 import Select from 'react-select';
+import { toast } from "react-toastify";
 
 const SellingDetailsDashBoard = () => {
   const [dashboard, setDashboard] = useState([]);
@@ -52,9 +53,9 @@ const SellingDetailsDashBoard = () => {
         setIsLoading(false)
         localStorage.setItem('seller_guid', response?.sellerGuid)
       })
-      .catch((e) => {
+      .catch((error) => {
         setIsLoading(false)
-        console.log(e.message);
+        toast.error(error?.response?.data?.message)
       });
   };
 

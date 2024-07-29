@@ -62,7 +62,6 @@ const EditProfileSetup = ({ getShopDetaill }) => {
         }
       }
     }
-    console.log(postalCode, 'postalCode');
     setEditprofile(prev => ({
       ...prev,
       country_id: political,
@@ -109,8 +108,8 @@ const EditProfileSetup = ({ getShopDetaill }) => {
         toast.success(response.data);
         getShopDetaill()
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
         setEnabled(false);
       })
@@ -150,7 +149,8 @@ const EditProfileSetup = ({ getShopDetaill }) => {
         setIsLoading(false);
 
       })
-      .catch((e) => {
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       });
   };
@@ -293,7 +293,7 @@ const EditProfileSetup = ({ getShopDetaill }) => {
                       <div className="e-s-p-t-f-l">
                         <textarea
                           type="text"
-                          class="form-control"
+                          className="form-control"
                           name="description"
                           onChange={handleChange}
                           defaultValue={editprofile?.description}

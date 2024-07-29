@@ -11,8 +11,6 @@ const SearchwithCategories = () => {
   const getCategory = () => {
     Category.all()
     .then((res) => {
-      console.log('all category', res)
-      // setCategory(response)
     })
   }
   useEffect(() => {

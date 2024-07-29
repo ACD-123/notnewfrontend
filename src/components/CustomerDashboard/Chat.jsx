@@ -6,6 +6,7 @@ import Sendbutton from "../../assets/Images/send.png";
 import MessagesServices from "../../services/API/MessagesServices"; //~/services/API/MessagesServices
 import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
 import blank from "../../assets/Images/User/blankuser.jpg";
+import { toast } from "react-toastify";
 // getUserConversations
 function Chat() {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -19,8 +20,8 @@ function Chat() {
       .then((response) => {
         setChatList(response?.data);
       })
-      .catch((e) => {
-        console.log("error", e);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -56,14 +57,12 @@ function Chat() {
   const handleChatSelection = (reciptId, senderId, chat) => {
     UserServices.getMessagesById(reciptId)
       .then((response) => {
-        console.log(chat, 'asdasda');
 
         setSelectedChat(chat);
-        console.log(chat , 'chat');
         setMessages(response?.data);
       })
-      .catch((e) => {
-        console.log("error", e);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -81,8 +80,8 @@ function Chat() {
         });
         // setChatList(response)
       })
-      .catch((e) => {
-        console.log("error", e);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
     return [];
   };
@@ -106,8 +105,8 @@ function Chat() {
             setNewMessage("");
           }
         })
-        .catch((e) => {
-          console.log("error", e);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
         });
     }
   };

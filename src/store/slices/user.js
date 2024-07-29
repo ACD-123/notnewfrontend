@@ -22,7 +22,7 @@ export const login = ({ username, password }) => async dispatch => {
     // const res = await api.post('/api/auth/login/', { username, password })
     dispatch(loginSuccess({username}));
   } catch (e) {
-    return console.error(e.message);
+    return;
   }
 }
 export const logout = () => async dispatch => {
@@ -30,6 +30,6 @@ export const logout = () => async dispatch => {
     // const res = await api.post('/api/auth/logout/')
     return dispatch(logoutSuccess())
   } catch (e) {
-    return console.error(e.message);
+    return;
   }
 }

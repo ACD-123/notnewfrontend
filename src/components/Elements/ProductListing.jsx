@@ -15,9 +15,10 @@ const ProductListing = (props) => {
   const fetchProductData = async () => {      
     ProductServices.recent()
     .then((res) => {
-      console.log('resodddd',res)
       setProductData(res); // Limit to the first 5 products
-    }).catch(error => console.log(error));
+    }).catch(error => {
+      toast.error(error?.response?.data?.message)
+    });
   };
   useEffect(() => {
     fetchProductData();

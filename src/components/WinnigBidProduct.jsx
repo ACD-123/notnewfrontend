@@ -15,7 +15,6 @@ const WinningBidProduct = (props) => {
 
   const renderOrderBlock = (orderData) => {
     const { orderNumber, productName, images, condition, ended, winningbid, shipping, location, seller } = orderData;
-    console.log('orderData', orderData)
     return (
       <div className="row align-items-center" key={orderNumber}
       style={{padding: "40px 0px"}}
@@ -85,20 +84,16 @@ const WinningBidProduct = (props) => {
   const getUserProductBids = () =>{
     UserServices.getBid(id).then((response) => {
       if(response.status){
-        console.log('a', response.data)
         setBidData(response.data);
       }
     });
   }
   const getProduct = () =>{
-    console.log()
     ProductServices.get(id).then((response) => {
-      console.log('product', response)
       setProduct(response)
     })
-    .catch((e) => {
-      console.log('error', e)
-      // toast.error(e.message);
+    .catch((error) => {
+      toast.error(error?.response?.data?.message)
     });;
   }
   useEffect(() => {

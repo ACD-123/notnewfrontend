@@ -54,8 +54,8 @@ const SingleProductSidebar = () => {
           toast.success(response);
           getSellerSavedData(shopGuidSave);
         })
-        .catch((e) => {
-          console.log("Error:", e);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
         });
     } else {
       navigate("/signin")
@@ -67,8 +67,8 @@ const SingleProductSidebar = () => {
       .then((response) => {
         setSavedSeller(response.shop_id);
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -76,12 +76,11 @@ const SingleProductSidebar = () => {
     UserServices.detail()
       .then((response) => {
         setUserDetails(response);
-        console.log('user_details', response);
         setUser(response.id);
         localStorage.setItem("user_details", JSON.stringify(response));
       })
-      .catch((e) => {
-        console.log("error", e);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -101,8 +100,7 @@ const SingleProductSidebar = () => {
       toast.success("Seller added to favorites!");
       setFavData(res.data);
     } catch (error) {
-      console.error("Error adding to favorites:", error);
-      toast.error("Failed to add seller to favorites.");
+      toast.error(error?.response?.data?.message)
     }
   };
 

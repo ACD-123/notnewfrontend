@@ -3,6 +3,7 @@ import TransactionServices from "../../../services/API/TransactionServices";
 import { Spinner } from 'react-bootstrap';
 import NoDataFound from '../../Shared/NoDataFound';
 import LoadingComponents from '../../Shared/LoadingComponents';
+import { toast } from 'react-toastify';
 
 const MyTransactions = () => {
   const [transactions, setTransactions] = useState({});
@@ -15,7 +16,8 @@ const MyTransactions = () => {
       .then((response) => {
         setTransactions(response?.data);
         setIsLoading(false)
-      }).catch((err) => {
+      }).catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false)
       })
   }

@@ -119,7 +119,6 @@ function secretQuestion(data){
 }
 
 function changePassword(data){
-  console.log('ss', `${baseUrl}change-password`)
   return request({
     url: `${baseUrl}change-password`,
     data,

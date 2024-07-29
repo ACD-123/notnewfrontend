@@ -8,6 +8,7 @@ import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 import Footer from '../components/Footer';
 import HomeService from '../services/API/HomeService';
 import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const SearchProduct = ({cartFullResponse}) => {
     const [auctionProducts, setAuctionProducts] = useState([]);
@@ -20,11 +21,11 @@ const SearchProduct = ({cartFullResponse}) => {
 
     const handelInputChange = (text) => {
     HomeService.getSearchProducts(text).then((res) => {
-      console.log(res?.data, 'getSearchProducts');
       setSearchProduct(res?.data)
       setLoader(false)
     }).catch((error) => {
         setLoader(false)
+        toast.error(error?.response?.data?.message)
     });
   }
 

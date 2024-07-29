@@ -17,13 +17,12 @@ const CustomerActiveProducts = () => {
     const getActiveFavProducts = () => {
         OrderServices.customerActiveFavProducts(loggedInUser?.id)
             .then((response) => {
-                console.log(response?.data?.active, 'response?.data?.active');
                 setActiveFavProductList(response?.data?.active);
                 setIsLoading(false);
 
             })
-            .catch((e) => {
-                toast.error(e.message);
+            .catch((error) => {
+                toast.error(error?.response?.data?.message)
                 setIsLoading(false);
             });
     };

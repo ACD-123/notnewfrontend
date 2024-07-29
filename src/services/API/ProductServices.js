@@ -199,7 +199,6 @@ function selfValue(value) {
 
 // function search(params = {}) {
   function search(data) {
-    console.log('data', data)
   return request({
     url: `${baseUrl}/search`,
     data, //this.$route.query,

@@ -40,7 +40,7 @@ const SellingNotifications = () => {
     }
     NotificationSettingsServices.notificationSaveSettings(data)
     .then((response) => {
-      console.log('response', response)
+      
     })
   }
   const handleRewardOffer =() =>{
@@ -52,7 +52,7 @@ const SellingNotifications = () => {
     }
     NotificationSettingsServices.notificationSaveSettings(data)
     .then((response) => {
-      console.log('response', response)
+      
     })
   }
   const handleGeneralPromotions =() =>{
@@ -64,7 +64,7 @@ const SellingNotifications = () => {
     }
     NotificationSettingsServices.notificationSaveSettings(data)
     .then((response) => {
-      console.log('response', response)
+      
     })
   }
   useEffect(() => {

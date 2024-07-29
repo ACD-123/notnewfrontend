@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Productimage from "../../assets/Images/Productcard/1.png";
 import OrderServices from "../../services/API/OrderServices"; //~/services/API/OrderServices
 import blank from "../../assets/Images/Productcard/blank.jpg";
+import { toast } from "react-toastify";
 
 const RefundProductCart = (props) => {
   const [images, setImages] = useState([]);
@@ -21,23 +22,15 @@ const RefundProductCart = (props) => {
           setOrderItems(orderItems);
         }
       })
-      .catch((e) => {
-        console.log("error", e);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
   const handleCheckBox = (e) => {
     const { value, checked } = e.target;
     if (checked == true) {
       if (value !== "") {
-        // let products = [];
-        // let valueExits =products.indexOf(value) > -1;
-        // if(!valueExits){
-        // products.push(value)
-        // setProducts([...products, newValue])
         props.productIdCallBack(value, orderId);
-        // }else{
-        // console.log('not value exists')
-        // }
       }
     }
   };
@@ -63,7 +56,7 @@ const RefundProductCart = (props) => {
                               let media = orderitem.media;
                               return (
                                 <>
-                                  <div>
+                                  <div key={index}>
                                     <input
                                       type="checkbox"
                                       onChange={handleCheckBox}
@@ -75,7 +68,7 @@ const RefundProductCart = (props) => {
                                       {orderitems.map((orderitem, index) => {
                                         return (
                                           <>
-                                            <div className="product-image">
+                                            <div className="product-image" key={index}>
                                               <img src={Productimage} />
                                             </div>
                                           </>
@@ -101,7 +94,7 @@ const RefundProductCart = (props) => {
                                         {attributes.map((attribute, index) => {
                                           return (
                                             <>
-                                              <span>
+                                              <span key={index}>
                                                 {attribute.size ? (
                                                   <>Size : {attribute.size}</>
                                                 ) : (

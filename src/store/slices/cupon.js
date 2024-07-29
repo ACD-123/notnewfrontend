@@ -28,7 +28,7 @@ export const saveCupon = ( cupon ) => async dispatch => {
     // const res = await api.post('/api/auth/login/', { username, password })
     dispatch(loginSuccess(cupon));
   } catch (e) {
-    return console.error(e.message);
+    return 
   }
 }
 export const deleteCupon = () => async dispatch => {
@@ -36,6 +36,6 @@ export const deleteCupon = () => async dispatch => {
     // const res = await api.post('/api/auth/logout/')
     return dispatch(logoutSuccess())
   } catch (e) {
-    return console.error(e.message);
+    return;
   }
 }

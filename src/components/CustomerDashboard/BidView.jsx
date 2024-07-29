@@ -12,6 +12,7 @@ import BidsServices from "../../services/API/BidsServices"; //~/services/API/Bid
 import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
 import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
 import moment from "moment";
+import { toast } from "react-toastify";
 
 const BidView = ({cartFullResponse}) => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
@@ -53,8 +54,6 @@ const BidView = ({cartFullResponse}) => {
       );
       var duration = moment.duration(date2.diff(date1));
       var hours = duration.asHours();
-      // var minutes = duration.asMinutes();
-      // console.log('minutes', remianing.toString().split(".")[1])
       var minutes = hours.toFixed(2);
       setHour(hours.toString().split(".")[0]);
       setMinutes(minutes.toString().split(".")[1]);
@@ -76,7 +75,6 @@ const BidView = ({cartFullResponse}) => {
   const getProductTotalBids = () => {
 
     BidsServices.getProductBids(id).then((response) => {
-      console.log('response', response)
       // if (response.status) {
       //   setTotalBid(response.data);
       // }
@@ -145,8 +143,8 @@ const BidView = ({cartFullResponse}) => {
               // }
             }
           })
-          .catch((e) => {
-            console.log("error", e);
+          .catch((error) => {
+            toast.error(error?.response?.data?.message)
           });
         // setRefundDetailsVisible({
         //   ...refundDetailsVisible,
@@ -176,24 +174,6 @@ const BidView = ({cartFullResponse}) => {
     setAdditionalPopupVisible(false); // Close additional popup
   };
   const handleConfirmBidClick = () => {
-    // let data ={
-    //   "product_id": id
-    // }
-    // console.log('confirmed bids',id);
-    // console.log('data', data);
-    // return;
-    // BidsServices.confirmBids(data)
-    // .then((response) => {
-    //   console.log('response', response)
-    //   // setRequestSentVisible({
-    //   //   ...requestSentVisible,
-    //   //   element1: false, // Close the requestSentVisible popup for element1
-    //   // });
-    //   // setAdditionalPopupVisible(true); // Show the additionalPopupVisible popup
-    // })
-    // .catch((e) => {
-    //   toast.error(e.message);
-    // });
   };
   const handleDropdownItemClick = (componentName) => {
     navigate(`/customerdashboard?component=${componentName}`)
@@ -210,7 +190,6 @@ const BidView = ({cartFullResponse}) => {
     });
   };
   const handleCallback = (childData) => {
-    console.log('childData', childData)
     setTotalBids(childData);
   };
   const getBestOffer = () => {

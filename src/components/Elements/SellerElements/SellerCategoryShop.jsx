@@ -44,7 +44,6 @@ const SellerCategoryShop = () => {
       .then((response) => {
       
       })
-        // console.log('childData',childData)
   }
   const handleSearchCallback = (childData) => {
     if(childData === ""){

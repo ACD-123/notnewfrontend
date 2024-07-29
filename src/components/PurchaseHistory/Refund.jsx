@@ -21,12 +21,11 @@ const Refunds = () => {
   const getCustomerOrder = () => {
     OrderServices.sellerRefundOrders()
       .then((response) => {
-        console.log("Refund", response);
         setCustomerOrders(response.data); // Assuming response.data contains the array of orders
         setIsLoading(false); // Set isLoading to false when data is fetched
       })
       .catch((error) => {
-        // toast.error(error.message);
+        toast.error(error?.response?.data?.message)
         setIsLoading(false); // Set isLoading to false even if there's an error
       });
   };
@@ -34,14 +33,11 @@ const Refunds = () => {
     const refundOrder = (order) => {
       OrderServices.getbyid(order.id)
         .then((response) => {
-          console.log("refund", response);
-          setRefundOrders(response.data); // Assuming response.data contains the array of orders
-          // After getting the refund data, show the refund details popup
-          console.log("orderid", order.id);
+          setRefundOrders(response.data);
           handleRefundClick(order.id);
         })
         .catch((error) => {
-          console.log(error.message);
+          toast.error(error?.response?.data?.message)
         });
     };
     // const { orderNumber, productName, images } = orderData;

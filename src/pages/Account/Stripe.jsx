@@ -51,14 +51,12 @@ const Stripe = (props) => {
     }
     var cartItems = [];
     let carts;
-    console.log('carts', props.orderType)
     if(props.orderType === 'bids'){
       cartItems.push(props.bidcart);
     }else{
       carts = props.cart;
       carts?.map((cart) => {
         let data;
-        // console.log('sss', cart.attributes)
         if(cart.attributes !== 'null'){
           data ={
             "product_id": cart.product_id,
@@ -77,7 +75,6 @@ const Stripe = (props) => {
           cartItems.push(data);
       })
     }
-    console.log(JSON.stringify(cartItems))
 
     let data ={
         "buyer_id" : loggedInUsers.id,
@@ -110,20 +107,17 @@ const Stripe = (props) => {
       }
     })
     .catch(error => {
-        console.log("ERROR:: ", error);
+      toast.error(error?.response?.data?.message)
         setIsLoading(false);
         setEnabled(false);
     });
-
-    // console.log('stripe responbce', client_secret)
-    // const {client_secret: clientSecret} = await client_secret;
   };
   return (
     <>
       <form onSubmit={handleStripeSubmit}>
         <PaymentElement />
         <div className="confirm-paybutton">
-          {/* <button type="submit" class="btn" disabled={!stripes || !elements}>
+          {/* <button type="submit" className="btn" disabled={!stripes || !elements}>
             Pay
           </button> */}
             <div className="imgtoop">
@@ -132,12 +126,12 @@ const Stripe = (props) => {
                 {/* <button
                     disabled={!stripes || !elements}
                     type="submit"
-                    class="btn btn-info btn-lg gradientbtncolor"
+                    className="btn btn-info btn-lg gradientbtncolor"
                     // onClick={handleShow}
                 >
                     Confirm & Pay
                 </button> */}
-                <button type="submit" class="btn btn-info btn-lg gradientbtncolor"  disabled={enabled || !stripes || !elements}>
+                <button type="submit" className="btn btn-info btn-lg gradientbtncolor"  disabled={enabled || !stripes || !elements}>
                 {isLoading ? "loading.." : "Confirm & Pay"}
               </button>
                 {/* </Link> */}

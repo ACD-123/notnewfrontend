@@ -19,8 +19,8 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
         setActiveOrders(response?.data);
         setIsLoading(false);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       });
   };
@@ -30,7 +30,6 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
     setDetail(true)
     OrderServices.getPendingOdersDetail(order_id)
       .then((response) => {
-        console.log(response?.data, 'getActiveOdersDetail');
         setPendingOdrDetail(response?.data)
         let tempArr = []
         for (let i = 0; i < response?.data?.products.length; i++) {
@@ -42,8 +41,8 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
         setPendingOrderAttributes(tempArr)
         setIsLoading(false)
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       });
   };
@@ -58,8 +57,7 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
         getProductManagmentOderCount()
       })
       .catch((error) => {
-        console.error("Error updating order status:", error);
-        toast.error("Failed to update order status.");
+        toast.error(error?.response?.data?.message)
       });
     // }
   };
@@ -80,7 +78,7 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
               <div className="p-o-m-w-l">
                 {activeOders?.map((data, index) => {
                   return (
-                    <ul>
+                    <ul key={index}>
                       <li>
                         <div className="p-o-m-w-l-l">
                           <div className="p-o-m-w-l-l-l">
@@ -204,7 +202,7 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
               <div className="d-4-1">
                 {pendingOdrDetail?.products?.map((data, index) => {
                   return (
-                    <div className="d-4-1-w">
+                    <div className="d-4-1-w" key={index}>
                       <div className="d-4-1-l">
                         <img src={data?.media?.[0]?.name} alt="Product" />
                       </div>

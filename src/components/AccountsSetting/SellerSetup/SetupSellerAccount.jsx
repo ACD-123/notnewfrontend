@@ -78,7 +78,7 @@ const SetupSellerAccount = () => {
             }
         });
     } else {
-        console.log("No places returned");
+
     }
 };
 
@@ -106,8 +106,8 @@ const SetupSellerAccount = () => {
             setAddress(response.data.address)
           }
         })
-        .catch((e) => {
-          console.log(e.message);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
         });
     }
   };
@@ -167,9 +167,6 @@ const SetupSellerAccount = () => {
       if (profilePic) {
         fd.append("file", profilePic);
       }
-      for (let pair of fd.entries()) {
-        console.log('formdata params'+pair[0] + ", " + pair[1]);
-      }
       setIsLoading(true);
       setEnabled(true);
       if (formData.guid === "") {
@@ -183,11 +180,11 @@ const SetupSellerAccount = () => {
               toast.error(response.data);
             }
           })
-          .catch((e) => {
-            if('email', e.response.data.message == '1'){
-              toast.error(e.response.data.data);
+          .catch((error) => {
+            toast.error(error?.response?.data?.message)
+            if('email', error.response.data.message == '1'){
+              toast.error(error.response.data.data);
             }
-            console.log('error:', e)
             setIsLoading(false);
             setEnabled(false);
           })
@@ -202,8 +199,8 @@ const SetupSellerAccount = () => {
             setFormSubmitted(true);
             setEditAddress(false)
           })
-          .catch((e) => {
-            toast.error(e.message);
+          .catch((error) => {
+            toast.error(error?.response?.data?.message)
             setIsLoading(false);
             setEnabled(false);
           })
@@ -215,14 +212,13 @@ const SetupSellerAccount = () => {
     }
   };
   const handleCountryChange = (e) => {
-    // console.log('country_id', e.target.value)
     // formData.country_id = e.target.value;
     State.get(e.target.value)
       .then((response) => {
         setState(response);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -232,14 +228,13 @@ const SetupSellerAccount = () => {
       .then((response) => {
         setCity(response);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // console.log('hello')
     setFormData({
       ...formData,
       [name]: value,
@@ -356,7 +351,7 @@ const SetupSellerAccount = () => {
                       </div>
                     </div>
                   </div>
-                  <div class="mb-3">
+                  <div className="mb-3">
                     <input
                       type="text"
                       className="form-control"
@@ -368,7 +363,7 @@ const SetupSellerAccount = () => {
                     />
                   </div>
                   {errors.name && <p className="error">{errors.name}</p>}
-                  <div class="mb-3">
+                  <div className="mb-3">
                     <input
                       type="email"
                       className="form-control"
@@ -380,7 +375,7 @@ const SetupSellerAccount = () => {
                     />
                   </div>
                   {errors.email && <p className="error">{errors.email}</p>}
-                  <div class="mb-3">
+                  <div className="mb-3">
                     <input
                       type="tel"
                       className="form-control"
@@ -392,7 +387,7 @@ const SetupSellerAccount = () => {
                     />
                   </div>
                   {errors.phone && <p className="error">{errors.phone}</p>}
-                  <div class="mb-3">
+                  <div className="mb-3">
                     {/* <input
                       type="text"
                       className="form-control"
@@ -418,7 +413,7 @@ const SetupSellerAccount = () => {
                      
                   </div>
                   {errors.address && <p className="error">{errors.address}</p>}
-                  <div class="mb-3">
+                  <div className="mb-3">
                     <textarea
                       className="form-control"
                       id="description"
@@ -437,7 +432,7 @@ const SetupSellerAccount = () => {
                     </label>
 
                       {/* <select
-                        class="form-select"
+                        className="form-select"
                         name="country_id"
                         value={formData.country_id}
                         onChange={handleChange}
@@ -467,7 +462,7 @@ const SetupSellerAccount = () => {
                       {states}
                     </label>
                       {/* <select
-                        class="form-select"
+                        className="form-select"
                         name="state_id"
                         value={formData.state_id}
                         onChange={handleChange}
@@ -520,7 +515,7 @@ const SetupSellerAccount = () => {
                       {errors.city && <p className="error">{errors.city}</p>}
                     </div>
                   </div>
-                  <div class="mb-3">
+                  <div className="mb-3">
                     {/* <input
                       type="text"
                       className="form-control"
@@ -535,7 +530,7 @@ const SetupSellerAccount = () => {
                     </label>
                   </div>
                   {errors.zip && <p className="error">{errors.zip}</p>}
-                  {/* <div class="mb-3">
+                  {/* <div className="mb-3">
                     <input
                       type="password"
                       className="form-control"
@@ -549,7 +544,7 @@ const SetupSellerAccount = () => {
                   {errors.password && (
                     <p className="error">{errors.password}</p>
                   )}
-                  <div class="mb-3">
+                  <div className="mb-3">
                     <input
                       type="password"
                       className="form-control"

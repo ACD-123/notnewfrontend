@@ -13,7 +13,6 @@ const CategoryPage = ({cartFullResponse}) => {
     HomeService.getrecursive()
       .then((res) => {
         setIsLoading(false);
-        console.log('category data', res.length)
         setCategoryData(res)
       })
   }
@@ -32,8 +31,8 @@ const CategoryPage = ({cartFullResponse}) => {
                 <ul>
                   {categories.length > 0 ? (
                     <>
-                      {categories?.map((category) => (
-                        <Link to={`/notFound`}><li>{category.name}</li></Link>
+                      {categories?.map((category , index) => (
+                        <Link to={`/notFound`} key={index}><li>{category.name}</li></Link>
                       ))}
                     </>
                   ) : ('')}
@@ -60,10 +59,10 @@ const CategoryPage = ({cartFullResponse}) => {
                                 {/* <hr /> */}
                                 {product.media.length > 0 ? (
                                   <>
-                                    {product.media?.map((media) => {
+                                    {product.media?.map((media , index) => {
                                       return (
                                         <>
-                                          <img src={`${BASE_URL}/image/category/${media.name}`} alt={media.name} />
+                                          <img src={`${BASE_URL}/image/category/${media.name}`} alt={media.name} key={index} />
                                         </>
                                       )
                                     })}

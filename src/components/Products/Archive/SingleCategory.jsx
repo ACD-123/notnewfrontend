@@ -45,17 +45,9 @@ const SingleCategory = ({cartFullResponse}) => {
     max: 1000,
   });
 
-  // const handleSliderChange = (value) => {
-  //   console.log(value);
-  //   setPriceRange({
-  //     min: value[0],
-  //     max: value[1],
-  //   });
-  // };
-
   const getCategoryProductsById = (category_id) => {
     setLoading(true)
-    Category.getCategoryProductsById(category_id)
+    Category.getCategoryProductsById(category_id , loggedInUser?.id)
       .then((response) => {
         setCategoryProducts(response?.data);
         getCategorySubCategoryById(category_id)
@@ -88,71 +80,13 @@ const SingleCategory = ({cartFullResponse}) => {
       });
   };
 
-  // const getCategoryAttributes = (id) => {
-  //   Category.productAttributes(id)
-  //     .then((res) => {
-  //       console.log(res, 'getCategoryAttributes');
-  //       for (let i = 0; i < res?.data.length; i++) {
-  //         const attributeName = res?.data?.[i]?.key;
-  //         setShowDropdown((prev) => ({ ...showDropdown, [attributeName]: false }))
-  //       }
-  //       console.log(showDropdown, 'showDropdown');
-  //       const categoryAddons = res?.data?.map(category => ({
-  //         name: category.key,
-  //         options: category.options.map((option, index) => ({
-  //           id: id,
-  //           label: option,
-  //           check: false
-  //         }))
-  //       }));
-  //       setCategoryAttributes(categoryAddons)
-  //       console.log(categoryAddons, 'categoryAddons');
-  //     }
-  //     )
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }
-
-  // const getBrands = () => {
-  //   HomeService.getbrands()
-  //     .then((response) => {
-  //       const brands = response?.map(brand => ({
-  //         ...brand,
-  //         check: false
-  //       }));
-  //       setBrands(brands);
-  //       setFilteredBrands(brands)
-  //     })
-  //     .catch((e) => {
-  //       console.log(e.message);
-  //     });
-  // };
-
   const handleToggleFavourite = (index) => {
     const updatedProducts = [...categoryProducts];
     updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
     setCategoryProducts(updatedProducts);
   };
 
-  // const searchBrand = (event) => {
-  //   setSearchTerm(event);
-  //   filterBrands(event);
-  // };
-
-  // const filterBrands = (term) => {
-  //   if (term === '') {
-  //     setFilteredBrands(brands);
-  //   } else {
-  //     const filtered = brands.filter(brand =>
-  //       brand.name.toLowerCase().includes(term.toLowerCase())
-  //     );
-  //     setFilteredBrands(filtered);
-  //   }
-  // };
-
   const handelSubCategoryChange = (e) => {
-    console.log(e, 'handelSubCategoryChange');
     getCategoryProductsById(e.value)
     setSelectedSubCategories(e)
   }
@@ -384,7 +318,7 @@ const SingleCategory = ({cartFullResponse}) => {
                         categoryProducts.length > 0 ?
                           (categoryProducts?.map((data, index) => {
                             return (
-                              <div className="col-lg-3">
+                              <div className="col-lg-3" key={index}>
                                 <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
                               </div>
                             )

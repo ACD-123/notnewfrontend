@@ -12,19 +12,20 @@ const Banner = ({ data, loading}) => {
     <>
       <section id='banners'>
         <div className='container'>
-          <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+          <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="true">
             {loading ?
             <Skeleton/>
           :
           <>
-            <div class="carousel-inner">
+            <div className="carousel-inner">
               {data?.map((item, index) => {
                 return (
-                  <div class={`carousel-item ${index === 0 ? 'active' : ''}`}
+                  <div className={`carousel-item ${index === 0 ? 'active' : ''}`}
                     style={{
                       backgroundImage: `url(${item?.image})`,
                       backgroundSize: `cover`
                     }}
+                    key={index}
                   >
                     <div className='banner-text-button'>
                       <h1>Best Deals <br></br>In Town</h1>
@@ -36,10 +37,10 @@ const Banner = ({ data, loading}) => {
               })}
             </div>
 
-            <div class="carousel-indicators">
+            <div className="carousel-indicators">
               {data?.map((item, index) => {
                 return (
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={index} class={`${index === 0 ? 'active' : ''}`} aria-current="true" aria-label={`Slide ${index + 1}"`}></button>
+                  <button key={index} type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to={index} className={`${index === 0 ? 'active' : ''}`} aria-current="true" aria-label={`Slide ${index + 1}"`}></button>
                 )
               })}
             </div>

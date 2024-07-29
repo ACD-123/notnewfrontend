@@ -28,7 +28,6 @@ import moment from "moment";
 import SellerAllTabs from './SellerAllTabs';
 
 const DetailedProductInfo = ({ order }) => {
-  console.log('order', order)
   const [orderitems, setOrderItems] = useState({});
   const [estDelivery, setEstDelivery] = useState('');
   const [orderstatus, setOrderStatus] = useState('');
@@ -111,11 +110,11 @@ const DetailedProductInfo = ({ order }) => {
             </div>
             {orderitems.length > 0 ? (
               <>
-                {orderitems.map((items) => {
+                {orderitems.map((items , index) => {
                   let attributes = JSON.parse(items.attributes);
                   return (
                     <>
-                      <div className="row align-items-center">
+                      <div className="row align-items-center" key={index}>
                         <h3>Order Items</h3>
                         <div className="col-lg-9">
                           <div className="product-image">
@@ -127,10 +126,10 @@ const DetailedProductInfo = ({ order }) => {
                               <p>${items.price}</p>
                               {attributes.length > 0 ? (
                                 <>
-                                  {attributes?.map((attribute) => {
+                                  {attributes?.map((attribute , index) => {
                                     return (
                                       <>
-                                        <p className="size-color">
+                                        <p className="size-color" key={index}>
                                           <span>Size:</span>
                                           {attribute.size} <span>Color:</span>{" "}
                                           <div
@@ -155,10 +154,10 @@ const DetailedProductInfo = ({ order }) => {
                         <div className="col-lg-3">
                           {attributes.length > 0 ? (
                             <>
-                              {attributes?.map((attribute) => {
+                              {attributes?.map((attribute , index) => {
                                 return (
                                   <>
-                                    <h5 className="qunty">
+                                    <h5 className="qunty" key={index}>
                                       Quantity :
                                       <span>{attribute.quantity}</span>
                                     </h5>

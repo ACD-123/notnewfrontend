@@ -20,20 +20,20 @@ const RecentlyViewed = () => {
         setProducts([]);
       }
     })
-    .catch((e) => {
-      console.log(e.message);
+    .catch((error) => {
+      toast.error(error?.response?.data?.message)
       setProducts([]);
     });
   }
   // Function to clear all products
   const clearAllProducts = () => {
     UserService.deleteRecentUser()
-    .then((response) => {
-      console.log('clear', response)
+    .then((error) => {
+      toast.error(error?.response?.data?.message)
       getRecent();
     })
-    .catch((e) => {
-      toast.error(e.message);
+    .catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
     // setProducts([]); // Set the products array to an empty array
   };

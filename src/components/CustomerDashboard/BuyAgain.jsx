@@ -80,11 +80,11 @@ const DetailedProductInfo = ({ order }) => {
             </div>
             {orderitems.length > 0 ? (
               <>
-                {orderitems.map((items) => {
+                {orderitems.map((items , index) => {
                   let attributes = JSON.parse(items.attributes);
                   return (
                     <>
-                      <div className="row align-items-center">
+                      <div className="row align-items-center" key={index}>
                         <h3>Order Items</h3>
                         <div className="col-lg-9">
                           <div className="product-image">
@@ -96,10 +96,10 @@ const DetailedProductInfo = ({ order }) => {
                               <p>${items.price}</p>
                               {attributes.length > 0 ? (
                                 <>
-                                  {attributes?.map((attribute) => {
+                                  {attributes?.map((attribute , index) => {
                                     return (
                                       <>
-                                        <p className="size-color">
+                                        <p className="size-color" key={index}>
                                           <span>Size:</span>
                                           {attribute.size} <span>Color:</span>{" "}
                                           <div
@@ -124,10 +124,10 @@ const DetailedProductInfo = ({ order }) => {
                         <div className="col-lg-3">
                           {attributes.length > 0 ? (
                             <>
-                              {attributes?.map((attribute) => {
+                              {attributes?.map((attribute , index) => {
                                 return (
                                   <>
-                                    <h5 className="qunty">
+                                    <h5 className="qunty" key={index}>
                                       Quantity :
                                       <span>{attribute.quantity}</span>
                                     </h5>
@@ -212,8 +212,8 @@ const BuyAgain = () => {
       .then((response) => {
         setSelectedOrder(response);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
     setSelectedProduct(index);
   };
@@ -268,10 +268,10 @@ const BuyAgain = () => {
               <h5>Order # : <b>{orderData.order.orderid}</b></h5>
               <h3>{orderData.product.name}</h3>
               <h4>Attributes:</h4>
-              {(JSON.parse(orderData.product.attributes)).map((attribute, imgIndex) => {
+              {(JSON.parse(orderData.product.attributes)).map((attribute, index) => {
                 return(
                   <>
-                  <ul style={{ listStyle: "none", padding : 0}}>
+                  <ul style={{ listStyle: "none", padding : 0}} key={index}>
                     <li>
                       <b>Size:</b> {attribute.size}
                     </li>
@@ -343,10 +343,9 @@ const BuyAgain = () => {
     OrderServices.customerBuyAgainOrders()
     .then((response) => {
       setCustomerOrders(response.data)
-      console.log('response.data', response.data)
     })
-    .catch((e) => {
-      console.log('error', e)
+    .catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
   }
   useEffect(() => {
@@ -359,7 +358,7 @@ const BuyAgain = () => {
         <h3>Buy Again</h3>
         <div className='row align-items-center first-row'>
           <div className='col-lg-7'>
-            <div class="keyword-filter-list buyagain-filterbuttons">
+            <div className="keyword-filter-list buyagain-filterbuttons">
               <ul>
                 <li> <a href="#">All Listings</a></li>
                 <li> <a href="#">Auctions</a></li>

@@ -60,12 +60,12 @@ const EditBankDetails = () => {
           .then((responce) => {
             toast.success(response.data);
           })
-          .catch((e) => {
-            toast.error(e.message);
+          .catch((error) => {
+            toast.error(error?.response?.data?.message)
           });
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
         setEnabled(false);
       })
@@ -78,7 +78,6 @@ const EditBankDetails = () => {
   const getBanks = () => {
     SellerServices.getBanks()
       .then((response) => {
-        console.log(response, 'banklist');
         let bank = [];
         for (let i = 0; i < response.length; i++) {
           bank.push({ label: response[i].fullname, value: response[i].id })
@@ -87,9 +86,9 @@ const EditBankDetails = () => {
         setIsLoading(false)
 
       })
-      .catch((e) => {
+      .catch((error) => {
         setIsLoading(false)
-        console.log(e.message);
+        toast.error(error?.response?.data?.message)
       });
   };
 
@@ -103,8 +102,8 @@ const EditBankDetails = () => {
         bic_swift: response.data.bic_swift,
       })
       getBanks();
-    }).catch((e) => {
-      console.log(e.message);
+    }).catch((error) => {
+      toast.error(error?.response?.data?.message)
       setIsLoading(false)
     });
   }

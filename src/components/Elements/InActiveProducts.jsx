@@ -5,6 +5,7 @@ import defaultImages from '../../assets/Images/default-image.jpg';
 import ProductServices from '../../services/API/ProductServices';
 import { Spinner } from 'react-bootstrap';
 import SellerProductCard from '../Shared/Cards/SellerProductCard';
+import { toast } from 'react-toastify';
 
 const InActiveProducts = ({setSubmitted , setProductId}) => {
   const [activeProducts, setActiveProducts] = useState([]);
@@ -16,11 +17,9 @@ const InActiveProducts = ({setSubmitted , setProductId}) => {
       if (res.status) {
         setActiveProducts(res.data); // Limit to the first 5 products
         setIsLoading(false)
-
-        console.log("activeProducts", res.data);
       }
     } catch (error) {
-      console.error("Error fetching product data:", error);
+      toast.error(error?.response?.data?.message)
       setIsLoading(false)
 
     }

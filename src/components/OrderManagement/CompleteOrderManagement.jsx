@@ -21,8 +21,8 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
         setCompletedOrders(response?.data);
         setIsLoading(false);
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       });
   };
@@ -44,8 +44,8 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
         }
         setPendingOrderAttributes(tempArr)
       })
-      .catch((e) => {
-        toast.error(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
       });
   };
@@ -66,7 +66,7 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
               <div className="p-o-m-w-l">
                 {completedOders?.map((data, index) => {
                   return (
-                    <ul>
+                    <ul key={index}>
                       <li>
                         <div className="p-o-m-w-l-l">
                           <div className="p-o-m-w-l-l-l">
@@ -187,7 +187,7 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
               <div className="d-4-1">
                 {pendingOrderDetail?.products?.map((data, index) => {
                   return (
-                    <div className="d-4-1-w">
+                    <div className="d-4-1-w" key={index}>
                       <div className="d-4-1-l">
                         <img src={data?.media?.[0]?.name} alt="Product" />
                       </div>

@@ -5,6 +5,7 @@ import SearchwithCategories from "./Elements/SearchwithCategories";
 import Cart from "../assets/Images/Elements/cart.png";
 import NavBar from "./Elements/NavBar";
 import blankUser from "../../src/assets/Images/User/blankuser.jpg"
+import notification from "../../src/assets/Images/notification.png"
 import { Link } from "react-router-dom";
 import UserServices from "../services/API/UserServices";
 import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth";
@@ -19,6 +20,7 @@ import Skeleton from "react-skeleton-loader";
 import NoDataFound from "./Shared/NoDataFound";
 import ProductServices from "../services/API/ProductServices";
 import { IoNotifications } from "react-icons/io5";
+import { toast } from "react-toastify";
 const Header = ({ cartFullResponse }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
@@ -38,8 +40,6 @@ const Header = ({ cartFullResponse }) => {
   const path = location.pathname;
   const search = location.search;
 
-  // console.log(cartFullResponse?.data?.length , 'cartFullResponse?.data?.length');
-
   const toggleDropdown = () => {
     setShowDropdown(!showDropdown);
   };
@@ -52,23 +52,20 @@ const Header = ({ cartFullResponse }) => {
         setProfilePic(response.profile_image)
         setUserDetails(response);
         setUser(response);
-        console.log(response, 'user_details');
         localStorage.setItem('user_details', JSON.parse(response));
       })
-      .catch((e) => {
-        console.log('error', e)
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
   const getItems = () => {
     if (token) {
       CartServices.count()
         .then((response) => {
-          if (response > 0) {
             setCartItems(response);
-          }
         })
-        .catch((e) => {
-          console.log(e.message);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
         });
     }
   }
@@ -89,8 +86,8 @@ const Header = ({ cartFullResponse }) => {
   const getCategory = () => {
     HomeService.getrecursive().then((res) => {
       setCategories(res);
-      console.log(res, 'categories');
     }).catch((error) => {
+      toast.error(error?.response?.data?.message)
     });
   };
   useEffect(() => {
@@ -104,6 +101,7 @@ const Header = ({ cartFullResponse }) => {
       setSearchProduct(res?.data)
       setSearchLoading(false)
     }).catch((error) => {
+      toast.error(error?.response?.data?.message)
       setSearchLoading(false)
     });
   }
@@ -111,6 +109,7 @@ const Header = ({ cartFullResponse }) => {
     ProductServices.addSearchProduct({ user_id: user_details?.id, product_id: product_id })
       .then((res) => {
       }).catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   }
 
@@ -156,7 +155,7 @@ const Header = ({ cartFullResponse }) => {
                                 <div className="options-wrap">
                                   {categories?.slice(0, 3)?.map((data, index) => {
                                     return (
-                                      <div>
+                                      <div key={index}>
                                         <h4 onClick={() => { navigate(`/category?category-id=${data?.id}`) }}>{data?.name}</h4>
                                         <ul>
                                           {data?.children_recursive?.slice(0, 3)?.map(
@@ -239,9 +238,9 @@ const Header = ({ cartFullResponse }) => {
                         }
                       </div>
                       {isLoggedin() &&
-                        <div className="notification" onClick={() =>{navigate('/notification')}}>
+                        <div className="notification" onClick={() => { navigate('/notification') }}>
                           <div className="notification-wrap">
-                            <IoNotifications />
+                            <img src={notification} alt="" />
                           </div>
                         </div>
                       }
@@ -296,6 +295,9 @@ const Header = ({ cartFullResponse }) => {
                                   <li onClick={() => handleDropdownItemClick("help-and-support")}>
                                     Help And Support
                                   </li>
+                                  <li onClick={() => handleDropdownItemClick("change-password")}>
+                                    Change Password
+                                  </li>
                                   <li onClick={() => handleDropdownItemClick("faq")}>
                                     FAQs
                                   </li>
@@ -322,11 +324,11 @@ const Header = ({ cartFullResponse }) => {
               </div>
             </div>
           </div>
-          {(search.includes('tab') || 
-          search.includes('component') || 
-          path.includes('notification') || 
-          path.includes('category') && 
-          !path.includes('top-category')) ? null :
+          {(search.includes('tab') ||
+            search.includes('component') ||
+            path.includes('notification') ||
+            path.includes('category') &&
+            !path.includes('top-category')) ? null :
             <div className="header-wrap-bottom">
               <div className="container">
                 <div className="row">

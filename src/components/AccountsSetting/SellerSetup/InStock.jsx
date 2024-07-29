@@ -59,10 +59,10 @@ const InStock = () => {
                             {attributes.length > 0 ? (
                               <>
                               
-                                {attributes.map((attribute) => {
+                                {attributes.map((attribute , index) => {
                                   return(
                                     <>
-                                      <ul>
+                                      <ul key={index}>
                                         <li>Size: {attribute.size}</li>
                                         <li>Color Available: {attribute.color}</li>
                                         <li>Quantity Available: {attribute.quantity}</li>

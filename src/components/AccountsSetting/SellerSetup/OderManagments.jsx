@@ -8,6 +8,7 @@ import CompleteOrderManagement from '../../OrderManagement/CompleteOrderManageme
 import RefundManagement from '../../OrderManagement/RefundManagement';
 import RejectedOrderManagement from '../../OrderManagement/RejectedOrderManagement';
 import ProductServices from '../../../services/API/ProductServices';
+import { toast } from 'react-toastify';
 
 const OderManagments = () => {
     const [oderManagment, setOderManagment] = useState([]);
@@ -21,9 +22,9 @@ const OderManagments = () => {
             .then((response) => {
                 setIsLoading(false);
                 setOderManagment(response?.data)
-                console.log(response?.data, 'getProductManagmentOderCount');
             })
-            .catch((e) => {
+            .catch((error) => {
+                toast.error(error?.response?.data?.message)
                 setIsLoading(false);
             });
     };
@@ -43,16 +44,16 @@ const OderManagments = () => {
                     {!detail ?
                         <>
                             <div className="title">Order Management</div>
-                            <div class="seller-new-transaction-one" style={{ marginBottom: '20px' }}>
-                                <div class="s-n-d-o-o">
+                            <div className="seller-new-transaction-one" style={{ marginBottom: '20px' }}>
+                                <div className="s-n-d-o-o">
                                     <p>{oderManagment?.active}</p>
                                     <h4>New Orders</h4>
                                 </div>
-                                <div class="s-n-d-o-t">
+                                <div className="s-n-d-o-t">
                                     <p>{oderManagment?.completed}</p>
                                     <h4>Completed Orders</h4>
                                 </div>
-                                <div class="s-n-d-o-th"></div>
+                                <div className="s-n-d-o-th"></div>
                             </div>
                             <div className="seller-new-transaction-four">
                                 <div className="s-n-t-f-tabs">

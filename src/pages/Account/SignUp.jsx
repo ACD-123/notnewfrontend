@@ -82,7 +82,7 @@ const SignUp = () => {
         }
       });
     } else {
-      console.log("No places returned");
+      
     }
   };
 
@@ -167,17 +167,10 @@ const SignUp = () => {
       if (profilePic) {
         fd.append("file", profilePic);
       }
-      // profilePic.forEach((image_file) => {
-      //   formData.append("file[]", image_file);
-      // });
-      for (let pair of fd.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-      }
       setIsLoading(true);
       setEnabled(true);
       AuthService.register(fd)
         .then((response) => {
-          console.log('status', response.status)
           if (response.status === "email") {
             toast.error(response.message);
             setIsLoading(false);
@@ -198,12 +191,12 @@ const SignUp = () => {
             setEnabled(false);
           }
         })
-        .catch((e) => {
+        .catch((error) => {
           if (e.response.status == "409") {
             toast.error("Email Already Exists");
             // toast.error(e.response?.data.message);
           } else {
-            console.log(e.message)
+          
           }
           setIsLoading(false);
           setEnabled(false);

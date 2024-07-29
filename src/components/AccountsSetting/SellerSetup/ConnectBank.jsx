@@ -39,7 +39,6 @@ const ConnectBank = () => {
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
       setEnabled(true);
-      // console.log('Form submitted:', { selectedBank, accountName, accountNumber, bicSwift });
       const formData ={
         'bank_id' : selectedBank,
         'accountName' : accountName,
@@ -50,18 +49,17 @@ const ConnectBank = () => {
       .then((response) => {
         UserServices.detail()
         .then((responce) => {
-          console.log('user response', responce)
           toast.success(responce);
           setShowSuccessPopup(true);
           setUserDetails(responce);
           setShowNewComponent(true);
         })
-        .catch((e) => {
-          console.log(e.message);
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
         });
       })
-      .catch((e) => {
-        console.log(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setIsLoading(false);
         setEnabled(false);
       })
@@ -84,8 +82,8 @@ const ConnectBank = () => {
       .then((response) => {
         setBanks(response);
       })
-      .catch((e) => {
-        console.log(e.message);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
   useEffect(() => {
@@ -107,9 +105,9 @@ const ConnectBank = () => {
               <option value="">Select Your Bank:</option>
               {banks.length >0 ?(
                 <>
-                  {banks?.map((bank) => {
+                  {banks?.map((bank , index) => {
                     return (
-                      <option key={bank.id} value={bank.id}>
+                      <option key={index} value={bank.id}>
                         {bank.fullname}
                       </option>
                     );

@@ -46,7 +46,7 @@ const PasswordRecovery = () => {
             navigate("/forgotverification/" + formData.email)
           }
         })
-        .catch((e) => {
+        .catch((error) => {
           toast.error("Email does not exist");
           setIsLoading(false);
           setEnabled(false);

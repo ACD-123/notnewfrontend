@@ -11,6 +11,7 @@ import ProductServices from '../../services/API/ProductServices'
 import { Link } from 'react-router-dom'
 import ProductCard from '../Shared/Cards/ProductCard'
 import NoDataFound from '../Shared/NoDataFound'
+import { toast } from 'react-toastify'
 
 const AuctionSingleProductPage = ({cartFullResponse}) => {
   const [moreToLove, setMoreToLove] = useState([])
@@ -23,8 +24,8 @@ const AuctionSingleProductPage = ({cartFullResponse}) => {
         setMoreToLove(response.data?.products);
         setLoading(false)
       })
-      .catch((e) => {
-        console.log(e);
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
         setLoading(false)
       });
   };

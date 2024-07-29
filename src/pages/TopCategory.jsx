@@ -5,6 +5,7 @@ import Banner from "../components/Elements/Banner"
 import CategoriesListing from "../components/Elements/CategoriesListing"
 import HomeService from '../services/API/HomeService';
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
+import { toast } from 'react-toastify';
 
 const TopCategory = ({cartFullResponse}) => {
   const [banners, setBanners] = useState([]);
@@ -19,8 +20,8 @@ const TopCategory = ({cartFullResponse}) => {
           setLoading(false)
         }, 1000);
       })
-      .catch((e) => {
-        console.log('error', e)
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
       });
   };
 

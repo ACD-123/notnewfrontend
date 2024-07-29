@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import Header from "../components/Header";
 import ProductSkeletonLoader from '../components/Shared/ProductSkeletonLoader';
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
+import { toast } from 'react-toastify';
 
 const Topsellers = ({cartFullResponse}) => {
     const [seller, setSeller] = useState([])
@@ -12,13 +13,12 @@ const Topsellers = ({cartFullResponse}) => {
     const getTopSellers = (id) => {
         SellerServices.getTopSellers(id)
             .then((response) => {
-                console.log(response?.data , 'topseller');
                 setSeller(response?.data?.top_sellers)
                 setLoader(false)
             })
-            .catch((e) => {
+            .catch((error) => {
                 setLoader(false)
-                console.log('error', e)
+                toast.error(error?.response?.data?.message)
             });
     };
 

@@ -17,7 +17,6 @@ const ShippingPolicyData = () => {
       now = moment(response.data.shipping_end); 
       end = moment(response.data.shipping_start); 
       duration = moment.duration(now.diff(end));
-      console.log(duration);
       setIsLoading(false); // Set loading state to false once data is fetched
 
       setDays(Math.round(duration.asDays()));

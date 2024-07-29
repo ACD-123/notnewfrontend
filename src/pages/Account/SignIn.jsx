@@ -43,14 +43,13 @@ const SignIn = () => {
   const redirectionPage = localStorage.getItem('redirectionPage');
   const ProductId = localStorage.getItem('ProductId');
   const responseFacebook = (response) => {
-    console.log('fb_response', response);
     if (response.status !== "unknown") {
       AuthServices.facebookLogin(response)
         .then(
           response => {
           })
         .catch(error => {
-          console.log(error.response);
+          toast.error(error?.response?.data?.message)
         });
       setData(response);
       setPicture(response.picture.data.url);
@@ -62,13 +61,8 @@ const SignIn = () => {
     }
   }
 
-  const login = useGoogleLogin({
-    onSuccess: (codeResponse) => console.log(codeResponse),
-    flow: "auth-code",
-  });
   useGoogleOneTapLogin({
     onSuccess: (credentialResponse) => {
-      // console.log(credentialResponse);
       AuthServices.googleLogin(credentialResponse)
         .then((res) => {
           localStorage.setItem(
@@ -95,11 +89,11 @@ const SignIn = () => {
           }
         })
         .catch((error) => {
-          console.log("ERROR:: ", error.response);
+          toast.error(error?.response?.data?.message)
         });
     },
     onError: () => {
-      console.log("Login Failed");
+     
     },
   });
 
@@ -196,7 +190,7 @@ const SignIn = () => {
             setAccessToken(response.token);
           }
         })
-        .catch((e) => {
+        .catch((error) => {
           toast.error(e.response.data.message);
           setIsLoading(false);
           setEnabled(false);
@@ -254,7 +248,6 @@ const SignIn = () => {
                           theme="filled_black"
                           text="signin_with"
                           onSuccess={(credentialResponse) => {
-                            // console.log('google',credentialResponse);
                             AuthServices.googleLogin(credentialResponse)
                               .then((res) => {
                                 localStorage.setItem(
@@ -268,11 +261,11 @@ const SignIn = () => {
                                 navigate('/')
                               })
                               .catch((error) => {
-                                console.log("ERROR:: ", error.response);
+                                toast.error(error?.response?.data?.message)
                               });
                           }}
                           onError={() => {
-                            console.log("Login Failed");
+                            
                           }}
                         />
                         {/* <a href="#" onClick={() => login()}> */}

@@ -54,8 +54,8 @@ const Addresses = () => {
         togglePopup(false);
         self();
       }
-    }).catch((e) => {
-      toast.error(e);
+    }).catch((error) => {
+      toast.error(error?.response?.data?.message)
       setIsLoading(true);
       setEnabled(true);
     });
@@ -117,8 +117,8 @@ const self =()=>{
       setBtn(true)
     }
     setIsLoading(false); // Set loading state to false after fetching user data
-  }).catch((e) => {
-    console.log(e);
+  }).catch((error) => {
+    toast.error(error?.response?.data?.message)
     setIsLoading(false); // Set loading state to false on error
   });
 }
@@ -132,7 +132,6 @@ const handleAddAddress =()=>{
     // );
     // autoCompleteRef.current.addListener("place_changed", async function () {
     //   const place = await autoCompleteRef.current.getPlace();
-    //   console.log('places',{ place });
     //  });
     self();
    }, []);
