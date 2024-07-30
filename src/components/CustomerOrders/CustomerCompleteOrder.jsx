@@ -420,7 +420,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                         <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt />
                       </>
                     }
-                    <span>({pendingOrderDetail?.products?.[0]?.rating})</span>
+                    <span>({pendingOrderDetail?.products?.[0]?.rating?.toFixed(2)})</span>
                   </div>
                 </div>
                 <div className="s-o-m-d-6">

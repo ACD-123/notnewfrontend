@@ -56,6 +56,12 @@ function getUserConversations(params = {}) {
   })
 }
 
+function getChatUsers(user_id , status) {
+  return request({
+    url: `${baseUrlChat}chat/getChatUsers/${user_id}/${status}`,
+  })
+}
+
 function sendChatMessage(data) {
   return request({
     url: `${baseUrlChat}chat/sendMessage`,
@@ -72,7 +78,8 @@ const MessagesServices = {
   update,
   destroy,
   sendChatMessage,
-  getUserConversations
+  getUserConversations,
+  getChatUsers
 }
 
 export default MessagesServices

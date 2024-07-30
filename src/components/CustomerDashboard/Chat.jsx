@@ -7,6 +7,7 @@ import MessagesServices from "../../services/API/MessagesServices"; //~/services
 import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
 import blank from "../../assets/Images/User/blankuser.jpg";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../../services/Constant";
 // getUserConversations
 function Chat() {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -15,8 +16,9 @@ function Chat() {
   const [searchTerm, setSearchTerm] = useState("");
   const [chatLists, setChatList] = useState([]);
   let loggedInUser = JSON.parse(localStorage.getItem('user_details'));
+  let seller_guid = localStorage.getItem('seller_guid');
   const getUserChat = () => {
-    UserServices.conversations(loggedInUser?.id)
+    UserServices.conversations(seller_guid, 0)
       .then((response) => {
         setChatList(response?.data);
       })
@@ -25,36 +27,8 @@ function Chat() {
       });
   };
 
-  // Run effect when selectedChat changes
-  const chatList = [
-    {
-      id: 1,
-      name: "John Doe",
-      images: [Dp],
-      description: "This book is a treatise on the theory of ethics",
-    },
-    {
-      id: 2,
-      name: "Steve Smith",
-      images: [Dp1],
-      description: "This book is a treatise on the theory of ethics",
-    },
-    {
-      id: 3,
-      name: "Michael Johnson",
-      images: [Dp],
-      description: "This book is a treatise on the theory of ethics",
-    },
-    {
-      id: 4,
-      name: "Albert",
-      images: [Dp1],
-      description: "This book is a treatise on the theory of ethics",
-    },
-    // Add more chats as needed
-  ];
-
   const handleChatSelection = (reciptId, senderId, chat) => {
+    console.log(chat, 'chat');
     UserServices.getMessagesById(reciptId)
       .then((response) => {
 
@@ -65,33 +39,12 @@ function Chat() {
         toast.error(error?.response?.data?.message)
       });
   };
-
-  const getMessagesForChat = (chatId) => {
-    UserServices.messages(chatId)
-      .then((response) => {
-        response.map((message) => {
-          return [
-            {
-              id: message.recipient_id,
-              text: message.data,
-              sender: message.sender_id
-            },
-          ];
-        });
-        // setChatList(response)
-      })
-      .catch((error) => {
-        toast.error(error?.response?.data?.message)
-      });
-    return [];
-  };
-
   const sendMessage = () => {
     if (newMessage.trim() !== "") {
       const newMassage = {
         room_id: selectedChat?.id,
-        uid: selectedChat?.participants === loggedInUser?.id ? selectedChat?.uid : selectedChat?.participants,
-        from_id: loggedInUser?.id,
+        uid: selectedChat?.participants === seller_guid ? selectedChat?.uid : selectedChat?.participants,
+        from_id: seller_guid,
         message_type: 0,
         message: newMessage,
         status: 1
@@ -99,7 +52,6 @@ function Chat() {
       MessagesServices.sendChatMessage(newMassage)
         .then((response) => {
           if (response.status) {
-            // setMessages([...messages, newMsg]);
             getUserChat();
             handleChatSelection(selectedChat?.id, selectedChat?.participants, selectedChat)
             setNewMessage("");
@@ -111,11 +63,6 @@ function Chat() {
     }
   };
 
-  const filterChat = () => {
-    return chatList?.filter((chat) =>
-      chat?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
-    );
-  };
   const filterChats = () => {
     return chatLists?.filter(
       (chat) =>
@@ -168,7 +115,7 @@ function Chat() {
                             />
                             :
                             <img
-                              src={chat?.sender_profile_image ? "https://notnewbackend.testingwebsitelink.com/" + chat?.sender_profile_image : blank}
+                              src={chat?.sender_profile_image ? "http://159.223.129.107/" + chat?.sender_profile_image : blank}
                               style={{ borderRadius: "40px" }} width="40" height="40"
                             />
                           }
@@ -196,10 +143,10 @@ function Chat() {
                 <div className="chat-header">
                   {selectedChat?.sender_profile_image ? (
                     <>
-                      {selectedChat?.sender_profile_image.includes('google') ?
+                      {selectedChat?.sender_profile_image?.includes('google') ?
                         <img src={selectedChat?.sender_profile_image} />
                         :
-                        <img src={"https://notnewbackend.testingwebsitelink.com/" + selectedChat?.sender_profile_image} />
+                        <img src={"http://159.223.129.107/" + selectedChat?.sender_profile_image} />
                       }
                     </>
                   ) : (
@@ -216,23 +163,23 @@ function Chat() {
                 <div className="messages-cont" ref={chatContainerRef}>
                   <div className="messages-cont-wrap">
                     {messages?.map((msg, index) => {
-                      if (msg?.from_id === loggedInUser?.id) {
+                      if (msg?.from_id === seller_guid) {
                         return (
                           <div key={msg?.from_id} className="sent-message">
-                            <div key={msg?.from_id} className="sent-message-wrap">
-                              {msg?.user ? (
-                                <>
-                                  {msg?.user?.profile_image.includes('google') ?
-                                    <img src={msg?.user?.profile_image} />
-                                    :
-                                    <img src={"https://notnewbackend.testingwebsitelink.com/" + msg?.user?.profile_image} />
-                                  }
-                                </>
-                              ) : (
+                            <div className="sent-message-wrap">
+                              {/* {msg?.user ? ( */}
+                              {/* <> */}
+                              {/* {msg?.user?.profile_image?.includes('google') ? */}
+                              {/* <img src={msg?.user?.profile_image} /> */}
+                              {/* : */}
+                              <img src={"http://159.223.129.107/" + msg?.seller?.cover_image} />
+                              {/* } */}
+                              {/* </> */}
+                              {/* ) : (
                                 <>
                                   <img src={blank} alt="blank" />
                                 </>
-                              )}
+                              )} */}
                               <p className="message">{msg?.message}</p>
                               {/* <div className="message">
                                 <div className="time">
@@ -247,12 +194,13 @@ function Chat() {
                         return (
                           <div key={msg?.from_id} className="received-message">
                             <div key={msg?.from_id} className="received-message-wrap">
-                              {msg?.participants ? (
+                              {msg?.testuser ? (
                                 <>
-                                  {msg?.participants?.profile_image.includes('google') ?
-                                    <img src={msg?.participants?.profile_image} />
+                                  {msg?.testuser?.profile_image?.includes("http") ?
+                                    <img src={msg?.testuser?.profile_image} />
                                     :
-                                    <img src={"https://notnewbackend.testingwebsitelink.com/" + msg?.participants?.profile_image} />
+                                    // <img src={"http://159.223.129.107/" + msg?.participants?.profile_image} />
+                                    <img src={`${BASE_URL}/${msg?.testuser?.profile_image}`} />
                                   }
                                 </>
                               ) : (

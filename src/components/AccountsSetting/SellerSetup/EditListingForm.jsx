@@ -752,7 +752,7 @@ const ListingForm = (props) => {
           },
         };
         axios
-          .post(`https://notnewbackend.testingwebsitelink.com/api/products/${props.guid}`, fD, config)
+          .post(`http://159.223.129.107/api/products/${props.guid}`, fD, config)
           .then((response) => {
             setShowEditPopup(true);
             setIsLoading(false);
@@ -837,7 +837,7 @@ const ListingForm = (props) => {
           },
         };
         axios
-          .post("https://notnewbackend.testingwebsitelink.com/api/products/add", formData, config)
+          .post("http://159.223.129.107/api/products/add", formData, config)
           .then((response) => {
             setShowPopup(true);
             setIsLoading(false);

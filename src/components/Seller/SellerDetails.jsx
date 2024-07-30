@@ -41,14 +41,15 @@ const SellerDetails = () => {
       setShopGuid(res.data.shop);
       setShopGuidSave(res.data.shop.guid);
       setIsLoading(false);
-      HomeService.getshopData(res?.shop_id)
-        .then((response) => {
-          if (response.status) {
-            setShopData(response.data)
-          }
-        }).catch((error) => {
-          toast.error(error?.response?.data?.message)
-        });
+      console.log(res.data , 'getshopData');
+      // HomeService.getshopData(res?.data?.shop?.guid)
+      //   .then((response) => {
+      //     if (response.status) {
+      //       setShopData(response.data)
+      //     }
+      //   }).catch((error) => {
+      //     toast.error(error?.response?.data?.message)
+      //   });
     });
   };
   const getItemSold = () => {

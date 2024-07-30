@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import Logo from "../assets/Images/logo.png";
-import SearchwithCategories from "./Elements/SearchwithCategories";
 import Cart from "../assets/Images/Elements/cart.png";
-import NavBar from "./Elements/NavBar";
 import blankUser from "../../src/assets/Images/User/blankuser.jpg"
 import notification from "../../src/assets/Images/notification.png"
+import Plus from "../../src/assets/Images/21plus.png"
+import PlusPopup from "../../src/assets/Images/21popup.png"
 import { Link } from "react-router-dom";
 import UserServices from "../services/API/UserServices";
 import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth";
@@ -19,37 +19,32 @@ import HeaderArrowRightSvg from "./Shared/Svgs/HeaderArrowRightSvg";
 import Skeleton from "react-skeleton-loader";
 import NoDataFound from "./Shared/NoDataFound";
 import ProductServices from "../services/API/ProductServices";
-import { IoNotifications } from "react-icons/io5";
 import { toast } from "react-toastify";
+import { Modal } from "react-bootstrap";
+import { RxCross2 } from "react-icons/rx";
 const Header = ({ cartFullResponse }) => {
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [show21PlusDropdown, setShow21PlusDropdown] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [searchProduct, setSearchProduct] = useState([]);
   const [categoryDropdown, setCategoryDropdown] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
   const [user, setUser] = useState({});
-  const [profilepic, setProfilePic] = useState("");
-  const [cartitems, setCartItems] = useState(0);
   const [inputSearch, setInputSearch] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   let token = localStorage.getItem("access_token");
+  const underage = localStorage.getItem("underage");
   const items = useSelector(state => state.cupon.cupon);
   let user_details = JSON.parse(localStorage.getItem('user_details'));
-  const cart_items = items ? items : 0;
   const path = location.pathname;
   const search = location.search;
 
-  const toggleDropdown = () => {
-    setShowDropdown(!showDropdown);
-  };
   const handleDropdownItemClick = (componentName) => {
     navigate(`/customerdashboard?tab=activity&component=${componentName}`)
   };
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
-        setProfilePic(response.profile_image)
         setUserDetails(response);
         setUser(response);
         localStorage.setItem('user_details', JSON.parse(response));
@@ -62,7 +57,6 @@ const Header = ({ cartFullResponse }) => {
     if (token) {
       CartServices.count()
         .then((response) => {
-            setCartItems(response);
         })
         .catch((error) => {
           toast.error(error?.response?.data?.message)
@@ -111,6 +105,16 @@ const Header = ({ cartFullResponse }) => {
       }).catch((error) => {
         toast.error(error?.response?.data?.message)
       });
+  }
+
+  const controlUnderAge = () => {
+    const underage = localStorage.getItem('underage')
+    if (underage == 1) {
+      navigate('/21-plus')
+    } else {
+      localStorage.setItem('underage', 1)
+      navigate('/21-plus')
+    }
   }
 
 
@@ -237,6 +241,19 @@ const Header = ({ cartFullResponse }) => {
                           </div>
                         }
                       </div>
+                      {underage == 1 ?
+                        <div className="notification" onClick={() => { navigate('/21-plus') }}>
+                          <div className="notification-wrap">
+                            <img src={Plus} alt="" srcset="" />
+                          </div>
+                        </div>
+                        :
+                        <div className="notification" onClick={() => { setShow21PlusDropdown(true) }}>
+                          <div className="notification-wrap">
+                            <img src={Plus} alt="" srcset="" />
+                          </div>
+                        </div>
+                      }
                       {isLoggedin() &&
                         <div className="notification" onClick={() => { navigate('/notification') }}>
                           <div className="notification-wrap">
@@ -340,10 +357,6 @@ const Header = ({ cartFullResponse }) => {
                         <li className={`${path === '/auctions' ? 'active' : ''}`}><Link className='nav-link' to="/auctions">Auctions</Link></li>
                         <li className={`${path === '/hot-deals' ? 'active' : ''}`}><Link className='nav-link' to="/hot-deals">Hot Deals</Link></li>
                         <li className={`${path === '/top-sellers' ? 'active' : ''}`}><Link className='nav-link' to="/top-sellers">Top Sellers</Link></li>
-                        {/* <li><Nav.Link href="/categorykeyword">Electronics</Nav.Link></li>
-                    <li><Nav.Link href="/categorykeyword">Vintage Products</Nav.Link></li>
-                    <li><Nav.Link href="/categorykeyword">Auto Parts</Nav.Link></li> */}
-                        {/* <li className={`${path === '/notFound' ? 'active' : ''}`}><Link className='nav-link' to="/notFound">Recomendations</Link></li> */}
                       </ul>
                     </div>
                   </div>
@@ -353,6 +366,23 @@ const Header = ({ cartFullResponse }) => {
           }
         </div>
       </header>
+      <Modal show={show21PlusDropdown} size="lg" className="plus-modal-wrap" onHide={setShow21PlusDropdown}>
+        <div className="modal-body">
+          <div className="image">
+            <img src={PlusPopup} alt="" />
+          </div>
+          <h2>Age Verification</h2>
+          <p>Please confirm that your age over 21</p>
+          <div className="buttons">
+            <div className="btn-wrap">
+              <button onClick={() => { setShow21PlusDropdown(false) }}>I'm Under 21</button>
+            </div>
+            <div className="btn-wrap">
+              <button onClick={() => { controlUnderAge() }}>I'm Over 21</button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };

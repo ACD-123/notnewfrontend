@@ -9,6 +9,14 @@ function recursiveCategories(params = {}) {
     params,
   })
 }
+
+function fetchCategoryUnderag(params = {}) {
+  return request({
+    url: `${baseUrl}category-underage`,
+    params,
+  })
+}
+
 function getCompanies() {
   return request({
     url: `${baseUrl}getcompanies`
@@ -81,12 +89,35 @@ function getshopData(id) {
     method: 'GET',
   })
 }
+
 function getTopSelling(user_id) {
   return request({
     url: `${baseUrl}products/getTopSelling?user_id=${user_id}`,
     method: 'GET',
   })
 }
+
+function getTopSellingUnderAge(user_id) {
+  return request({
+    url: `${baseUrl}products/getTopSellingUnderAge?user_id=${user_id}`,
+    method: 'GET',
+  })
+}
+
+function getHotUnderAge(user_id) {
+  return request({
+    url: `${baseUrl}products/getHotUnderAge?user_id=${user_id}`,
+    method: 'GET',
+  })
+}
+
+function getUnderAgeBanners() {
+  return request({
+    url: `${baseUrl}products/getUnderAgeBanners`,
+    method: 'GET',
+  })
+}
+
 function getAuctionProducts(user_id) {
   return request({
     url: `${baseUrl}products/auctioned?user_id=${user_id}`,
@@ -113,7 +144,11 @@ const HomeService = {
   getAuctionProducts,
   getSearchProducts,
   getFilterProducts,
-  getHigherProductPrice
+  getHigherProductPrice,
+  getUnderAgeBanners,
+  fetchCategoryUnderag,
+  getTopSellingUnderAge,
+  getHotUnderAge
 }
 
 export default HomeService

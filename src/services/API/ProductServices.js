@@ -3,12 +3,21 @@ import { BASE_API } from '../Constant'
 // @todo this file name should be product service
 const baseUrl = `${BASE_API}products`
 const baseApi = `${BASE_API}`
+
 function all(id) {
   return request({
     url: `${baseUrl}?user_id=${id}`,
     method: 'GET',
   })
 }
+
+function getUnderAgeProducts(id) {
+  return request({
+    url: `${baseUrl}/getUnderAgeProducts?user_id=${id}`,
+    method: 'GET',
+  })
+}
+
 function sellerActiveProducts(params = {}) {
   return request({
     url: `${baseUrl}/active`,
@@ -485,7 +494,8 @@ const ProductServices = {
   addGuestCouponeCode,
   deleteCouponeCode,
   deleteGuestCouponeCode,
-  getNotification
+  getNotification,
+  getUnderAgeProducts
 }
 
 export default ProductServices

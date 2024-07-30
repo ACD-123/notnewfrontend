@@ -125,7 +125,7 @@ const SellerAbout = () => {
 
       <Modal show={showReport} size="lg" className="report-modal-wrap" onHide={setShowReport} backdrop="static">
         <div className="modal-body">
-          <span className="close"><RxCross2 /></span>
+          <span className="close" onClick={() =>{setShowReport(false)}}><RxCross2 /></span>
           <form onSubmit={onSubmit}>
             <h2>Report</h2>
             <div className="input">

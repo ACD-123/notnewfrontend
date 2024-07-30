@@ -52,7 +52,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     brand_id: null,
     model: "",
     description: "",
-    tags: ['girls', 'boys'],
+    tags: "",
     saleprice: "",
     sellingNow: false,
     listing: "",

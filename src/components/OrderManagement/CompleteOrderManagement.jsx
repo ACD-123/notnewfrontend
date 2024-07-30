@@ -6,6 +6,7 @@ import LoadingComponents from "../Shared/LoadingComponents";
 import NoDataFound from "../Shared/NoDataFound";
 import { IoIosArrowBack } from "react-icons/io";
 import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { BASE_URL } from "../../services/Constant";
 
 
 const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCount }) => {
@@ -340,13 +341,98 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                         <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt />
                       </>
                     }
-                    <span>({pendingOrderDetail?.products?.[0]?.rating})</span>
+                    <span>({pendingOrderDetail?.products?.[0]?.rating?.toFixed(2)})</span>
                   </div>
                 </div>
                 <div className="s-o-m-d-6">
-                  <h4>Feedback</h4>
-                  <div className="s-o-m-d-5-f">
-                    This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+                  <div className="customer-feedback" style={{margin : '0px'}}>
+                    <h2 style={{fontSize : '22px' , lineHeight : '30px'}}>Feedbacks</h2>
+                    <div className="feedback-container">
+                      {pendingOrderDetail?.products?.[0]?.feedback?.length === 0 ? (
+                        <NoDataFound title={'No Feedbacks Available'} />
+                      ) : (
+                        <>
+                          <div className="row">
+                            {pendingOrderDetail?.products?.[0]?.feedback?.map((feedback, index) => (
+                              <div className="col-lg-6" key={index}>
+                                <div key={feedback.id} className="feedback-item">
+                                  <div className="feedback-item-left">
+                                    <div className="feedback-item-left-left">
+                                      <img src={`${BASE_URL}/${feedback.user?.media?.[0]?.url}`} alt='user image' />
+                                    </div>
+                                    <div className="feedback-item-left-right">
+                                      <h3>{feedback.user.name}</h3>
+                                      <p>{feedback.comments}</p>
+                                    </div>
+                                  </div>
+                                  <div className="feedback-item-right">
+                                    <h3>{feedback.created_at?.slice(0,10)}</h3>
+                                    <p>
+                                      {+feedback.ratings === 5 &&
+                                        <>
+                                          <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
+                                        </>
+                                      }
+                                      {+feedback.ratings === 4 &&
+                                        <>
+                                          <FaStar /><FaStar /><FaStar /><FaStar /><FaRegStar />
+                                        </>
+                                      }
+                                      {+feedback.ratings === 3 &&
+                                        <>
+                                          <FaStar /><FaStar /><FaStar /><FaRegStar /><FaRegStar />
+                                        </>
+                                      }
+                                      {+feedback.ratings === 2 &&
+                                        <>
+                                          <FaStar /><FaStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                                        </>
+                                      }
+                                      {+feedback.ratings === 1 &&
+                                        <>
+                                          <FaStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                                        </>
+                                      }
+                                      {+feedback.ratings === 0 &&
+                                        <>
+                                          <FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                                        </>
+                                      }
+                                      {+feedback.ratings > 0 && +feedback.ratings < 1 &&
+                                        <>
+                                          <FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
+                                        </>
+                                      }
+                                      {+feedback.ratings > 1 && +feedback.ratings < 2 &&
+                                        <>
+                                          <FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar />
+                                        </>
+                                      }
+                                      {+feedback.ratings > 2 && +feedback.ratings < 3 &&
+                                        <>
+                                          <FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar />
+                                        </>
+                                      }
+                                      {+feedback.ratings > 3 && +feedback.ratings < 4 &&
+                                        <>
+                                          <FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar />
+                                        </>
+                                      }
+                                      {+feedback.ratings > 4 && +feedback.ratings < 5 &&
+                                        <>
+                                          <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt />
+                                        </>
+                                      }
+                                      <span>({feedback.ratings})</span>
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
               </>

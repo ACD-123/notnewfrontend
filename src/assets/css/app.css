@@ -965,6 +965,17 @@ header .header-wrap .header-top .header-right .notification .notification-wrap {
   align-items: center;
 }
 
+header .header-wrap .header-top .header-right .notification .notification-wrap p {
+  background: -webkit-linear-gradient(#8B2CA0, #00C3C9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 18px;
+  line-height: 28px;
+  text-decoration: underline;
+  margin: 0;
+  font-weight: 700;
+}
+
 header .header-wrap .header-top .header-right .notification .notification-wrap img {
   width: 22px;
 }
@@ -5477,15 +5488,26 @@ th {
   padding: 0px 7px 14px 7px;
 }
 
-.main-content .chat-container .chat-container-wrap .chat-container-wrap-left h2 {
-  font-family: 'Cairo';
-  font-size: 40px;
-  font-weight: 700;
-  line-height: 74.96px;
-  text-align: left;
-  color: #000;
+.main-content .chat-container .chat-container-wrap .chat-container-wrap-left .chat-top {
   border-bottom: 1px solid #CECECE;
   padding: 0px 7px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-content .chat-container .chat-container-wrap .chat-container-wrap-left .chat-top h2 {
+  font-family: 'Cairo';
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 60px;
+  text-align: left;
+  color: #000;
+}
+
+.main-content .chat-container .chat-container-wrap .chat-container-wrap-left .chat-top span{}
+.main-content .chat-container .chat-container-wrap .chat-container-wrap-left .chat-top span svg{
+  font-size: 32px;
 }
 
 .main-content .chat-container .chat-container-wrap .chat-container-wrap-right {
@@ -5545,6 +5567,10 @@ th {
 .hot-selling-product,
 .top-selling-product {
   padding-top: 90px;
+}
+
+.top-selling-product.under-age {
+  padding-bottom: 90px;
 }
 
 #productcard {}
@@ -6427,7 +6453,7 @@ th {
   height: 100%;
 }
 
-.seller-new-transaction .s-f-h{
+.seller-new-transaction .s-f-h {
   font-family: 'Cairo';
   font-size: 24px;
   font-weight: 700;
@@ -6436,7 +6462,8 @@ th {
   color: #000;
   margin-bottom: 0px;
 }
-.seller-new-transaction .s-f-d{
+
+.seller-new-transaction .s-f-d {
   width: max-content;
   font-family: 'Cairo';
   font-size: 18px;
@@ -7369,8 +7396,7 @@ th {
 
 .seller-new-transaction .h-a-s form .h-a-s-i {}
 
-.seller-new-transaction .h-a-s form .h-a-s-i textarea
- {
+.seller-new-transaction .h-a-s form .h-a-s-i textarea {
   font-family: 'Cairo';
   font-size: 16px;
   font-weight: 500;
@@ -7385,8 +7411,8 @@ th {
   width: 50%;
   height: 100px;
 }
-.seller-new-transaction .h-a-s form .h-a-s-i input
- {
+
+.seller-new-transaction .h-a-s form .h-a-s-i input {
   font-family: 'Cairo';
   font-size: 16px;
   font-weight: 500;
@@ -7402,8 +7428,7 @@ th {
 }
 
 .seller-new-transaction .h-a-s form .h-a-s-i textarea::placeholder,
-.seller-new-transaction .h-a-s form .h-a-s-i input::placeholder
- {
+.seller-new-transaction .h-a-s form .h-a-s-i input::placeholder {
   color: #292929 !important;
 }
 
@@ -9034,21 +9059,23 @@ input::-webkit-inner-spin-button {
   align-items: center;
 }
 
-.category-page .category-page-wrap .filter-product .d-p-l .p-p .p-p-s-v ul li:nth-child(1) input{
+.category-page .category-page-wrap .filter-product .d-p-l .p-p .p-p-s-v ul li:nth-child(1) input {
   font-size: 14px;
   border: none;
   background: transparent;
   width: 70px;
   color: #858585;
 }
-.category-page .category-page-wrap .filter-product .d-p-l .p-p .p-p-s-v ul li:nth-child(3) input{
+
+.category-page .category-page-wrap .filter-product .d-p-l .p-p .p-p-s-v ul li:nth-child(3) input {
   font-size: 14px;
   border: none;
   background: transparent;
   width: 70px;
   color: #858585;
 }
-.category-page .category-page-wrap .filter-product .d-p-l .p-p .p-p-s-v ul li:nth-child(1) input{}
+
+.category-page .category-page-wrap .filter-product .d-p-l .p-p .p-p-s-v ul li:nth-child(1) input {}
 
 .category-page .category-page-wrap .filter-product .d-p-l .p-p .p-p-s-v ul li:nth-child(2) {}
 
@@ -10944,11 +10971,188 @@ input::-webkit-inner-spin-button {
   margin-bottom: 0px;
 }
 
-.seller-profile-feedback-loader{
+.seller-profile-feedback-loader {
   height: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.plus-modal-wrap {}
+
+.plus-modal-wrap .modal-dialog {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.plus-modal-wrap .modal-content {
+  width: 400px;
+  border-radius: 18px;
+
+}
+
+.plus-modal-wrap .modal-body {
+  padding: 30px 20px;
+}
+
+.plus-modal-wrap .modal-body .image {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.plus-modal-wrap .modal-body .image img {
+  width: 120px;
+}
+
+.plus-modal-wrap .modal-body h2 {
+  font-family: 'Cairo';
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  text-align: center;
+  color: #1E1E1E;
+}
+
+.plus-modal-wrap .modal-body p {
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 26px;
+  text-align: center;
+  color: #4F4F4F;
+  margin-bottom: 30px;
+}
+
+.plus-modal-wrap .modal-body .buttons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.plus-modal-wrap .modal-body .buttons .btn-wrap {}
+
+.plus-modal-wrap .modal-body .buttons .btn-wrap:nth-child(1) {
+  background: linear-gradient(93.63deg, #8B2CA0 -20.62%, #00C3C9 106.1%);
+  border-radius: 24px;
+  padding: 1px;
+  border-radius: 9.11px;
+
+}
+
+.plus-modal-wrap .modal-body .buttons .btn-wrap:nth-child(1) button {
+  background-color: #fff;
+  border-radius: 9.11px;
+  padding: 14px 19px;
+  font-family: 'Cairo';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: left;
+  color: #585858;
+  cursor: pointer;
+  border: none;
+}
+
+.plus-modal-wrap .modal-body .buttons .btn-wrap:nth-child(2) {}
+
+.plus-modal-wrap .modal-body .buttons .btn-wrap:nth-child(2) button {
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  box-shadow: 0px 5px 11px 0px #0000003B;
+  width: max-content;
+  font-family: 'Lato';
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: center;
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 9.11px;
+  border: none;
+}
+
+.user-list-for-chat-modal-wrap{}
+.user-list-for-chat-modal-wrap .modal-dialog{
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.user-list-for-chat-modal-wrap .modal-content{
+  width: 500px;
+}
+.user-list-for-chat-modal-wrap .modal-body{
+  padding: 20px 30px;
+}
+.user-list-for-chat-modal-wrap .modal-body h2{
+  font-family: 'Cairo';
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  text-align: left;
+  color: #1E1E1E;
+  margin-bottom: 20px;
+}
+.user-list-for-chat-modal-wrap .modal-body .user-list-for-chat{
+  overflow-x: hidden;
+    overflow-y: auto;
+}
+
+/* width */
+.user-list-for-chat-modal-wrap .modal-body .user-list-for-chat::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.user-list-for-chat-modal-wrap .modal-body .user-list-for-chat::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.user-list-for-chat-modal-wrap .modal-body .user-list-for-chat::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+.user-list-for-chat-modal-wrap .modal-body .user-list-for-chat::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.user-list-for-chat-modal-wrap .modal-body .user-list-for-chat .user-list-for-chat-wrap{
+  height: 490px;
+}
+.user-list-for-chat-modal-wrap .modal-body .user-list-for-chat .user-list-for-chat-wrap ul{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+.user-list-for-chat-modal-wrap .modal-body .user-list-for-chat .user-list-for-chat-wrap ul li{
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: #f3f3f3;
+  padding: 10px;
+  border-radius: 6px;
+}
+.user-list-for-chat-modal-wrap .modal-body .user-list-for-chat .user-list-for-chat-wrap ul li img{
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  object-fit: cover;
+}
+.user-list-for-chat-modal-wrap .modal-body .user-list-for-chat .user-list-for-chat-wrap ul li p{
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #1E1E1E;
+  margin: 0px;
+  text-transform: capitalize;
 }
 
 @media (max-width: 1024px) {

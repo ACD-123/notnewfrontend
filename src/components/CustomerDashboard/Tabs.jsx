@@ -4,6 +4,7 @@ import Activity from './Activity'
 // import Chat from './Chat';
 import AccountInfo from '../AccountsSetting/AccountInfo';
 import NotFound_ from '../../pages/NotFound_'
+import UserChat from '../UserChat';
 const Tabs = () => {
   const [selectedTab, setSelectedTab] = useState('activity');
   const location = useLocation();
@@ -25,7 +26,7 @@ const Tabs = () => {
         return <Activity />;
       case 'messages':
         // return <RecentlyViewed />;
-        return <NotFound_ />
+        return <UserChat/>
       case 'account':
         // return <BidsOffer /> ;
         return <AccountInfo />

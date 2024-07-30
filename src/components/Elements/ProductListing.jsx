@@ -52,7 +52,6 @@ const ProductListing = (props) => {
                     <Link to={`/singleproduct/${product.products?.guid}`}>
                       {product.products?.media[0].name ? (
                         <>
-                        {/* https://notnewbackend.testingwebsitelink.com/image/product/aa.jpg */}
                           <img src={`${product.products?.media[0].name}`} alt="" />
                         </>
                       ):(

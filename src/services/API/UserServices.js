@@ -13,7 +13,7 @@ function all(params = {}) {
 
 function detail(params = {}) {
   return request({
-    url: `${baseUrl}detail/`,
+    url: `${baseUrl}self`,
     params,
   })
 }
@@ -40,9 +40,9 @@ function upload(data) {
   })
 }
 
-function conversations(user_id) {
+function conversations(user_id , status) {
   return request({
-    url: `${baseUrlChat}chat/getChatListBUid?id=${user_id}`,
+    url: `${baseUrlChat}chat/getChatListBUid?id=${user_id}&status=${status}`,
   })
 }
 
