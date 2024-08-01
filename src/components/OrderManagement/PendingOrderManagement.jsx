@@ -47,7 +47,7 @@ const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
   const getPendingOdersDetail = (order_id) => {
     setDetail(true)
     setIsLoading(true)
-    OrderServices.getPendingOdersDetail(order_id)
+    OrderServices.getPendingOdersDetail(order_id , 0)
       .then((response) => {
         setPendingOdrDetail(response?.data)
         setShowAction(false);

@@ -59,7 +59,7 @@ const NewArrival = ({ title }) => {
             <div className="row">
               <div className="headings">
                 <h3>{title}
-                  <span><Link to="/product-filter">View More</Link></span>
+                  <span><Link to="/new-arrival-21-plus">View More</Link></span>
                 </h3>
               </div>
             </div>

@@ -8,39 +8,37 @@ import Footer from '../components/Footer';
 import ProductCard from '../components/Shared/Cards/ProductCard';
 import { toast } from 'react-toastify';
 
-const TopSellingProducts = ({cartFullResponse}) => {
-    const [user, setUser] = useState({});
-	const [data, setData] = useState([]);
-	const [banners, setBanners] = useState([]);
-	const [topSellingProducts, setTopSellingProducts] = useState([]);
-	const [hotProducts, setHotProducts] = useState([]);
-	const [topSelling, setTopSelling] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+const ExploreAll21Plus = ({cartFullResponse}) => {
+    const [topSellingProducts, setTopSellingProducts] = useState([]);
+    const [pagination, setPagination] = useState({});
+    const [loading, setLoading] = useState(true);
+    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
 
-	const getTopSelling = (id) => {
-		HomeService.getTopSelling(id)
-			.then((response) => {
-				setBanners(response?.data?.banners)
-				setTopSellingProducts(response?.data?.products)
-				setHotProducts(response?.data?.hot)
+    const getHotUnderAge = (id) => {
+        HomeService.getHotUnderAge(id)
+            .then((response) => {
+                setTopSellingProducts(response?.data?.products)
+                setPagination(response?.data?.pagination)
+                setTimeout(() => {
+                    setLoading(false)
+                }, 1000);
+            })
+            .catch((error) => {
                 setLoading(false)
-			})
-			.catch((error) => {
-				toast.error(error?.response?.data?.message)
-                setLoading(false)
-			});
-	};
+                toast.error(error?.response?.data?.message)
+            });
+    };
 
-	useEffect(() => {
-		getTopSelling(loggedInUser?.id)
-	}, [])
+    useEffect(() => {
+        getHotUnderAge(loggedInUser?.id)
+    }, [])
 
     const handleToggleFavourite = (index) => {
         const updatedProducts = [...topSellingProducts];
         updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
         setTopSellingProducts(updatedProducts);
     };
+
     return (
         <>
             <Header cartFullResponse={cartFullResponse}/>
@@ -49,7 +47,7 @@ const TopSellingProducts = ({cartFullResponse}) => {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1 className="title">Top Sellign Products</h1>
+                                <h1 className="title">Explore All Products</h1>
                             </div>
                             {loading ?
                                 <>
@@ -89,4 +87,4 @@ const TopSellingProducts = ({cartFullResponse}) => {
     )
 }
 
-export default TopSellingProducts
+export default ExploreAll21Plus

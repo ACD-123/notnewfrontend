@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import HomeService from '../services/API/HomeService';
 import Header from '../components/Header';
 import ProductSkeletonLoader from '../components/Shared/ProductSkeletonLoader';
 import NoDataFound from '../components/Shared/NoDataFound';
@@ -7,40 +6,42 @@ import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 import Footer from '../components/Footer';
 import ProductCard from '../components/Shared/Cards/ProductCard';
 import { toast } from 'react-toastify';
+import ProductServices from '../services/API/ProductServices';
 
-const TopSellingProducts = ({cartFullResponse}) => {
-    const [user, setUser] = useState({});
-	const [data, setData] = useState([]);
-	const [banners, setBanners] = useState([]);
-	const [topSellingProducts, setTopSellingProducts] = useState([]);
-	const [hotProducts, setHotProducts] = useState([]);
-	const [topSelling, setTopSelling] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
-
-	const getTopSelling = (id) => {
-		HomeService.getTopSelling(id)
-			.then((response) => {
-				setBanners(response?.data?.banners)
-				setTopSellingProducts(response?.data?.products)
-				setHotProducts(response?.data?.hot)
-                setLoading(false)
-			})
-			.catch((error) => {
-				toast.error(error?.response?.data?.message)
-                setLoading(false)
-			});
-	};
-
-	useEffect(() => {
-		getTopSelling(loggedInUser?.id)
-	}, [])
-
+const NewArrivals21Plus = ({cartFullResponse}) => {
+    const [productData, setProductData] = useState([]);
+    const [pagination, setPagination] = useState({});
+    const [favData, setFavData] = useState([]);
+    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+    const isLoggedin = localStorage.getItem("access_token");
+    const [loading, setLoading] = useState(true);
+  
     const handleToggleFavourite = (index) => {
-        const updatedProducts = [...topSellingProducts];
-        updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
-        setTopSellingProducts(updatedProducts);
+      const updatedProducts = [...productData];
+      updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
+      setProductData(updatedProducts);
     };
+  
+    const getUnderAgeProducts = async () => {
+      try {
+        const res = await ProductServices.getUnderAgeProducts(loggedInUser?.id);
+        if (res.status) {
+          setProductData(res.data?.products);
+          setPagination(res?.data?.pagination)
+          setTimeout(() => {
+            setLoading(false)
+          }, 1000);
+        }
+      } catch (error) {
+          setLoading(false)
+        toast.error(error?.response?.data?.message)
+      }
+    };
+  
+  
+    useEffect(() => {
+      getUnderAgeProducts();
+    }, []);
     return (
         <>
             <Header cartFullResponse={cartFullResponse}/>
@@ -49,7 +50,7 @@ const TopSellingProducts = ({cartFullResponse}) => {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1 className="title">Top Sellign Products</h1>
+                                <h1 className="title">New Arrival Products</h1>
                             </div>
                             {loading ?
                                 <>
@@ -67,8 +68,8 @@ const TopSellingProducts = ({cartFullResponse}) => {
                                     </div>
                                 </>
                                 :
-                                (topSellingProducts?.length > 0 ?
-                                    topSellingProducts?.map((data, index) => {
+                                (productData?.length > 0 ?
+                                    productData?.map((data, index) => {
                                         return (
                                             <div className="col-lg-3" key={index}>
                                                 <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
@@ -89,4 +90,4 @@ const TopSellingProducts = ({cartFullResponse}) => {
     )
 }
 
-export default TopSellingProducts
+export default NewArrivals21Plus

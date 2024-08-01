@@ -258,9 +258,24 @@ function sellerActiveOrders() {
     method: 'GET',
   })
 }
-function getPendingOdersDetail(oder_id) {
+
+function getPendingOdersDetail(oder_id , status) {
   return request({
-    url: `${baseApi}order/getById/${oder_id}`,
+    url: `${baseApi}order/getById/${oder_id}?status=${status}`,
+    method: 'GET',
+  })
+}
+
+function getRefundedOdersDetail(oder_id , status) {
+  return request({
+    url: `${baseApi}order/getById/${oder_id}?status=${status}&refunded=1`,
+    method: 'GET',
+  })
+}
+
+function getRefundOdersDetail(oder_id) {
+  return request({
+    url: `${baseApi}order/getById_/${oder_id}`,
     method: 'GET',
   })
 }
@@ -364,7 +379,9 @@ const OrderServices = {
   postHelpAndSupport,
   getMyBidsAndOffers,
   getRecentlySearchedItems,
-  removeProductFromSearchList
+  removeProductFromSearchList,
+  getRefundOdersDetail,
+  getRefundedOdersDetail
 }
 
 export default OrderServices

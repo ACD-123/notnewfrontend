@@ -10,7 +10,8 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 const RefundManagement = ({ detail, setDetail, getProductManagmentOderCount }) => {
   const [rejectedOders, setRejectedOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [rejectedOrderDetail, setRejectedOrderDetail] = useState([]);
+  const [refundedDetail, setRefundedDetail] = useState([]);
+  const [refundedFullResponse, setRefundedFullResponse] = useState([]);
   const [rejectedOrderAttributes, setRejectedOrderAttributes] = useState([]);
 
   const getRejectedOders = () => {
@@ -28,9 +29,11 @@ const RefundManagement = ({ detail, setDetail, getProductManagmentOderCount }) =
   const getRejectedOdersDetail = (order_id) => {
     setIsLoading(true);
     setDetail(true)
-    OrderServices.getPendingOdersDetail(order_id)
+    OrderServices.getRefundedOdersDetail(order_id, 0)
       .then((response) => {
-        setRejectedOrderDetail(response?.data)
+        console.log(response.data?.products, 'getRejectedOdersDetail');
+        setRefundedDetail(response.data?.products)
+        setRefundedFullResponse(response.data)
         setIsLoading(false);
         const attributes = response?.data?.products?.[0]?.attributes
         const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
@@ -47,6 +50,14 @@ const RefundManagement = ({ detail, setDetail, getProductManagmentOderCount }) =
   useEffect(() => {
     getRejectedOders();
   }, []);
+
+  const filterAttribute = (attribute) => {
+    const attributes = attribute;
+    const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
+    console.log(validJsonString, 'response?.data?.stores.length');
+    let normalArray = JSON.parse(validJsonString);
+    return normalArray
+  };
 
   return (
     <div className="pending-oder-managment">
@@ -91,10 +102,9 @@ const RefundManagement = ({ detail, setDetail, getProductManagmentOderCount }) =
             <div className="title"><span onClick={() => { setDetail(false) }}><IoIosArrowBack /></span>Refund Order Details</div>
             <div className="s-o-m-d-1">
               <div className="s-o-m-d-1-l">
-                <span>Seller : </span>{rejectedOrderDetail?.products?.[0]?.seller}
               </div>
               <div className="s-o-m-d-1-r">
-                <span>ORDER # :</span> {rejectedOrderDetail?.orderid}
+                <span>ORDER # :</span> {refundedFullResponse?.orderid}
               </div>
             </div>
             <div className="s-o-m-d-2" style={{ borderTop: '1px solid #EBEBEB', borderBottom: 'none', borderLeft: 'none', borderRight: 'none', backgroundColor: 'transparent' }}>
@@ -130,7 +140,7 @@ const RefundManagement = ({ detail, setDetail, getProductManagmentOderCount }) =
                           </linearGradient>
                         </defs>
                       </svg>
-                      {rejectedOrderDetail?.shipmentaddress}
+                      {refundedFullResponse?.shipmentaddress}
                     </li>
                     <li>
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -142,7 +152,7 @@ const RefundManagement = ({ detail, setDetail, getProductManagmentOderCount }) =
                           </linearGradient>
                         </defs>
                       </svg>
-                      {rejectedOrderDetail?.phone}
+                      {refundedFullResponse?.phone}
                     </li>
                     <li>
                       <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -154,116 +164,107 @@ const RefundManagement = ({ detail, setDetail, getProductManagmentOderCount }) =
                           </linearGradient>
                         </defs>
                       </svg>
-                      {rejectedOrderDetail?.name}
+                      {refundedFullResponse?.name}
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
-            <div className="s-o-m-d-4">
-              <div className="d-4-1">
-                <div className="d-4-1-w">
-                  <div className="d-4-1-l">
-                    <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                  </div>
-                  <div className="d-4-1-r">
-                    <h4>{rejectedOrderDetail?.products?.[0]?.name}</h4>
-                    <div className="d-4-1-r-1">
-                      <div className="d-4-1-r-1-l">
-                        <h5>${rejectedOrderDetail?.products?.[0]?.producttotal}</h5>
-                        <p>Quantity :<span>{rejectedOrderDetail?.products?.[0]?.quantity}</span></p>
-                      </div>
-                      <div className="d-4-1-r-1-r">
-                        <ul>
-                          {rejectedOrderAttributes.map((data, index) => {
-                            return (
-                              <li key={index}>
-                                <p>{data?.key} : </p>
-                                <ul>
-                                  <li>{data?.value}</li>
-                                </ul>
-                              </li>
-                            )
-                          })}
-                        </ul>
+            {refundedDetail?.map((product, i) => {
+              return (
+                <div key={i}>
+                  <div className="s-o-m-d-4">
+                    <div className="d-4-1">
+                      <div className="d-4-1-w">
+                        <div className="d-4-1-l">
+                          <img src={product?.media?.[0]?.name} alt="Product" />
+                        </div>
+                        <div className="d-4-1-r">
+                          <h4>{product?.name}</h4>
+                          <div className="d-4-1-r-1">
+                            <div className="d-4-1-r-1-l">
+                              <h5>${product?.producttotal}</h5>
+                              <p>Quantity :<span>{product?.quantity}</span></p>
+                            </div>
+                            <div className="d-4-1-r-1-r">
+                              <ul>
+                                {filterAttribute(product?.attributes).map((data, index) => {
+                                  return (
+                                    <li key={index}>
+                                      <p>{data?.key} : </p>
+                                      <ul>
+                                        <li>{data?.value}</li>
+                                      </ul>
+                                    </li>
+                                  )
+                                })}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              {/* <div className="d-4-2">
-              <ul>
-                <li>
-                  <ul>
-                    <li>Subtotal ( {rejectedOrderDetail?.products?.[0]?.quantity} item )</li>
-                    <li>${rejectedOrderDetail?.subtotal}</li>
-                  </ul>
-                  <ul>
-                    <li>Shipping</li>
-                    <li>${rejectedOrderDetail?.shippingcost}</li>
-                  </ul>
-                  <ul>
-                    <li>Discount</li>
-                    <li>-$5.00</li>
-                  </ul>
-                </li>
-              </ul>
-            </div>
-            <div className="d-4-3">
-              <ul>
-                <li>
-                  <ul>
-                    <li>Order Total</li>
-                    <li>${rejectedOrderDetail?.products?.[0]?.ordertotal}</li>
-                  </ul>
-                </li>
-              </ul>
-            </div> */}
-            </div>
-            <div className="s-o-m-d-7">
-              <h4>Refund Reason Images ({'7'})</h4>
-              <div className="s-o-m-d-7-i">
-                <div className="s-o-m-d-7-i-w">
-                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                </div>
-                <div className="s-o-m-d-7-i-w">
-                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                </div>
-                <div className="s-o-m-d-7-i-w">
-                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                </div>
-                <div className="s-o-m-d-7-i-w">
-                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                </div>
-                <div className="s-o-m-d-7-i-w">
-                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                </div>
-                <div className="s-o-m-d-7-i-w">
-                  <img src={rejectedOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                  <div className="s-o-m-d-7-i-w-l-m">
-                    View More
+
+                  <div className="s-o-m-d-7">
+                    <h4>Refund Reason Images ({product?.refund?.refundedImages.length})</h4>
+                    <div className="row">
+                      {product?.refund?.refundedImages.length > 0 ?
+                        product?.refund?.refundedImages?.map((image , k) => {
+                          return (
+                            <div className="col-lg-2" key={k}>
+                              <div className="s-o-m-d-7-i-w">
+                                <img src={image} alt="Product" />
+                              </div>
+                            </div>
+                          )
+                        })
+                        :
+                        <NoDataFound title={'No refunded image found'} />
+                      }
+                    </div>
+                    {/* <div className="s-o-m-d-7-i">
+                      <div className="s-o-m-d-7-i-w">
+                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                      </div>
+                      <div className="s-o-m-d-7-i-w">
+                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                      </div>
+                      <div className="s-o-m-d-7-i-w">
+                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                      </div>
+                      <div className="s-o-m-d-7-i-w">
+                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                      </div>
+                      <div className="s-o-m-d-7-i-w">
+                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                      </div>
+                      <div className="s-o-m-d-7-i-w">
+                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
+                        <div className="s-o-m-d-7-i-w-l-m">
+                          View More
+                        </div>
+                      </div>
+                    </div> */}
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className="s-o-m-d-6">
-              <h4>Reason reasons</h4>
-              <div className="s-o-m-d-5-f">
-                This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
-              </div>
-            </div>
-            <div className="s-o-m-d-8">
+                  <div className="s-o-m-d-6">
+                    <h4>Reason reasons</h4>
+                    <div className="s-o-m-d-5-f">
+                      {product?.refund?.reason}
+                    </div>
+                  </div>
+                  {/* <div className="s-o-m-d-8">
               <h4>Refund Amount</h4>
               <div className="d-4-2">
                 <ul>
                   <li>
                     <ul>
-                      <li>Subtotal ( {rejectedOrderDetail?.products?.[0]?.quantity} item )</li>
-                      <li>${rejectedOrderDetail?.subtotal}</li>
+                      <li>Subtotal ( {refundedDetail?.products?.[0]?.quantity} item )</li>
+                      <li>${refundedDetail?.subtotal}</li>
                     </ul>
                     <ul>
                       <li>Shipping</li>
-                      <li>${rejectedOrderDetail?.shippingcost}</li>
+                      <li>${refundedDetail?.shippingcost}</li>
                     </ul>
                     <ul>
                       <li>Discount</li>
@@ -277,32 +278,35 @@ const RefundManagement = ({ detail, setDetail, getProductManagmentOderCount }) =
                   <li>
                     <ul>
                       <li>Order Total</li>
-                      <li>${rejectedOrderDetail?.products?.[0]?.ordertotal}</li>
+                      <li>${refundedDetail?.products?.[0]?.ordertotal}</li>
                     </ul>
                   </li>
                 </ul>
               </div>
-            </div>
-            <div className="s-o-m-d-3">
-              <div className="s-o-m-d-3-l">
-                <h3>Refund Approval</h3>
-              </div>
-              <div className="s-o-m-d-3-r">
-                <div className="s-o-m-d-3-r-a">
-                  <div className="s-o-m-d-3-r-a-l">
-                    <div className="s-o-m-d-3-r-a-l-w" style={{ justifyContent: 'center' }}>Pending</div>
+            </div> */}
+                  <div className="s-o-m-d-3">
+                    <div className="s-o-m-d-3-l">
+                      <h3>Refund Approval</h3>
+                    </div>
+                    <div className="s-o-m-d-3-r">
+                      <div className="s-o-m-d-3-r-a">
+                        <div className="s-o-m-d-3-r-a-l">
+                          <div className="s-o-m-d-3-r-a-l-w" style={{ justifyContent: 'center' }}>{product?.refund?.status}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="s-o-m-d-9">
+                    <div className="s-o-m-d-9-l">
+                      <FaRegQuestionCircle />
+                    </div>
+                    <div className="s-o-m-d-9-r">
+                      Amount will be transferred after admin approval and amount will be deducted from your earnings
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="s-o-m-d-9">
-              <div className="s-o-m-d-9-l">
-                <FaRegQuestionCircle />
-              </div>
-              <div className="s-o-m-d-9-r">
-                Amount will be transferred after admin approval and amount will be deducted from your earnings
-              </div>
-            </div>
+              )
+            })}
           </div>
         )
       }

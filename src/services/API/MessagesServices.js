@@ -70,6 +70,14 @@ function sendChatMessage(data) {
   })
 }
 
+function createChatRooms(data) {
+  return request({
+    url: `${baseUrlChat}chat/createChatRooms`,
+    data,
+    method: 'POST',
+  })
+}
+
 const MessagesServices = {
   get,
   conversations,
@@ -79,7 +87,8 @@ const MessagesServices = {
   destroy,
   sendChatMessage,
   getUserConversations,
-  getChatUsers
+  getChatUsers,
+  createChatRooms
 }
 
 export default MessagesServices

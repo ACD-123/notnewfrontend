@@ -45,7 +45,7 @@ const TopSelling = ({ title }) => {
                                 <h3>
                                     {title}
                                     <span>
-                                        <Link to="/top-selling-prodcuts">View More</Link>
+                                        <Link to="/top-selling-21-plus">View More</Link>
                                     </span>
                                 </h3>
                             </div>

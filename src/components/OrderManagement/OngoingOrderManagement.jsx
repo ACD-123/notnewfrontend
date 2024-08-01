@@ -28,7 +28,7 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
   const getActiveOdersDetail = (order_id) => {
     setIsLoading(true);
     setDetail(true)
-    OrderServices.getPendingOdersDetail(order_id)
+    OrderServices.getPendingOdersDetail(order_id , 0)
       .then((response) => {
         setPendingOdrDetail(response?.data)
         let tempArr = []

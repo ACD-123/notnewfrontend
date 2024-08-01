@@ -45,6 +45,9 @@ import CartServices from "../services/API/CartServices"
 import { UserNotification } from "../pages/UserNotification"
 import { toast } from "react-toastify"
 import TwentyOnePlus from "../pages/TwentyOnePlus"
+import NewArrivals21Plus from "../pages/NewArrivals21Plus"
+import TopSelling21Plus from "../pages/TopSelling21Plus"
+import ExploreAll21Plus from "../pages/ExploreAll21Plus"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -95,6 +98,9 @@ const PublicRoutes = () => {
 					<Route path="/emailverification/:email" element={<EmailVerification />} />
 					<Route path="/signin" element={<SignIn />} />
 					<Route path="/21-plus" element={<TwentyOnePlus cartFullResponse={cartFullResponse} />} />
+					<Route path="/explore-all-21-plus" element={<ExploreAll21Plus cartFullResponse={cartFullResponse} />} />
+					<Route path="/new-arrival-21-plus" element={<NewArrivals21Plus cartFullResponse={cartFullResponse} />} />
+					<Route path="/top-selling-21-plus" element={<TopSelling21Plus cartFullResponse={cartFullResponse} />} />
 					<Route path="/more-to-love" element={<MoreToLove cartFullResponse={cartFullResponse} />} />
 					<Route path="/top-category" element={<TopCategory cartFullResponse={cartFullResponse} />} />
 					<Route path="/top-sellers" element={<Topsellers cartFullResponse={cartFullResponse} />} />

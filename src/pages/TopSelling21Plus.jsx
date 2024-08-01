@@ -8,42 +8,37 @@ import Footer from '../components/Footer';
 import ProductCard from '../components/Shared/Cards/ProductCard';
 import { toast } from 'react-toastify';
 
-const TopSellingProducts = ({cartFullResponse}) => {
-    const [user, setUser] = useState({});
-	const [data, setData] = useState([]);
-	const [banners, setBanners] = useState([]);
-	const [topSellingProducts, setTopSellingProducts] = useState([]);
-	const [hotProducts, setHotProducts] = useState([]);
-	const [topSelling, setTopSelling] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+const TopSelling21Plus = ({ cartFullResponse }) => {
+    const [topSellingProducts, setTopSellingProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
 
-	const getTopSelling = (id) => {
-		HomeService.getTopSelling(id)
-			.then((response) => {
-				setBanners(response?.data?.banners)
-				setTopSellingProducts(response?.data?.products)
-				setHotProducts(response?.data?.hot)
+    const getTopSellingUnderAge = (id) => {
+        HomeService.getTopSellingUnderAge(id)
+            .then((response) => {
+                setTopSellingProducts(response?.data?.products?.slice(0, 4))
+                setTimeout(() => {
+                    setLoading(false)
+                }, 1000);
+            })
+            .catch((error) => {
                 setLoading(false)
-			})
-			.catch((error) => {
-				toast.error(error?.response?.data?.message)
-                setLoading(false)
-			});
-	};
+                toast.error(error?.response?.data?.message)
+            });
+    };
 
-	useEffect(() => {
-		getTopSelling(loggedInUser?.id)
-	}, [])
+    useEffect(() => {
+        getTopSellingUnderAge(loggedInUser?.id)
+    }, [])
 
     const handleToggleFavourite = (index) => {
         const updatedProducts = [...topSellingProducts];
         updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
         setTopSellingProducts(updatedProducts);
-    };
+      };
     return (
         <>
-            <Header cartFullResponse={cartFullResponse}/>
+            <Header cartFullResponse={cartFullResponse} />
             <div className="top-sellers" id='productcard'>
                 <div className="top-sellers-wrap">
                     <div className="container">
@@ -89,4 +84,4 @@ const TopSellingProducts = ({cartFullResponse}) => {
     )
 }
 
-export default TopSellingProducts
+export default TopSelling21Plus

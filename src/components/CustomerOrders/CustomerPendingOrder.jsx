@@ -30,7 +30,7 @@ const CustomerPendingOrder = ({ detail, setDetail, getProductManagmentOderCount 
   const getPendingOdersDetail = (order_id) => {
     setDetail(true)
     setIsLoading(true)
-    OrderServices.getPendingOdersDetail(order_id)
+    OrderServices.getPendingOdersDetail(order_id , 1)
       .then((response) => {
         setPendingOdrDetail(response?.data)
         setShowAction(false);

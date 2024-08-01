@@ -196,7 +196,7 @@ const SellerDetails = () => {
                   }}
                   className='messageseller'>Message seller</button></div>
                 :
-                <div><button onClick={() => handleDropdownItemClick('componentI')} className='messageseller'>Message seller</button></div>
+                <div><button onClick={() => navigate(`/customerdashboard?tab=messages&id=${shopGuid.guid}`)} className='messageseller'>Message seller</button></div>
               }
             </div>
           </div>

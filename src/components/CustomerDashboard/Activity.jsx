@@ -28,7 +28,6 @@ const Activity = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Extract the component name from the query parameter or state passed from the Header component
     const searchParams = new URLSearchParams(location.search);
     const componentName = searchParams.get('component');
 
@@ -36,7 +35,6 @@ const Activity = () => {
       setSelectedMenuItem(componentName);
     }
   }, [location.search]);
-  // Function to handle menu item clicks
   const handleMenuItemClick = (menu) => {
     navigate(`/customerdashboard?component=${menu}`);
     setSelectedMenuItem(menu);
