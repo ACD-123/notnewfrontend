@@ -27,7 +27,7 @@ const RejectedOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
   const getRejectedOdersDetail = (order_id) => {
     setIsLoading(true);
     setDetail(true)
-    OrderServices.getPendingOdersDetail(order_id, 0)
+    OrderServices.getPendingOdersDetail(order_id, 0 , 3)
       .then((response) => {
         setRejectedOrderDetail(response?.data)
         setIsLoading(false);
@@ -225,7 +225,7 @@ const RejectedOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                   <li>
                     <ul>
                       <li>Order Total</li>
-                      <li>${rejectedOrderDetail?.products?.[0]?.ordertotal}</li>
+                      <li>${rejectedOrderDetail?.ordertotal}</li>
                     </ul>
                   </li>
                 </ul>

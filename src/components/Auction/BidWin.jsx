@@ -13,7 +13,7 @@ import UserServices from "../../services/API/UserServices"; //~/services/API/Use
 import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
 import moment from "moment";
 
-const BidWin = (cartFullResponse) => {
+const BidWin = ({cartFullResponse , notificationCount}) => {
   const [totalbid, setTotalBid] = useState(0);
   const [media, setMedia] = useState("");
   const [product, setProduct] = useState({});
@@ -41,7 +41,7 @@ const BidWin = (cartFullResponse) => {
   return (
     <>
       {/* Header */}
-      <Header cartFullResponse={cartFullResponse}/>
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id="product-recents-viewed">
         <div className="container">
           <div className="row align-items-center">

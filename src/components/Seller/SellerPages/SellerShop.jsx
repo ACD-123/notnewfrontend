@@ -10,7 +10,7 @@ import SellerAbout from "./SellerAbout";
 import SellerFeedbackNew from "./SellerFeedBackNew";
 import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
 
-const SellerShop = ({ cartFullResponse }) => {
+const SellerShop = ({ cartFullResponse , notificationCount }) => {
   const [activeTab, setActiveTab] = useState("seller1");
   const [tab, setTab] = useState(0);
   const [shopdata, setShopData] = useState([]);
@@ -23,7 +23,7 @@ const SellerShop = ({ cartFullResponse }) => {
 
   return (
     <>
-      <Header cartFullResponse={cartFullResponse} />
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id="sellershop">
         <div className="container">
           <div className="row">

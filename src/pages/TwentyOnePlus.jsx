@@ -9,7 +9,7 @@ import ExploreAll from '../components/TwentyOnePlus/ExploreAll'
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner'
 import { useNavigate } from 'react-router-dom'
 
-const TwentyOnePlus = ({cartFullResponse}) => {
+const TwentyOnePlus = ({cartFullResponse , notificationCount}) => {
   const navigate = useNavigate()
   useEffect(() =>{
     const underage = localStorage.getItem('underage');
@@ -21,7 +21,7 @@ const TwentyOnePlus = ({cartFullResponse}) => {
   } , [])
   return (
     <>
-    <Header cartFullResponse={cartFullResponse}/>
+    <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
     <Banners/>
     <Category/>
     <NewArrival title={'New Arrivals'}/>

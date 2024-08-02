@@ -8,7 +8,7 @@ import Addresses from '../components/AccountsSetting/PersonalInfoAllPages/Addres
 import NotFound_ from './NotFound_';
 import Header from '../components/Header';
 
-const PersonalInformation = ({cartFullResponse}) => {
+const PersonalInformation = ({cartFullResponse , notificationCount}) => {
     const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
@@ -56,7 +56,7 @@ const PersonalInformation = ({cartFullResponse}) => {
 
     return (
         <>
-            <Header cartFullResponse={cartFullResponse}/>
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
             <section id="main-dashboard">
                 <div className="container">
                     <div className="row">

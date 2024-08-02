@@ -22,7 +22,8 @@ import ProductServices from "../services/API/ProductServices";
 import { toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
 import { RxCross2 } from "react-icons/rx";
-const Header = ({ cartFullResponse }) => {
+import laravelEcho from "../socket";
+const Header = ({ cartFullResponse , notificationCount }) => {
   const [show21PlusDropdown, setShow21PlusDropdown] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [searchProduct, setSearchProduct] = useState([]);
@@ -39,9 +40,11 @@ const Header = ({ cartFullResponse }) => {
   const path = location.pathname;
   const search = location.search;
 
+
   const handleDropdownItemClick = (componentName) => {
     navigate(`/customerdashboard?tab=activity&component=${componentName}`)
   };
+
   const getUser = () => {
     UserServices.detail()
       .then((response) => {
@@ -53,6 +56,7 @@ const Header = ({ cartFullResponse }) => {
         toast.error(error?.response?.data?.message)
       });
   };
+
   const getItems = () => {
     if (token) {
       CartServices.count()
@@ -63,12 +67,14 @@ const Header = ({ cartFullResponse }) => {
         });
     }
   }
+
   const signOut = (e) => {
     e.preventDefault();
     const user_details = getUserDetails();
     localStorage.clear();
     window.location.href = `/`;
   };
+
   useEffect(() => {
     if (isLoggedin()) {
       getUser();
@@ -77,6 +83,7 @@ const Header = ({ cartFullResponse }) => {
   }, []);
 
   const [categories, setCategories] = useState([]);
+
   const getCategory = () => {
     HomeService.getrecursive().then((res) => {
       setCategories(res);
@@ -84,6 +91,8 @@ const Header = ({ cartFullResponse }) => {
       toast.error(error?.response?.data?.message)
     });
   };
+
+
   useEffect(() => {
     getCategory();
   }, []);
@@ -99,6 +108,7 @@ const Header = ({ cartFullResponse }) => {
       setSearchLoading(false)
     });
   }
+
   const addSearchProduct = (product_id) => {
     ProductServices.addSearchProduct({ user_id: user_details?.id, product_id: product_id })
       .then((res) => {
@@ -116,7 +126,6 @@ const Header = ({ cartFullResponse }) => {
       navigate('/21-plus')
     }
   }
-
 
   return (
     <>
@@ -257,6 +266,15 @@ const Header = ({ cartFullResponse }) => {
                       {isLoggedin() &&
                         <div className="notification" onClick={() => { navigate('/notification') }}>
                           <div className="notification-wrap">
+                            {notificationCount?.total > 0 ?
+                              <div className="notification-count">
+                                <div className="notification-count-wrap">
+                                  {notificationCount?.total}
+                                </div>
+                              </div>
+                              :
+                              null
+                            }
                             <img src={notification} alt="" />
                           </div>
                         </div>

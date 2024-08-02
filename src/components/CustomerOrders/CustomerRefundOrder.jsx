@@ -29,7 +29,7 @@ const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }
   const getRejectedOdersDetail = (order_id) => {
     setIsLoading(true);
     setDetail(true)
-    OrderServices.getRefundedOdersDetail(order_id, 1)
+    OrderServices.getRefundedOdersDetail(order_id, 1 , 4)
       .then((response) => {
         console.log(response.data?.products, 'getRejectedOdersDetail');
         setRefundedDetail(response.data?.products)

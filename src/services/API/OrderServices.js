@@ -225,6 +225,13 @@ function customerPendingOrders() {
   })
 }
 
+function customerActiveOrders() {
+  return request({
+    url: `${ordersApi}/accepted_customer`,
+    method: 'GET',
+  })
+}
+
 function getMyBidsAndOffers(user_id) {
   return request({
     url: `${baseApi}bidding/userbids?user_id=${user_id}`,
@@ -259,9 +266,9 @@ function sellerActiveOrders() {
   })
 }
 
-function getPendingOdersDetail(oder_id , status) {
+function getPendingOdersDetail(oder_id , status , order_status) {
   return request({
-    url: `${baseApi}order/getById/${oder_id}?status=${status}`,
+    url: `${baseApi}order/getById/${oder_id}?status=${status}&order_status=${order_status}`,
     method: 'GET',
   })
 }
@@ -381,7 +388,8 @@ const OrderServices = {
   getRecentlySearchedItems,
   removeProductFromSearchList,
   getRefundOdersDetail,
-  getRefundedOdersDetail
+  getRefundedOdersDetail,
+  customerActiveOrders
 }
 
 export default OrderServices

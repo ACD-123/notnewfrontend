@@ -14,7 +14,7 @@ import ProductServices from "../../services/API/ProductServices"; //~/services/A
 import moment from "moment";
 import { toast } from "react-toastify";
 
-const BidView = ({cartFullResponse}) => {
+const BidView = ({cartFullResponse , notificationCount}) => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
   const [requestSentVisible, setRequestSentVisible] = useState({});
   const [editBidVisible, setEditBidVisible] = useState({});
@@ -209,7 +209,7 @@ const BidView = ({cartFullResponse}) => {
   return (
     <>
       {/* Header */}
-      <Header cartFullResponse={cartFullResponse}/>
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id="product-recents-viewed">
         <div className="container">
           {bids ? (

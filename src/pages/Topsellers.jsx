@@ -6,7 +6,7 @@ import ProductSkeletonLoader from '../components/Shared/ProductSkeletonLoader';
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 import { toast } from 'react-toastify';
 
-const Topsellers = ({cartFullResponse}) => {
+const Topsellers = ({cartFullResponse , notificationCount}) => {
     const [seller, setSeller] = useState([])
     const [Loader, setLoader] = useState(true)
     const user_details = JSON.parse(localStorage.getItem('user_details'));
@@ -27,7 +27,7 @@ const Topsellers = ({cartFullResponse}) => {
     }, [])
     return (
         <>
-            <Header cartFullResponse={cartFullResponse}/>
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
             <div className="top-sellers" id='productcard'>
                 <div className="top-sellers-wrap">
                     <div className="container">

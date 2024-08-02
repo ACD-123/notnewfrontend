@@ -232,6 +232,8 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
         .then((response) => {
           setShowPlacedBids(false);
           getProduct()
+          setCustomBidPrice('')
+          setInputError(false)
           toast.success(response?.message)
         })
         .catch((error) => {
@@ -514,9 +516,9 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
           <div className="title">Place Your Bid</div>
           <div className="options">
             <ul>
-              <li onClick={() => { setCustomBidPrice(productData.max_bid + 100) }}>${productData.max_bid + 100}</li>
-              <li onClick={() => { setCustomBidPrice(productData.max_bid + 200) }}>${productData.max_bid + 200}</li>
-              <li onClick={() => { setCustomBidPrice(productData.max_bid + 300) }}>${productData.max_bid + 300}</li>
+              <li onClick={() => { setCustomBidPrice(+productData.max_bid + 100) }}>${+productData.max_bid + 100}</li>
+              <li onClick={() => { setCustomBidPrice(+productData.max_bid + 200) }}>${+productData.max_bid + 200}</li>
+              <li onClick={() => { setCustomBidPrice(+productData.max_bid + 300) }}>${+productData.max_bid + 300}</li>
             </ul>
           </div>
           <form onSubmit={placeAbid}>

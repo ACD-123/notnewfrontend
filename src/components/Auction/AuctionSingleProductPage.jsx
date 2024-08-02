@@ -13,7 +13,7 @@ import ProductCard from '../Shared/Cards/ProductCard'
 import NoDataFound from '../Shared/NoDataFound'
 import { toast } from 'react-toastify'
 
-const AuctionSingleProductPage = ({cartFullResponse}) => {
+const AuctionSingleProductPage = ({cartFullResponse , notificationCount}) => {
   const [moreToLove, setMoreToLove] = useState([])
   const [productId, setProductId] = useState('')
   const [loading, setLoading] = useState(true)
@@ -37,7 +37,7 @@ const AuctionSingleProductPage = ({cartFullResponse}) => {
   };
   return (
     <>
-      <Header cartFullResponse={cartFullResponse}/>
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id='single-product' className='single-product-detail'>
         {/* {loading ?
           <LoadingComponents />

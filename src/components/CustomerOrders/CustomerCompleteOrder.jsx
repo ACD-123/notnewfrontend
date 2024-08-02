@@ -43,7 +43,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
     setIsLoading(true);
     setDetail(true)
     setReview(condition)
-    OrderServices.getPendingOdersDetail(order_id , 1)
+    OrderServices.getPendingOdersDetail(order_id , 1 , 2)
       .then((response) => {
         setPendingOrderDetail(response?.data)
         setIsLoading(false);
@@ -475,7 +475,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                       <li>
                         <ul>
                           <li>Order Total</li>
-                          <li>${pendingOrderDetail?.products?.[0]?.ordertotal}</li>
+                          <li>${pendingOrderDetail?.ordertotal}</li>
                         </ul>
                       </li>
                     </ul>
@@ -650,7 +650,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                       <li>
                         <ul>
                           <li>Order Total</li>
-                          <li>${pendingOrderDetail?.products?.[0]?.ordertotal}</li>
+                          <li>${pendingOrderDetail?.ordertotal}</li>
                         </ul>
                       </li>
                     </ul>

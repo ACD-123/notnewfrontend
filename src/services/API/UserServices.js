@@ -46,10 +46,9 @@ function conversations(user_id , status) {
   })
 }
 
-function getMessagesById(id, params = {}) {
+function getMessagesById(id , user_id) {
   return request({
-    url: `${baseUrlChat}chat/getById?room_id=${id}`,
-    params,
+    url: `${baseUrlChat}chat/getById?room_id=${id}&id=${user_id}`
   })
 }
 

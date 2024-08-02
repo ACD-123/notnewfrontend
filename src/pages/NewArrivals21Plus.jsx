@@ -8,7 +8,7 @@ import ProductCard from '../components/Shared/Cards/ProductCard';
 import { toast } from 'react-toastify';
 import ProductServices from '../services/API/ProductServices';
 
-const NewArrivals21Plus = ({cartFullResponse}) => {
+const NewArrivals21Plus = ({cartFullResponse , notificationCount}) => {
     const [productData, setProductData] = useState([]);
     const [pagination, setPagination] = useState({});
     const [favData, setFavData] = useState([]);
@@ -44,7 +44,7 @@ const NewArrivals21Plus = ({cartFullResponse}) => {
     }, []);
     return (
         <>
-            <Header cartFullResponse={cartFullResponse}/>
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
             <div className="top-sellers" id='productcard'>
                 <div className="top-sellers-wrap">
                     <div className="container">

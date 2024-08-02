@@ -10,7 +10,7 @@ import HomeService from '../services/API/HomeService';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const SearchProduct = ({cartFullResponse}) => {
+const SearchProduct = ({cartFullResponse , notificationCount}) => {
     const [auctionProducts, setAuctionProducts] = useState([]);
     const [Loader, setLoader] = useState(true)
     const user_details = JSON.parse(localStorage.getItem('user_details'));
@@ -40,7 +40,7 @@ const SearchProduct = ({cartFullResponse}) => {
     };
     return (
         <>
-            <Header cartFullResponse={cartFullResponse}/>
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
             <div className="top-sellers" id='productcard'>
                 <div className="top-sellers-wrap">
                     <div className="container">

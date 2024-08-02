@@ -11,7 +11,7 @@ import ProductServices from '../../../services/API/ProductServices'; //~/service
 import AllProductListing from '../../Elements/AllProductListing';
 import { toast } from 'react-toastify';
 
-const AllNewProducts = ({cartFullResponse}) => {
+const AllNewProducts = ({cartFullResponse , notificationCount}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(6); // Change this value to adjust items per page
   const [products, setProductData] = useState([]);
@@ -105,7 +105,7 @@ const AllNewProducts = ({cartFullResponse}) => {
   }, []);
   return (
     <>
-      <Header cartFullResponse={cartFullResponse}/>
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id='AllProducts'>
         <div className='container'>
           <div className='row'>

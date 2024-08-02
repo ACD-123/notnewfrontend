@@ -8,7 +8,7 @@ import Footer from '../components/Footer';
 import ProductCard from '../components/Shared/Cards/ProductCard';
 import { toast } from 'react-toastify';
 
-const ExploreAll21Plus = ({cartFullResponse}) => {
+const ExploreAll21Plus = ({cartFullResponse , notificationCount}) => {
     const [topSellingProducts, setTopSellingProducts] = useState([]);
     const [pagination, setPagination] = useState({});
     const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ const ExploreAll21Plus = ({cartFullResponse}) => {
 
     return (
         <>
-            <Header cartFullResponse={cartFullResponse}/>
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
             <div className="top-sellers" id='productcard'>
                 <div className="top-sellers-wrap">
                     <div className="container">

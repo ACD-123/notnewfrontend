@@ -31,7 +31,7 @@ const PageNumbers = ({
   );
 };
 
-export const SellingNotification = () => {
+export const SellingNotification = ({getNotificationCount}) => {
   let user_details = JSON.parse(localStorage.getItem('user_details'));
   const [notification, setNotification] = useState([])
   const [loading, setLoading] = useState(true)
@@ -41,6 +41,7 @@ export const SellingNotification = () => {
       const res = await ProductServices.getNotification(user_details?.id, 'selling', page, size);
       setNotification(res?.data)
       setLoading(false)
+      getNotificationCount()
     } catch (error) {
       setLoading(false)
       toast.error(error?.response?.data?.message)

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CustomerPendingOrder from '../CustomerOrders/CustomerPendingOrder';
 import CustomerCompleteOrder from '../CustomerOrders/CustomerCompleteOrder';
 import CustomerRefundOrder from '../CustomerOrders/CustomerRefundOrder';
+import CustomerActiveOrder from '../CustomerOrders/CustomerActiveOrder';
 
 const Dashboard = () => {
   const [detail, setDetail] = useState(false);
@@ -16,9 +17,10 @@ const Dashboard = () => {
             <div className="seller-new-transaction-four">
               <div className="s-n-t-f-tabs">
                 <ul>
-                  <li onClick={() => { setTab(0) }} className={`${tab === 0 ? 'active' : ''}`}>Active Orders</li>
-                  <li onClick={() => { setTab(1) }} className={`${tab === 1 ? 'active' : ''}`}>Completed Orders</li>
-                  <li onClick={() => { setTab(2) }} className={`${tab === 2 ? 'active' : ''}`}>RefundsOrders</li>
+                  <li onClick={() => { setTab(0) }} className={`${tab === 0 ? 'active' : ''}`}>Pending Orders</li>
+                  <li onClick={() => { setTab(1) }} className={`${tab === 1 ? 'active' : ''}`}>Active Orders</li>
+                  <li onClick={() => { setTab(2) }} className={`${tab === 2 ? 'active' : ''}`}>Completed Orders</li>
+                  <li onClick={() => { setTab(3) }} className={`${tab === 3 ? 'active' : ''}`}>RefundsOrders</li>
                 </ul>
               </div>
             </div>
@@ -27,8 +29,9 @@ const Dashboard = () => {
           null
         }
         {tab === 0 && <CustomerPendingOrder detail={detail} setDetail={setDetail} />}
-        {tab === 1 && <CustomerCompleteOrder detail={detail} setDetail={setDetail} />}
-        {tab === 2 && <CustomerRefundOrder detail={detail} setDetail={setDetail} />}
+        {tab === 1 && <CustomerActiveOrder detail={detail} setDetail={setDetail} />}
+        {tab === 2 && <CustomerCompleteOrder detail={detail} setDetail={setDetail} />}
+        {tab === 3 && <CustomerRefundOrder detail={detail} setDetail={setDetail} />}
       </div>
     </>
   );

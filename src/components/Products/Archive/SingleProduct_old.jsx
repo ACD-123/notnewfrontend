@@ -12,7 +12,7 @@ import ProductCard from '../../Shared/Cards/ProductCard'
 import { Link } from 'react-router-dom'
 import LoadingComponents from '../../Shared/LoadingComponents'
 import { toast } from 'react-toastify'
-const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse}) => {
+const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse , notificationCount}) => {
   const [moreToLove, setMoreToLove] = useState([])
   const [productId, setProductId] = useState('')
   const [loading, setLoading] = useState(true)
@@ -38,7 +38,7 @@ const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse}
 
   return (
     <>
-      <Header cartFullResponse={cartFullResponse}/>
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id='single-product' className='single-product-detail'>
         {/* {loading ?
           <LoadingComponents />

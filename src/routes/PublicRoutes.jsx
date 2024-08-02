@@ -48,6 +48,8 @@ import TwentyOnePlus from "../pages/TwentyOnePlus"
 import NewArrivals21Plus from "../pages/NewArrivals21Plus"
 import TopSelling21Plus from "../pages/TopSelling21Plus"
 import ExploreAll21Plus from "../pages/ExploreAll21Plus"
+import laravelEcho from "../socket"
+import HomeService from "../services/API/HomeService"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -59,6 +61,33 @@ function ScrollToTop() {
 }
 const PublicRoutes = () => {
 	const [cartFullResponse, setCartFullResponse] = useState([]);
+	const [notificationCount, setNotificationCount] = useState([]);
+	let user_details = JSON.parse(localStorage.getItem('user_details'));
+
+	useEffect(() => {
+		const channel = laravelEcho.channel("notification-channel-" + user_details?.id);
+		channel.listen(".notification-channel", (data) => {
+			console.log(data, 'getNotificationCount');
+			getNotificationCount()
+		});
+
+		return () => {
+			channel.stopListening(".notification-channel");
+		};
+	}, []);
+
+	const getNotificationCount = () => {
+		HomeService.getNotificationCount(user_details?.id)
+			.then((res) => {
+				setNotificationCount(res?.data);
+			}).catch((error) => {
+				toast.error(error?.response?.data?.message)
+			});
+	};
+
+	useEffect(() => {
+		getNotificationCount();
+	}, []);
 
 	const getCartCount = () => {
 		CartServices.self()
@@ -87,58 +116,60 @@ const PublicRoutes = () => {
 			getCartCount()
 		}
 	}, [])
+
+
 	return (
 		<>
 			<BrowserRouter>
 				<ScrollToTop />
 				<Routes>
-					<Route path="/" element={<Home cartFullResponse={cartFullResponse} />} />
+					<Route path="/" element={<Home cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
 					<Route path="/signup" element={<SignUp />} />
 					{/* <Route path="/emailverification/:id/:guid/:expires/:email" element={<EmailVerification />} /> */}
 					<Route path="/emailverification/:email" element={<EmailVerification />} />
 					<Route path="/signin" element={<SignIn />} />
-					<Route path="/21-plus" element={<TwentyOnePlus cartFullResponse={cartFullResponse} />} />
-					<Route path="/explore-all-21-plus" element={<ExploreAll21Plus cartFullResponse={cartFullResponse} />} />
-					<Route path="/new-arrival-21-plus" element={<NewArrivals21Plus cartFullResponse={cartFullResponse} />} />
-					<Route path="/top-selling-21-plus" element={<TopSelling21Plus cartFullResponse={cartFullResponse} />} />
-					<Route path="/more-to-love" element={<MoreToLove cartFullResponse={cartFullResponse} />} />
-					<Route path="/top-category" element={<TopCategory cartFullResponse={cartFullResponse} />} />
-					<Route path="/top-sellers" element={<Topsellers cartFullResponse={cartFullResponse} />} />
-					<Route path="/top-selling-prodcuts" element={<TopSellingProducts cartFullResponse={cartFullResponse} />} />
-					<Route path="/hot-deals" element={<HotDeals cartFullResponse={cartFullResponse} />} />
-					<Route path="/category" element={<SingleCategory cartFullResponse={cartFullResponse} />} />
-					<Route path="/sub-category" element={<SubCategory cartFullResponse={cartFullResponse} />} />
-					<Route path="/auctions" element={<Auctions cartFullResponse={cartFullResponse} />} />
-					<Route path="/product-filter" element={<AllProducts cartFullResponse={cartFullResponse} />} />
-					<Route path="/personal-info" element={<PersonalInformation cartFullResponse={cartFullResponse} />} />
-					<Route path="/AllNewProducts" element={<AllNewProducts cartFullResponse={cartFullResponse} />} />
+					<Route path="/21-plus" element={<TwentyOnePlus cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/explore-all-21-plus" element={<ExploreAll21Plus cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/new-arrival-21-plus" element={<NewArrivals21Plus cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/top-selling-21-plus" element={<TopSelling21Plus cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/more-to-love" element={<MoreToLove cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/top-category" element={<TopCategory cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/top-sellers" element={<Topsellers cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/top-selling-prodcuts" element={<TopSellingProducts cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/hot-deals" element={<HotDeals cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/category" element={<SingleCategory cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/sub-category" element={<SubCategory cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/auctions" element={<Auctions cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/product-filter" element={<AllProducts cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/personal-info" element={<PersonalInformation cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/AllNewProducts" element={<AllNewProducts cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
 					<Route path="/forget-password" element={<PasswordRecovery />} />
 					<Route path="/forgotverification/:email" element={<ForgotVerification />} />
 					<Route path="/resetpassword/:email" element={<ResetPassword />} />
-					<Route path="/cart" element={<ShoppingCart getCartCount={getCartCount} cartFullResponses={cartFullResponse} getCartCountGuest={getCartCountGuest} />} />
-					<Route path="/categorykeyword/:guid" element={<CategoryKeyword cartFullResponse={cartFullResponse} />} />
-					<Route path="/checkout" element={<Checkout cartFullResponse={cartFullResponse} />} />
-					<Route path="/checkout-buynow" element={<CheckoutBuyNow cartFullResponse={cartFullResponse} />} />
-					<Route path="/checkouts/:guid" element={<Checkout cartFullResponse={cartFullResponse} />} />
-					<Route path="/singleproduct/:guid" element={<SingleProduct getCartCount={getCartCount} getCartCountGuest={getCartCountGuest} cartFullResponse={cartFullResponse} />} />
-					<Route path="/customerdashboard" element={<MainDashboard cartFullResponse={cartFullResponse} />} />
-					<Route path="/bidView/:guid" element={<BidView cartFullResponse={cartFullResponse} />} />
-					<Route path="/allcategories" element={<CategoryPage cartFullResponse={cartFullResponse} />} />
-					<Route path="/sellershop/:guid" element={<SellerShop cartFullResponse={cartFullResponse} />} />
-					<Route path="/auctionproduct/:guid" element={<AuctionSingleProductPage cartFullResponse={cartFullResponse} />} />
-					<Route path="/bidwin/:guid" element={<BidWin cartFullResponse={cartFullResponse} />} />
+					<Route path="/cart" element={<ShoppingCart getCartCount={getCartCount} cartFullResponses={cartFullResponse} getCartCountGuest={getCartCountGuest} notificationCount={notificationCount}/>} />
+					<Route path="/categorykeyword/:guid" element={<CategoryKeyword cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/checkout" element={<Checkout cartFullResponse={cartFullResponse} getCartCount={getCartCount} notificationCount={notificationCount}/>} />
+					<Route path="/checkout-buynow" element={<CheckoutBuyNow cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/checkouts/:guid" element={<Checkout cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/singleproduct/:guid" element={<SingleProduct getCartCount={getCartCount} getCartCountGuest={getCartCountGuest} cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/customerdashboard" element={<MainDashboard cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/bidView/:guid" element={<BidView cartFullResponse={cartFullResponse} />} notificationCount={notificationCount}/>
+					<Route path="/allcategories" element={<CategoryPage cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/sellershop/:guid" element={<SellerShop cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/auctionproduct/:guid" element={<AuctionSingleProductPage cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/bidwin/:guid" element={<BidWin cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
 					<Route path="/searchhistory" element={<SearchHistory />} />
-					<Route path="/notification" element={<UserNotification />} />
+					<Route path="/notification" element={<UserNotification getNotificationCount={getNotificationCount} notificationCount={notificationCount}/>} />
 					<Route path="/ongoingorder/:guid" element={<OngoingOrderManagement />} />
 					<Route path="/completedorder/:guid" element={<CompleteOrderManagement />} />
-					<Route path="/refund/:guid" element={<Refund cartFullResponse={cartFullResponse} />} />
+					<Route path="/refund/:guid" element={<Refund/>} />
 					<Route path="/transactions" element={<MyTransactions />} />
 					<Route path="/instock" element={<InStock />} />
 					<Route path="/outstock" element={<OutStock />} />
 					<Route path="/productupload" element={<ProductUpload />} />
-					<Route path="/my-seller-account" element={<MySellerAccount cartFullResponse={cartFullResponse} />} />
-					<Route path="/search-product" element={<SearchProduct cartFullResponse={cartFullResponse} />} />
-					<Route path="*" element={<NotFound cartFullResponse={cartFullResponse} />} />
+					<Route path="/my-seller-account" element={<MySellerAccount cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="/search-product" element={<SearchProduct cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
+					<Route path="*" element={<NotFound cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>} />
 				</Routes>
 			</BrowserRouter>
 		</>

@@ -35,6 +35,12 @@ function getHigherProductPrice() {
   })
 }
 
+function getNotificationCount(user_id) {
+  return request({
+    url: `${baseUrl}notifications/user-count?user_id=${user_id}`
+  })
+}
+
 function getrecursive() {
   return request({
     url: `${baseUrl}recursiveCategories`
@@ -148,7 +154,8 @@ const HomeService = {
   getUnderAgeBanners,
   fetchCategoryUnderag,
   getTopSellingUnderAge,
-  getHotUnderAge
+  getHotUnderAge,
+  getNotificationCount
 }
 
 export default HomeService

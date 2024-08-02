@@ -963,6 +963,7 @@ header .header-wrap .header-top .header-right .notification .notification-wrap {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 
 header .header-wrap .header-top .header-right .notification .notification-wrap p {
@@ -978,6 +979,27 @@ header .header-wrap .header-top .header-right .notification .notification-wrap p
 
 header .header-wrap .header-top .header-right .notification .notification-wrap img {
   width: 22px;
+}
+
+header .header-wrap .header-top .header-right .notification .notification-wrap .notification-count{}
+header .header-wrap .header-top .header-right .notification .notification-wrap .notification-count .notification-count-wrap{
+  font-family: 'Cairo';
+    font-size: 11.94px;
+    font-weight: 700;
+    line-height: 22.38px;
+    text-align: left;
+    color: #fff;
+    border: 1px solid #8B2CA0;
+    background-color: #4F4F4F;
+    width: 23.88px;
+    height: 23.88px;
+    border-radius: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: -6px;
+    right: -6px;
 }
 
 header .header-wrap .header-top .header-right .user {
@@ -3823,7 +3845,7 @@ section#sellershop .sellerdetails {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0px 7px;
+  padding: 0px;
 }
 
 .chat-container .chat-listing-wrap ul li .list-image-chat .name-mgs {
@@ -3832,9 +3854,9 @@ section#sellershop .sellerdetails {
 
 .chat-container .chat-listing-wrap ul li .list-image-chat .name {
   font-family: 'Cairo';
-  font-size: 10.66px;
-  font-weight: 600;
-  line-height: 10.66px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 12px;
   text-align: left;
   color: #1B1B1B;
   margin-bottom: 5px;
@@ -3843,11 +3865,12 @@ section#sellershop .sellerdetails {
 
 .chat-container .chat-listing-wrap ul li .list-image-chat .message {
   font-family: 'Cairo';
-  font-size: 8.88px;
-  font-weight: 400;
-  line-height: 8.88px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 10px;
   text-align: left;
-  color: #757474;
+  color: #1B1B1B;
+  text-transform: capitalize;
 }
 
 .chat-container .chat-listing-wrap ul li .list-image-chat .time {
@@ -3858,6 +3881,15 @@ section#sellershop .sellerdetails {
   text-align: right;
   color: #C8BCBC;
   width: 100%;
+}
+
+.chat-container .chat-listing-wrap ul li .list-image-chat .time .read{}
+.chat-container .chat-listing-wrap ul li .list-image-chat .time .read span{
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  color: #fff;
+  padding: 0px 5px;
+  border-radius: 100%;
+  font-size: 8px;
 }
 
 .sent-message {
@@ -4131,14 +4163,25 @@ section#sellershop .sellerdetails {
   padding: 0;
   height: 605px;
   margin-top: 15px;
-  gap: 15px;
+  gap: 5px;
   display: flex;
   flex-direction: column;
 }
 
 .chat-container ul li {
   cursor: pointer;
+  padding: 10px;
+  border-radius: 12px;
 }
+
+.chat-container ul li.active-chat{
+  background-color: #edeaf2;
+}
+.chat-container ul li.active-count{
+  background-color: #ca9ffc57;
+}
+
+.chat-container ul li
 
 .chat-container .chatlist .sidebar {
   background: #F4F4F4;
@@ -6540,21 +6583,21 @@ th {
 
 .seller-new-transaction .seller-new-transaction-one {
   display: flex;
-  gap: 16px;
+  gap: 10px;
 }
 
 .seller-new-transaction .seller-new-transaction-one .s-n-d-o-o {
   flex: 2;
   background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
   border-radius: 9.11px;
-  padding: 30px 20px;
+  padding: 20px;
 }
 
 .seller-new-transaction .seller-new-transaction-one .s-n-d-o-t {
   flex: 2;
   background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
   border-radius: 9.11px;
-  padding: 30px 20px;
+  padding: 20px;
 }
 
 .seller-new-transaction .seller-new-transaction-one .s-n-d-o-th {
@@ -6565,9 +6608,9 @@ th {
 .seller-new-transaction .seller-new-transaction-one .s-n-d-o-t h4,
 .seller-new-transaction .seller-new-transaction-one .s-n-d-o-th h4 {
   font-family: 'Cairo';
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 600;
-  line-height: 30px;
+  line-height: 26px;
   text-align: center;
   color: #fff;
   margin-bottom: 0px;
@@ -6577,12 +6620,12 @@ th {
 .seller-new-transaction .seller-new-transaction-one .s-n-d-o-t p,
 .seller-new-transaction .seller-new-transaction-one .s-n-d-o-th p {
   font-family: 'Cairo';
-  font-size: 51px;
+  font-size: 36px;
   font-weight: 700;
-  line-height: 51.21px;
+  line-height: 44px;
   text-align: center;
   color: #fff;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 
 .seller-new-transaction .seller-new-transaction-one .s-n-d-o-o .d-d,

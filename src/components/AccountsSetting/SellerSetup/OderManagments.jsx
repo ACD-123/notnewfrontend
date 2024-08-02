@@ -46,14 +46,25 @@ const OderManagments = () => {
                             <div className="title">Order Management</div>
                             <div className="seller-new-transaction-one" style={{ marginBottom: '20px' }}>
                                 <div className="s-n-d-o-o">
-                                    <p>{oderManagment?.active}</p>
+                                    <p>{oderManagment?.pending}</p>
                                     <h4>New Orders</h4>
+                                </div>
+                                <div className="s-n-d-o-t">
+                                    <p>{oderManagment?.active}</p>
+                                    <h4>Active Orders</h4>
                                 </div>
                                 <div className="s-n-d-o-t">
                                     <p>{oderManagment?.completed}</p>
                                     <h4>Completed Orders</h4>
                                 </div>
-                                <div className="s-n-d-o-th"></div>
+                                <div className="s-n-d-o-t">
+                                    <p>{oderManagment?.rejected}</p>
+                                    <h4>Rejected Orders</h4>
+                                </div>
+                                <div className="s-n-d-o-t">
+                                    <p>{oderManagment?.refunded}</p>
+                                    <h4>Refunded Orders</h4>
+                                </div>
                             </div>
                             <div className="seller-new-transaction-four">
                                 <div className="s-n-t-f-tabs">

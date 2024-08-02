@@ -12,7 +12,7 @@ import Header from '../components/Header';
 import OderManagments from '../components/AccountsSetting/SellerSetup/OderManagments';
 import ShopSetting from '../components/AccountsSetting/SellerSetup/ShopSetting';
 
-const MySellerAccount = ({props , cartFullResponse}) => {
+const MySellerAccount = ({props , cartFullResponse , notificationCount}) => {
 // const MySellerAccount = (props) => {
     const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -91,7 +91,7 @@ const MySellerAccount = ({props , cartFullResponse}) => {
 
     return (
         <>
-            <Header cartFullResponse={cartFullResponse}/>
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
             <section id="main-dashboard">
                 <div className="container">
                     <div className="row">

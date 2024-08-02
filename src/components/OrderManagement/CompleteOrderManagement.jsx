@@ -32,7 +32,7 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
     setIsLoading(true);
     setDetail(true)
     setReview(condition)
-    OrderServices.getPendingOdersDetail(order_id , 0)
+    OrderServices.getPendingOdersDetail(order_id , 0 , 2)
       .then((response) => {
         setPendingOrderDetail(response?.data)
         setIsLoading(false);
@@ -272,7 +272,7 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                       <li>
                         <ul>
                           <li>Order Total</li>
-                          <li>${pendingOrderDetail?.products?.[0]?.ordertotal}</li>
+                          <li>${pendingOrderDetail?.ordertotal}</li>
                         </ul>
                       </li>
                     </ul>

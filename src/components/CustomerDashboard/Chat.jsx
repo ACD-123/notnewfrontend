@@ -27,38 +27,31 @@ function Chat() {
   const seller_guid = localStorage.getItem('seller_guid');
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const user_Id = searchParams.get('id');
+  const room_id = searchParams.get('room-id');
 
   useEffect(() => {
     const channel = laravelEcho.channel("chat-channel-" + seller_guid);
     channel.listen(".chat-channel", (data) => {
-      console.log(data, 'data');
-      if (selectedChat && selectedChat.id === data.room_id) {
-        // Directly update messages without showing the loader
-        UserServices.getMessagesById(data.room_id)
-          .then((response) => {
-            setMessages(response?.data);
-          })
-          .catch((error) => {
-            toast.error(error?.response?.data?.message);
-          });
-      } else {
-        getUserChat({ participants: user_Id });
-      }
+      console.log(data, 'dfasdfsdfsdf');
+      getUserChat({ participants: room_id });
     });
 
     return () => {
       channel.stopListening(".chat-channel");
     };
-  }, [selectedChat, seller_guid, user_Id]);
+  }, []);
 
   const getUserChat = (data) => {
     UserServices.conversations(seller_guid, 0)
       .then((response) => {
         setChatList(response?.data);
         for (let i = 0; i < response?.data?.length; i++) {
-          if (data?.participants === response?.data[i]?.uid) {
-            handleChatSelection(response?.data[i]?.id, loggedInUser?.id, response?.data[i], true);
+          if (+data?.participants == +response?.data[i]?.id) {
+            getMessagesById(data?.participants)
+            if(selectedChat === null){
+              // setLoadingChat(true);
+              setSelectedChat(response?.data[i])
+            }
           }
         }
         getChatUsers();
@@ -73,25 +66,31 @@ function Chat() {
 
   const navigate = useNavigate();
 
-  const handleChatSelection = (reciptId, senderId, chat, showLoader = true) => {
-    console.log(chat, 'sadasdasdas');
-    if (showLoader) {
-      setLoadingChat(true);
-    }
-    if (chat?.uid.length > 10) {
-      navigate(`/my-seller-account?tab=chat&id=${chat?.participants}`);
-    } else {
-      navigate(`/my-seller-account?tab=chat&id=${chat?.uid}`);
-    }
-    UserServices.getMessagesById(reciptId)
+  const handleChatSelection = (reciptId, chat) => {
+    setLoadingChat(true);
+    UserServices.getMessagesById(reciptId, seller_guid)
       .then((response) => {
         setSelectedChat(chat);
         setMessages(response?.data);
         setLoadingChat(false);
+        navigate(`/my-seller-account?tab=chat&room-id=${reciptId}`)
       })
       .catch((error) => {
         setLoadingChat(false);
         toast.error(error?.response?.data?.message);
+      });
+  };
+
+  const getMessagesById = (reciptId) => {
+    console.log('calling');
+    UserServices.getMessagesById(reciptId, seller_guid)
+      .then((response) => {
+        setMessages(response?.data);
+        setLoadingChat(false);
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.message);
+        setLoadingChat(false);
       });
   };
 
@@ -107,11 +106,8 @@ function Chat() {
       };
       MessagesServices.sendChatMessage(newMassage)
         .then((response) => {
-          if (response.status) {
-            getUserChat();
-            handleChatSelection(selectedChat?.id, selectedChat?.participants, selectedChat, false);
-            setNewMessage("");
-          }
+          getUserChat({ participants: selectedChat?.id });
+          setNewMessage("");
         })
         .catch((error) => {
           toast.error(error?.response?.data?.message);
@@ -156,10 +152,13 @@ function Chat() {
   useEffect(() => {
     getChatUsers();
   }, []);
-
   useEffect(() => {
-    getUserChat(null);
-  }, [user_Id]);
+    if (room_id) {
+      getUserChat({ participants: room_id });
+    } else {
+      getUserChat(null)
+    }
+  }, [room_id]);
 
   const chatContainerRef = useRef(null);
 
@@ -199,7 +198,7 @@ function Chat() {
                       return (
                         <li
                           key={index}
-                          onClick={() => handleChatSelection(chat?.id, loggedInUser?.id, chat)}
+                          onClick={() => handleChatSelection(chat?.id, chat)}
                           className={selectedChat === chat?.participants ? "active-chat" : ""}>
                           <div className="list-image-chat">
                             <div>
@@ -345,10 +344,15 @@ function Chat() {
                       </div>
                     </div>
                 ) : (
-                  <div className="no-chat-selected">
-                    <h3>Select a chat to start conversation</h3>
-                    <img src={Convoimage} style={{ width: "60% " }} />
-                  </div>
+                  loadingChat ?
+                    <div className="customer-chat-detail-loader">
+                      <LoadingComponents />
+                    </div>
+                    :
+                    <div className="no-chat-selected">
+                      <h3>Select a chat to start conversation</h3>
+                      <img src={Convoimage} style={{ width: "60% " }} />
+                    </div>
                 )}
               </div>
             </div>

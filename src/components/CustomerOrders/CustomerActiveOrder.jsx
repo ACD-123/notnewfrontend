@@ -7,32 +7,15 @@ import NoDataFound from "../Shared/NoDataFound";
 import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
 
 
-const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCount }) => {
+const CustomerActiveOrder = ({ detail, setDetail, getProductManagmentOderCount }) => {
   const [pendingOdrList, setPendingOdrList] = useState([]);
   const [pendingOdrDetail, setPendingOdrDetail] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAction, setShowAction] = useState(false);
   const [pendingOrderAttributes, setPendingOrderAttributes] = useState([]);
 
-  const updateOrderStatus = (orderId, status) => {
-    setIsLoading(true)
-    OrderServices.updateOrderStatus({ order_id: orderId, status })
-      .then((response) => {
-        getPendingOders();
-        setDetail(false);
-        setShowAction(false);
-        getProductManagmentOderCount()
-        setIsLoading(true)
-      })
-      .catch((error) => {
-        setIsLoading(true)
-        toast.error("Failed to update order status.");
-      });
-    // }
-  };
-
-  const getPendingOders = () => {
-    OrderServices.sellerOngoingOrders()
+  const getActiveOrders = () => {
+    OrderServices.customerActiveOrders()
       .then((response) => {
         setPendingOdrList(response?.data);
         setIsLoading(false);
@@ -47,15 +30,15 @@ const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
   const getPendingOdersDetail = (order_id) => {
     setDetail(true)
     setIsLoading(true)
-    OrderServices.getPendingOdersDetail(order_id , 0 , 0)
+    OrderServices.getPendingOdersDetail(order_id , 1 , 1)
       .then((response) => {
         setPendingOdrDetail(response?.data)
         setShowAction(false);
-        getProductManagmentOderCount()
         let tempArr = []
         for (let i = 0; i < response?.data?.products.length; i++) {
           const attributes = response?.data?.products?.[i]?.attributes;
           const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
+          // const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
           const normalArray = JSON.parse(validJsonString);
           tempArr.push(normalArray)
         }
@@ -69,7 +52,7 @@ const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
   };
 
   useEffect(() => {
-    getPendingOders();
+    getActiveOrders();
   }, []);
 
 
@@ -109,7 +92,7 @@ const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
                   })}
                 </div>
                 :
-                <NoDataFound title={'No pending oders found'} />
+                <NoDataFound title={'No active oders found'} />
               }
             </div>
             :
@@ -193,17 +176,9 @@ const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
                 </div>
                 <div className="s-o-m-d-3-r">
                   <div className="s-o-m-d-3-r-a">
-                    <div className="s-o-m-d-3-r-a-l" onClick={() => { setShowAction(!showAction) }}>
-                      <div className="s-o-m-d-3-r-a-l-w">Action <IoIosArrowDown /></div>
+                    <div className="s-o-m-d-3-r-a-l">
+                      <div className="s-o-m-d-3-r-a-l-w" style={{justifyContent:'center'}}>Active</div>
                     </div>
-                    {showAction &&
-                      <div className="s-o-m-d-3-r-a-o">
-                        <ul>
-                          <li onClick={() => { updateOrderStatus(pendingOdrDetail?.id, 4) }}>Accept</li>
-                          <li onClick={() => { updateOrderStatus(pendingOdrDetail?.id, 2) }}>Reject</li>
-                        </ul>
-                      </div>
-                    }
                   </div>
                 </div>
               </div>
@@ -279,4 +254,4 @@ const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
   );
 };
 
-export default PendingOrderManagement;
+export default CustomerActiveOrder;

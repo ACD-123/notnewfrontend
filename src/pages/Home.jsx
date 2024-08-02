@@ -16,7 +16,7 @@ import HotSellingProducts from "../components/Products/HotSellingProducts";
 import HomeCategorySlider from "../components/Shared/Sliders/HomeCategorySlider";
 import { toast } from "react-toastify";
 
-const Home = ({cartFullResponse}) => {
+const Home = ({cartFullResponse , notificationCount}) => {
 	const [user, setUser] = useState({});
 	const [data, setData] = useState([]);
 	const [banners, setBanners] = useState([]);
@@ -47,7 +47,7 @@ const Home = ({cartFullResponse}) => {
 
 	return (
 		<>
-			<Header cartFullResponse={cartFullResponse}/>
+			<Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
 			<Banner data={banners} loading={loading} />
 			<HomeCategorySlider/>
 			<Items title={'New Items'} />

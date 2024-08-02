@@ -17,7 +17,7 @@ import LoadingComponents from "../../components/Shared/LoadingComponents";
 import NoDataFound from "../../components/Shared/NoDataFound";
 import { isLoggedin } from "../../services/Auth";
 
-const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest }) => {
+const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest , notificationCount }) => {
   const [showDiscountField, setShowDiscountField] = useState(false);
   const [cart, setCart] = useState([]);
   const [cartFullResponse, setCartFullResponse] = useState([]);
@@ -244,7 +244,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest }) =>
 
   return (
     <>
-      <Header cartFullResponse={cartFullResponses} />
+      <Header cartFullResponse={cartFullResponses}  notificationCount={notificationCount}/>
       <section id="cart-details">
         <div className="container">
           <h2 className="page-title">Cart</h2>

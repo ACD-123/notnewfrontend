@@ -8,10 +8,10 @@ import RecentViewedItems from "../RecentViewedItems";
 import ProductTabs from "./SingleProductElements/ProductTabs";
 import SellerDetails from "../../Seller/SellerDetails";
 
-const SubCategory = ({cartFullResponse}) => {
+const SubCategory = ({cartFullResponse , notificationCount}) => {
   return (
     <>
-      <Header cartFullResponse={cartFullResponse}/>
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id="single-product" style={{ padding: "40px 0px" }}>
         <div className="container">
           <div className="row">

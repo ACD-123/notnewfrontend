@@ -8,7 +8,7 @@ import ProductCard from '../components/Shared/Cards/ProductCard';
 import NoDataFound from '../components/Shared/NoDataFound';
 import { toast } from 'react-toastify';
 
-export const MoreToLove = ({cartFullResponse}) => {
+export const MoreToLove = ({cartFullResponse , notificationCount}) => {
     const [moreToLove , setMoreToLove] = useState([])
     const [Loader, setLoader] = useState(true)
     const user_details = JSON.parse(localStorage.getItem('user_details'));
@@ -38,7 +38,7 @@ export const MoreToLove = ({cartFullResponse}) => {
       };
     return (
         <>
-            <Header cartFullResponse={cartFullResponse}/>
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
             <div className="top-sellers">
                 <div className="top-sellers-wrap" id='productcard'>
                     <div className="container">

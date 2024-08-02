@@ -8,7 +8,7 @@ import GetSurprisedBanner from '../../../components/Elements/GetSurprisedBanner'
 import NoDataFound from '../../Shared/NoDataFound';
 import { toast } from 'react-toastify';
 
-const Auctions = ({cartFullResponse}) => {
+const Auctions = ({cartFullResponse , notificationCount}) => {
     const [auctionProducts, setAuctionProducts] = useState([]);
     const [latestProducts, setLatestProducts] = useState([]);
     const [Loader, setLoader] = useState(true)
@@ -42,7 +42,7 @@ const Auctions = ({cartFullResponse}) => {
     };
     return (
         <>
-            <Header cartFullResponse={cartFullResponse}/>
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
             <div className="top-sellers">
                 <div className="top-sellers-wrap" id='productcard'>
                     <div className="container">

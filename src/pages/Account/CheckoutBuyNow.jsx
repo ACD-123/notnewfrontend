@@ -14,7 +14,7 @@ import Mastercard from "../../assets/Images/paymentCard/Mastercard.png"
 import Arrowright from "../../assets/Images/Shoppingcart/arrowright.png";
 import Select from 'react-select';
 
-const CheckoutBuyNow = ({ cartFullResponse }) => {
+const CheckoutBuyNow = ({ cartFullResponse , notificationCount }) => {
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState(null);
   const [butItNowData, setButItNowData] = useState([]);
@@ -119,7 +119,7 @@ const CheckoutBuyNow = ({ cartFullResponse }) => {
   }, []);
   return (
     <>
-      <Header cartFullResponse={cartFullResponse} />
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id="cart-details">
         <div className="container">
           <h2 className="page-title">Buy Now Checkout</h2>

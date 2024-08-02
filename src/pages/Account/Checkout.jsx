@@ -495,7 +495,7 @@ import Mastercard from "../../assets/Images/paymentCard/Mastercard.png"
 import Arrowright from "../../assets/Images/Shoppingcart/arrowright.png";
 import Select from 'react-select';
 
-const Checkout = ({ cartFullResponse }) => {
+const Checkout = ({ cartFullResponse , getCartCount , notificationCount }) => {
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState(null);
   const [butItNowData, setButItNowData] = useState([]);
@@ -568,6 +568,7 @@ const Checkout = ({ cartFullResponse }) => {
     }
     try {
       const response = await CheckoutServices.checkout(formData);
+      getCartCount()
       navigate('/')
     } catch (error) {
       toast.error(error?.response?.data?.message)
@@ -611,7 +612,7 @@ const Checkout = ({ cartFullResponse }) => {
   }, []);
   return (
     <>
-      <Header cartFullResponse={cartFullResponse} />
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id="cart-details">
         <div className="container">
           <h2 className="page-title">Checkout</h2>

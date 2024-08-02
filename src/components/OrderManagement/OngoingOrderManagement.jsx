@@ -28,7 +28,7 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
   const getActiveOdersDetail = (order_id) => {
     setIsLoading(true);
     setDetail(true)
-    OrderServices.getPendingOdersDetail(order_id , 0)
+    OrderServices.getPendingOdersDetail(order_id , 0 , 1)
       .then((response) => {
         setPendingOdrDetail(response?.data)
         let tempArr = []
@@ -284,7 +284,7 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
                   <li>
                     <ul>
                       <li>Order Total</li>
-                      <li>${pendingOdrDetail?.products?.[0]?.ordertotal}</li>
+                      <li>${pendingOdrDetail?.ordertotal}</li>
                     </ul>
                   </li>
                 </ul>

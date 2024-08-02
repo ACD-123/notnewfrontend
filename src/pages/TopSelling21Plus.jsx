@@ -8,7 +8,7 @@ import Footer from '../components/Footer';
 import ProductCard from '../components/Shared/Cards/ProductCard';
 import { toast } from 'react-toastify';
 
-const TopSelling21Plus = ({ cartFullResponse }) => {
+const TopSelling21Plus = ({ cartFullResponse , notificationCount}) => {
     const [topSellingProducts, setTopSellingProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
@@ -38,7 +38,7 @@ const TopSelling21Plus = ({ cartFullResponse }) => {
       };
     return (
         <>
-            <Header cartFullResponse={cartFullResponse} />
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
             <div className="top-sellers" id='productcard'>
                 <div className="top-sellers-wrap">
                     <div className="container">

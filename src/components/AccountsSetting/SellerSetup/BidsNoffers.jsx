@@ -1,141 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import Prdimage from '../../../assets/Images/Seller/Refundimages/1.png';
-import Prdimage1 from '../../../assets/Images/Seller/Refundimages/2.png';
-import Prdimage2 from '../../../assets/Images/Seller/Refundimages/3.png';
-import Prdimage3 from '../../../assets/Images/Seller/Refundimages/4.png'
-import UserServices from "../../../services/API/UserServices"; //~/services/API/UserServices
-import BidsServices from "../../../services/API/BidsServices"; //~/services/API/BidsServices
-import { BASE_URL } from "../../../services/Constant";
-import blank from "../../../assets/Images/Productcard/blank.jpg";
-import Location from '../../../assets/Images/map.png'
-import icon1 from '../../../assets/Images/icons/1.png'
-import icon2 from '../../../assets/Images/icons/2.png'
-import icon3 from '../../../assets/Images/icons/3.png'
-import { Link } from 'react-router-dom';
+import UserServices from "../../../services/API/UserServices"; 
 import { toast } from "react-toastify";
 import LoadingComponents from '../../Shared/LoadingComponents';
 import NoDataFound from '../../Shared/NoDataFound';
 import { IoIosArrowBack } from "react-icons/io";
-
-const DetailedProductInfo = ({ bid, product }) => {
-  const handleAccept = (e, id, proId) => {
-    e.preventDefault();
-    let data = {
-      'user_id': id,
-      'product_id': proId
-    }
-    BidsServices.acceptBids(data)
-      .then((response) => {
-        if (response.status) {
-          toast.success(response.data)
-        }
-      })
-
-  }
-  const handleReject = (e, id, proId) => {
-    e.preventDefault();
-    let data = {
-      'user_id': id,
-      'product_id': proId
-    }
-    BidsServices.rejectBids(data)
-      .then((response) => {
-        if (response.status) {
-          toast.success(response.data)
-        }
-      })
-
-  }
-  return (
-    <>
-      {bid.length > 0 ? (
-        <>
-          <div className='detaild-product-infi'>
-            <h3>Auction Details</h3>
-
-            <div className='row align-items-center'>
-              <div className='col-lg-4'>
-                <div className='prd-imgg'>
-                  <div><img src={`${BASE_URL}/image/product/${bid[0].product.media[0].name}`} alt={bid[0].product.media[0].name} /></div>
-                </div>
-              </div>
-              <div className='col-lg-8'>
-                <h5>{bid[0].product.name}</h5>
-                <div className='bidders-results'>
-                  <div>Ends In <br />
-                    {bid[0].endsIn}
-                  </div>
-                  <div>Current Bid <br /> $ {bid[0].currentbid.max_bids}
-                  </div>
-                  <div>Total Bids <br /> {bid[0].bidsno}</div>
-                </div>
-              </div>
-            </div>
-            <div className='row biddata'>
-              <table>
-                <thead>
-                  <tr>
-                    <th>S.no</th>
-                    <th>Bidders</th>
-                    <th>Bids</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bid[0].totalbids.length > 0 ? (
-                    <>
-                      {bid[0].totalbids?.map((bid, index) => {
-                        let sno = 1;
-                        return (
-                          <tr key={index}>
-                            <td>
-                              {sno++}
-                            </td>
-                            <td>
-                              {bid.user?.email}
-                              <br />
-                              {bid.time_bids}
-                            </td>
-                            <td>$ {bid.max_bids}</td>
-                            <td>
-                              <a href="#" onClick={(e) => handleAccept(e, bid.user?.id, bid.product?.id)} style={{ color: "green" }}>Accept</a>
-                              |
-                              <a href="#" onClick={(e) => handleReject(e, bid.user?.id, bid.product?.id)} style={{ color: "red" }}>Reject</a>
-                            </td>
-                          </tr>
-                        )
-                      })}
-
-                    </>
-                  ) : (
-                    <>
-                    </>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </>
-      ) : (
-        <></>
-      )}
-    </>
-  );
-};
+import laravelEcho from '../../../socket';
 
 const BidsNoffers = () => {
   let loggedInUser = JSON.parse(localStorage.getItem('user_details'));
   let seller_guid = localStorage.getItem('seller_guid');
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
-  const [activeTab, setActiveTab] = useState('rr1');
+  const [isLoading, setIsLoading] = useState(true);
   const [tab, setTab] = useState(0);
   const [showAuctionDetail, setShowAuctionDetail] = useState(false);
   const [auctionDetail, setAuctionDetail] = useState([]);
   const [type, setType] = useState('');
-  const [inputTimeMicros, setInputTimeMicros] = useState(''); // State to hold user input for time in microseconds
-  const [remainingTimeMicros, setRemainingTimeMicros] = useState(0); // State to hold remaining time in microseconds
-  const [remainingTimeSeconds, setRemainingTimeSeconds] = useState(0); // State to hold remaining time in seconds
-  const [countdown, setCountdown] = useState(''); // State to hold formatted countdown string
+  const [inputTimeMicros, setInputTimeMicros] = useState('');
+  const [remainingTimeMicros, setRemainingTimeMicros] = useState(0);
+  const [remainingTimeSeconds, setRemainingTimeSeconds] = useState(0);
+  const [countdown, setCountdown] = useState('');
+  const [auctionId, setAuctionId] = useState('');
 
 
   const [biddata, setBidData] = useState([]);
@@ -156,18 +39,14 @@ const BidsNoffers = () => {
 
   const handleViewDetails = (data) => {
     setShowAuctionDetail(true)
-    getAuctionDetails(data.id, data.guid)
+    getAuctionDetails(data.id)
+    setAuctionId(data.id)
   };
 
-  // Function to convert microseconds to seconds
-  const convertMicrosToSeconds = (microseconds) => {
-    return microseconds / 1000000;
-  };
 
-  // Function to format seconds into HH:MM:SS
   const formatTime = (totalSeconds) => {
     if (isNaN(totalSeconds) || totalSeconds < 0) {
-      return '00:00:00'; // Handle invalid input gracefully
+      return '00:00:00';
     }
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -175,7 +54,6 @@ const BidsNoffers = () => {
     return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
 
-  // Function to start the countdown
   const startCountdown = () => {
     if (!inputTimeMicros) {
       alert('Please enter a valid time in microseconds.');
@@ -185,14 +63,12 @@ const BidsNoffers = () => {
     setRemainingTimeMicros(microseconds);
   };
 
-  // Effect to convert microseconds to seconds when inputTimeMicros changes
   useEffect(() => {
     if (inputTimeMicros) {
       startCountdown();
     }
   }, [inputTimeMicros]);
 
-  // Effect to update countdown display every second
   useEffect(() => {
     const timer = setInterval(() => {
       if (remainingTimeSeconds > 0) {
@@ -203,24 +79,25 @@ const BidsNoffers = () => {
     return () => clearInterval(timer);
   }, [remainingTimeSeconds]);
 
-  // Effect to format remainingTimeSeconds into countdown format
   useEffect(() => {
     setCountdown(formatTime(remainingTimeSeconds));
   }, [remainingTimeSeconds]);
 
-  const getAuctionDetails = (productid, guid) => {
-    setIsLoading(true)
+  const getAuctionDetails = (productid) => {
+    setIsLoading(auctionId === "" ? true : false)
     UserServices.getSellerActiveDetails(productid, seller_guid)
       .then((response) => {
         setIsLoading(false)
         setCountdown(formatTime(response?.data?.product?.auction_remainig_time));
         setRemainingTimeSeconds(response?.data?.product?.auction_remainig_time)
         setAuctionDetail(response.data)
+        setAuctionId(+response?.data?.product?.id)
       }).catch((error) => {
         toast.error(error?.response?.data?.message)
         setIsLoading(false)
       })
   }
+
   const acceptAuctionBid = (bidId) => {
     setIsLoading(true)
     UserServices.acceptSellerActiveBid({id : bidId})
@@ -232,6 +109,19 @@ const BidsNoffers = () => {
         setIsLoading(false)
       })
   }
+
+  useEffect(() => {
+		const channel = laravelEcho.channel("bid-channel-" + auctionId);
+		channel.listen(".bid-channel", (data) => {
+      console.log(data , 'bid-channel');
+      
+			getAuctionDetails(auctionId)
+		});
+
+		return () => {
+			channel.stopListening(".bid-channel");
+		};
+	}, []);
   return (
     <>
       {isLoading ?
