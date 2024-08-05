@@ -10,11 +10,11 @@ import { useNavigate } from "react-router-dom";
 const CustomerSellerShops = () => {
     const [sellerShopList, setSellerShopList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+    const user_id = localStorage.getItem('user_id');
     const navigate = useNavigate();
 
     const getSellerShops = () => {
-        OrderServices.customerSellerShops(loggedInUser?.id)
+        OrderServices.customerSellerShops(user_id)
             .then((response) => {
                 setSellerShopList(response?.data);
                 setIsLoading(false);

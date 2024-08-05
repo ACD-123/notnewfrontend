@@ -12,6 +12,7 @@ export const MoreToLove = ({cartFullResponse , notificationCount}) => {
     const [moreToLove , setMoreToLove] = useState([])
     const [Loader, setLoader] = useState(true)
     const user_details = JSON.parse(localStorage.getItem('user_details'));
+    const user_id = localStorage.getItem('user_id');
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const product_id = searchParams.get('id');

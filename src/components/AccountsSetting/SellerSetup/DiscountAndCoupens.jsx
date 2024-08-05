@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import UserServices from "../../../services/API/UserServices";
-import { isLoggedin, setUserDetails } from '../../../services/Auth';
+import { isLoggedin, setUserDetails, setUserId } from '../../../services/Auth';
 import LoadingComponents from '../../Shared/LoadingComponents';
 import NoDataFound from '../../Shared/NoDataFound';
 import { MdDelete } from "react-icons/md";
@@ -24,6 +24,7 @@ const DiscountAndCoupens = () => {
             .then((response) => {
                 setIsLoading(false);
                 setUserDetails(response);
+                setUserId(response?.id)
                 setUser(response);
                 localStorage.setItem('user_details', JSON.parse(response));
             })

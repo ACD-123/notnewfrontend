@@ -127,8 +127,7 @@ const ListingForm = (props) => {
     libraries,
   });
   let imagesFiles = [];
-  let loggedInUser = localStorage.getItem("user_details");
-  const loggedInUsers = JSON.parse(loggedInUser);
+  const user_id = localStorage.getItem('user_id');
 
   let product_condition = localStorage.getItem("product_condition");
 
@@ -1021,7 +1020,7 @@ const ListingForm = (props) => {
       });
   };
   const fetchStores = () => {
-    SellerServices.getStore(loggedInUsers?.id)
+    SellerServices.getStore(user_id)
       .then((response) => {
         if (response.status) {
           setShops(response.data);

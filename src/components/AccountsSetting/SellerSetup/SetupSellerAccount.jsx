@@ -7,8 +7,9 @@ import SellerServices from "../../../services/API/SellerServices"; //~/services/
 import State from "../../../services/API/State"; //~/services/API/State
 import City from "../../../services/API/City"; //~/services/API/City
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
-import {GOOGLE_LOCATION_KEY} from '../../../services/Constant'
-import {BASE_URL} from "../../../services/Constant"
+import { GOOGLE_LOCATION_KEY } from '../../../services/Constant'
+import { BASE_URL } from "../../../services/Constant"
+import { IoCamera } from "react-icons/io5";
 const libraries = ['places'];
 const SetupSellerAccount = () => {
   const inputRef = useRef();
@@ -46,41 +47,41 @@ const SetupSellerAccount = () => {
   const [addresses, setAddresses] = useState("");
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
-      libraries
+    libraries
   });
   let token = localStorage.getItem("access_token");
-  
-  const handlePlaceChanged = () => { 
+
+  const handlePlaceChanged = () => {
     const places = inputRef.current.getPlaces();
     if (places && places.length > 0) {
-        const place = places[0];
-        setAddress(place.formatted_address);
-        setLatitude(place.geometry.location.lat());
-        setLongitude(place.geometry.location.lng());
-        
-        place.address_components.forEach(component => {
-            const componentType = component.types[0];
-            switch (componentType) {
-                case "postal_code":
-                    setZip(component.long_name);
-                    break;
-                case "locality":
-                    setCity(component.long_name);
-                    break;
-                case "administrative_area_level_1":
-                    setState(component.long_name);
-                    break;
-                case "country":
-                    setCountry(component.long_name);
-                    break;
-                default:
-                    break;
-            }
-        });
+      const place = places[0];
+      setAddress(place.formatted_address);
+      setLatitude(place.geometry.location.lat());
+      setLongitude(place.geometry.location.lng());
+
+      place.address_components.forEach(component => {
+        const componentType = component.types[0];
+        switch (componentType) {
+          case "postal_code":
+            setZip(component.long_name);
+            break;
+          case "locality":
+            setCity(component.long_name);
+            break;
+          case "administrative_area_level_1":
+            setState(component.long_name);
+            break;
+          case "country":
+            setCountry(component.long_name);
+            break;
+          default:
+            break;
+        }
+      });
     } else {
 
     }
-};
+  };
 
 
   const handleFileChange = (event) => {
@@ -100,14 +101,14 @@ const SetupSellerAccount = () => {
             setCoverImage(response.data.cover_image);
             setCity(response.data.city_id);
             setState(response.data.state_id);
-            setAddress(response.data.address); 
+            setAddress(response.data.address);
             setCountry(response.data.country_id);
             setZip(response.data.zip)
             setAddress(response.data.address)
           }
         })
         .catch((error) => {
-          toast.error(error?.response?.data?.message)
+          // toast.error(error?.response?.data?.message)
         });
     }
   };
@@ -138,7 +139,7 @@ const SetupSellerAccount = () => {
     if (!zip) {
       newErrors.zip = "Zip is required";
     }
-    if(!formData.description){
+    if (!formData.description) {
       newErrors.description = "Description is required";
     }
     setErrors(newErrors);
@@ -182,7 +183,7 @@ const SetupSellerAccount = () => {
           })
           .catch((error) => {
             toast.error(error?.response?.data?.message)
-            if('email', error.response.data.message == '1'){
+            if ('email', error.response.data.message == '1') {
               toast.error(error.response.data.data);
             }
             setIsLoading(false);
@@ -211,27 +212,6 @@ const SetupSellerAccount = () => {
       }
     }
   };
-  const handleCountryChange = (e) => {
-    // formData.country_id = e.target.value;
-    State.get(e.target.value)
-      .then((response) => {
-        setState(response);
-      })
-      .catch((error) => {
-        toast.error(error?.response?.data?.message)
-      });
-  };
-
-  const handleStateChange = (e) => {
-    // formData.state_id = e.target.value;
-    City.get(e.target.value)
-      .then((response) => {
-        setCity(response);
-      })
-      .catch((error) => {
-        toast.error(error?.response?.data?.message)
-      });
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -240,98 +220,51 @@ const SetupSellerAccount = () => {
       [name]: value,
     });
   };
-  const handleAddAddress =()=>{
-    setEditAddress(true)
-    // formData.address = addresses;
-  }
+
   useEffect(() => {
     let loggedInUser = localStorage.getItem("user_details");
     if (loggedInUser) {
       const loggedInUsers = JSON.parse(loggedInUser);
       setUser(loggedInUsers);
-      formData.fullname =loggedInUsers.name
-      formData.email =loggedInUsers.email
-      formData.phone =loggedInUsers.phone
+      formData.fullname = loggedInUsers.name
+      formData.email = loggedInUsers.email
+      formData.phone = loggedInUsers.phone
       getUserStoreInfo();
     }
   }, []);
-  // Conditionally render the form or the new component based on formSubmitted state
+
   if (formSubmitted) {
     return <ConnectBank />;
   } else {
     return (
       <>
         {shopData}
-        <section id="selleraccountsetup">
+        <section id="seller-account-creating" className="seller-not-created">
           <div className="container">
             <div className="row align-items-center">
               <h3>Setup Your Seller Shop</h3>
               <div className="signup-form-fields register">
                 <form onSubmit={handleSubmit}>
                   <div className="mb-3">
-                    <div className="profile-pic-wrapper">
+                    <div className="seller-profile-pic-wrapper">
                       <div className="pic-holder">
-                      {profilePic ? (<><img
-                          id="profilePic"
-                          className="pic"
-                          src={
-                            profilePic
-                              ? URL.createObjectURL(profilePic)
-                              : profilePic
-                          }
-                        /></>):(<>
-                        {coverimage ? (<>
-                          <img
-                          id="profilePic"
-                          className="pic"
-                          src={`${BASE_URL}/${coverimage}`}
-                        />
-
-                        </>):(
-                          <>
-                          <img
-                          id="profilePic"
-                          className="pic"
-                          src={
-                            profilePic
-                              ? URL.createObjectURL(profilePic)
-                              : profilePic
-                          }
-                        />
-                          </>
-                        )}
+                        {profilePic ? (
+                          <img id="profilePic" className="pic"
+                            src={profilePic ? URL.createObjectURL(profilePic) : profilePic} />
+                        ) : (<>
+                          {coverimage ? (
+                            <img id="profilePic" className="pic" src={`${BASE_URL}/${coverimage}`} />
+                          ) : (
+                            <img id="profilePic" className="pic"
+                              src={profilePic ? URL.createObjectURL(profilePic) : profilePic} />
+                          )}
                         </>)}
-                        {/* {coverimage ? (
-                          <>
-                          <img 
-                             id="profilePic"
-                             className="pic"
-                             src={`${BASE_URL}/${coverimage}`}
-                             width="50"
-                             height="50"
-                             style={{ borderRadius: "40px"}}
-                             alt={user.name} />
-                          </>
-                        ) : (
-                          <>
-                            <img
-                              id="profilePic"
-                              className="pic"
-                              src={
-                                profilePic
-                                  ? URL.createObjectURL(profilePic)
-                                  : Avatarprofile
-                              }
-                              alt="Profile"
-                            />
-                          </>
-                        )} */}
                         <input
                           className="uploadProfileInput"
                           type="file"
                           accept="image/png, image/jpeg"
                           name="profile_pic"
-                          style={{display:'none'}}
+                          style={{ display: 'none' }}
                           id="newProfilePhoto"
                           onChange={handleFileChange}
                         />
@@ -344,226 +277,115 @@ const SetupSellerAccount = () => {
                               <i className="fa fa-camera fa-2x"></i>
                             </div>
                             <div className="text-uppercase">
-                              Upload <br /> Profile Photo
+                            <IoCamera />
                             </div>
                           </div>
                         </label>
                       </div>
                     </div>
                   </div>
-                  <div className="mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="fullname"
-                      name="fullname"
-                      value={formData.fullname}
-                      onChange={handleChange}
-                      placeholder="Enter your full name"
-                    />
-                  </div>
-                  {errors.name && <p className="error">{errors.name}</p>}
-                  <div className="mb-3">
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Enter your email"
-                    />
-                  </div>
-                  {errors.email && <p className="error">{errors.email}</p>}
-                  <div className="mb-3">
-                    <input
-                      type="tel"
-                      className="form-control"
-                      id="phone"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleChange}
-                      placeholder="Enter your phone number"
-                    />
-                  </div>
-                  {errors.phone && <p className="error">{errors.phone}</p>}
-                  <div className="mb-3">
-                    {/* <input
-                      type="text"
-                      className="form-control"
-                      id="address"
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      placeholder="Enter your street address"
-                    /> */}
-                         {isLoaded && (
-      <StandaloneSearchBox
-        onLoad={ref => inputRef.current = ref}
-        onPlacesChanged={handlePlaceChanged}
-      >
-        <input
-          type="text"
-          className="form-control"
-          placeholder={address ? address : "Enter your address"}
-        />
-      </StandaloneSearchBox>
-    )}
-    {!isLoaded && <p>Loading...</p>}
-                     
-                  </div>
-                  {errors.address && <p className="error">{errors.address}</p>}
-                  <div className="mb-3">
-                    <textarea
-                      className="form-control"
-                      id="description"
-                      name="description"
-                      onChange={handleChange}
-                      placeholder="Enter Your Description"
-                    >
-                      {formData.description}
-                    </textarea>
-                  </div>
-                  {errors.description && <p className="error">{errors.description}</p>}
-                  <div className="d-flex statesfield">
-                    <div className="fieldss">
-                    <label className="form-control">
-                      {countries}
-                    </label>
-
-                      {/* <select
-                        className="form-select"
-                        name="country_id"
-                        value={formData.country_id}
+                  <div className="row">
+                    <div className="col-lg-6 mb-3">
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="fullname"
+                        name="fullname"
+                        value={formData.fullname}
                         onChange={handleChange}
-                        id="country"
-                      >
-                        <option value="">Select Country</option>
-                        {countries.length > 0 ? (
-                          <>
-                            {countries?.map((country) => {
-                              return (
-                                <option key={country.id} value={country.id}>
-                                  {country.name}
-                                </option>
-                              );
-                            })}
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </select> */}
-                      {errors.country && (
-                        <p className="error">{errors.country}</p>
+                        placeholder="Enter your full name"
+                      />
+                      {errors.name && <p className="error">{errors.name}</p>}
+                    </div>
+                    <div className="col-lg-6 mb-3">
+                      <input
+                        type="email"
+                        className="form-control"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="Enter your email"
+                      />
+                      {errors.email && <p className="error">{errors.email}</p>}
+                    </div>
+                    <div className="col-lg-6 mb-3">
+                      <input
+                        type="tel"
+                        className="form-control"
+                        id="phone"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="Enter your phone number"
+                      />
+                      {errors.phone && <p className="error">{errors.phone}</p>}
+                    </div>
+                    <div className="col-lg-6 mb-3">
+                      {isLoaded && (
+                        <StandaloneSearchBox
+                          onLoad={ref => inputRef.current = ref}
+                          onPlacesChanged={handlePlaceChanged}
+                        >
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder={address ? address : "Enter your address"}
+                          />
+                        </StandaloneSearchBox>
                       )}
+                      {!isLoaded && <p>Loading...</p>}
+                      {errors.address && <p className="error">{errors.address}</p>}
                     </div>
-                    <div className="fieldss">
-                    <label className="form-control">
-                      {states}
-                    </label>
-                      {/* <select
-                        className="form-select"
-                        name="state_id"
-                        value={formData.state_id}
-                        onChange={handleChange}
-                        id="state_id"
-                      >
-                        <option value="">Select States</option>
-                        {states.length > 0 ? (
-                          <>
-                            {states?.map((state) => {
-                              return (
-                                <option key={state.id} value={state.id}>
-                                  {state.name}
-                                </option>
-                              );
-                            })}
-                          </>
-                        ) : (
-                          // <option value="2">State 2</option>
-                          ""
+                    <div className="col-lg-6 mb-3">
+                      <div className="fieldss">
+                        <label className="form-control">
+                          {countries}
+                        </label>
+                        {errors.country && (
+                          <p className="error">{errors.country}</p>
                         )}
-                      </select> */}
-                      {errors.state && <p className="error">{errors.state}</p>}
+                      </div>
                     </div>
-                    <div className="fieldss">
-                    <label className="form-control">
-                      {cities}
-                    </label>
-                      {/* <select
-                        className="form-select"
-                        id="city_id"
-                        name="city_id"
-                        value={formData.city_id}
+                    <div className="col-lg-6 mb-3">
+                      <div className="fieldss">
+                        <label className="form-control">
+                          {states}
+                        </label>
+                        {errors.state && <p className="error">{errors.state}</p>}
+                      </div>
+                    </div>
+                    <div className="col-lg-6">
+                      <div className="fieldss">
+                        <label className="form-control">
+                          {cities}
+                        </label>
+                        {errors.city && <p className="error">{errors.city}</p>}
+                      </div>
+                    </div>
+                    <div className="col-lg-6">
+                      <div className="mb-3">
+                        <label className="form-control">
+                          {zip}
+                        </label>
+                      </div>
+                      {errors.zip && <p className="error">{errors.zip}</p>}
+                    </div>
+                    <div className="col-lg-12">
+                      <textarea
+                        className="form-control"
+                        id="description"
+                        name="description"
                         onChange={handleChange}
+                        placeholder="Enter Your Description"
                       >
-                        <option value="">Select City</option>
-                        {cities.length > 0 ? (
-                          <>
-                            {cities?.map((city) => {
-                              return (
-                                <option key={city.id} value={city.id}>
-                                  {city.name}
-                                </option>
-                              );
-                            })}
-                          </>
-                        ) : (
-                          ""
-                        )}
-                      </select> */}
-                      {errors.city && <p className="error">{errors.city}</p>}
+                        {formData.description}
+                      </textarea>
+                      {errors.description && <p className="error">{errors.description}</p>}
                     </div>
                   </div>
-                  <div className="mb-3">
-                    {/* <input
-                      type="text"
-                      className="form-control"
-                      id="zip"
-                      name="zip"
-                      value={formData.zip || user.zip}
-                      onChange={handleChange}
-                      placeholder="Enter your zip code"
-                    /> */}
-                    <label className="form-control">
-                      {zip}
-                    </label>
-                  </div>
-                  {errors.zip && <p className="error">{errors.zip}</p>}
-                  {/* <div className="mb-3">
-                    <input
-                      type="password"
-                      className="form-control"
-                      id="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      placeholder="Enter your password"
-                    />
-                  </div>
-                  {errors.password && (
-                    <p className="error">{errors.password}</p>
-                  )}
-                  <div className="mb-3">
-                    <input
-                      type="password"
-                      className="form-control"
-                      name="password_confirmation"
-                      value={formData.password_confirmation}
-                      onChange={handleChange}
-                      id="password_confirmation"
-                      placeholder="Confirm your password"
-                    />
-                  </div>
-                  {errors.password_confirmation && (
-                    <p className="error">{errors.password_confirmation}</p>
-                  )} */}
-                  <input
-                    type="hidden"
-                    id="guid"
-                    name="guid"
-                    value={formData.guid}
-                  />
+
+                  <input type="hidden" id="guid" name="guid" value={formData.guid}/>
                   <button
                     className="btn btn-primary"
                     disabled={enabled}
@@ -571,8 +393,6 @@ const SetupSellerAccount = () => {
                   >
                     {isLoading ? "loading.." : "Next Step"}
                   </button>
-
-                  {/* <button className="btn btn-primary" type="submit">Next Step</button> */}
                 </form>
               </div>
             </div>

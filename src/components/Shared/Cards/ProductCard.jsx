@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 const ProductCard = ({ data, handleToggleFavourite, index }) => {
     const isLoggedin = localStorage.getItem("access_token");
     const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+    const user_id = localStorage.getItem('user_id');
     const { pathname } = window.location;
     const navigate = useNavigate()
 
@@ -17,7 +18,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
         try {
             const data = {
                 favourite_against_id: productId,
-                user_id: loggedInUser?.id,
+                user_id: user_id,
                 type: "1",
             };
             const res = await ProductServices.isFavorite(data);

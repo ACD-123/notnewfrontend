@@ -10,6 +10,7 @@ const TopSelling = ({ title }) => {
     const [topSellingProducts, setTopSellingProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+    const user_id = localStorage.getItem('user_id');
 
     const getTopSellingUnderAge = (id) => {
         HomeService.getTopSellingUnderAge(id)
@@ -26,7 +27,7 @@ const TopSelling = ({ title }) => {
     };
 
     useEffect(() => {
-        getTopSellingUnderAge(loggedInUser?.id)
+        getTopSellingUnderAge(user_id)
     }, [])
 
     const handleToggleFavourite = (index) => {

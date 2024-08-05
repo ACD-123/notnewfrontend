@@ -25,6 +25,7 @@ const Home = ({cartFullResponse , notificationCount}) => {
 	const [topSelling, setTopSelling] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+	const user_id = localStorage.getItem('user_id');
 
 	const getTopSelling = (id) => {
 		HomeService.getTopSelling(id)
@@ -42,8 +43,8 @@ const Home = ({cartFullResponse , notificationCount}) => {
 	};
 
 	useEffect(() => {
-		getTopSelling(loggedInUser?.id)
-	}, [])
+		getTopSelling(user_id)
+	}, [user_id])
 
 	return (
 		<>

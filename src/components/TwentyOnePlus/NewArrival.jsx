@@ -21,6 +21,7 @@ const NewArrival = ({ title }) => {
   const [pagination, setPagination] = useState({});
   const [favData, setFavData] = useState([]);
   const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+  const user_id = localStorage.getItem('user_id');
   const isLoggedin = localStorage.getItem("access_token");
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +33,7 @@ const NewArrival = ({ title }) => {
 
   const getUnderAgeProducts = async () => {
     try {
-      const res = await ProductServices.getUnderAgeProducts(loggedInUser?.id);
+      const res = await ProductServices.getUnderAgeProducts(user_id);
       if (res.status) {
         setProductData(res.data?.products);
         setPagination(res?.data?.pagination)

@@ -17,6 +17,7 @@ const Banners = () => {
     const [topSelling, setTopSelling] = useState([]);
     const [loading, setLoading] = useState(true);
     const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+    const user_id = localStorage.getItem('user_id');
 
     const getUnderAgeBanners = (id) => {
         HomeService.getUnderAgeBanners(id)
@@ -33,7 +34,7 @@ const Banners = () => {
     };
 
     useEffect(() => {
-        getUnderAgeBanners(loggedInUser?.id)
+        getUnderAgeBanners(user_id)
     }, [])
 
     return (

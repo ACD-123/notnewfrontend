@@ -74,6 +74,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
   const [selectedCategories, setSelectedCategories] = useState(null);
   const [showDropdown, setShowDropdown] = useState({ price: false, brand: false });
   const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+  const user_id = localStorage.getItem('user_id');
   const pageSize = 12;
   const [maxprice, setMaxPrice] = useState(0);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 0 });
@@ -184,7 +185,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
         setPriceRange({ min: 0, max: max })
         setSelectedRange([0, max])
         getFilterProducts(
-          loggedInUser?.id,
+          user_id,
           selectedCategories?.value,
           selectedBrands?.value,
           selectedProductCondition?.label,
@@ -212,7 +213,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
 
   const handelCategoryChange = (data) => {
     getFilterProducts(
-      loggedInUser?.id,
+      user_id,
       data?.value,
       selectedBrands?.value,
       selectedProductCondition?.label,
@@ -251,7 +252,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
 
   const handelBrandChange = (data) => {
     getFilterProducts(
-      loggedInUser?.id,
+      user_id,
       selectedCategories?.value,
       data?.value,
       selectedProductCondition?.label,
@@ -269,7 +270,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
 
   const handelSellingType = (data) => {
     getFilterProducts(
-      loggedInUser?.id,
+      user_id,
       selectedCategories?.value,
       selectedBrands?.value,
       selectedProductCondition?.label,
@@ -286,7 +287,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
   }
   const handelCondtionChange = (data) => {
     getFilterProducts(
-      loggedInUser?.id,
+      user_id,
       selectedCategories?.value,
       selectedBrands?.value,
       data?.label,
@@ -304,7 +305,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
 
   const handelUsedCondtionChange = (data) => {
     getFilterProducts(
-      loggedInUser?.id,
+      user_id,
       selectedCategories?.value,
       selectedBrands?.value,
       selectedProductCondition?.label,
@@ -322,7 +323,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
 
   const handelUnderage = (data) => {
     getFilterProducts(
-      loggedInUser?.id,
+      user_id,
       selectedCategories?.value,
       selectedBrands?.value,
       selectedProductCondition?.label,
@@ -349,7 +350,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
       selectToSend: labelsArray
     };
     getFilterProducts(
-      loggedInUser?.id,
+      user_id,
       selectedCategories?.value,
       selectedBrands?.value,
       selectedProductCondition?.label,
@@ -527,7 +528,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                     <button
                       onClick={() => {
                         getFilterProducts(
-                          loggedInUser?.id,
+                          user_id,
                           selectedCategories?.value,
                           selectedBrands?.value,
                           selectedProductCondition?.label,
@@ -597,7 +598,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                       style={{ pointerEvents: (+products?.pagination?.page) === 1 ? 'none' : 'auto' }}
                       onClick={() => {
                         getFilterProducts(
-                          loggedInUser?.id,
+                          user_id,
                           selectedCategories?.value,
                           selectedBrands?.value,
                           selectedProductCondition?.label,
@@ -617,7 +618,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                           <li className={`${(+products?.pagination?.page) === 1 ? 'active' : ''}`}
                             onClick={() => {
                               getFilterProducts(
-                                loggedInUser?.id,
+                                user_id,
                                 selectedCategories?.value,
                                 selectedBrands?.value,
                                 selectedProductCondition?.label,
@@ -634,7 +635,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                           <li className={`${(+products?.pagination?.page) === 2 ? 'active' : ''}`}
                             onClick={() => {
                               getFilterProducts(
-                                loggedInUser?.id,
+                                user_id,
                                 selectedCategories?.value,
                                 selectedBrands?.value,
                                 selectedProductCondition?.label,
@@ -651,7 +652,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                           <li className={`${(+products?.pagination?.page) === 3 ? 'active' : ''}`}
                             onClick={() => {
                               getFilterProducts(
-                                loggedInUser?.id,
+                                user_id,
                                 selectedCategories?.value,
                                 selectedBrands?.value,
                                 selectedProductCondition?.label,
@@ -673,7 +674,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                           <li className={`${(+products?.pagination?.page) === products?.pagination?.total_pages ? 'active' : ''}`}
                             onClick={() => {
                               getFilterProducts(
-                                loggedInUser?.id,
+                                user_id,
                                 selectedCategories?.value,
                                 selectedBrands?.value,
                                 selectedProductCondition?.label,
@@ -693,7 +694,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                       <PageNumbers
                         totalPages={products?.pagination?.total_pages}
                         getFilterProducts={getFilterProducts}
-                        loggedInUserId={loggedInUser?.id}
+                        loggedInUserId={user_id}
                         selectedCategories={selectedCategories?.value}
                         selectedBrands={selectedBrands?.value}
                         selectedProductCondition={selectedProductCondition?.label}
@@ -712,7 +713,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                       style={{ pointerEvents: (+products?.pagination?.page) === products?.pagination?.total_pages ? 'none' : 'auto' }}
                       onClick={() => {
                         getFilterProducts(
-                          loggedInUser?.id,
+                          user_id,
                           selectedCategories?.value,
                           selectedBrands?.value,
                           selectedProductCondition?.label,

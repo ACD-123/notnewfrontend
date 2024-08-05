@@ -20,6 +20,7 @@ const RecentViewedItems = ({ title }) => {
   const [productData, setProductData] = useState([]);
   const [favData, setFavData] = useState([]);
   const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+  const user_id = localStorage.getItem('user_id');
   const isLoggedin = localStorage.getItem("access_token");
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +32,7 @@ const RecentViewedItems = ({ title }) => {
 
   const fetchProductData = async () => {
     try {
-      const res = await ProductServices.all(loggedInUser?.id);
+      const res = await ProductServices.all(user_id);
       if (res.status) {
         setProductData(res.data.slice(0, 4));
         setTimeout(() => {
@@ -49,7 +50,7 @@ const RecentViewedItems = ({ title }) => {
     try {
       const data = {
         favourite_against_id: productId,
-        user_id: loggedInUser?.id,
+        user_id: user_id,
         type: "1",
       };
       const res = await ProductServices.isFavorite(data);
@@ -63,7 +64,7 @@ const RecentViewedItems = ({ title }) => {
 
   useEffect(() => {
     fetchProductData();
-  }, []);
+  }, [user_id]);
 
   return (
     <>

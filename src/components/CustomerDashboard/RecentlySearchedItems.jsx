@@ -8,10 +8,10 @@ import RecentlySearchCard from '../Shared/Cards/RecentlySearchCard';
 const RecentlySearchedItems = () => {
     const [recentlySearchedItemsList, setRecentlySearchedItemsList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const user_details = JSON.parse(localStorage.getItem('user_details'));
+    const user_id = localStorage.getItem('user_id');
 
     const getRecentlySearchedItems = () => {
-        OrderServices.getRecentlySearchedItems(user_details.id)
+        OrderServices.getRecentlySearchedItems(user_id)
             .then((response) => {
                 setRecentlySearchedItemsList(response?.data);
                 setIsLoading(false);

@@ -7,7 +7,6 @@ import { toast } from 'react-toastify';
 
 const MyTransactions = () => {
   const [transactions, setTransactions] = useState({});
-  let loggedInUser = localStorage.getItem("user_details");
   let seller_guid = localStorage.getItem("seller_guid");
   const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
 

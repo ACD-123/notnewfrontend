@@ -9,10 +9,11 @@ import {
   setUserDetails,
   isLoggedin,
   getUserDetails,
+  setUserId,
 } from "../../services/Auth/index.js";
 import SellerServices from "../../services/API/SellerServices.js"; //~/services/API/SellerServices
 import { Spinner } from 'react-bootstrap';
-import {BASE_URL} from "../../services/Constant"
+import { BASE_URL } from "../../services/Constant"
 import ProductServices from '../../services/API/ProductServices.js';
 import { toast } from 'react-toastify';
 import { FaHeart } from 'react-icons/fa';
@@ -29,33 +30,32 @@ const SavedSellers = () => {
     UserServices.detail()
       .then((response) => {
         setUserDetails(response);
+        setUserId(response?.id)
         setUser(response.id);
         localStorage.setItem("user_details", JSON.parse(response));
-        setIsLoading(false); // Set isLoading to false when data is fetched
+        setIsLoading(false);
 
       })
       .catch((error) => {
         toast.error(error?.response?.data?.message)
-        // toast.error(error?.response?.data?.message)
-        setIsLoading(false); // Set isLoading to false when data is fetched
+        setIsLoading(false);
 
       });
   };
   const getUserSaveSeller = () => {
-    // if (user && user.id) {
-      UserServices.getSavedSeller(user)
-        .then((response) => {
-          setIsLoading(false);
-          setSaveSeller(response.data); // Assuming the API returns an array of saved sellers
-          setSellerShop(response.data); // Assuming the API returns an array of saved sellers
-        })
-        .catch((error) => {
-          setIsLoading(false);
-          toast.error(error?.response?.data?.message)
-        });
+    UserServices.getSavedSeller(user)
+      .then((response) => {
+        setIsLoading(false);
+        setSaveSeller(response.data);
+        setSellerShop(response.data);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        toast.error(error?.response?.data?.message)
+      });
     // }
   };
-  
+
   const addToFavorites = async (shopGuid) => {
     try {
       const data = {
@@ -65,10 +65,9 @@ const SavedSellers = () => {
       };
       const res = await ProductServices.isFavorite(data);
       if (res.status) {
-        // Update shopData directly after API call
         setShopData((prevShopData) => ({
           ...prevShopData,
-          is_favourite: !prevShopData.is_favourite // Toggle is_favourite
+          is_favourite: !prevShopData.is_favourite
         }));
         toast.success("Seller added to favorites!");
         setFavData(res.data);
@@ -81,13 +80,12 @@ const SavedSellers = () => {
   useEffect(() => {
     if (isLoggedin()) {
       getUser();
-      // let cartItems = localStorage.getItem('cupon');
     }
     if (user) {
       getUserSaveSeller();
     }
   }, [user]);
-  
+
   return (
     <>
       <section id="savedsellers">
@@ -106,55 +104,49 @@ const SavedSellers = () => {
             </div>
           </div>
         </div>
-        <div className="row" style={{paddingTop: '10px'}}>
+        <div className="row" style={{ paddingTop: '10px' }}>
           <div className="saved-profile">
             <div>
               <div className="grid">
                 <div className="grid-profile row">
-                {isLoading ? ( // Render loader if isLoading is true
-        <div className="loader-container text-center">
-          <Spinner animation="border" role="status">
-            {/* <span className="sr-only">Loading...</span> */}
-          </Spinner>
-        </div>
-      ) : (
-          <>
-          {saveSeller.length == 0 ? ( // Check if customerOrders array is empty
-            <div>You Could Not save any Seller</div>
-          ) : (
-          <>
-          {saveSeller.map((seller) => (
-                  <div
-                    className="profile-innerdetails col-lg-6"
-                    style={{marginBottom: '20px'}}
-                  >
-                    <div className="prf-id-name" style={{marginRight: '20px'}}>
-                      <div className="profileimagesid">
-                        <img
-                          src={`${BASE_URL}/${seller.seller.cover_image}`}
-                          alt="Bil Smith"
-                        />
-                      </div>
-                      <div>
-                        <h3>{seller.seller.fullname}</h3>
-                        {/* <img
-                          className="heart"
-                          src={Heart}
-                          alt="Heart"
-                        /> */}
-
-                    <span onClick={() => addToFavorites(seller.seller.guid)} style={{ fontSize: "15px", display: "flex", alignItems: "center", gap: "6px", color: '#2994F8' }}>
-                      <FaHeart /> UnSave this Seller
-                    </span>
-                        <Link to={`/sellershop/${seller.seller.guid}`}>Visit Profile</Link>
-                      </div>
+                  {isLoading ? (
+                    <div className="loader-container text-center">
+                      <Spinner animation="border" role="status">
+                      </Spinner>
                     </div>
-                  </div>
-          ))}
-          </>
-          )}
-                  </>
-      )}
+                  ) : (
+                    <>
+                      {saveSeller.length == 0 ? (
+                        <div>You Could Not save any Seller</div>
+                      ) : (
+                        <>
+                          {saveSeller.map((seller) => (
+                            <div
+                              className="profile-innerdetails col-lg-6"
+                              style={{ marginBottom: '20px' }}
+                            >
+                              <div className="prf-id-name" style={{ marginRight: '20px' }}>
+                                <div className="profileimagesid">
+                                  <img
+                                    src={`${BASE_URL}/${seller.seller.cover_image}`}
+                                    alt="Bil Smith"
+                                  />
+                                </div>
+                                <div>
+                                  <h3>{seller.seller.fullname}</h3>
+
+                                  <span onClick={() => addToFavorites(seller.seller.guid)} style={{ fontSize: "15px", display: "flex", alignItems: "center", gap: "6px", color: '#2994F8' }}>
+                                    <FaHeart /> UnSave this Seller
+                                  </span>
+                                  <Link to={`/sellershop/${seller.seller.guid}`}>Visit Profile</Link>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                    </>
+                  )}
                 </div>
               </div>
             </div>

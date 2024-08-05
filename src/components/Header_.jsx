@@ -8,7 +8,7 @@ import NavBar from "./Elements/NavBar";
 import { Link } from "react-router-dom";
 import UserServices from "../services/API/UserServices"; //~/services/API/AuthService
 import { toast } from "react-toastify";
-import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth"; // ~/services/Auth
+import { setUserDetails, isLoggedin, getUserDetails, setUserId } from "../services/Auth"; // ~/services/Auth
 import AuthServices from "../services/API/AuthService"; //~/services/API/AuthService
 import CartServices from "../services/API/CartServices"; //~/services/API/CartServices
 import { useNavigate } from "react-router-dom";
@@ -32,6 +32,7 @@ const Header_ = () => {
       .then((response) => {
         setUserDetails(response);
         setUser(response);
+        setUserId(response?.id)
         localStorage.setItem('user_details', JSON.parse(response));
       })
       .catch((error) => {

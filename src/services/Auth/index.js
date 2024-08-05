@@ -10,8 +10,13 @@ export const getRefreshToken = () => localStorage.getItem('refresh_token')
 export const setRefreshToken = (token) =>
   localStorage.setItem('refresh_token', token)
 
-export const setUserDetails = (details) =>
+export const setUserDetails = (details) =>{
   localStorage.setItem('user_details', JSON.stringify(details))
+}
+
+export const setUserId = (id) =>{
+  localStorage.setItem('user_id', id)
+}
 
 export const setfcmToken = (fcm_token) =>
     localStorage.setItem('fcm_token', JSON.stringify(fcm_token))

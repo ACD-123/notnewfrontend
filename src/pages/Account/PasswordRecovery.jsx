@@ -47,7 +47,7 @@ const PasswordRecovery = () => {
           }
         })
         .catch((error) => {
-          toast.error("Email does not exist");
+          toast.error(error.response?.data?.message);
           setIsLoading(false);
           setEnabled(false);
         })

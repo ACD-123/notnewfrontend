@@ -13,6 +13,7 @@ import {
   setUserDetails,
   isLoggedin,
   getUserDetails,
+  setUserId,
 } from "../../services/Auth";
 import { Spinner } from 'react-bootstrap';
 
@@ -25,6 +26,7 @@ const AllProductListing = (props) => {
       UserServices.detail()
         .then((response) => {
           setUserDetails(response);
+          setUserId(response?.id)
           setUser(response.id);
           localStorage.setItem("user_details", JSON.parse(response));
           setIsLoading(false); // Set isLoading to false when data is fetched

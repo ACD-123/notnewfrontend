@@ -36,6 +36,7 @@ function getHigherProductPrice() {
 }
 
 function getNotificationCount(user_id) {
+  
   return request({
     url: `${baseUrl}notifications/user-count?user_id=${user_id}`
   })
@@ -110,9 +111,9 @@ function getTopSellingUnderAge(user_id) {
   })
 }
 
-function getHotUnderAge(user_id) {
+function getHotUnderAge(id , page_size , page) {
   return request({
-    url: `${baseUrl}products/getHotUnderAge?user_id=${user_id}`,
+    url: `${baseUrl}products/getHotUnderAge?user_id=${id}&page_size=${page_size}&page=${page}`,
     method: 'GET',
   })
 }

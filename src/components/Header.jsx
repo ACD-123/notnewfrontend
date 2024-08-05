@@ -8,7 +8,7 @@ import Plus from "../../src/assets/Images/21plus.png"
 import PlusPopup from "../../src/assets/Images/21popup.png"
 import { Link } from "react-router-dom";
 import UserServices from "../services/API/UserServices";
-import { setUserDetails, isLoggedin, getUserDetails } from "../services/Auth";
+import { setUserDetails, isLoggedin, getUserDetails, setUserId } from "../services/Auth";
 import CartServices from "../services/API/CartServices";
 import { BASE_URL } from "../services/Constant"
 import { useNavigate, useLocation } from "react-router-dom";
@@ -37,6 +37,7 @@ const Header = ({ cartFullResponse , notificationCount }) => {
   const underage = localStorage.getItem("underage");
   const items = useSelector(state => state.cupon.cupon);
   let user_details = JSON.parse(localStorage.getItem('user_details'));
+  const user_id = localStorage.getItem('user_id');
   const path = location.pathname;
   const search = location.search;
 
@@ -49,6 +50,7 @@ const Header = ({ cartFullResponse , notificationCount }) => {
     UserServices.detail()
       .then((response) => {
         setUserDetails(response);
+        setUserId(response?.id)
         setUser(response);
         localStorage.setItem('user_details', JSON.parse(response));
       })
@@ -110,7 +112,7 @@ const Header = ({ cartFullResponse , notificationCount }) => {
   }
 
   const addSearchProduct = (product_id) => {
-    ProductServices.addSearchProduct({ user_id: user_details?.id, product_id: product_id })
+    ProductServices.addSearchProduct({ user_id: user_id, product_id: product_id })
       .then((res) => {
       }).catch((error) => {
         toast.error(error?.response?.data?.message)

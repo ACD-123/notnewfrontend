@@ -11,11 +11,11 @@ import ProductCard from "../Shared/Cards/ProductCard";
 const CustomerInActiveProducts = () => {
     const [inActiveFavProductList, setInActiveFavProductList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+    const user_id = localStorage.getItem('user_id');
     const navigate = useNavigate();
 
     const getActiveFavProducts = () => {
-        OrderServices.customerActiveFavProducts(loggedInUser?.id)
+        OrderServices.customerActiveFavProducts(user_id)
             .then((response) => {
                 setInActiveFavProductList(response?.data?.in_active);
                 setIsLoading(false);

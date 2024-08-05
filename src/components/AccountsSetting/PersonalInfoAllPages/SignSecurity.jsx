@@ -160,7 +160,6 @@ const SignSecurity = () => {
     setShowPasswordFields(!showPasswordFields);
   };
   const getUserInfo =()=>{
-    // let user = JSON.parse(localStorage.getItem('user_details'));
     UserServices.self()
     .then((res) => {
       setStepVerification(res.twosteps)   

@@ -103,6 +103,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
   };
 
   const handleDeleteImage = (index) => {
+    console.log(index , 'dasdasdasdsa');
+    
     const updatedFiles = [...productManagment.file];
     updatedFiles.splice(index, 1);
     setProductManagments(prev => ({ ...prev, file: updatedFiles }));
@@ -326,7 +328,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       formData.append('attributes', JSON.stringify(attributes));
     }
     if (productManagment.old_files.length > 0) {
-      formData.append('old_files', JSON.stringify(productManagment.old_files));
+      formData.append('old_files_web', JSON.stringify(productManagment.old_files));
     }
     formData.append("termsdescription", productManagment.termsdescription);
     formData.append("title", productManagment.title);
@@ -473,6 +475,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
   };
 
   const oldImagesDelete = (id) => {
+    console.log(id , 'dfsdfsdfsdffsd');
+    
     const prevIds = [...productManagment.old_files]
     setProductManagments(prev => ({ ...prev, old_files: [...prevIds, id] }));
   }

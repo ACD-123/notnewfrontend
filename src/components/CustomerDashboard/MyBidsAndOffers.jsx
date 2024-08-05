@@ -40,10 +40,10 @@ const CountdownTimer = ({ initialTimeMicroseconds }) => {
 const MyBidsAndOffers = () => {
     const [myBidsAndOffersList, setMyBidsAndOffersList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    let user_details = JSON.parse(localStorage.getItem('user_details'));
+    const user_id = localStorage.getItem('user_id');
 
     const getMyBidsAndOffers = () => {
-        OrderServices.getMyBidsAndOffers(user_details.id)
+        OrderServices.getMyBidsAndOffers(user_id)
             .then((response) => {
                 setMyBidsAndOffersList(response?.data);
                 setIsLoading(false);

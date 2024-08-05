@@ -33,12 +33,13 @@ const PageNumbers = ({
 
 export const SellingNotification = ({getNotificationCount}) => {
   let user_details = JSON.parse(localStorage.getItem('user_details'));
+  const user_id = localStorage.getItem('user_id');
   const [notification, setNotification] = useState([])
   const [loading, setLoading] = useState(true)
   const pageSize = 10;
   const getNotification = async (page, size) => {
     try {
-      const res = await ProductServices.getNotification(user_details?.id, 'selling', page, size);
+      const res = await ProductServices.getNotification(user_id, 'selling', page, size);
       setNotification(res?.data)
       setLoading(false)
       getNotificationCount()
@@ -82,7 +83,7 @@ export const SellingNotification = ({getNotificationCount}) => {
                 )
               }))
               :
-              <NoDataFound title={'No auction notification found'} />
+              <NoDataFound title={'No selling notification found'} />
             }
           </div>
           {notification?.pagination?.total_pages > 1 &&

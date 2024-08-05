@@ -19,6 +19,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { setUserId } from "../../services/Auth";
 
 const Checkout_old = () => {
   const [user, setUser] = useState({});
@@ -62,6 +63,7 @@ const Checkout_old = () => {
   const getSelf = () => {
     ShippingServices.self().then((response) => {
       setUserDetails(response);
+      setUserId(response?.id)
     });
   };
   const getUser = () => {

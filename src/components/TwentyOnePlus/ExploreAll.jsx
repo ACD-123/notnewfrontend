@@ -11,6 +11,7 @@ const ExploreAll = ({ title }) => {
     const [pagination, setPagination] = useState({});
     const [loading, setLoading] = useState(true);
     const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+    const user_id = localStorage.getItem('user_id');
 
     const getHotUnderAge = (id) => {
         HomeService.getHotUnderAge(id)
@@ -28,7 +29,7 @@ const ExploreAll = ({ title }) => {
     };
 
     useEffect(() => {
-        getHotUnderAge(loggedInUser?.id)
+        getHotUnderAge(user_id)
     }, [])
 
     const handleToggleFavourite = (index) => {

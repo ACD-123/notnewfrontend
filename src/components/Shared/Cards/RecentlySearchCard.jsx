@@ -8,6 +8,7 @@ import { MdDeleteOutline } from "react-icons/md";
 const RecentlySearchCard = ({ data, removeProductFromSearchList, index }) => {
     const isLoggedin = localStorage.getItem("access_token");
     const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+    
 
     const removeProduct = async (productId) => {
         removeProductFromSearchList(productId)

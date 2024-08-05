@@ -46,6 +46,7 @@ const Stripe = (props) => {
     }
     let loggedInUsers;
     let loggedInUser = localStorage.getItem("user_details");
+    const user_id = localStorage.getItem('user_id');
     if (loggedInUser) {
         loggedInUsers = JSON.parse(loggedInUser);
     }
@@ -77,7 +78,7 @@ const Stripe = (props) => {
     }
 
     let data ={
-        "buyer_id" : loggedInUsers.id,
+        "buyer_id" : user_id,
         "payment_type": 'Stripe',
         "discountcode": localStorage.getItem('discountcode'),
         "orderItems": JSON.stringify(JSON.stringify(cartItems)),

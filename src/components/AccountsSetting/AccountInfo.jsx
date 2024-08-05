@@ -36,7 +36,7 @@ const AccountInfo = () => {
             {/* Content for Personal Information */}
             <h3 className='main-tab-title'>Personal Info</h3>
             <ProfileInformationTabs selectedMenuItem={value} />
-            <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button>
+            {/* <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button> */}
           </div>
         );
       case 'Selling':

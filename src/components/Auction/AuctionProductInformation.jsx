@@ -68,8 +68,7 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
   const [errors, setErrors] = useState({});
   const [bid, setBids] = useState({});
   const navigate = useNavigate()
-  let loggedInUser = localStorage.getItem("user_details");
-  const loggedInUsers = JSON.parse(loggedInUser);
+  const user_id = localStorage.getItem('user_id');
   const [ProductAttribute, SetproductAttribute] = useState([])
   const { pathname } = window.location;
   const token = localStorage.getItem('access_token');
@@ -225,7 +224,7 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
       const requestData = {
         product_id: productData?.id,
         bid_value: customBidPrice,
-        user_id: loggedInUsers?.id,
+        user_id: user_id,
       };
 
       UserService.placeABid(requestData)

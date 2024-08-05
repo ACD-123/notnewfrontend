@@ -7,7 +7,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import laravelEcho from '../../../socket';
 
 const BidsNoffers = () => {
-  let loggedInUser = JSON.parse(localStorage.getItem('user_details'));
+  const user_id = localStorage.getItem('user_id');
   let seller_guid = localStorage.getItem('seller_guid');
   const [isLoading, setIsLoading] = useState(true);
   const [tab, setTab] = useState(0);
@@ -24,7 +24,7 @@ const BidsNoffers = () => {
   const [biddata, setBidData] = useState([]);
 
   const getSellerBid = () => {
-    UserServices.getSellerActiveBid(loggedInUser?.id)
+    UserServices.getSellerActiveBid(user_id)
       .then((response) => {
         setIsLoading(false)
         setBidData(response.data)

@@ -285,7 +285,7 @@ const SellerAllTabs = (props) => {
                   </>
                 }
               </ul>
-              <button className='backbutton-account' onClick={() => {props?.setSelectedLink(null); setProductId('')}}><img src={Backimage} /> Back</button>
+              {/* <button className='backbutton-account' onClick={() => {props?.setSelectedLink(null); setProductId('')}}><img src={Backimage} /> Back</button> */}
             </div>
           </div>
           <div className='col-lg-9'>

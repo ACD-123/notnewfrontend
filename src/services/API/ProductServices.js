@@ -11,9 +11,9 @@ function all(id) {
   })
 }
 
-function getUnderAgeProducts(id) {
+function getUnderAgeProducts(id , page_size , page) {
   return request({
-    url: `${baseUrl}/getUnderAgeProducts?user_id=${id}`,
+    url: `${baseUrl}/getUnderAgeProducts?user_id=${id}&page_size=${page_size}&page=${page}`,
     method: 'GET',
   })
 }

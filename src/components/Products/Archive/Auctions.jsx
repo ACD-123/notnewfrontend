@@ -13,8 +13,9 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
     const [latestProducts, setLatestProducts] = useState([]);
     const [Loader, setLoader] = useState(true)
     const user_details = JSON.parse(localStorage.getItem('user_details'));
+    const user_id = localStorage.getItem('user_id');
     const getAuctionProducts = () => {
-        HomeService.getAuctionProducts(user_details?.id)
+        HomeService.getAuctionProducts(user_id)
             .then((response) => {
                 setAuctionProducts(response?.data?.auctioned)
                 setLatestProducts(response?.data?.latest)
@@ -27,7 +28,7 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
     };
 
     useEffect(() => {
-        getAuctionProducts(user_details?.id)
+        getAuctionProducts(user_id)
     }, [])
 
     const handleToggleFavouriteAuction = (index) => {

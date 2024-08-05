@@ -28,6 +28,7 @@
   <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
   <title>NOT NEW</title>
+
 </head>
 
 <body>
@@ -36,5 +37,19 @@
     crossorigin="anonymous"></script>
   <div id="root"></div>
 </body>
+
+<script>
+  if ('serviceWorker' in navigator) {
+  navigator.serviceWorker
+    .register('./firebase-messaging-sw.js')
+    .then(function (registration) {
+      console.log('Registration successful, scope is:', registration.scope);
+    })
+    .catch(function (err) {
+      console.log('Service worker registration failed, error:', err);
+    });
+}
+
+</script>
 
 </html>

@@ -13,7 +13,8 @@ const TopCategory = ({cartFullResponse , notificationCount}) => {
 
   const getTopSelling = () => {
     const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
-    HomeService.getTopSelling(loggedInUser?.id)
+    const user_id = localStorage.getItem('user_id');
+    HomeService.getTopSelling(user_id)
       .then((response) => {
         setBanners(response?.data?.banners)
         setTimeout(() => {

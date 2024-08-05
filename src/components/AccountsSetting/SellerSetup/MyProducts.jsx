@@ -102,7 +102,7 @@ const MyProducts = () => {
                       ) : ('No items')}
                     </div>
                   </section>
-                  <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button>
+                  {/* <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button> */}
                 </div>
               </div>
             </div>

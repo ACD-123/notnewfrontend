@@ -23,6 +23,7 @@ function UserChat() {
     const [loading, setLoading] = useState(true);
     const [loadingChat, setLoadingChat] = useState(false);
     let loggedInUser = JSON.parse(localStorage.getItem('user_details'));
+    const user_id = localStorage.getItem('user_id');
     let seller_guid = localStorage.getItem('seller_guid');
     const location = useLocation();
     const navigator = useNavigate();
@@ -30,7 +31,7 @@ function UserChat() {
     const room_id = searchParams.get('room-id');
 
     useEffect(() => {
-        const channel = laravelEcho.channel("chat-channel-" + loggedInUser?.id);
+        const channel = laravelEcho.channel("chat-channel-" + user_id);
         channel.listen(".chat-channel", (data) => {
             getUserChat({ participants: room_id });
         });
@@ -38,12 +39,12 @@ function UserChat() {
         return () => {
             channel.stopListening(".chat-channel");
         };
-    }, []);
+    }, [user_id]);
 
 
     const getUserChat = (data) => {
         console.log(data?.participants, 'getUserChat one');
-        UserServices.conversations(loggedInUser?.id, 1)
+        UserServices.conversations(user_id, 1)
             .then((response) => {
                 setChatList(response?.data);
                 for (let i = 0; i < response?.data?.length; i++) {
@@ -67,7 +68,7 @@ function UserChat() {
 
     const handleChatSelection = (reciptId, chat) => {
         setLoadingChat(true)
-        UserServices.getMessagesById(reciptId, loggedInUser?.id)
+        UserServices.getMessagesById(reciptId, user_id)
             .then((response) => {
                 setSelectedChat(chat);
                 setMessages(response?.data);
@@ -82,7 +83,7 @@ function UserChat() {
     };
 
     const getMessagesById = (reciptId) => {
-        UserServices.getMessagesById(reciptId, loggedInUser?.id)
+        UserServices.getMessagesById(reciptId, user_id)
             .then((response) => {
                 setMessages(() => response?.data);
             })
@@ -95,8 +96,8 @@ function UserChat() {
         if (newMessage.trim() !== "") {
             const newMassage = {
                 room_id: selectedChat?.id,
-                uid: selectedChat?.participants == loggedInUser?.id ? selectedChat?.uid : selectedChat?.participants,
-                from_id: loggedInUser?.id,
+                uid: selectedChat?.participants == user_id ? selectedChat?.uid : selectedChat?.participants,
+                from_id: user_id,
                 message_type: 0,
                 message: newMessage,
                 status: 1
@@ -123,7 +124,7 @@ function UserChat() {
     };
 
     const getChatUsers = () => {
-        MessagesServices.getChatUsers(loggedInUser?.id, 1)
+        MessagesServices.getChatUsers(user_id, 1)
             .then((response) => {
                 setChatUsers(response?.data);
             })
@@ -135,7 +136,7 @@ function UserChat() {
     const createChatRooms = (data) => {
         setLoading(true)
         MessagesServices.createChatRooms({
-            uid: loggedInUser?.id,
+            uid: user_id,
             participants: data?.guid,
             status: 1
         })
@@ -288,7 +289,7 @@ function UserChat() {
                                                 <div className="messages-cont" ref={chatContainerRef}>
                                                     <div className="messages-cont-wrap">
                                                         {messages?.map((msg, index) => {
-                                                            if (+msg?.from_id === loggedInUser?.id) {
+                                                            if (+msg?.from_id === user_id) {
                                                                 return (
                                                                     <div
                                                                         // key={msg?.from_id}

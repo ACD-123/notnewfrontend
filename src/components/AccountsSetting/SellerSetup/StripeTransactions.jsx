@@ -347,7 +347,7 @@ const StripeTransactions = () => {
                    </>):('No transactions')}
                 </div>
               </section>
-            <button className='backbutton-account' onClick={() => window.history.back()}><img src={Backimage} /> Back</button>
+            {/* <button className='backbutton-account' onClick={() => window.history.back()}><img src={Backimage} /> Back</button> */}
             </div>
           </div>
         </div>

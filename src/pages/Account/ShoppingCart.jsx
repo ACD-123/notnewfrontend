@@ -17,7 +17,7 @@ import LoadingComponents from "../../components/Shared/LoadingComponents";
 import NoDataFound from "../../components/Shared/NoDataFound";
 import { isLoggedin } from "../../services/Auth";
 
-const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest , notificationCount }) => {
+const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest, notificationCount }) => {
   const [showDiscountField, setShowDiscountField] = useState(false);
   const [cart, setCart] = useState([]);
   const [cartFullResponse, setCartFullResponse] = useState([]);
@@ -25,6 +25,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest , not
   const [inputError, setInputError] = useState(false);
   const [couponeCode, setCouponeCode] = useState('');
   const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+  const user_id = localStorage.getItem('user_id');
   const token = localStorage.getItem('access_token');
   const { pathname } = window.location;
 
@@ -72,7 +73,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest , not
     if (couponeCode != "") {
       try {
         const data = {
-          user_id: loggedInUser?.id
+          user_id: user_id
         };
         const res = await ProductServices.deleteCouponeCode(data);
         toast.success(res?.message)
@@ -112,7 +113,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest , not
       try {
         const data = {
           coupon_code: couponeCode,
-          user_id: loggedInUser?.id,
+          user_id: user_id,
           date: `${year}-${month}-${day}`
         };
         const res = await ProductServices.addCouponeCode(data);
@@ -199,7 +200,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest , not
     try {
       const data = {
         favourite_against_id: productId,
-        user_id: loggedInUser?.id,
+        user_id: user_id,
         type: "1",
       };
       const res = await ProductServices.isFavorite(data);
@@ -244,7 +245,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest , not
 
   return (
     <>
-      <Header cartFullResponse={cartFullResponses}  notificationCount={notificationCount}/>
+      <Header cartFullResponse={cartFullResponses} notificationCount={notificationCount} />
       <section id="cart-details">
         <div className="container">
           <h2 className="page-title">Cart</h2>
@@ -284,69 +285,79 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest , not
                                   </ul>
                                 </span>
                                 </div>
-                                <div className="price">Price: <span>${data.products?.price}</span></div>
+                                {data?.is_auctioned === 1 ?
+                                  <div className="price">Bid Price: <span>${data?.price}</span></div>
+                                  :
+                                  <div className="price">Price: <span>${data.products?.price}</span></div>
+                                }
                                 <div className="price">Quantity available: <span>{data.products?.stockcapacity}</span></div>
-                                <div className="p-i-2-w">
-                                  <div className="p-i-2-w-r">
-                                    <div className="price">
-                                      <div className="input-group">
-                                        <div className="input-group-prepend">
-                                          <button className="btn" type="button" onClick={() => { updateCartQuantity(data.quantity - 1, data.id, data) }}>
-                                            -
-                                          </button>
-                                        </div>
-                                        <input
-                                          type="text"
-                                          className="form-control"
-                                          value={data.quantity}
-                                          readOnly
-                                        // onChange={handleQuantity}
-                                        />
-                                        <div className="input-group-prepend">
-                                          <button className="btn" type="button" onClick={() => { updateCartQuantity(data.quantity + 1, data.id, data) }}>
-                                            +
-                                          </button>
+                                {data?.is_auctioned === 1 ? null :
+                                  <div className="p-i-2-w">
+                                    <div className="p-i-2-w-r">
+                                      <div className="price">
+                                        <div className="input-group">
+                                          <div className="input-group-prepend">
+                                            <button className="btn" type="button" onClick={() => { updateCartQuantity(data.quantity - 1, data.id, data) }}>
+                                              -
+                                            </button>
+                                          </div>
+                                          <input
+                                            type="text"
+                                            className="form-control"
+                                            value={data.quantity}
+                                            readOnly
+                                          // onChange={handleQuantity}
+                                          />
+                                          <div className="input-group-prepend">
+                                            <button className="btn" type="button" onClick={() => { updateCartQuantity(data.quantity + 1, data.id, data) }}>
+                                              +
+                                            </button>
+                                          </div>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
+                                }
                               </div>
                             </div>
                           </div>
                         </div>
-                        <hr className="dashed" />
-                        <div className="buttonright">
-                          {data?.products?.is_favourite ? (
-                            <button
-                              className="btn btn-info btn-lg transparent"
-                              type="button"
-                              onClick={(e) => addToFavorites(data?.products?.guid)}
-                            >
-                              Saved
-                            </button>
-                          ) : (
-                            <>
+                        {data?.is_auctioned === 1 ? null :
+                          <>
+                            <hr className="dashed" />
+                            <div className="buttonright">
+                              {data?.products?.is_favourite ? (
+                                <button
+                                  className="btn btn-info btn-lg transparent"
+                                  type="button"
+                                  onClick={(e) => addToFavorites(data?.products?.guid)}
+                                >
+                                  Saved
+                                </button>
+                              ) : (
+                                <>
+                                  <button
+                                    className="btn btn-info btn-lg transparent"
+                                    type="button"
+                                    onClick={() => {
+                                      navigate(`/signup`);
+                                      localStorage.setItem('redirectionPage', pathname)
+                                    }}
+                                  >
+                                    Save for later
+                                  </button>
+                                </>
+                              )}
                               <button
-                                className="btn btn-info btn-lg transparent"
+                                className="btn btn-info btn-lg danger"
                                 type="button"
-                                onClick={() => {
-                                  navigate(`/signup`);
-                                  localStorage.setItem('redirectionPage', pathname)
-                                }}
+                                onClick={(e) => handleRemoveSection(data?.id)}
                               >
-                                Save for later
+                                Remove
                               </button>
-                            </>
-                          )}
-                          <button
-                            className="btn btn-info btn-lg danger"
-                            type="button"
-                            onClick={(e) => handleRemoveSection(data?.id)}
-                          >
-                            Remove
-                          </button>
-                        </div>
+                            </div>
+                          </>
+                        }
                       </div>
                     );
                   })}

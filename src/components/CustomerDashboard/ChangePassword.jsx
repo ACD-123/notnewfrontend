@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import SellerServices from '../../services/API/SellerServices';
 const ChangePassword = () => {
     const [inputError, setInputError] = useState(false);
-    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
     const [isLoading, setIsLoading] = useState(false);
     const [changePasswordData, setChangePasswordData] = useState({
         old_password: "",

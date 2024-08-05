@@ -23,7 +23,6 @@ function Chat() {
   const [chatUsers, setChatUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadingChat, setLoadingChat] = useState(false);
-  const loggedInUser = JSON.parse(localStorage.getItem('user_details'));
   const seller_guid = localStorage.getItem('seller_guid');
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);

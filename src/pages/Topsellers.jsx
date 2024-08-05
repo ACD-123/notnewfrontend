@@ -10,6 +10,7 @@ const Topsellers = ({cartFullResponse , notificationCount}) => {
     const [seller, setSeller] = useState([])
     const [Loader, setLoader] = useState(true)
     const user_details = JSON.parse(localStorage.getItem('user_details'));
+    const user_id = localStorage.getItem('user_id');
     const getTopSellers = (id) => {
         SellerServices.getTopSellers(id)
             .then((response) => {
@@ -23,7 +24,7 @@ const Topsellers = ({cartFullResponse , notificationCount}) => {
     };
 
     useEffect(() => {
-        getTopSellers(user_details?.id)
+        getTopSellers(user_id)
     }, [])
     return (
         <>

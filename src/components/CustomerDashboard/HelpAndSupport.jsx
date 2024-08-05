@@ -11,7 +11,7 @@ const HelpAndSupport = () => {
     const [image, setImage] = useState('')
     const [message, setMessage] = useState('')
     const [inputError, setInputError] = useState(false);
-    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+    const user_id = localStorage.getItem('user_id');
     const [isLoading, setIsLoading] = useState(false);
     const fileInputRef = useRef(null);
     const handleUploadClick = () => {
@@ -29,7 +29,7 @@ const HelpAndSupport = () => {
         if (image != "" && message != "") {
             OrderServices.postHelpAndSupport(
                 {
-                    user_id: loggedInUser?.id,
+                    user_id: user_id,
                     message: message,
                     file: image
                 }

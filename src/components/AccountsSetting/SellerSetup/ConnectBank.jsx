@@ -4,7 +4,7 @@ import SellingDetailsDashBoard from './SellingDetailsDashBoard';
 import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
 import UserServices from "../../../services/API/UserServices"; //~/services/API/AuthService
 import { toast } from "react-toastify";
-import { setUserDetails, isLoggedin, getUserDetails } from "../../../services/Auth"; // ~/services/Auth
+import { setUserDetails, isLoggedin, getUserDetails, setUserId } from "../../../services/Auth"; // ~/services/Auth
 
 const ConnectBank = () => {
   // State variables to hold form data and control component rendering
@@ -52,7 +52,9 @@ const ConnectBank = () => {
           toast.success(responce);
           setShowSuccessPopup(true);
           setUserDetails(responce);
+          setUserId(responce?.id)
           setShowNewComponent(true);
+          window.location.href="/my-seller-account?tab=dashboard"
         })
         .catch((error) => {
           toast.error(error?.response?.data?.message)
@@ -93,10 +95,10 @@ const ConnectBank = () => {
   return (
     <>
       {!showNewComponent ? (
-        <section id='letsconnectbank'>
+        <section id="seller-account-creating" className="seller-not-created">
           <h3>Lets connect your bank</h3>
           <form onSubmit={handleSubmit}>
-          <div>
+          <div className='mb-3'>
             <select
               value={selectedBank}
               onChange={(e) => setSelectedBank(e.target.value)}
@@ -117,7 +119,7 @@ const ConnectBank = () => {
             </select>
             {errors.Bank && <p className="error">{errors.Bank}</p>}
           </div>
-          <div>
+          <div className='mb-3'>
             <input
               type="text"
               value={accountName}
@@ -126,7 +128,7 @@ const ConnectBank = () => {
             />
             {errors.accountName && <p className="error">{errors.accountName}</p>}
           </div>
-          <div>
+          <div className='mb-3'>
             <input
               type="text"
               value={accountNumber}

@@ -13,6 +13,7 @@ import { useGoogleOneTapLogin } from "@react-oauth/google";
 import {
   setAccessToken,
   setRefreshToken,
+  setUserId,
   setfcmToken,
 } from "../../services/Auth"; // ~/services/Auth
 import { setUserDetails } from "../../services/Auth"; // ~/services/Auth
@@ -63,12 +64,13 @@ const SignIn = () => {
 
   useGoogleOneTapLogin({
     onSuccess: (credentialResponse) => {
-      AuthServices.googleLogin(credentialResponse)
+      // console.log(credentialResponse , 'credentialResponse');
+
+      AuthServices.googleLogin({...credentialResponse , guest_user_id: guest_user_id})
         .then((res) => {
-          localStorage.setItem(
-            "user_details",
-            JSON.stringify(res.data)
-          );
+          localStorage.setItem("user_details", JSON.stringify(res.data));
+          localStorage.setItem("user_id", res.data?.id);
+          localStorage.removeItem('guest_user_id')
           localStorage.setItem(
             "access_token",
             res.token
@@ -93,7 +95,7 @@ const SignIn = () => {
         });
     },
     onError: () => {
-     
+
     },
   });
 
@@ -104,9 +106,11 @@ const SignIn = () => {
       [name]: value,
     });
   };
+
   const handleRememberMeChange = (e) => {
     setRememberMe(!remember);
   };
+
   const getUserData = () => {
     const loggedInUser = localStorage.getItem("user_details");
     if (loggedInUser) {
@@ -114,6 +118,7 @@ const SignIn = () => {
       setUser(loggedInUsers);
     }
   };
+
   const checkLogin = () => {
     if (user.length > 0) {
       navigate('/')
@@ -145,7 +150,8 @@ const SignIn = () => {
       fjs.parentNode.insertBefore(js, fjs);
     })(document, "script", "facebook-jssdk");
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
     if (!formData.email) {
@@ -161,7 +167,7 @@ const SignIn = () => {
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
       setEnabled(true);
-      AuthServices.login({ ...formData, guest_user_id: guest_user_id })
+      await AuthServices.login({ ...formData, guest_user_id: guest_user_id })
         .then((response) => {
           if (response == "NotExits") {
             toast.error("User Does not Exits!");
@@ -172,21 +178,20 @@ const SignIn = () => {
             toast.success(response.message);
             if (response.rememberme == true) {
               setUserDetails(response.data);
+              setUserId(response?.data?.id)
             } else {
               localStorage.removeItem("user_details");
             }
 
-            setTimeout(() => {
-              if (redirectionPage === null) {
-                localStorage.removeItem('guest_user_id');
-                window.location.href = `/`;
-              } else {
-                localStorage.removeItem('redirectionPage');
-                localStorage.removeItem('guest_user_id');
-                window.location.href = `${redirectionPage}`;
+            if (redirectionPage === null) {
+              localStorage.removeItem('guest_user_id');
+              window.location.href = `/`;
+            } else {
+              localStorage.removeItem('redirectionPage');
+              localStorage.removeItem('guest_user_id');
+              window.location.href = `${redirectionPage}`;
 
-              }
-            }, 1500);
+            }
             setAccessToken(response.token);
           }
         })
@@ -201,6 +206,7 @@ const SignIn = () => {
         });
     }
   };
+
   useEffect(() => {
     // fbInit();
     getUserData();
@@ -250,10 +256,8 @@ const SignIn = () => {
                           onSuccess={(credentialResponse) => {
                             AuthServices.googleLogin(credentialResponse)
                               .then((res) => {
-                                localStorage.setItem(
-                                  "user_details",
-                                  JSON.stringify(res.data)
-                                );
+                                localStorage.setItem("user_details", JSON.stringify(res.data));
+                                localStorage.setItem("user_id", res.data?.id);
                                 localStorage.setItem(
                                   "access_token",
                                   res.token
@@ -265,7 +269,7 @@ const SignIn = () => {
                               });
                           }}
                           onError={() => {
-                            
+
                           }}
                         />
                         {/* <a href="#" onClick={() => login()}> */}

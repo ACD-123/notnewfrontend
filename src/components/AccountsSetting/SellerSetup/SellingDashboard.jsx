@@ -29,16 +29,16 @@ const Selling = () => {
           {showComponentTwo ? (
             <SetupSellerAccount />
           ) : (
-            <div>
-              <div className='row'>
-                <div className='col-lg-9'>
+            <div className="seller-not-created">
+              <div className="seller-not-created-wrap">
+                <div className="seller-not-created-wrap-l">
                   <h2>Welcome to NotNew Seller HUB</h2>
                   <p>
                     This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of
                     Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
                   </p>
                 </div>
-                <div className='col-lg-3'>
+                <div className="seller-not-created-wrap-r">
                   <button onClick={handleGetStartedClick}>Let's Get Started</button>
                 </div>
               </div>

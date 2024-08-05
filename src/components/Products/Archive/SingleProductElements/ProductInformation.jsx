@@ -26,6 +26,7 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
   let loggedInUser = localStorage.getItem("user_details");
+  const user_id = localStorage.getItem('user_id');
   const [inputError, setInputError] = useState(false);
   const loggedInUsers = JSON.parse(loggedInUser);
   const navigate = useNavigate();

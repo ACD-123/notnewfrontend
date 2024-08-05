@@ -9,7 +9,7 @@ import SellerServices from "../../../../services/API/SellerServices";
 import UserServices from "../../../../services/API/UserServices";
 import { toast } from "react-toastify";
 import { Spinner } from "react-bootstrap";
-import { setUserDetails, isLoggedin } from "../../../../services/Auth";
+import { setUserDetails, isLoggedin, setUserId } from "../../../../services/Auth";
 
 const SingleProductSidebar = () => {
   const { pathname } = window.location;
@@ -24,6 +24,7 @@ const SingleProductSidebar = () => {
   const [user, setUser] = useState({});
   const navigate = useNavigate()
   let loggedIn = localStorage.getItem("user_details");
+  const user_id = localStorage.getItem('user_id');
   let logedIn;
   if (loggedIn) {
     logedIn = JSON.parse(loggedIn);
@@ -76,6 +77,7 @@ const SingleProductSidebar = () => {
     UserServices.detail()
       .then((response) => {
         setUserDetails(response);
+        setUserId(response?.id)
         setUser(response.id);
         localStorage.setItem("user_details", JSON.stringify(response));
       })

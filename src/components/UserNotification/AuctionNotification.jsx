@@ -33,13 +33,14 @@ const PageNumbers = ({
 
 export const AuctionNotification = ({getNotificationCount}) => {
   let user_details = JSON.parse(localStorage.getItem('user_details'));
+  const user_id = localStorage.getItem('user_id');
   const [notification, setNotification] = useState([])
   const [loading, setLoading] = useState(true)
   const pageSize = 10;
 
   const getNotification = async (page, size) => {
     try {
-      const res = await ProductServices.getNotification(user_details?.id, 'auction', page, size);
+      const res = await ProductServices.getNotification(user_id, 'auction', page, size);
       setNotification(res?.data)
       setLoading(false)
       getNotificationCount()

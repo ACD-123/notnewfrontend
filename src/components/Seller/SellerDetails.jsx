@@ -10,7 +10,7 @@ import ProductServices from "../../services/API/ProductServices"; //~/services/A
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../services/Constant";
 import UserServices from "../../services/API/UserServices"; //~/services/API/AuthService
-import { setUserDetails, isLoggedin, getUserDetails } from "../../services/Auth"; // ~/services/Auth
+import { setUserDetails, isLoggedin, getUserDetails, setUserId } from "../../services/Auth"; // ~/services/Auth
 import SellerServices from '../../services/API/SellerServices'
 import { Spinner } from 'react-bootstrap'
 import LoadingComponents from '../Shared/LoadingComponents'
@@ -115,6 +115,7 @@ const SellerDetails = () => {
     UserServices.detail()
       .then((response) => {
         setUserDetails(response);
+        setUserId(response?.id)
         setUser(response.id);
         localStorage.setItem("user_details", JSON.stringify(response));
       })

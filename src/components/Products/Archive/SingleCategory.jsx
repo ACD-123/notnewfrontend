@@ -38,6 +38,7 @@ const SingleCategory = ({cartFullResponse , notificationCount}) => {
   const [filteredBrands, setFilteredBrands] = useState(brands);
   const [showDropdown, setShowDropdown] = useState({ price: false, brand: false });
   const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+  const user_id = localStorage.getItem('user_id');
   const query = useQuery();
   const category_id = query.get('category-id');
   const [priceRange, setPriceRange] = useState({
@@ -47,7 +48,7 @@ const SingleCategory = ({cartFullResponse , notificationCount}) => {
 
   const getCategoryProductsById = (category_id) => {
     setLoading(true)
-    Category.getCategoryProductsById(category_id , loggedInUser?.id)
+    Category.getCategoryProductsById(category_id , user_id)
       .then((response) => {
         setCategoryProducts(response?.data);
         getCategorySubCategoryById(category_id)

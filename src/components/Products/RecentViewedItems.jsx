@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../services/Constant";
-import { setUserDetails, isLoggedin, getUserDetails } from "../../services/Auth"; // ~/services/Auth
+import { setUserDetails, isLoggedin, getUserDetails, setUserId } from "../../services/Auth"; // ~/services/Auth
 import UserServices from "../../services/API/UserServices"; //~/services/API/AuthService
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
@@ -30,8 +30,10 @@ const RecentViewedItems = () => {
       UserServices.detail()
         .then((response) => {
         setUserDetails(response);
+        setUserId(response?.id)
         setUser(response.id);
         localStorage.setItem('user_details', JSON.parse(response));
+
         })
         .catch((error) => {
           toast.error(error?.response?.data?.message)

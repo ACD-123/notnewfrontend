@@ -506,6 +506,7 @@ const Checkout = ({ cartFullResponse , getCartCount , notificationCount }) => {
   const [paymentMethod, setPaymentMethod] = useState(0);
   const [couponeCode, setCouponeCode] = useState('');
   const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+  const user_id = localStorage.getItem('user_id');
   const [inputError, setInputError] = useState(false);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
@@ -596,7 +597,7 @@ const Checkout = ({ cartFullResponse , getCartCount , notificationCount }) => {
       try {
         const data = {
           coupon_code: couponeCode,
-          user_id: loggedInUser?.id,
+          user_id: user_id,
           date: `${year}-${month}-${day}`
         };
         const res = await ProductServices.addCouponeCode(data);
