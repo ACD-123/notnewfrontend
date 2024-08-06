@@ -475,8 +475,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
   };
 
   const oldImagesDelete = (id) => {
-    console.log(id , 'dfsdfsdfsdffsd');
-    
+
     const prevIds = [...productManagment.old_files]
     setProductManagments(prev => ({ ...prev, old_files: [...prevIds, id] }));
   }

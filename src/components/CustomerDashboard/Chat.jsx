@@ -150,7 +150,7 @@ function Chat() {
 
   useEffect(() => {
     getChatUsers();
-  }, []);
+  }, [seller_guid]);
   useEffect(() => {
     if (room_id) {
       getUserChat({ participants: room_id });

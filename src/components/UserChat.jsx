@@ -289,7 +289,7 @@ function UserChat() {
                                                 <div className="messages-cont" ref={chatContainerRef}>
                                                     <div className="messages-cont-wrap">
                                                         {messages?.map((msg, index) => {
-                                                            if (+msg?.from_id === user_id) {
+                                                            if (msg?.from_id == user_id) {
                                                                 return (
                                                                     <div
                                                                         // key={msg?.from_id}

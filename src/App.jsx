@@ -5,8 +5,8 @@ import { getTokenn } from "./firebase";
 
 const App = () => {
 	const [isTokenFound, setTokenFound] = useState(false);
-	getTokenn(setTokenFound);
-
+	const [fcmToken, setFcmToken] = useState('');
+	getTokenn(setTokenFound , setFcmToken);
 
 	useEffect(() => {
 		const token = localStorage.getItem('access_token');
@@ -16,6 +16,9 @@ const App = () => {
 			localStorage.setItem("guest_user_id", randomNumber)
 		}
 	}, [])
+
+	console.log(fcmToken , 'isTokenFound');
+	
 	return (
 		<>
 			{/* {isTokenFound &&

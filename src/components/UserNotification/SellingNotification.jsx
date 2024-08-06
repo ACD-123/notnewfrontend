@@ -4,6 +4,7 @@ import { BASE_URL } from '../../services/Constant';
 import NoDataFound from '../Shared/NoDataFound';
 import LoadingComponents from '../Shared/LoadingComponents';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const PageNumbers = ({
   totalPages,
@@ -37,6 +38,8 @@ export const SellingNotification = ({getNotificationCount}) => {
   const [notification, setNotification] = useState([])
   const [loading, setLoading] = useState(true)
   const pageSize = 10;
+  const navigate = useNavigate()
+
   const getNotification = async (page, size) => {
     try {
       const res = await ProductServices.getNotification(user_id, 'selling', page, size);
@@ -64,7 +67,7 @@ export const SellingNotification = ({getNotificationCount}) => {
             {notification?.notifications?.length > 0 ?
               (notification?.notifications?.map((data, index) => {
                 return (
-                  <div className="col-lg-6" key={index}>
+                  <div className="col-lg-6" style={{ cursor: 'pointer' }} key={data?.id} onClick={() => { navigate(`/my-seller-account?tab=order-management`) }}>
                     <div className="n-l-d">
                       <div className="n-l-d-w">
                         <div className="n-l-d-w-l">

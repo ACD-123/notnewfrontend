@@ -330,10 +330,11 @@ section#singup .register form button.btn.btn-primary {
   align-items: center;
 }
 
-.pic-holder .pic {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
+/* .pic-holder input {
+  display: none;
+} */
+.pic-holder #profilePic {
+  width: 100%;
 }
 
 .pic-holder .upload-file-block,
@@ -1431,6 +1432,7 @@ section#product-recents-viewed .headings h3 span {
   font-size: 22px;
   color: #EF2A2A;
   display: flex;
+  cursor: pointer;
 }
 
 #productcard .productlist h2 .circle {

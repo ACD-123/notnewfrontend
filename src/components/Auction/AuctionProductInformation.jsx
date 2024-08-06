@@ -514,11 +514,20 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
         <div className='c-c-body'>
           <div className="title">Place Your Bid</div>
           <div className="options">
-            <ul>
-              <li onClick={() => { setCustomBidPrice(+productData.max_bid + 100) }}>${+productData.max_bid + 100}</li>
-              <li onClick={() => { setCustomBidPrice(+productData.max_bid + 200) }}>${+productData.max_bid + 200}</li>
-              <li onClick={() => { setCustomBidPrice(+productData.max_bid + 300) }}>${+productData.max_bid + 300}</li>
-            </ul>
+            {+productData.max_bid > 0 ?
+              <ul>
+                <li onClick={() => { setCustomBidPrice(+productData.max_bid + 100) }}>${+productData.max_bid + 100}</li>
+                <li onClick={() => { setCustomBidPrice(+productData.max_bid + 200) }}>${+productData.max_bid + 200}</li>
+                <li onClick={() => { setCustomBidPrice(+productData.max_bid + 300) }}>${+productData.max_bid + 300}</li>
+              </ul>
+              :
+              <ul>
+                <li onClick={() => { setCustomBidPrice(+productData.bids + 100) }}>${+productData.bids + 100}</li>
+                <li onClick={() => { setCustomBidPrice(+productData.bids + 200) }}>${+productData.bids + 200}</li>
+                <li onClick={() => { setCustomBidPrice(+productData.bids + 300) }}>${+productData.bids + 300}</li>
+              </ul>
+
+            }
           </div>
           <form onSubmit={placeAbid}>
             <div className="input">

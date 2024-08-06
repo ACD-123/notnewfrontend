@@ -4,6 +4,7 @@ import { BASE_URL } from '../../services/Constant';
 import NoDataFound from '../Shared/NoDataFound';
 import LoadingComponents from '../Shared/LoadingComponents';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const PageNumbers = ({
   totalPages,
@@ -31,12 +32,13 @@ const PageNumbers = ({
   );
 };
 
-export const ImportentNotification = ({getNotificationCount}) => {
+export const ImportentNotification = ({ getNotificationCount }) => {
   let user_details = JSON.parse(localStorage.getItem('user_details'));
   const user_id = localStorage.getItem('user_id');
   const [notification, setNotification] = useState([])
   const [loading, setLoading] = useState(true)
   const pageSize = 10;
+  const navigate = useNavigate()
 
   const getNotification = async (page, size) => {
     try {
@@ -65,22 +67,64 @@ export const ImportentNotification = ({getNotificationCount}) => {
             {notification?.notifications?.length > 0 ?
               (notification?.notifications?.map((data, index) => {
                 return (
-                  <div className="col-lg-6" key={index}>
-                    <div className="n-l-d">
-                      <div className="n-l-d-w">
-                        <div className="n-l-d-w-l">
-                          <div className="n-l-d-w-l-l">
-                            <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                  <>
+                    {data?.notification_type === 'chat' ?
+                      (<>
+                        {data?.recieved_from == 1 ?
+                          <div className="col-lg-6" style={{ cursor: 'pointer' }} key={data?.id} onClick={() => { navigate(`/customerdashboard?tab=messages&room-id=${data?.room_id}`) }}>
+                            <div className="n-l-d">
+                              <div className="n-l-d-w">
+                                <div className="n-l-d-w-l">
+                                  <div className="n-l-d-w-l-l">
+                                    <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                                  </div>
+                                  <div className="n-l-d-w-l-r">
+                                    <h2>{data?.title}</h2>
+                                    <p>{data?.message}</p>
+                                  </div>
+                                </div>
+                                <div className="n-l-d-w-r">{data?.created_at?.slice(0, 10)}</div>
+                              </div>
+                            </div>
                           </div>
-                          <div className="n-l-d-w-l-r">
-                            <h2>{data?.title}</h2>
-                            <p>{data?.message}</p>
+                          :
+                          < div className="col-lg-6" style={{ cursor: 'pointer' }} key={data?.id} onClick={() => { navigate(`/my-seller-account?tab=chat&room-id=${data?.room_id}`) }}>
+                            <div className="n-l-d">
+                              <div className="n-l-d-w">
+                                <div className="n-l-d-w-l">
+                                  <div className="n-l-d-w-l-l">
+                                    <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                                  </div>
+                                  <div className="n-l-d-w-l-r">
+                                    <h2>{data?.title}</h2>
+                                    <p>{data?.message}</p>
+                                  </div>
+                                </div>
+                                <div className="n-l-d-w-r">{data?.created_at?.slice(0, 10)}</div>
+                              </div>
+                            </div>
+                          </div>
+                        }
+                      </>)
+                      :
+                      <div className="col-lg-6" key={index}>
+                        <div className="n-l-d">
+                          <div className="n-l-d-w">
+                            <div className="n-l-d-w-l">
+                              <div className="n-l-d-w-l-l">
+                                <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                              </div>
+                              <div className="n-l-d-w-l-r">
+                                <h2>{data?.title}</h2>
+                                <p>{data?.message}</p>
+                              </div>
+                            </div>
+                            <div className="n-l-d-w-r">{data?.created_at?.slice(0, 10)}</div>
                           </div>
                         </div>
-                        <div className="n-l-d-w-r">{data?.created_at?.slice(0, 10)}</div>
                       </div>
-                    </div>
-                  </div>
+                    }
+                  </>
                 )
               }))
               :
@@ -153,7 +197,7 @@ export const ImportentNotification = ({getNotificationCount}) => {
               >Next</div>
             </div>
           }
-        </div>
+        </div >
       }
     </>
   )

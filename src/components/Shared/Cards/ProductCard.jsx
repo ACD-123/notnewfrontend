@@ -33,6 +33,9 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
         <>
             {data?.product?.id != '' && data?.product?.id != null && data?.product?.id != undefined ?
                 <div className="productlist">
+                    {data?.product?.underage === 0 &&
+                        <span className="21plus">21 +</span>
+                    }
                     <>
                         <Link
                             to={data?.product?.auctioned ? `/auctionproduct/${data?.product?.guid}` : `/singleproduct/${data?.product?.guid}`}>
@@ -83,17 +86,22 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                             </>
                         ) : (
                             <>
-                                    <div className="favoriteImg"
-                                        onClick={() => { navigate(`/signup`);
-                                            localStorage.setItem('redirectionPage', pathname)}}>
-                                        <FaRegHeart />
-                                    </div>
+                                <div className="favoriteImg"
+                                    onClick={() => {
+                                        navigate(`/signup`);
+                                        localStorage.setItem('redirectionPage', pathname)
+                                    }}>
+                                    <FaRegHeart />
+                                </div>
                             </>
                         )}
                     </div>
                 </div>
                 :
                 <div className="productlist">
+                    {data?.underage === 0 &&
+                        <span className="21plus">21 +</span>
+                    }
                     <>
                         <Link
                             to={data?.auctioned ? `/auctionproduct/${data?.guid}` : `/singleproduct/${data?.guid}`}>
@@ -145,14 +153,14 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                             </>
                         ) : (
                             <>
-                                    <div className="favoriteImg"
-                                        onClick={() => {
-                                            navigate(`/signup`);
-                                            localStorage.setItem('redirectionPage', pathname)
-                                        }}
-                                    >
-                                        <FaRegHeart />
-                                    </div>
+                                <div className="favoriteImg"
+                                    onClick={() => {
+                                        navigate(`/signup`);
+                                        localStorage.setItem('redirectionPage', pathname)
+                                    }}
+                                >
+                                    <FaRegHeart />
+                                </div>
                             </>
                         )}
                     </div>
