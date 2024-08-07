@@ -1,15 +1,16 @@
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { useEffect } from 'react';
 
 
 var firebaseConfig = {
-    apiKey: "AIzaSyDhwdb-bBqsEJ_sDcHvDxGdUt6lxAiew4M",
-    authDomain: "notnew-c6db4.firebaseapp.com",
-    projectId: "notnew-c6db4",
-    storageBucket: "notnew-c6db4.appspot.com",
-    messagingSenderId: "849403615950",
-    appId: "1:849403615950:web:0731572dafcf00d07a0e9f",
-    measurementId: "G-8QCG9RKC92"
+  apiKey: "AIzaSyDtekaev2CZ96eEo4MsktOBJbPqzxpOXU4",
+  authDomain: "notnew-f6d6c.firebaseapp.com",
+  projectId: "notnew-f6d6c",
+  storageBucket: "notnew-f6d6c.appspot.com",
+  messagingSenderId: "873006556750",
+  appId: "1:873006556750:web:ab6b34fb0fa90d688a851f",
+  measurementId: "G-XWGGQ5S7ZH"
 };
 
 
@@ -17,8 +18,10 @@ var firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const messaging = getMessaging(firebaseApp);
 
+export { messaging };
+
 export const getTokenn = (setTokenFound , setFcmToken) => {
-    return getToken(messaging, {vapidKey: 'BAb_mhZYBljErQxQ7d0-AP0XrccPsvYpjumUJpK4x-NesoNyoaTDtWWJuB_y3x5EGLIuFZO6Mpx3cTwDW1-Nq6o'}).then((currentToken) => {
+    return getToken(messaging, {vapidKey: 'BBErgfLoa5J8YWS24h7UsSOr1Q-laL99-D_1AFR6IhdL3kaoN3cS4oaHzlKeBBLzUcZ6jt_UQrhWhuz7w-ky1HA'}).then((currentToken) => {
       if (currentToken) {
         console.log('current token for client: ', currentToken);
         setTokenFound(true);
@@ -35,3 +38,4 @@ export const getTokenn = (setTokenFound , setFcmToken) => {
       // catch error while creating client token
     });
   }
+

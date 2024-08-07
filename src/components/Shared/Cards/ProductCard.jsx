@@ -33,9 +33,6 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
         <>
             {data?.product?.id != '' && data?.product?.id != null && data?.product?.id != undefined ?
                 <div className="productlist">
-                    {data?.product?.underage === 0 &&
-                        <span className="21plus">21 +</span>
-                    }
                     <>
                         <Link
                             to={data?.product?.auctioned ? `/auctionproduct/${data?.product?.guid}` : `/singleproduct/${data?.product?.guid}`}>
@@ -47,7 +44,9 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                             />
                         </Link>
                     </>
-                    {data?.product?.auctioned ? (<span className="auction-badge">Auction</span>) : null}
+                    {data?.product?.auctioned && data?.product?.underage === 1 ? (<span className="auction-badge">Auction</span>) : null}
+                    {data?.product?.auctioned && data?.product?.underage === 0 ? (<span className="auction-badge-21">Auction</span>) : null}
+                    {data?.underage === 0 && <span className="plus21">21 +</span>}
                     <div className="px-2">
                         <>
                             <Link
@@ -99,9 +98,6 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                 </div>
                 :
                 <div className="productlist">
-                    {data?.underage === 0 &&
-                        <span className="21plus">21 +</span>
-                    }
                     <>
                         <Link
                             to={data?.auctioned ? `/auctionproduct/${data?.guid}` : `/singleproduct/${data?.guid}`}>
@@ -113,7 +109,9 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                             />
                         </Link>
                     </>
-                    {data?.auctioned ? (<span className="auction-badge">Auction</span>) : null}
+                    {data?.auctioned && data?.underage === 1 ? (<span className="auction-badge">Auction</span>) : null}
+                    {data?.auctioned && data?.underage === 0 ? (<span className="auction-badge-21">Auction</span>) : null}
+                    {data?.underage === 0 && <span className="plus21">21 +</span>}
                     <div className="px-2">
                         <>
                             <Link

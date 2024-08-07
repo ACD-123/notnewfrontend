@@ -494,8 +494,136 @@ import Visa from "../../assets/Images/paymentCard/Visa.png"
 import Mastercard from "../../assets/Images/paymentCard/Mastercard.png"
 import Arrowright from "../../assets/Images/Shoppingcart/arrowright.png";
 import Select from 'react-select';
+import Form from "react-bootstrap/Form";
+import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
+import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
 
-const Checkout = ({ cartFullResponse , getCartCount , notificationCount }) => {
+const stripePromise = loadStripe('pk_test_51MTktuAYbmkaqHhqX84kpKwK1vSAXSiLBc4aMbFqc190wsKgS7Wzsx8mqG4ZRuk59EUvgeqyUnCHZWKfrcEWVUlD00AyMNh8Bg');
+
+const PaymentForm = () => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState(null);
+  const [cardError, setCardError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const userId = sessionStorage.getItem("userId");
+  const [formData, setFormData] = useState({
+    name: "",
+    companey_name: "",
+    street_address: "",
+    aparment: "",
+    town: "",
+    // state: "",
+    phone_number: "",
+    email: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+
+    const cardElement = elements.getElement(CardElement);
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+      billing_details: { email },
+    });
+
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+      return;
+    }
+    const token = sessionStorage.getItem("userToken");
+
+    try {
+      const response = await axios.post(
+        'https://max88backend.testingwebsitelink.com/api/processPayment',
+        {
+          pm_card_Id: paymentMethod.id,
+          name: formData.name,
+          companey_name: formData.companey_name,
+          street_address: formData.street_address,
+          aparment: formData.aparment,
+          town: formData.town,
+          // state: formData.state,
+          phone_number: formData.phone_number,
+          email: formData.email,
+          // amount: totallAmount.total,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log('Payment Response:', response.data);
+      toast.success('Payment successful');
+      navigate("/oder-success");
+    } catch (error) {
+      console.error('Error making payment:', error);
+      toast.error('Payment failed');
+    }
+
+    setLoading(false);
+  };
+
+  const handleCardChange = (event) => {
+    if (event.error) {
+      setCardError(event.error.message)
+      console.log("Card validation error:", event.error.message);
+    } else {
+      setCardError('')
+    }
+  };
+
+  return (
+
+    <Form onSubmit={handleSubmit}>
+      <div className="card-element-container">
+      <CardElement className="card-element" options={{
+          style: {
+            base: {
+              fontSize: '16px',
+              color: '#000',
+              '::placeholder': {
+                color: '#aab7c4',
+              },
+            },
+            invalid: {
+              color: '#9e2146',
+            },
+          },
+          hidePostalCode: true,
+        }}
+          onChange={handleCardChange}
+        />
+        <p className="input-error-show">{cardError}</p>
+      </div>
+      <div className="cart-button-btn-cpn cart-button-btn-div  cart-button-btn-div01">
+        <button className='proceedCheckout3 mt-2' type="submit" disabled={!stripe || loading}>
+          {loading ? 'Loading...' : 'Confirm & Pay'}
+        </button>
+      </div>
+      {/* {error && <div>{error}</div>} */}
+    </Form>
+  );
+};
+
+const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
+  // const stripeKey = 'sk_test_51McZZOBL2ne1CK3D89BPN3QmKiF2hMTZI1IvcdkgZ5asDQrOghL2IC3RnqAAsQK2ctgezVbCUdiwEfu9rv93Visf00eHdE1vlk'
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState(null);
   const [butItNowData, setButItNowData] = useState([]);
@@ -546,12 +674,7 @@ const Checkout = ({ cartFullResponse , getCartCount , notificationCount }) => {
       }
 
     }
-    // const orderItems = {
-    //   product_id: butItNowData?.data?.[0]?.products?.[0]?.id,
-    //   price: butItNowData?.data?.[0]?.products?.[0]?.buynowprice,
-    //   quantity: butItNowData?.data?.[0]?.products?.[0]?.buynowquantity,
-    //   attributes: JSON.stringify(butItNowData?.data?.[0]?.products?.[0]?.attributes),
-    // }
+
     const formData = {
       payment_type: "Card",
       discountcode: "discount",
@@ -613,7 +736,7 @@ const Checkout = ({ cartFullResponse , getCartCount , notificationCount }) => {
   }, []);
   return (
     <>
-      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount} />
       <section id="cart-details">
         <div className="container">
           <h2 className="page-title">Checkout</h2>
@@ -632,11 +755,9 @@ const Checkout = ({ cartFullResponse , getCartCount , notificationCount }) => {
                                 <div className="product-detail">
                                   <div className="product-image">
                                     <>
-                                      {product?.media?.length > 0 ? (
-                                        <img src={product?.media?.[0]?.name} />
-                                      ) : (
-                                        <img src={blank} alt="blank" />
-                                      )}
+                                      {product?.media?.length > 0 ?
+                                        (<img src={product?.media?.[0]?.name} />) :
+                                        (<img src={blank} alt="blank" />)}
                                     </>
                                   </div>
                                   <div className="product-order-details">
@@ -664,7 +785,7 @@ const Checkout = ({ cartFullResponse , getCartCount , notificationCount }) => {
                   </div>
                 )
               })}
-              <div className="order-details" id="border-order-details">
+              {/* <div className="order-details" id="border-order-details">
                 <div><h3 id="storetitle">Pay with</h3></div>
                 <div className="b-w-p-w">
                   <div className="b-w-p-w-l">SELECT A PAYMENT OPTION</div>
@@ -707,7 +828,7 @@ const Checkout = ({ cartFullResponse , getCartCount , notificationCount }) => {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
               <div className="order-details" id="border-order-details">
                 <h5 onClick={toggleDiscountField}>
                   Coupons, Vouchers, Discount Codes
@@ -762,7 +883,16 @@ const Checkout = ({ cartFullResponse , getCartCount , notificationCount }) => {
                   <div className="b-w-p-w-r" onClick={() => { getShippingData() }}>Shipping</div>
                 </div>
               </div>
-
+              {shipping?.shipping_amount?.amount ?
+                <div className="stripe-payment-card">
+                  <div className="stripe-title">Card Info</div>
+                  <Elements stripe={stripePromise}>
+                    <PaymentForm />
+                  </Elements>
+                </div>
+                :
+                null
+              }
             </div>
             <div className="col-lg-4">
               <div className="order-details" id="totalordervalue">
@@ -788,13 +918,9 @@ const Checkout = ({ cartFullResponse , getCartCount , notificationCount }) => {
                   </button>
                 </div>
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
       <Footer />
     </>

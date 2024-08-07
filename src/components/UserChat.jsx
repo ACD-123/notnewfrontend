@@ -215,7 +215,7 @@ function UserChat() {
                                             {filterChats().map((chat, index) => {
                                                 return (
                                                     <li
-                                                        // key={index}
+                                                        key={chat?.id}
                                                         onClick={() => handleChatSelection(chat?.id, chat)}
                                                         className={selectedChat?.id === chat?.id ? "active-chat" : chat?.read_count > 0 ? "active-count" : ""}>
                                                         <div className="list-image-chat">
@@ -238,11 +238,11 @@ function UserChat() {
                                                             </div>
                                                             <div className="time">
                                                                 {chat?.read_count > 0 &&
-                                                                <div className="read">
-                                                                    <span>
-                                                                        {chat?.read_count}
-                                                                    </span>
-                                                                </div>
+                                                                    <div className="read">
+                                                                        <span>
+                                                                            {chat?.read_count}
+                                                                        </span>
+                                                                    </div>
                                                                 }
                                                                 <div className="time">
                                                                     {chat?.date?.slice(0, 5)}
@@ -292,37 +292,18 @@ function UserChat() {
                                                             if (msg?.from_id == user_id) {
                                                                 return (
                                                                     <div
-                                                                        // key={msg?.from_id}
+                                                                        key={msg?.id}
                                                                         className="sent-message">
                                                                         <div className="sent-message-wrap">
-                                                                            {/* {msg?.user ? ( */}
-                                                                            {/* <> */}
-                                                                            {/* {msg?.user?.profile_image?.includes('google') ? */}
-                                                                            {/* <img src={msg?.user?.profile_image} /> */}
-                                                                            {/* : */}
-
                                                                             <img src={"http://159.223.129.107/" + msg?.testuser?.profile_image} />
-                                                                            {/* } */}
-                                                                            {/* </> */}
-                                                                            {/* ) : (
-                                <>
-                                  <img src={blank} alt="blank" />
-                                </>
-                              )} */}
                                                                             <p className="message">{msg?.message}</p>
-                                                                            {/* <div className="message">
-                                <div className="time">
-                                  {chat?.date?.slice(0, 5)}{" "}
-                                  {chat?.date?.slice(9, 20)}
-                                </div>
-                              </div> */}
                                                                         </div>
                                                                     </div>
                                                                 );
                                                             } else {
                                                                 return (
                                                                     <div
-                                                                        // key={msg?.from_id}
+                                                                        key={msg?.id}
                                                                         className="received-message">
                                                                         <div className="received-message-wrap">
                                                                             {msg?.testuser ? (

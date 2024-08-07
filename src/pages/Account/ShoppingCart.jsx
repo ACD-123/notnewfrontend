@@ -266,6 +266,9 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest, noti
                             <div className="product-detail">
                               <div className="product-image">
                                 <>
+                                  {data?.is_auctioned && data?.products?.underage === 1 ? (<span className="auction-badge">Auction</span>) : null}
+                                  {data?.is_auctioned && data?.products?.underage === 0 ? (<span className="auction-badge-21">Auction</span>) : null}
+                                  {data?.products?.underage === 0 && <span className="plus21">21 +</span>}
                                   {data?.products?.media?.length > 0 ? (
                                     <img src={data.products.media[0].name} />
                                   ) : (

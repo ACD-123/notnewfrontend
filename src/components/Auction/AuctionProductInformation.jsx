@@ -516,15 +516,41 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
           <div className="options">
             {+productData.max_bid > 0 ?
               <ul>
-                <li onClick={() => { setCustomBidPrice(+productData.max_bid + 100) }}>${+productData.max_bid + 100}</li>
-                <li onClick={() => { setCustomBidPrice(+productData.max_bid + 200) }}>${+productData.max_bid + 200}</li>
-                <li onClick={() => { setCustomBidPrice(+productData.max_bid + 300) }}>${+productData.max_bid + 300}</li>
+                <li onClick={() => { setCustomBidPrice(+productData.max_bid + (+productData.max_bid * 0.10)) }}>
+                  <div className="s-b-p">10%</div>
+                  <div className="s-b-pp">${+productData.max_bid + (+productData.max_bid * 0.10)}</div>
+                </li>
+                <li onClick={() => { setCustomBidPrice(+productData.max_bid + (+productData.max_bid * 0.25)) }}>
+                  <div className="s-b-p">25%</div>
+                  <div className="s-b-pp">${+productData.max_bid + (+productData.max_bid * 0.25)}</div>
+                </li>
+                <li onClick={() => { setCustomBidPrice(+productData.max_bid + (+productData.max_bid * 0.5)) }}>
+                  <div className="s-b-p">50%</div>
+                  <div className="s-b-pp">${+productData.max_bid + (+productData.max_bid * 0.5)}</div>
+                </li>
+                <li onClick={() => { setCustomBidPrice(+productData.max_bid + (+productData.max_bid * 1)) }}>
+                  <div className="s-b-p">100%</div>
+                  <div className="s-b-pp">${+productData.max_bid + (+productData.max_bid * 1)}</div>
+                </li>
               </ul>
               :
               <ul>
-                <li onClick={() => { setCustomBidPrice(+productData.bids + 100) }}>${+productData.bids + 100}</li>
-                <li onClick={() => { setCustomBidPrice(+productData.bids + 200) }}>${+productData.bids + 200}</li>
-                <li onClick={() => { setCustomBidPrice(+productData.bids + 300) }}>${+productData.bids + 300}</li>
+                <li onClick={() => { setCustomBidPrice(+productData.bids + (+productData.bids * 0.10)) }}>
+                  <div className="s-b-p">10%</div>
+                  <div className="s-b-pp">${+productData.bids + (+productData.bids * 0.10)}</div>
+                </li>
+                <li onClick={() => { setCustomBidPrice(+productData.bids + (+productData.bids * 0.25)) }}>
+                  <div className="s-b-p">25%</div>
+                  <div className="s-b-pp">${+productData.bids + (+productData.bids * 0.25)}</div>
+                </li>
+                <li onClick={() => { setCustomBidPrice(+productData.bids + (+productData.bids * 0.5)) }}>
+                  <div className="s-b-p">50%</div>
+                  <div className="s-b-pp">${+productData.bids + (+productData.bids * 0.5)}</div>
+                </li>
+                <li onClick={() => { setCustomBidPrice(+productData.bids + (+productData.bids * 1)) }}>
+                  <div className="s-b-p">100%</div>
+                  <div className="s-b-pp">${+productData.bids + (+productData.bids * 1)}</div>
+                </li>
               </ul>
 
             }

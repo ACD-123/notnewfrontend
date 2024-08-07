@@ -208,7 +208,7 @@ const SellerDetails = () => {
               <ReviewSection />
               <PopularProductSearch shopId={shopData.id} />
             </div> */}
-          <div className="customer-feedback">
+          {/* <div className="customer-feedback">
             <h2>Feedbacks</h2>
             <div className="feedback-container">
               {currentItems.length === 0 ? (
@@ -296,7 +296,7 @@ const SellerDetails = () => {
                 </>
               )}
             </div>
-          </div>
+          </div> */}
         </>
       )}
     </div >

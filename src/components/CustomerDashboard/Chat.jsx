@@ -47,7 +47,7 @@ function Chat() {
         for (let i = 0; i < response?.data?.length; i++) {
           if (+data?.participants == +response?.data[i]?.id) {
             getMessagesById(data?.participants)
-            if(selectedChat === null){
+            if (selectedChat === null) {
               // setLoadingChat(true);
               setSelectedChat(response?.data[i])
             }
@@ -198,7 +198,8 @@ function Chat() {
                         <li
                           key={index}
                           onClick={() => handleChatSelection(chat?.id, chat)}
-                          className={selectedChat === chat?.participants ? "active-chat" : ""}>
+                          className={selectedChat?.id === chat?.id ? "active-chat" : chat?.read_count > 0 ? "active-count" : ""}
+                        >
                           <div className="list-image-chat">
                             <div>
                               {chat?.sender_profile_image?.includes('google') ?
@@ -218,8 +219,17 @@ function Chat() {
                               <p className="message">{chat?.message?.substring(0, 10)}...</p>
                             </div>
                             <div className="time">
-                              {chat?.date?.slice(0, 5)}{" "}
-                              {chat?.date?.slice(9, 20)}
+                              {chat?.read_count > 0 &&
+                                <div className="read">
+                                  <span>
+                                    {chat?.read_count}
+                                  </span>
+                                </div>
+                              }
+                              <div className="time">
+                                {chat?.date?.slice(0, 5)}
+                                {chat?.date?.slice(9, 20)}
+                              </div>
                             </div>
                           </div>
                         </li>

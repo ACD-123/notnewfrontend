@@ -85,3 +85,77 @@ code {
   border: none;
   color: white;
 }
+
+
+/* checkout */
+/* PaymentForm.css */
+
+.stripe-payment-card .card-element-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: -8px;
+}
+
+.stripe-payment-card .card-element {
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.stripe-payment-card .input-error-show {
+  color: #9e2146;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.stripe-payment-card .proceedCheckout3 {
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
+  box-shadow: 0px 5px 11px 0px #0000003B;
+  width: max-content;
+  font-family: 'Lato';
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  text-align: center;
+  color: #fff;
+  padding: 12px 40px;
+  border-radius: 9.11px;
+  border: none;
+  cursor: pointer;
+}
+
+.stripe-payment-card .proceedCheckout3:hover {
+  background-color: #0056b3;
+}
+
+.stripe-payment-card .proceedCheckout3:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.stripe-payment-card  select,
+.stripe-payment-card  input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.stripe-payment-card .discountfields {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.stripe-payment-card .discountfields input {
+  flex-grow: 1;
+}
+
+.stripe-payment-card .cart-button-btn-cpn{
+  display: flex;
+  align-items: end;
+  justify-content: end;
+}

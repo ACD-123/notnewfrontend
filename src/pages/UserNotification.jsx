@@ -24,10 +24,10 @@ export const UserNotification = ({getNotificationCount , notificationCount}) => 
                                 {/* <div className="title">Notifications</div> */}
                                 <div className="tab-buttons">
                                     <div className="t-b-b">
-                                        <button className={`${tab === 0 ? 'active' : ''}`} onClick={() => { setTab(0) }}>Important ({notificationCount.important ? notificationCount.important : 0})</button>
-                                        <button className={`${tab === 1 ? 'active' : ''}`} onClick={() => { setTab(1) }}>Selling ({notificationCount.selling ? notificationCount.selling : 0})</button>
-                                        <button className={`${tab === 2 ? 'active' : ''}`} onClick={() => { setTab(2) }}>Auctions ({notificationCount.auction ? notificationCount.auction : 0})</button>
-                                        <button className={`${tab === 3 ? 'active' : ''}`} onClick={() => { setTab(3) }}>Buying ({notificationCount.buying ? notificationCount.buying : 0})</button>
+                                        <button className={`${tab === 0 ? 'active' : ''}`} onClick={() => { setTab(0) }}>Important {notificationCount.important > 0 ? `(${notificationCount.important})` : null}</button>
+                                        <button className={`${tab === 1 ? 'active' : ''}`} onClick={() => { setTab(1) }}>Selling {notificationCount.selling > 0 ? `(${notificationCount.selling})` : null}</button>
+                                        <button className={`${tab === 2 ? 'active' : ''}`} onClick={() => { setTab(2) }}>Auctions {notificationCount.auction > 0 ? notificationCount.auction : null}</button>
+                                        <button className={`${tab === 3 ? 'active' : ''}`} onClick={() => { setTab(3) }}>Buying {notificationCount.buying > 0 ? `(${notificationCount.buying})` : null}</button>
                                     </div>
                                     <div className="t-b-w">Notifications</div>
                                 </div>

@@ -23,6 +23,7 @@ const SellerFeedbackNew = () => {
       .then((res) => {
         setIsLoading(false);
         setSellerShopId(res.data.seller_guid);
+        getFeedbacks(res.data.seller_guid);
       })
       .catch((error) => {
         setIsLoading(false);
@@ -30,10 +31,10 @@ const SellerFeedbackNew = () => {
       });
   };
 
-  const getFeedbacks = () => {
-    const seller_guid = localStorage.getItem('seller_guid')
+  const getFeedbacks = (sellerShopId) => {
+    // const seller_guid = localStorage.getItem('seller_guid')
 
-    SellerServices.getShopDetailFeedback(seller_guid)
+    SellerServices.getShopDetailFeedback(sellerShopId)
       .then((res) => {
         setIsLoading(false);
         setFeedbacks(res.data);
@@ -49,7 +50,7 @@ const SellerFeedbackNew = () => {
   }, []);
 
   useEffect(() => {
-    getFeedbacks();
+    
   }, []);
   return (
     <>

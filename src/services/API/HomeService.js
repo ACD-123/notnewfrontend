@@ -140,6 +140,14 @@ function removeDuplicates(arr) {
   }
   return unique;
 }
+
+function updateFcmToken(data) {
+  return request({
+    url: `${baseUrl}user/updateFcmWeb`,
+    data,
+    method: 'POST',
+  })
+}
 const HomeService = {
   recursiveCategories,
   getshopData,
@@ -156,7 +164,8 @@ const HomeService = {
   fetchCategoryUnderag,
   getTopSellingUnderAge,
   getHotUnderAge,
-  getNotificationCount
+  getNotificationCount,
+  updateFcmToken
 }
 
 export default HomeService

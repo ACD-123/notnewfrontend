@@ -4,6 +4,7 @@ import { BASE_URL } from '../../services/Constant';
 import NoDataFound from '../Shared/NoDataFound';
 import LoadingComponents from '../Shared/LoadingComponents';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const PageNumbers = ({
   totalPages,
@@ -31,12 +32,13 @@ const PageNumbers = ({
   );
 };
 
-export const AuctionNotification = ({getNotificationCount}) => {
+export const AuctionNotification = ({ getNotificationCount }) => {
   let user_details = JSON.parse(localStorage.getItem('user_details'));
   const user_id = localStorage.getItem('user_id');
   const [notification, setNotification] = useState([])
   const [loading, setLoading] = useState(true)
   const pageSize = 10;
+  const naviage = useNavigate()
 
   const getNotification = async (page, size) => {
     try {
@@ -65,22 +67,42 @@ export const AuctionNotification = ({getNotificationCount}) => {
             {notification?.notifications?.length > 0 ?
               (notification?.notifications?.map((data, index) => {
                 return (
-                  <div className="col-lg-6" key={index}>
-                    <div className="n-l-d">
-                      <div className="n-l-d-w">
-                        <div className="n-l-d-w-l">
-                          <div className="n-l-d-w-l-l">
-                            <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                  data?.auction_status === 1 ?
+                    <div className="col-lg-6" key={index} onClick={() =>{naviage(`/auctionproduct/${data?.product_guid}`)}}>
+                      <div className="n-l-d">
+                        <div className="n-l-d-w">
+                          <div className="n-l-d-w-l">
+                            <div className="n-l-d-w-l-l">
+                              <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                            </div>
+                            <div className="n-l-d-w-l-r">
+                              <h2>{data?.title}</h2>
+                              <p>{data?.message}</p>
+                            </div>
                           </div>
-                          <div className="n-l-d-w-l-r">
-                            <h2>{data?.title}</h2>
-                            <p>{data?.message}</p>
-                          </div>
+                          <div className="n-l-d-w-r">{data?.created_at?.slice(0, 10)}</div>
                         </div>
-                        <div className="n-l-d-w-r">{data?.created_at?.slice(0, 10)}</div>
                       </div>
                     </div>
-                  </div>
+                    :
+                    <div className="col-lg-6" key={index} onClick={() =>{toast.error('Auction is ended')}}>
+                      <div className="n-l-d">
+                        <div className="n-l-d-w">
+                          <div className="n-l-d-w-l">
+                            <div className="n-l-d-w-l-l">
+                              <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                            </div>
+                            <div className="n-l-d-w-l-r">
+                              <h2>{data?.title}</h2>
+                              <p>{data?.message}</p>
+                            </div>
+                          </div>
+                          <div className="n-l-d-w-r">{data?.created_at?.slice(0, 10)}</div>
+                        </div>
+                      </div>
+                    </div>
+
+
                 )
               }))
               :
