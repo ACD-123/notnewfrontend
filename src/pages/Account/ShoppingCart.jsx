@@ -266,12 +266,13 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest, noti
                             <div className="product-detail">
                               <div className="product-image">
                                 <>
-                                  {data?.is_auctioned && data?.products?.underage === 1 ? (<span className="auction-badge">Auction</span>) : null}
+                                  {/* {data?.is_auctioned && data?.products?.underage === 1 ? (<span className="auction-badge">Auction</span>) : null}
                                   {data?.is_auctioned && data?.products?.underage === 0 ? (<span className="auction-badge-21">Auction</span>) : null}
-                                  {data?.products?.underage === 0 && <span className="plus21">21 +</span>}
+                                  {data?.products?.underage === 0 && <span className="plus21">21 +</span>} */}
                                   {data?.products?.media?.length > 0 ? (
                                     <img src={data.products.media[0].name} />
                                   ) : (
+
                                     <img src={blank} alt="blank" />
                                   )}
                                 </>
@@ -365,7 +366,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest, noti
                     );
                   })}
                   <div className="clear-cart"><button onClick={() => { clearAllCart() }}>clear Cart</button></div>
-                  {token === null ?
+                  {/* {token === null ?
                     <div className="order-details" id="border-order-details">
                       <h5 onClick={toggleDiscountField}>
                         Applied Discount{" "}
@@ -415,7 +416,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest, noti
                         </div>
                       )}
                     </div>
-                  }
+                  } */}
                 </div>
                 <div className="col-lg-4">
                   <div className="order-details" id="totalordervalue">

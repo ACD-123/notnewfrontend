@@ -91,6 +91,16 @@ const DiscountAndCoupens = () => {
                     setShowAddCouponPopup(false);
                     getSellerBid()
                     setEditCoupon(false)
+                    setInputError(false)
+                    setCouponData({
+                        title: "",
+                        code: "",
+                        discount: "",
+                        min_order: "",
+                        start_date: "",
+                        end_date: "",
+                        seller_guid: ""
+                    })
                 })
                 .catch((error) => {
                     toast.error(error?.response?.data?.message)
@@ -107,7 +117,17 @@ const DiscountAndCoupens = () => {
             UserServices.addCoupons(requestData)
                 .then((response) => {
                     setShowAddCouponPopup(false);
-                    getSellerBid()
+                    getSellerBid();
+                    setInputError(false)
+                    setCouponData({
+                        title: "",
+                        code: "",
+                        discount: "",
+                        min_order: "",
+                        start_date: "",
+                        end_date: "",
+                        seller_guid: ""
+                    })
                 })
                 .catch((error) => {
                     toast.error(error?.response?.data?.message)

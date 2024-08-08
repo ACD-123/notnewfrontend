@@ -6,6 +6,7 @@ import { BASE_URL } from "../../../services/Constant"
 import { Spinner } from "react-bootstrap";
 import { IoCameraReverseOutline } from "react-icons/io5";
 import LoadingComponents from "../../Shared/LoadingComponents";
+import { MdDelete } from "react-icons/md";
 
 const libraries = ['places'];
 const EditProfileSetup = ({ getShopDetaill }) => {
@@ -27,9 +28,12 @@ const EditProfileSetup = ({ getShopDetaill }) => {
     longitude: "",
     description: "",
     file: "",
-    editImage: false
+    editImage: false,
+    editVideo: false,
+    video: ''
   });
   const fileInputRef = useRef(null);
+  const videoInputRef = useRef(null);
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
     libraries
@@ -37,6 +41,10 @@ const EditProfileSetup = ({ getShopDetaill }) => {
 
   const handleUploadClick = () => {
     fileInputRef.current.click();
+  };
+
+  const handleVideoUploadClick = () => {
+    videoInputRef.current.click();
   };
 
   const handlePlaceChanged = () => {
@@ -98,6 +106,7 @@ const EditProfileSetup = ({ getShopDetaill }) => {
     fd.append("latitude", editprofile.latitude);
     fd.append("longitude", editprofile.longitude);
     fd.append("description", editprofile.description);
+    fd.append("video", editprofile.video);
 
     if (editprofile.editImage) {
       fd.append("file", editprofile?.file);
@@ -130,7 +139,6 @@ const EditProfileSetup = ({ getShopDetaill }) => {
   const getShopDetail = () => {
     SellerServices.getShopDetail()
       .then((response) => {
-        
         setEditprofile({
           country_id: response?.data?.country_id,
           state_id: response?.data?.state_id,
@@ -159,19 +167,39 @@ const EditProfileSetup = ({ getShopDetaill }) => {
     getShopDetail();
   }, []);
 
+  const handleDeleteImage = (index) => {
+    console.log(index, 'dasdasdasdsa');
+
+    const updatedFiles = [...editprofile.video];
+    updatedFiles.splice(index, 1);
+    setEditprofile(prev => ({ ...prev, file: updatedFiles }));
+  };
+
 
   const handleImageFileChange = (e) => {
     setEditprofile(prev => ({ ...prev, file: e.target.files[0], editImage: true }));
   };
 
+  const handleVideoChange = (e) => {
+    console.log(e.target.files[0] , 'e.target.files[0]');
+    
+    setEditprofile(prev => ({ ...prev, video: e.target.files[0], editVideo: true }));
+  };
+
+  const oldImagesDelete = (id) => {
+
+    const prevIds = [...editprofile.video]
+    setEditprofile(prev => ({ ...prev, old_files: [...prevIds, id] }));
+  }
+
   return (
 
 
     <>
-      <section id="selleraccountsetup" style={{ minHeight: '50%', display: 'flex', justifyContent: 'center' , alignItems: 'center' }}>
+      <section id="selleraccountsetup" style={{ minHeight: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <div className="container" style={{ minHeight: '50%' }}>
           {isLoading ? (
-            <LoadingComponents/>
+            <LoadingComponents />
           ) : (
             <>
               <div className="row align-items-center">
@@ -302,6 +330,49 @@ const EditProfileSetup = ({ getShopDetaill }) => {
                         {editprofile.description === '' && inputErrors &&
                           <p className="error">Description is required</p>}
                       </div>
+                    </div>
+                    <div className="p-m-i-u">
+                      <div className="p-m-i-u-wrap">
+                        <div className="upload-box" onClick={handleVideoUploadClick}>
+                          <svg width="96" height="97" viewBox="0 0 96 97" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M29.8004 48.4615H66.1696M47.985 66.6462V30.2769M47.985 93.9231C72.9888 93.9231 93.4465 73.4654 93.4465 48.4615C93.4465 23.4577 72.9888 3 47.985 3C22.9811 3 2.52344 23.4577 2.52344 48.4615C2.52344 73.4654 22.9811 93.9231 47.985 93.9231Z" stroke="#BBBBBB" stroke-width="4.54615" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                          <span>Click here to upload Video</span>
+                          <input
+                            type="file"
+                            ref={videoInputRef}
+                            accept="video/*" // Change this to accept video files
+                            style={{ display: 'none' }}
+                            onChange={handleVideoChange}
+                          />
+                        </div>
+                      </div>
+                      {editprofile?.video?.length > 0 ?
+                        <div className="selected-images">
+                          <div className="row">
+                            {editprofile?.video.map((image, index) => {
+                              return (
+                                !editprofile?.editVideo ?
+                                  <div className="col-lg-2" key={index}>
+                                    <div className="selected-images-box">
+                                      <img src={image?.name} alt="" />
+                                      <span onClick={() => { handleDeleteImage(index); oldImagesDelete(image?.id) }}><MdDelete /></span>
+                                    </div>
+                                  </div>
+                                  :
+                                  <div className="col-lg-2" key={index}>
+                                    <div className="selected-images-box">
+                                      <img src={URL.createObjectURL(image)} alt="" />
+                                      <span onClick={() => { handleDeleteImage(index) }}><MdDelete /></span>
+                                    </div>
+                                  </div>
+
+                              )
+                            })}
+                          </div>
+                        </div>
+                        : null}
+
                     </div>
                     <div className="b-s-u-p">
                       <button disabled={enabled} type="submit">

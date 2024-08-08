@@ -68,7 +68,7 @@ function getNotification(user_id , type , size , page) {
 
 function addCouponeCode(data) {
   return request({
-    url: `${baseApi}cart/applyCoupon`,
+    url: `${baseApi}cart/applyCouponStores`,
     data,
     method: 'POST',
   })
@@ -76,7 +76,7 @@ function addCouponeCode(data) {
 
 function deleteCouponeCode(data) {
   return request({
-    url: `${baseApi}cart/deleteCoupon`,
+    url: `${baseApi}cart/deleteCouponStores`,
     data,
     method: 'POST',
   })

@@ -86,15 +86,15 @@ const AccountInfo = () => {
         );
       case 'NotificationPreferences':
         return (
-          <NotFound_ />
-          // <div>
-          //   {/* Content for Notification Preferences */}
-          //   <h3>Notification Preferences</h3>
-          //   <NotificationPreferencesTabs handleGeneralNotifications={handleGeneralNotifications} />
-          //   <button className='backbutton-account' onClick={() => setSelectedLink(null)}>
-          //   <img src={Backimage} alt="Back" /> Back
-          // </button>
-          // </div>
+          // <NotFound_ />
+          <div>
+            {/* Content for Notification Preferences */}
+            <h3>Notification Preferences</h3>
+            <NotificationPreferencesTabs handleGeneralNotifications={handleGeneralNotifications} />
+            <button className='backbutton-account' onClick={() => setSelectedLink(null)}>
+            <img src={Backimage} alt="Back" /> Back
+          </button>
+          </div>
         );
         case 'transactions':
         return (

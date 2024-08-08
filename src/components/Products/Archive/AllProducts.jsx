@@ -75,6 +75,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
   const [showDropdown, setShowDropdown] = useState({ price: false, brand: false });
   const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
   const user_id = localStorage.getItem('user_id');
+  const underageLocal = localStorage.getItem('underage');
   const pageSize = 12;
   const [maxprice, setMaxPrice] = useState(0);
   const [priceRange, setPriceRange] = useState({ min: 0, max: 0 });
@@ -195,7 +196,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
           pageSize,
           1,
           selectedUsedProductCondition?.label,
-          selectedUnderage?.value,
+          underageLocal ? 0 : 1,
           selectedSellingType?.value
         )
 
@@ -223,7 +224,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
       pageSize,
       1,
       selectedUsedProductCondition?.label,
-      selectedUnderage?.value,
+      underageLocal ? 0 : 1,
       selectedSellingType?.value
     )
     setSelectedCategories(data);
@@ -262,7 +263,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
       pageSize,
       1,
       selectedUsedProductCondition?.label,
-      selectedUnderage?.value,
+      underageLocal ? 0 : 1,
       selectedSellingType?.value
     )
     setSelectedBrands(data)
@@ -280,7 +281,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
       pageSize,
       1,
       selectedUsedProductCondition?.label,
-      selectedUnderage?.value,
+      underageLocal ? 0 : 1,
       data.value
     )
     setSelectedSellingType(data)
@@ -297,7 +298,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
       pageSize,
       1,
       selectedUsedProductCondition?.label,
-      selectedUnderage?.value,
+      underageLocal ? 0 : 1,
       selectedSellingType?.value
     )
     setSelectedProductCondition(data)
@@ -315,7 +316,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
       pageSize,
       1,
       data?.label,
-      selectedUnderage?.value,
+      underageLocal ? 0 : 1,
       selectedSellingType?.value
     )
     setSelectedUsedProductCondition(data)
@@ -360,7 +361,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
       pageSize,
       1,
       selectedUsedProductCondition?.label,
-      selectedUnderage?.value,
+      underageLocal ? 0 : 1,
       selectedSellingType?.value
     )
     setCategoryAttributes(updatedArray);
@@ -538,7 +539,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                           pageSize,
                           1,
                           selectedUsedProductCondition?.label,
-                          selectedUnderage?.value,
+                          underageLocal ? 0 : 1,
                           selectedSellingType?.value)
                       }}
                     >Filter</button>
@@ -608,7 +609,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                           pageSize,
                           (+products?.pagination?.page) - 1,
                           selectedUsedProductCondition?.label,
-                          selectedUnderage?.value,
+                          underageLocal ? 0 : 1,
                           selectedSellingType?.value)
                       }}
                     >Previous</div>
@@ -628,7 +629,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                                 pageSize,
                                 1,
                                 selectedUsedProductCondition?.label,
-                                selectedUnderage?.value,
+                                underageLocal ? 0 : 1,
                                 selectedSellingType?.value)
                             }}
                           >1</li>
@@ -645,7 +646,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                                 pageSize,
                                 2,
                                 selectedUsedProductCondition?.label,
-                                selectedUnderage?.value,
+                                underageLocal ? 0 : 1,
                                 selectedSellingType?.value)
                             }}
                           >2</li>
@@ -662,7 +663,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                                 pageSize,
                                 3,
                                 selectedUsedProductCondition?.label,
-                                selectedUnderage?.value,
+                                underageLocal ? 0 : 1,
                                 selectedSellingType?.value)
                             }}
                           >3</li>
@@ -684,7 +685,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                                 pageSize,
                                 products?.pagination?.total_pages,
                                 selectedUsedProductCondition?.label,
-                                selectedUnderage?.value,
+                                underageLocal ? 0 : 1,
                                 selectedSellingType?.value)
                             }}
                           >{products?.pagination?.total_pages}</li>
@@ -704,7 +705,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                         pageSize={pageSize}
                         products={products}
                         usedCondition={selectedUsedProductCondition?.label}
-                        underage={selectedUnderage?.value}
+                        underage={underageLocal ? 0 : 1}
                         auctioned={selectedSellingType?.value}
                         
                       />
@@ -723,7 +724,7 @@ const AllProducts = ({ cartFullResponse , notificationCount }) => {
                           pageSize,
                           (+products?.pagination?.page) + 1,
                           selectedUsedProductCondition?.label,
-                          selectedUnderage?.value,
+                          underageLocal ? 0 : 1,
                           selectedSellingType?.value)
                       }}
                     >Next</div>

@@ -1,484 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import Header from "../../components/Header";
-// import Footer from "../../components/Footer";
-// import Payment from "../../assets/Images/Shoppingcart/payment.png";
-// import { Link, useNavigate } from "react-router-dom";
-// import CheckoutServices from "../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
-// import UserServices from "../../services/API/UserServices";
-// import { STRIPE_PUBLISHABLE_KEY } from "../../services/Constant";
-// import { loadStripe } from "@stripe/stripe-js";
-// import {PaymentElement,Elements,useStripe,useElements,} from "@stripe/react-stripe-js";
-// import Stripe from "./Stripe";
-// import CartServices from "../../services/API/CartServices";
-// import SaveLaterServices from "../../services/API/SaveLaterServices";
-// import { toast } from "react-toastify";
-
-// const Checkout = ({cartFullResponse}) => {
-//   const [userDetails, setUserDetails] = useState(null);
-//   const [checkoutData, setCheckoutData] = useState();
-//   const [showModal, setShowModal] = useState(false);
-//   const stripePromise = loadStripe(`${STRIPE_PUBLISHABLE_KEY}`);
-//   const options = {
-//     mode: "payment",
-//     amount: 1099,
-//     currency: "usd",
-//     appearance: {
-//     },
-//   };
-//   const [isLoading, setIsLoading] = useState(true);
-//   const [secondaddress, setSecondAddress] = useState("");
-//   const [changeAdds, setchangeAdds] = useState(false);
-//   const [zip, setZip] = useState("");
-//   const [otheraddess, setOtherAddress] = useState(true);
-//   const [ordertyp, setOrderTyp] = useState("multiple");
-//   const [discountPrices, setDiscountPrices] = useState(0);
-//   const [prices, setPrices] = useState([]);
-//   const [subTotal, setsubTotal] = useState(0);
-//   const [shippingprice, setShippingPrice] = useState(0);
-//   const [adminprices, setAdminPrices] = useState(0);
-//   const [ordertype, setOrderType] = useState("");
-//   const [amountaddingprices, setAmountAddingPrices] = useState(0);
-//   const [cartitem, setCartItems] = useState(0);
-//   const [savedLater, setSavedLater] = useState(false);
-//   const [cartids, setCartIds] = useState([]);
-//   const [bidcartimage, setBidCartImage] = useState([]);
-//   const [bidcart, setBidCart] = useState({});
-//   const [bidquantity, setQuantity] = useState(0);
-//   const navigate = useNavigate()
-//   const changeAddress = (e, change) => {
-//     e.preventDefault();
-//     setchangeAdds(change);
-//   };
-//   const cartCount = () => {
-//     CartServices.count().then((response) => {
-//       setCartItems(response);
-//     });
-//   };
-//   useEffect(() => {
-//     const fetchUserDetails = async () => {
-//       try {
-//         const response = await UserServices.detail();
-//         setUserDetails(response);
-//       } catch (error) {
-//         toast.error(error?.response?.data?.message)
-//       }
-//     };
-
-//     const fetchCheckoutData = async () => {
-//       try {
-//         const response = await CheckoutServices.self();
-//         setCheckoutData(response.data);
-//       } catch (error) {
-//         toast.error(error?.response?.data?.message)
-//       }
-//     };
-
-//     fetchUserDetails();
-//     fetchCheckoutData();
-//   }, []);
-//   const handleChngeAdd = (e) => {
-//     e.preventDefault();
-//     setSecondAddress(e.target.value);
-//   };
-//   const handleZip = (e) => {
-//     setZip(e.target.value);
-//   };
-//   const handleCallback = (childData) => {
-//     setOtherAddress(childData);
-//   };
-//   const [cart, setCart] = useState([]);
-
-//   const getCart = () => {
-//     var bidProduct = localStorage.getItem("bid_product");
-
-//     setIsLoading(true);
-//     if (bidProduct) {
-//       setBidCartImage(JSON.parse(bidProduct).media);
-//       setBidCart(JSON.parse(bidProduct));
-//       setQuantity(1);
-//       let prices =
-//         JSON.parse(bidProduct).bids + JSON.parse(bidProduct).shipping_price;
-//       setAmountAddingPrices(prices);
-//       setShippingPrice(JSON.parse(bidProduct).shipping_price);
-//       setsubTotal(JSON.parse(bidProduct).bids);
-//       setOrderType("bids");
-//     } else {
-//       CartServices.self().then((res) => {
-//         setCart(res);
-//         setIsLoading(false);
-//         var cartPrice = [];
-//         var shippingPrice = [];
-//         var allPrices = [];
-//         if (res.length > 0) {
-//           res.map((cat) => {
-//             cartPrice.push(cat.price);
-//             shippingPrice.push(cat.products.shipping_price);
-//           });
-//         }
-//         let discountPrice = 0;
-//         if (prices.length > 0) {
-//           prices.map((price) => {
-//             if (price.name !== "Discount") {
-//               allPrices.push(price.value);
-//             } else if (price.name === "Discount") {
-//               setDiscountPrices(price.value);
-//               discountPrice = price.value;
-//             }
-//           });
-//         }
-//         let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
-//         let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
-//         setsubTotal(subttal);
-//         setShippingPrice(shippingprice);
-//         let adminPric = allPrices.reduce((a, v) => (a = a + v), 0);
-//         setAdminPrices(adminPric);
-//         setOrderType("Cart");
-//         var amountAfterDiscount = subttal - discountPrice;
-//         var amountbyaddingprices =
-//           amountAfterDiscount + adminPric + shippingprice;
-//         setAmountAddingPrices(amountbyaddingprices);
-//       });
-//     }
-//   };
-//   const handleCheckOut = (e) => {
-//     e.preventDefault();
-//       navigate("/checkout")
-//   };
-//   let cart_ids = [];
-
-//   const getForSavedLater = () => {
-//     SaveLaterServices.getByUser().then((response) => {
-//       const cartIds = response.map((crt) => crt.cart_id);
-//       setCartIds(cartIds);
-//     });
-//   };
-
-//   const handleSaveLater = (e, cartId) => {
-//     e.preventDefault();
-//     let data = {
-//       cart_id: cartId,
-//     };
-//     SaveLaterServices.add(data).then((response) => {
-//       toast.success(response.message);
-//       setSavedLater(true);
-//       getForSavedLater();
-//     });
-//   };
-//   const handlePrices = () => {
-//     var cartPrice = [];
-//     var shippingPrice = [];
-//     var allPrices = [];
-//     if (cart.length > 0) {
-//       cart.map((cat) => {
-//         cartPrice.push(cat.price);
-//         shippingPrice.push(cat.products.shipping_price);
-//       });
-//     }
-//     if (prices.length > 0) {
-//       prices.map((price) => {
-//         if (price.name !== "Discount") {
-//           allPrices.push(price.value);
-//         } else if (price.name === "Discount") {
-//           setDiscountPrices(price.value);
-//         }
-//       });
-//     }
-//     let subttal = cartPrice.reduce((a, v) => (a = a + v), 0);
-//     let shippingprice = shippingPrice.reduce((a, v) => (a = a + v), 0);
-//     setsubTotal(subttal);
-//     setShippingPrice(shippingprice);
-//     setAdminPrices(allPrices.reduce((a, v) => (a = a + v), 0));
-//     var amountAfterDiscount = subTotal - discountPrices;
-//     var amountbyaddingprices = subttal + shippingprice;
-//     setAmountAddingPrices(amountbyaddingprices);
-//   };
-//   useEffect(() => {
-//     cartCount();
-//     getCart();
-//   }, []);
-
-//   return (
-//     <>
-//       <Header cartFullResponse={cartFullResponse}/>
-//       {isLoading ? (
-//         <div className="py-2 container">Loading...</div>
-//       ) : (
-//         <>
-//           {userDetails && (
-//             <section id="cart-details">
-//               <div className="container">
-//                 <h1>Checkout</h1>
-//                 <div className="row">
-//                   <div className="col-lg-8">
-//                     <div className="order-details" id="order-detailsid">
-//                       <h3>Pay with</h3>
-//                       <h6>Credit or Debit card</h6>
-//                       <span>
-//                         Your payements are secured, Your Details are
-//                         confedentials
-//                       </span>
-
-//                       {userDetails?.address ? (
-//                         <>
-//                           <p>Billing Address</p>
-//                           <span className="tabstop">{userDetails?.address}</span>
-//                         </>
-//                       ) : (
-//                         <></>
-//                       )}
-//                       <div className="tabs-check">
-
-//                         <Elements stripe={stripePromise} options={options}>
-//                           <Stripe
-//                             changeAdds={changeAdds}
-//                             parentCallback={handleCallback}
-//                             zip={zip}
-//                             subtotal={subTotal}
-//                             secondAddress={secondaddress}
-//                             cart={cart}
-//                             bidcart={bidcart}
-//                             orderType={ordertype}
-//                             adminprices={adminprices}
-//                             shippingprice={shippingprice}
-//                             total={amountaddingprices}
-//                             changeaddress={changeAdds}
-//                             ordertype={ordertyp}
-//                             address={userDetails?.street_address}
-//                           />
-//                         </Elements>
-//                       </div>
-//                     </div>
-//                     <div className="order-details" id="order-detailsid">
-//                       <h3>Shipping Details</h3>
-//                       <div className="shipping-details">
-//                         <table style={{ width: "100%" }}>
-//                           <tr>
-//                             <th className="boldthtotallight">Full Name :</th>
-//                             <td className="boldthtotallight">{userDetails.name}</td>
-//                           </tr>
-//                           <tr>
-//                             <th className="boldthtotallight">Phone :</th>
-//                             <td>{userDetails.phone}</td>
-//                           </tr>
-//                           <tr>
-//                             <th className="boldthtotallight">Address :</th>
-//                             {changeAdds ? (
-//                               <>
-//                                 <td>
-//                                   <textarea
-//                                     className="form-control"
-//                                     onChange={handleChngeAdd}
-//                                   ></textarea>
-//                                 </td>
-//                                 <td>
-//                                   <p
-//                                     className="gradienttextcolor"
-//                                     style={{ cursor: "pointer" }}
-//                                     onClick={(e) => changeAddress(e, false)}
-//                                   >
-//                                     Cancel
-//                                   </p>
-//                                 </td>
-//                               </>
-//                             ) : (
-//                               <>
-//                                 <td style={{ width: "60%" }}>
-//                                   {userDetails?.address}
-//                                 </td>
-//                                 <td>
-//                                   <p
-//                                     className="gradienttextcolor"
-//                                     style={{ cursor: "pointer" }}
-//                                     onClick={(e) => changeAddress(e, true)}
-//                                   >
-//                                     Change Address
-//                                   </p>
-//                                 </td>
-//                               </>
-//                             )}
-//                           </tr>
-//                           {changeAdds ? (
-//                             <>
-//                               <tr>
-//                                 <th className="boldthtotallight">Zip :</th>
-//                                 <td>
-//                                   <input
-//                                     type="text"
-//                                     name="zip"
-//                                     className="form-control"
-//                                     onChange={handleZip}
-//                                     id="zip"
-//                                   />
-//                                 </td>
-//                                 <td>&nbsp;</td>
-//                               </tr>
-//                             </>
-//                           ) : (
-//                             ""
-//                           )}
-//                         </table>
-//                       </div>
-//                     </div>
-//                     {checkoutData &&
-//                       checkoutData.map((order, orderIndex) => (
-//                         <div key={orderIndex} className="divider">
-//                           <h3 id="storetitle">{order.storename}</h3>
-//                           {order.products.map((product, productIndex) => {
-//                             const isSaved = cartids.includes(product.cartid);
-//                             return (
-//                               <div key={productIndex} className="order-details">
-//                                 <div className="row">
-//                                   <div className="col-lg-9">
-//                                     <div className="product-detail">
-//                                       <div
-//                                         className="product-image"
-//                                         style={{ width: "35%" }}
-//                                       >
-//                                         <img
-//                                           src={product.media[0].name}
-//                                           alt=""
-//                                           style={{
-//                                             width: "100%",
-//                                             objectFit: "contain",
-//                                           }}
-//                                         />
-//                                       </div>
-//                                       <div className="product-order-details">
-//                                         <h5>{product.name}</h5>
-//                                         <span>
-//                                           Size: {product.size}, Color:{" "}
-//                                           {product.color}
-//                                         </span>
-//                                         <div className="quantitypadding">
-//                                           <p>
-//                                             <b>
-//                                               <span>
-//                                                 QTY: {product.cartquantity}
-//                                               </span>
-//                                             </b>
-//                                           </p>
-//                                         </div>
-//                                         <span className="unter">
-//                                           {product.postal_address}
-//                                         </span>
-//                                       </div>
-//                                     </div>
-//                                   </div>
-//                                   <div className="col-lg-3">
-//                                     <div className="prices-order-details">
-//                                       <h4>US $ {product.cartprice}</h4>
-//                                     </div>
-//                                   </div>
-//                                 </div>
-//                                 <hr className="dashed" />
-//                                 <div className="buttonright">
-//                                   {isSaved ? (
-//                                     <button
-//                                       className="btn btn-info btn-lg transparent"
-//                                       type="button"
-//                                     >
-//                                       Saved for later
-//                                     </button>
-//                                   ) : (
-//                                     <button
-//                                       className="btn btn-info btn-lg transparent"
-//                                       type="button"
-//                                       onClick={(e) =>
-//                                         handleSaveLater(e, product.cartid)
-//                                       }
-//                                     >
-//                                       Save for later
-//                                     </button>
-//                                   )}
-//                                 </div>
-//                               </div>
-//                             );
-//                           })}
-//                         </div>
-//                       ))}
-//                   </div>
-//                   <div className="col-lg-4">
-//                     {cart.length > 0 ? (
-//                       <>
-//                         <div className="order-details" id="totalordervalue">
-//                           <h3>Order Total</h3>
-//                           <table style={{ width: "100%" }}>
-//                             <tr>
-//                               <th className="boldthtotal">
-//                                 Subtotal ( {cartitem} items )
-//                               </th>
-//                               <td className="boldthtotal">$ {subTotal}</td>
-//                             </tr>
-//                             <tr>
-//                               <th>Shipping</th>
-//                               <td>$ {shippingprice}</td>
-//                             </tr>
-//                             {prices.length > 0 ? (
-//                               <>
-//                                 {prices.map((price, index) => {
-//                                   return (
-//                                     <>
-//                                       <tr>
-//                                         <th>{price.name}</th>
-//                                         <td>
-//                                           ${" "}
-//                                           {price.name == "Discount" ? (
-//                                             <>- {price.value}</>
-//                                           ) : (
-//                                             price.value
-//                                           )}
-//                                         </td>
-//                                       </tr>
-//                                     </>
-//                                   );
-//                                 })}
-//                               </>
-//                             ) : (
-//                               ""
-//                             )}
-//                             <tr>
-//                               <th className="totalthtextbold">Order Total</th>
-//                               <td className="totalthtextbold">
-//                                 $ {amountaddingprices}
-//                               </td>
-//                             </tr>
-//                           </table>
-//                         </div>
-//                       </>
-//                     ) : (
-//                       <>
-//                         <div className="order-details" id="totalordervalue">
-//                           <h3>Order Total</h3>
-//                           <table style={{ width: "100%" }}>
-//                             <tr>
-//                               <th className="boldthtotal">Subtotal</th>
-//                               <td className="boldthtotal">$00.00</td>
-//                             </tr>
-//                             <tr>
-//                               <th className="totalthtextbold">Order Total</th>
-//                               <td className="totalthtextbold">$ 00.00</td>
-//                             </tr>
-//                           </table>
-//                           <div className="imgtoop">
-//                             <img src={Payment} alt="" />
-//                           </div>
-//                         </div>
-//                       </>
-//                     )}
-//                   </div>
-//                 </div>
-//               </div>
-//             </section>
-//           )}
-//         </>
-//       )}
-//       <Footer />
-//     </>
-//   );
-// };
-
-// export default Checkout;
-
 import React, { useState, useEffect } from "react";
 import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
 import CheckoutServices from "../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
@@ -489,19 +8,17 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Payment from "../../assets/Images/Shoppingcart/payment.png"
 import blank from "../../assets/Images/Productcard/blank.jpg";
-import applyPay from "../../assets/Images/paymentCard/apply-pay.png"
-import Visa from "../../assets/Images/paymentCard/Visa.png"
-import Mastercard from "../../assets/Images/paymentCard/Mastercard.png"
-import Arrowright from "../../assets/Images/Shoppingcart/arrowright.png";
 import Select from 'react-select';
 import Form from "react-bootstrap/Form";
 import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
-import axios from "axios";
 import { loadStripe } from "@stripe/stripe-js";
+import { Modal } from "react-bootstrap";
+import {  MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 
-const stripePromise = loadStripe('pk_test_51MTktuAYbmkaqHhqX84kpKwK1vSAXSiLBc4aMbFqc190wsKgS7Wzsx8mqG4ZRuk59EUvgeqyUnCHZWKfrcEWVUlD00AyMNh8Bg');
+const stripePromise = loadStripe('pk_test_51HiCo6EHLDkHxi1YwwTc185yQTBuRIZktAiqLEus7vFq1kKxsrir4UlAUVCP6rRokopLAFCYY1DKowhrjZuLhyv200gfW8PqZc');
 
-const PaymentForm = () => {
+const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [email, setEmail] = useState('');
@@ -540,43 +57,52 @@ const PaymentForm = () => {
       billing_details: { email },
     });
 
+
+
     if (error) {
       setError(error.message);
       setLoading(false);
       return;
     }
+    console.log(paymentMethod.id, 'paymentMethod.id');
     const token = sessionStorage.getItem("userToken");
 
-    try {
-      const response = await axios.post(
-        'https://max88backend.testingwebsitelink.com/api/processPayment',
-        {
-          pm_card_Id: paymentMethod.id,
-          name: formData.name,
-          companey_name: formData.companey_name,
-          street_address: formData.street_address,
-          aparment: formData.aparment,
-          town: formData.town,
-          // state: formData.state,
-          phone_number: formData.phone_number,
-          email: formData.email,
-          // amount: totallAmount.total,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+    let orders = [];
+    for (let i = 0; i < butItNowData.data.length; i++) {
+      for (let j = 0; j < butItNowData.data[i].products.length; j++) {
+        orders.push({
+          product_id: butItNowData.data[i].products[j]?.id,
+          price: butItNowData.data[i].products[j]?.cartprice,
+          quantity: butItNowData.data[i].products[j]?.cartquantity,
+          attributes: JSON.stringify(butItNowData.data[i].products[j]?.attributes),
+        })
+      }
 
-      console.log('Payment Response:', response.data);
-      toast.success('Payment successful');
-      navigate("/oder-success");
-    } catch (error) {
-      console.error('Error making payment:', error);
-      toast.error('Payment failed');
     }
 
+    const formData = {
+      payment_type: "Card",
+      discountcode: "discount",
+      subtotal_cost: "10",
+      service_code: shipping.service_code,
+      weight: butItNowData?.weight,
+      shipping_cost: shipping.shipping_amount?.amount,
+      order_total: butItNowData.total,
+      payment_intents: "pi_3Oj5IqBL2ne1CK3D0hkRy72C",
+      Currency: "2",
+      order_type: "Cart",
+      orderItems: JSON.stringify(orders),
+      other_address: "false",
+      secondaddress: "",
+      pm_card_Id: paymentMethod.id
+    }
+    try {
+      const response = await CheckoutServices.checkout(formData);
+      getCartCount()
+      navigate('/')
+    } catch (error) {
+      toast.error(error?.response?.data?.message)
+    }
     setLoading(false);
   };
 
@@ -593,7 +119,7 @@ const PaymentForm = () => {
 
     <Form onSubmit={handleSubmit}>
       <div className="card-element-container">
-      <CardElement className="card-element" options={{
+        <CardElement className="card-element" options={{
           style: {
             base: {
               fontSize: '16px',
@@ -617,28 +143,23 @@ const PaymentForm = () => {
           {loading ? 'Loading...' : 'Confirm & Pay'}
         </button>
       </div>
-      {/* {error && <div>{error}</div>} */}
     </Form>
   );
 };
 
 const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
-  // const stripeKey = 'sk_test_51McZZOBL2ne1CK3D89BPN3QmKiF2hMTZI1IvcdkgZ5asDQrOghL2IC3RnqAAsQK2ctgezVbCUdiwEfu9rv93Visf00eHdE1vlk'
   const dispatch = useDispatch();
-  const [userDetails, setUserDetails] = useState(null);
   const [butItNowData, setButItNowData] = useState([]);
   const [shippingData, setShippingData] = useState({ postalCode: "", country: null });
   const [shipping, setShipping] = useState([]);
-  const [country, setCountry] = useState(null);
   const countrys = [{ value: 1, label: 'US' }]
-  const [paymentMethod, setPaymentMethod] = useState(0);
   const [couponeCode, setCouponeCode] = useState('');
-  const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
   const user_id = localStorage.getItem('user_id');
   const [inputError, setInputError] = useState(false);
   const { pathname } = window.location;
-  const id = pathname.split("/").pop();
   const navigate = useNavigate();
+  const [selectedData, setSelectedData] = useState('')
+  const [couponError, setCouponError] = useState(false)
 
   const getBuyItNowData = async () => {
     try {
@@ -699,19 +220,16 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
     }
   }
 
-  const [showDiscountField, setShowDiscountField] = useState(false);
-
-  const toggleDiscountField = () => {
-    setShowDiscountField(!showDiscountField);
-  };
+  const [showDiscountPopup, setShowDiscountPopup] = useState(false);
 
   useEffect(() => {
     getBuyItNowData();
   }, []);
 
-  const handleDiscountSubmit = async (e) => {
+  const addCouponCode = async (e) => {
+    console.log(selectedData);
     e.preventDefault();
-    setInputError(true)
+    setCouponError(true)
     const date = new Date();
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -719,18 +237,38 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
     if (couponeCode != "") {
       try {
         const data = {
+          store_id: selectedData?.storeid,
           coupon_code: couponeCode,
           user_id: user_id,
           date: `${year}-${month}-${day}`
         };
         const res = await ProductServices.addCouponeCode(data);
+        toast.success(res?.message)
+        setShowDiscountPopup(false)
+        setCouponeCode('')
+        setCouponError(false)
+        getBuyItNowData()
       } catch (error) {
         toast.error(error?.response?.data?.message);
       }
     }
-  };
+  }
 
-
+  const deleteCouponeCode = async (e , dataa) => {
+    e.preventDefault();
+      try {
+        const data = {
+          store_id: dataa?.storeid,
+          coupon_code: dataa?.coupon_code,
+          user_id: user_id,
+        };
+        const res = await ProductServices.deleteCouponeCode(data);
+        toast.success(res?.message)
+        getBuyItNowData()
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
+      }
+  }
 
   useEffect(() => {
   }, []);
@@ -745,7 +283,18 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
               {butItNowData?.data?.map((data, index) => {
                 return (
                   <div className="order-details" id="sectionToRemove" key={index}>
-                    <div><h3 id="storetitle">Seller Shop : {data?.storename}</h3></div>
+                    <div className="heading-code">
+                      <h3 id="storetitle">Seller Shop : {data?.storename}</h3>
+                      {data?.coupon_code ?
+                        <div className="couple-added">
+                          <p>{data?.coupon_code}</p>
+                          <span className="edit" onClick={() => { setShowDiscountPopup(true); setSelectedData(data); setCouponeCode(data?.coupon_code)}}><MdEdit /></span>
+                          <span className="delete"onClick={(e) => { deleteCouponeCode(e , data) }}><MdDelete /></span>
+                        </div>
+                        :
+                        <button onClick={() => { setShowDiscountPopup(true); setSelectedData(data) }}>Apply coupon</button>
+                      }
+                    </div>
                     <div className="c-o-s-p">
                       {data?.products?.map((product, i) => {
                         return (
@@ -829,7 +378,7 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                   </ul>
                 </div>
               </div> */}
-              <div className="order-details" id="border-order-details">
+              {/* <div className="order-details" id="border-order-details">
                 <h5 onClick={toggleDiscountField}>
                   Coupons, Vouchers, Discount Codes
                   <div id="iconrightaligin">
@@ -847,7 +396,7 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                     <button onClick={handleDiscountSubmit}>Apply</button>
                   </div>
                 )}
-              </div>
+              </div> */}
               <div className="order-details" id="border-order-details">
                 <div><h3 id="storetitle">Shipping</h3></div>
                 <div className="b-w-s-i-f">
@@ -887,7 +436,7 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                 <div className="stripe-payment-card">
                   <div className="stripe-title">Card Info</div>
                   <Elements stripe={stripePromise}>
-                    <PaymentForm />
+                    <PaymentForm butItNowData={butItNowData} shipping={shipping} getCartCount={getCartCount} />
                   </Elements>
                 </div>
                 :
@@ -899,16 +448,24 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                 <h3>Order Total</h3>
                 <table style={{ width: "100%" }}>
                   <tr>
-                    <th className="boldthtotal">Subtotal ( {butItNowData?.data?.[0]?.products?.length} item )</th>
-                    <td className="boldthtotal">${butItNowData?.total}</td>
+                    <th className="boldthtotal">Subtotal ( {butItNowData?.data?.length} item )</th>
+                    <td className="boldthtotal">${butItNowData?.sub_total}</td>
                   </tr>
+                  {+butItNowData?.discount > 0 ?
+                  <tr>
+                    <th className="boldthtotal">Discount</th>
+                    <td className="boldthtotal">${butItNowData?.discount}</td>
+                  </tr>
+                  :
+                  null
+                  }
                   <tr>
                     <th className="boldthtotal">Shipping</th>
                     <td className="boldthtotal">${shipping?.shipping_amount?.amount ? shipping?.shipping_amount?.amount : 0}</td>
                   </tr>
                   <tr>
                     <th className="totalthtextbold">Order Total</th>
-                    <td className="totalthtextbold">${butItNowData?.total}</td>
+                    <td className="totalthtextbold">${(+butItNowData?.total) + (+shipping?.shipping_amount?.amount)}</td>
                   </tr>
                 </table>
                 <div className="imgtoop">
@@ -923,6 +480,24 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
         </div>
       </section>
       <Footer />
+      <Modal show={showDiscountPopup} onHide={setShowDiscountPopup} className='place-a-bid-modal'>
+        <div className='c-c-body'>
+          <div className="title">Coupons, Vouchers, Discount Codes</div>
+          <div className="options">
+          </div>
+          <form onSubmit={addCouponCode}>
+            <div className="input">
+              <input type="text" value={couponeCode} placeholder="Enter coupon code" onChange={(e) => { setCouponeCode(e.target.value) }} />
+              {couponeCode === "" && couponError &&
+                <div className="error-input">Coupon code is required</div>
+              }
+            </div>
+            <div className="button" style={{ marginTop: '30px' }}>
+              <button type='submit'>Submit</button>
+            </div>
+          </form>
+        </div>
+      </Modal>
     </>
   )
 }

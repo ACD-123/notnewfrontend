@@ -14,7 +14,7 @@ import Mastercard from "../../assets/Images/paymentCard/Mastercard.png"
 import Arrowright from "../../assets/Images/Shoppingcart/arrowright.png";
 import Select from 'react-select';
 
-const CheckoutBuyNow = ({ cartFullResponse , notificationCount }) => {
+const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
   const dispatch = useDispatch();
   const [userDetails, setUserDetails] = useState(null);
   const [butItNowData, setButItNowData] = useState([]);
@@ -34,6 +34,8 @@ const CheckoutBuyNow = ({ cartFullResponse , notificationCount }) => {
   const getBuyItNowData = async () => {
     try {
       const response = await CheckoutServices.getBuyItNowData();
+      console.log(response?.data?.[0]?.products?.[0] , 'getBuyItNowData');
+      
       setButItNowData(response)
     } catch (error) {
       toast.error(error?.response?.data?.message)
@@ -120,7 +122,7 @@ const CheckoutBuyNow = ({ cartFullResponse , notificationCount }) => {
   }, []);
   return (
     <>
-      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount} />
       <section id="cart-details">
         <div className="container">
           <h2 className="page-title">Buy Now Checkout</h2>
@@ -133,6 +135,8 @@ const CheckoutBuyNow = ({ cartFullResponse , notificationCount }) => {
                     <div className="product-detail">
                       <div className="product-image">
                         <>
+    
+                          {butItNowData?.data?.[0]?.products?.[0]?.underage === 0 && <span className="plus21">21 +</span>}
                           {butItNowData?.data?.[0]?.products?.[0]?.media?.length > 0 ? (
                             <img src={butItNowData?.data?.[0]?.products?.[0]?.media?.[0]?.name} />
                           ) : (
@@ -279,7 +283,7 @@ const CheckoutBuyNow = ({ cartFullResponse , notificationCount }) => {
                 </table>
                 <div className="imgtoop">
                   <img src={Payment} alt="" />
-                  <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() =>{checkoutButItNow()}}>
+                  <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() => { checkoutButItNow() }}>
                     Confirm & Pay
                   </button>
                 </div>

@@ -1,6 +1,7 @@
 // this file must be in root folder
 importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js')
 importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js')
+import logo from './logo.png'
 
 const firebaseConfig = {
     apiKey: "AIzaSyDtekaev2CZ96eEo4MsktOBJbPqzxpOXU4",
@@ -22,12 +23,15 @@ messaging.onBackgroundMessage(function (payload) {
         const notificationTitle = payload.data.title
         const notificationOptions = {
             body: payload.data.body,
-            icon: payload.data.icon,
-            image: payload.data.image
+            icon: 'https://themerchantinc.com/assets/images/logo.png',
+            image: 'https://themerchantinc.com/assets/images/logo.png',
+            click_action : payload.data.click_action
         }
         self.registration.showNotification(notificationTitle, notificationOptions);
         self.addEventListener('notificationclick', function (event) {
             const clickedNotification = event.notification
+            console.log(payload.data , 'payload.data');
+            
             clickedNotification.close();
             event.waitUntil(
                 clients.openWindow(payload.data.click_action)
