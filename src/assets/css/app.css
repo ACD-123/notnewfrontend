@@ -760,14 +760,16 @@ header .header-wrap .header-top .header-right {
   display: flex;
   gap: 20px;
   align-items: center;
+  width: 100%;
+  justify-content: end;
 }
 
 header .header-wrap .header-top .header-right .search-bar {
   display: flex;
   align-items: center;
-  min-width: 800px;
+  max-width: 800px;
   margin-right: 11px;
-
+  width: 100%;
 
 }
 
@@ -6329,13 +6331,16 @@ th {
   margin: 0;
   white-space: nowrap;
 }
-.selected-images .selected-videos-box{
+
+.selected-images .selected-videos-box {
   position: relative;
 }
-.selected-images .selected-videos-box video{
+
+.selected-images .selected-videos-box video {
   border-radius: 22px;
 }
-.selected-images .selected-videos-box span{
+
+.selected-images .selected-videos-box span {
   position: absolute;
   right: 20px;
   top: 15px;
@@ -6344,9 +6349,10 @@ th {
   border-radius: 6px;
   cursor: pointer;
 }
-.selected-images .selected-videos-box span svg{
+
+.selected-images .selected-videos-box span svg {
   font-size: 30px;
-    color: red;
+  color: red;
 }
 
 .selected-images {
@@ -11750,7 +11756,8 @@ input::-webkit-inner-spin-button {
   flex-direction: column;
   align-items: center;
 }
-.seller-new-transaction .p-m-i-u .upload-box svg{
+
+.seller-new-transaction .p-m-i-u .upload-box svg {
   width: 70px;
 }
 
@@ -11799,7 +11806,8 @@ input::-webkit-inner-spin-button {
   flex-direction: column;
   align-items: center;
 }
-#seller-account-creating .p-m-i-u .upload-box svg{
+
+#seller-account-creating .p-m-i-u .upload-box svg {
   width: 70px;
 }
 
@@ -11812,37 +11820,45 @@ input::-webkit-inner-spin-button {
   color: #b3b3b3;
 }
 
-#seller-account-creating .selected-videos-box video{
+#seller-account-creating .selected-videos-box video {
   border-radius: 22px;
   height: 200px;
 }
 
-.user-notification-setting{
+.user-notification-setting {
   margin: 73px 0px;
-    height: 100%;
+  height: 100%;
 }
-.user-notification-setting .user-notification-setting-wrap{}
-.user-notification-setting .user-notification-setting-wrap ul{
+
+.user-notification-setting .user-notification-setting-wrap {}
+
+.user-notification-setting .user-notification-setting-wrap ul {
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
-.user-notification-setting .user-notification-setting-wrap ul li{
+
+.user-notification-setting .user-notification-setting-wrap ul li {
   display: flex;
   align-items: center;
   gap: 50px;
   justify-content: space-between;
   list-style: none;
 }
-.user-notification-setting .user-notification-setting-wrap ul li .title{}
-.user-notification-setting .user-notification-setting-wrap ul li .title h3{}
-.user-notification-setting .user-notification-setting-wrap ul li .title p{
+
+.user-notification-setting .user-notification-setting-wrap ul li .title {}
+
+.user-notification-setting .user-notification-setting-wrap ul li .title h3 {}
+
+.user-notification-setting .user-notification-setting-wrap ul li .title p {
   margin: 0;
 }
-.user-notification-setting .user-notification-setting-wrap ul li .check{}
-.user-notification-setting .user-notification-setting-wrap ul li .check .switch3{
+
+.user-notification-setting .user-notification-setting-wrap ul li .check {}
+
+.user-notification-setting .user-notification-setting-wrap ul li .check .switch3 {
   font-family: 'Cairo';
   font-size: 18px;
   font-weight: 600;
@@ -11853,7 +11869,8 @@ input::-webkit-inner-spin-button {
   margin-bottom: 5px;
   text-transform: capitalize;
 }
-.user-notification-setting .user-notification-setting-wrap ul li .check .switch3 .radio{
+
+.user-notification-setting .user-notification-setting-wrap ul li .check .switch3 .radio {
   width: -webkit-fill-available;
   margin-bottom: 10px;
   background: #F0F0F0;
@@ -11865,7 +11882,7 @@ input::-webkit-inner-spin-button {
 
 
 
-.user-notification-setting .user-notification-setting-wrap ul li .check .switch3 .slider3{
+.user-notification-setting .user-notification-setting-wrap ul li .check .switch3 .slider3 {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -11883,7 +11900,7 @@ input::-webkit-inner-spin-button {
   background-color: #00C2C9 !important;
 }
 
-.user-notification-setting  .slider3.active:before {
+.user-notification-setting .slider3.active:before {
   transform: translateX(26px);
 }
 
