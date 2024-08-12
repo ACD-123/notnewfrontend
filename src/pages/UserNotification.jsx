@@ -8,6 +8,7 @@ import { BuyingNotification } from '../components/UserNotification/BuyingNotific
 import laravelEcho from '../socket'
 import HomeService from '../services/API/HomeService'
 import { toast } from 'react-toastify'
+import { ChatNotification } from '../components/UserNotification/ChatNotification'
 
 export const UserNotification = ({getNotificationCount , notificationCount}) => {
     const [tab, setTab] = useState(0);
@@ -25,16 +26,18 @@ export const UserNotification = ({getNotificationCount , notificationCount}) => 
                                 <div className="tab-buttons">
                                     <div className="t-b-b">
                                         <button className={`${tab === 0 ? 'active' : ''}`} onClick={() => { setTab(0) }}>Important {notificationCount.important > 0 ? `(${notificationCount.important})` : null}</button>
-                                        <button className={`${tab === 1 ? 'active' : ''}`} onClick={() => { setTab(1) }}>Selling {notificationCount.selling > 0 ? `(${notificationCount.selling})` : null}</button>
-                                        <button className={`${tab === 2 ? 'active' : ''}`} onClick={() => { setTab(2) }}>Auctions {notificationCount.auction > 0 ? notificationCount.auction : null}</button>
-                                        <button className={`${tab === 3 ? 'active' : ''}`} onClick={() => { setTab(3) }}>Buying {notificationCount.buying > 0 ? `(${notificationCount.buying})` : null}</button>
+                                        <button className={`${tab === 1 ? 'active' : ''}`} onClick={() => { setTab(1) }}>Chat {notificationCount.chats > 0 ? `(${notificationCount.chats})` : null}</button>
+                                        <button className={`${tab === 2 ? 'active' : ''}`} onClick={() => { setTab(2) }}>Selling {notificationCount.selling > 0 ? `(${notificationCount.selling})` : null}</button>
+                                        <button className={`${tab === 3 ? 'active' : ''}`} onClick={() => { setTab(3) }}>Auctions {notificationCount.auction > 0 ? notificationCount.auction : null}</button>
+                                        <button className={`${tab === 4 ? 'active' : ''}`} onClick={() => { setTab(4) }}>Buying {notificationCount.buying > 0 ? `(${notificationCount.buying})` : null}</button>
                                     </div>
                                     <div className="t-b-w">Notifications</div>
                                 </div>
                                 {tab === 0 && <ImportentNotification getNotificationCount={getNotificationCount}/>}
-                                {tab === 1 && <SellingNotification getNotificationCount={getNotificationCount}/>}
-                                {tab === 2 && <AuctionNotification getNotificationCount={getNotificationCount}/>}
-                                {tab === 3 && <BuyingNotification getNotificationCount={getNotificationCount}/>}
+                                {tab === 1 && <ChatNotification getNotificationCount={getNotificationCount}/>}
+                                {tab === 2 && <SellingNotification getNotificationCount={getNotificationCount}/>}
+                                {tab === 3 && <AuctionNotification getNotificationCount={getNotificationCount}/>}
+                                {tab === 4 && <BuyingNotification getNotificationCount={getNotificationCount}/>}
                             </div>
                         </div>
                     </div>

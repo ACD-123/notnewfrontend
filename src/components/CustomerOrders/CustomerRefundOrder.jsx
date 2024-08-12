@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Location from "../../assets/Images/oder-managment-map.png";
+import Location from "../../assets/Images/deliveryimage.png";
 import OrderServices from "../../services/API/OrderServices";
 import { toast } from "react-toastify";
 import LoadingComponents from "../Shared/LoadingComponents";
@@ -111,7 +111,7 @@ const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }
               {/* <h2>Ship to</h2> */}
               <div className="s-o-m-d-2-1">
                 <div className="s-o-m-d-2-1-l">
-                  <img style={{ width: "100%" }} src={Location} alt="location" />
+                  <img src={Location} alt="location" />
                   <svg width="23" height="29" viewBox="0 0 23 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="11.9727" cy="11.2344" r="5" fill="white" />
                     <path d="M11.9727 0.234375C9.05634 0.237815 6.26045 1.39785 4.19829 3.46C2.13614 5.52216 0.976108 8.31805 0.972668 11.2344C0.969175 13.6176 1.74765 15.9362 3.18867 17.8344C3.18867 17.8344 3.48867 18.2294 3.53767 18.2864L11.9727 28.2344L20.4117 18.2814C20.4557 18.2284 20.7567 17.8344 20.7567 17.8344L20.7577 17.8314C22.198 15.934 22.9761 13.6165 22.9727 11.2344C22.9692 8.31805 21.8092 5.52216 19.747 3.46C17.6849 1.39785 14.889 0.237815 11.9727 0.234375ZM11.9727 15.2344C11.1815 15.2344 10.4082 14.9998 9.75039 14.5603C9.09259 14.1207 8.5799 13.496 8.27715 12.7651C7.9744 12.0342 7.89519 11.2299 8.04953 10.454C8.20387 9.67809 8.58483 8.96536 9.14424 8.40595C9.70365 7.84654 10.4164 7.46557 11.1923 7.31123C11.9682 7.15689 12.7725 7.23611 13.5034 7.53886C14.2343 7.84161 14.859 8.3543 15.2985 9.01209C15.7381 9.66989 15.9727 10.4432 15.9727 11.2344C15.9713 12.2948 15.5495 13.3115 14.7996 14.0613C14.0498 14.8112 13.0331 15.2331 11.9727 15.2344Z" fill="url(#paint0_linear_14_34179)" />

@@ -263,6 +263,7 @@ const SignUp = () => {
                           name="profile_pic"
                           id="newProfilePhoto"
                           onChange={handleFileChange}
+                          style={{display:'none'}}
                         />
                         <label
                           htmlFor="newProfilePhoto"

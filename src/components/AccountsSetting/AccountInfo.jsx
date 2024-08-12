@@ -154,7 +154,7 @@ const AccountInfo = () => {
             <div className='personal-info-links'>
               <h4><span>Notification Preferences</span></h4>
               <ul>
-                <li onClick={() => handleLinkClick('NotificationPreferences')}>Notification Settings</li>
+                <li onClick={() => {navigate('/notification-setting')}}>Notification Settings</li>
                 {/* <li onClick={() => handleLinkClick('NotificationPreferences')}>General Notifications</li>
                 <li onClick={() => handleLinkClick('NotificationPreferences')}>Seller account Notification settings</li> */}
               </ul>

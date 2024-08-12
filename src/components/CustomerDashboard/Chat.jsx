@@ -209,7 +209,7 @@ function Chat() {
                                 />
                                 :
                                 <img
-                                  src={chat?.sender_profile_image ? "http://159.223.129.107/" + chat?.sender_profile_image : blank}
+                                  src={chat?.sender_profile_image ? "https://notnewbackendv1.testingwebsitelink.com/" + chat?.sender_profile_image : blank}
                                   style={{ borderRadius: "40px" }} width="40" height="40"
                                 />
                               }
@@ -254,7 +254,7 @@ function Chat() {
                             {selectedChat?.sender_profile_image?.includes('google') ?
                               <img src={selectedChat?.sender_profile_image} />
                               :
-                              <img src={"http://159.223.129.107/" + selectedChat?.sender_profile_image} />
+                              <img src={"https://notnewbackendv1.testingwebsitelink.com/" + selectedChat?.sender_profile_image} />
                             }
                           </>
                         ) : (
@@ -280,7 +280,7 @@ function Chat() {
                                     {/* {msg?.user?.profile_image?.includes('google') ? */}
                                     {/* <img src={msg?.user?.profile_image} /> */}
                                     {/* : */}
-                                    <img src={"http://159.223.129.107/" + msg?.seller?.cover_image} />
+                                    <img src={"https://notnewbackendv1.testingwebsitelink.com/" + msg?.seller?.cover_image} />
                                     {/* } */}
                                     {/* </> */}
                                     {/* ) : (
@@ -307,7 +307,7 @@ function Chat() {
                                         {msg?.testuser?.profile_image?.includes("http") ?
                                           <img src={msg?.testuser?.profile_image} />
                                           :
-                                          // <img src={"http://159.223.129.107/" + msg?.participants?.profile_image} />
+                                          // <img src={"https://notnewbackendv1.testingwebsitelink.com/" + msg?.participants?.profile_image} />
                                           <img src={`${BASE_URL}/${msg?.testuser?.profile_image}`} />
                                         }
                                       </>

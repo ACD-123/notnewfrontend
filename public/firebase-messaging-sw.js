@@ -4,13 +4,13 @@ importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-comp
 import logo from './logo.png'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDtekaev2CZ96eEo4MsktOBJbPqzxpOXU4",
-    authDomain: "notnew-f6d6c.firebaseapp.com",
-    projectId: "notnew-f6d6c",
-    storageBucket: "notnew-f6d6c.appspot.com",
-    messagingSenderId: "873006556750",
-    appId: "1:873006556750:web:ab6b34fb0fa90d688a851f",
-    measurementId: "G-XWGGQ5S7ZH"
+    apiKey: "AIzaSyBQneFmYicGtLWBBEqAEUCjOs7ytqDAqng",
+    authDomain: "notnew-9f938.firebaseapp.com",
+    projectId: "notnew-9f938",
+    storageBucket: "notnew-9f938.appspot.com",
+    messagingSenderId: "937173650105",
+    appId: "1:937173650105:web:922d81b9168f6ce6fc2968",
+    measurementId: "G-Z5LVP4PZVB"
 };
 
 // receiving messages in background

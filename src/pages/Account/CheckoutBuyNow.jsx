@@ -13,6 +13,133 @@ import Visa from "../../assets/Images/paymentCard/Visa.png"
 import Mastercard from "../../assets/Images/paymentCard/Mastercard.png"
 import Arrowright from "../../assets/Images/Shoppingcart/arrowright.png";
 import Select from 'react-select';
+import { loadStripe } from "@stripe/stripe-js";
+import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
+import Form from "react-bootstrap/Form";
+
+const stripePromise = loadStripe('pk_test_51HiCo6EHLDkHxi1YwwTc185yQTBuRIZktAiqLEus7vFq1kKxsrir4UlAUVCP6rRokopLAFCYY1DKowhrjZuLhyv200gfW8PqZc');
+
+const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState(null);
+  const [cardError, setCardError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const userId = sessionStorage.getItem("userId");
+  const [formData, setFormData] = useState({
+    name: "",
+    companey_name: "",
+    street_address: "",
+    aparment: "",
+    town: "",
+    // state: "",
+    phone_number: "",
+    email: "",
+  });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // setLoading(true);
+
+    const cardElement = elements.getElement(CardElement);
+    setLoading(true);
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+      billing_details: { email },
+    });
+
+
+
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+      return;
+    }
+    console.log(paymentMethod.id, 'paymentMethod.id');
+    const token = sessionStorage.getItem("userToken");
+
+    const orderItems = {
+      product_id: butItNowData?.data?.[0]?.products?.[0]?.id,
+      price: butItNowData?.data?.[0]?.products?.[0]?.buynowprice,
+      quantity: butItNowData?.data?.[0]?.products?.[0]?.buynowquantity,
+      attributes: JSON.stringify(butItNowData?.data?.[0]?.products?.[0]?.attributes),
+    }
+
+    const formData = {
+      payment_type: "Card",
+      discountcode: "discount",
+      subtotal_cost: "10",
+      service_code: shipping.service_code,
+      weight: butItNowData?.weight,
+      shipping_cost: shipping.shipping_amount?.amount,
+      order_total: butItNowData.total,
+      payment_intents: "pi_3Oj5IqBL2ne1CK3D0hkRy72C",
+      Currency: "2",
+      order_type: "BuyNow",
+      orderItems: JSON.stringify([orderItems]),
+      other_address: "false",
+      secondaddress: "",
+      pm_card_Id: paymentMethod.id
+    }
+    try {
+      const response = await CheckoutServices.checkoutButItNow(formData);
+      navigate('/')
+    } catch (error) {
+      toast.error(error?.response?.data?.message)
+    }
+    setLoading(false);
+  };
+
+  const handleCardChange = (event) => {
+    if (event.error) {
+      setCardError(event.error.message)
+      console.log("Card validation error:", event.error.message);
+    } else {
+      setCardError('')
+    }
+  };
+
+  return (
+
+    <Form onSubmit={handleSubmit}>
+      <div className="card-element-container">
+        <CardElement className="card-element" options={{
+          style: {
+            base: {
+              fontSize: '16px',
+              color: '#000',
+              '::placeholder': {
+                color: '#aab7c4',
+              },
+            },
+            invalid: {
+              color: '#9e2146',
+            },
+          },
+          hidePostalCode: true,
+        }}
+          onChange={handleCardChange}
+        />
+        <p className="input-error-show">{cardError}</p>
+      </div>
+      <div className="cart-button-btn-cpn cart-button-btn-div  cart-button-btn-div01">
+        <button className='proceedCheckout3 mt-2' type="submit" disabled={!stripe || loading}>
+          {loading ? 'Loading...' : 'Confirm & Pay'}
+        </button>
+      </div>
+    </Form>
+  );
+};
 
 const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
   const dispatch = useDispatch();
@@ -34,8 +161,8 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
   const getBuyItNowData = async () => {
     try {
       const response = await CheckoutServices.getBuyItNowData();
-      console.log(response?.data?.[0]?.products?.[0] , 'getBuyItNowData');
-      
+      console.log(response?.data?.[0]?.products?.[0], 'getBuyItNowData');
+
       setButItNowData(response)
     } catch (error) {
       toast.error(error?.response?.data?.message)
@@ -135,7 +262,7 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                     <div className="product-detail">
                       <div className="product-image">
                         <>
-    
+
                           {butItNowData?.data?.[0]?.products?.[0]?.underage === 0 && <span className="plus21">21 +</span>}
                           {butItNowData?.data?.[0]?.products?.[0]?.media?.length > 0 ? (
                             <img src={butItNowData?.data?.[0]?.products?.[0]?.media?.[0]?.name} />
@@ -164,7 +291,7 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                   </div>
                 </div>
               </div>
-              <div className="order-details" id="border-order-details">
+              {/* <div className="order-details" id="border-order-details">
                 <div><h3 id="storetitle">Pay with</h3></div>
                 <div className="b-w-p-w">
                   <div className="b-w-p-w-l">SELECT A PAYMENT OPTION</div>
@@ -207,7 +334,7 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
               <div className="order-details" id="border-order-details">
                 <h5 onClick={toggleDiscountField}>
                   Coupons, Vouchers, Discount Codes
@@ -262,6 +389,16 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                   <div className="b-w-p-w-r" onClick={() => { getShippingData() }}>Shipping</div>
                 </div>
               </div>
+              {shipping?.shipping_amount?.amount ?
+                <div className="stripe-payment-card">
+                  <div className="stripe-title">Card Info</div>
+                  <Elements stripe={stripePromise}>
+                    <PaymentForm butItNowData={butItNowData} shipping={shipping} />
+                  </Elements>
+                </div>
+                :
+                null
+              }
 
             </div>
             <div className="col-lg-4">
@@ -272,20 +409,29 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                     <th className="boldthtotal">Subtotal ( 1 item )</th>
                     <td className="boldthtotal">${butItNowData?.data?.[0]?.products?.[0]?.buynowprice}</td>
                   </tr>
-                  <tr>
-                    <th className="boldthtotal">Shipping</th>
-                    <td className="boldthtotal">${shipping?.shipping_amount?.amount ? shipping?.shipping_amount?.amount : 0}</td>
-                  </tr>
+                  {shipping?.shipping_amount?.amount ?
+                    <tr>
+                      <th className="boldthtotal">Shipping</th>
+                      <td className="boldthtotal">${shipping?.shipping_amount?.amount}</td>
+                    </tr>
+                    :
+                    null
+                  }
                   <tr>
                     <th className="totalthtextbold">Order Total</th>
-                    <td className="totalthtextbold">${butItNowData.total}</td>
+                    {shipping?.shipping_amount?.amount ?
+                      <td className="totalthtextbold">${(+butItNowData.total)+(+shipping?.shipping_amount?.amount)}</td>
+                      :
+                      <td className="totalthtextbold">${butItNowData.total}</td>
+                    }
+
                   </tr>
                 </table>
                 <div className="imgtoop">
                   <img src={Payment} alt="" />
-                  <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() => { checkoutButItNow() }}>
+                  {/* <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() => { checkoutButItNow() }}>
                     Confirm & Pay
-                  </button>
+                  </button> */}
                 </div>
               </div>
 

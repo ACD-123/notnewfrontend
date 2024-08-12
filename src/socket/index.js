@@ -5,9 +5,9 @@ window.Pusher = Pusher;
 const laravelEcho = new Echo({
     broadcaster: 'pusher',
     key: 'c8f4b6fdabd19545a257',
-    wsHost: "159.223.129.107",
-    wsPort: 6001,
-    forceTLS: false,
+    wsHost: "notnewbackendv1.testingwebsitelink.com",
+    wssPort: 6001,
+    forceTLS: true,
     disableStats: true,
     cluster: 'us2',
     enabledTransports: ['ws', 'wss'],

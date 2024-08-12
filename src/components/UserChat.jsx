@@ -227,7 +227,7 @@ function UserChat() {
                                                                     />
                                                                     :
                                                                     <img
-                                                                        src={chat?.sender_profile_image ? "http://159.223.129.107/" + chat?.sender_profile_image : blank}
+                                                                        src={chat?.sender_profile_image ? "https://notnewbackendv1.testingwebsitelink.com/" + chat?.sender_profile_image : blank}
                                                                         style={{ borderRadius: "40px" }} width="40" height="40"
                                                                     />
                                                                 }
@@ -272,7 +272,7 @@ function UserChat() {
                                                             {selectedChat?.sender_profile_image?.includes('google') ?
                                                                 <img src={selectedChat?.sender_profile_image} />
                                                                 :
-                                                                <img src={"http://159.223.129.107/" + selectedChat?.sender_profile_image} />
+                                                                <img src={"https://notnewbackendv1.testingwebsitelink.com/" + selectedChat?.sender_profile_image} />
                                                             }
                                                         </>
                                                     ) : (
@@ -295,7 +295,7 @@ function UserChat() {
                                                                         key={msg?.id}
                                                                         className="sent-message">
                                                                         <div className="sent-message-wrap">
-                                                                            <img src={"http://159.223.129.107/" + msg?.testuser?.profile_image} />
+                                                                            <img src={"https://notnewbackendv1.testingwebsitelink.com/" + msg?.testuser?.profile_image} />
                                                                             <p className="message">{msg?.message}</p>
                                                                         </div>
                                                                     </div>
@@ -311,8 +311,8 @@ function UserChat() {
                                                                                     {msg?.testuser?.profile_image?.includes("http") ?
                                                                                         <img src={msg?.testuser?.profile_image} />
                                                                                         :
-                                                                                        // <img src={"http://159.223.129.107/" + msg?.participants?.profile_image} />
-                                                                                        <img src={"http://159.223.129.107/" + msg?.seller?.cover_image} />
+                                                                                        // <img src={"https://notnewbackendv1.testingwebsitelink.com/" + msg?.participants?.profile_image} />
+                                                                                        <img src={"https://notnewbackendv1.testingwebsitelink.com/" + msg?.seller?.cover_image} />
                                                                                     }
                                                                                 </>
                                                                             ) : (

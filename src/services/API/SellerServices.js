@@ -56,6 +56,14 @@ function update(data) {
   })
 }
 
+function updateVideo(data) {
+  return request({
+    url: `${baseUrl}seller/updateVideo`,
+    data,
+    method: 'POST',
+  })
+}
+
 function deleteAccount(id){
   return request({
     url: `${baseUrl}seller/deleteAccount/${id}`,
@@ -181,6 +189,14 @@ function setBank(data) {
     })
   }
 
+  function updateNotificationSetting(data) {
+    return request({
+      url: `${baseUrl}user/updateNotificationSetting`,
+      data,
+      method: 'POST',
+    })
+  }
+
   function getShopDetails(id) {
     return request({
       url: `${baseUrl}seller/getshopdetails/${id}`,
@@ -190,6 +206,13 @@ function setBank(data) {
   function getShopDetail() {
     return request({
       url: `${baseUrl}seller/getshopdetails`,
+      method: 'GET',
+    })
+  }
+
+  function getNotificationSetting() {
+    return request({
+      url: `${baseUrl}user/getNotificationSetting`,
       method: 'GET',
     })
   }
@@ -221,7 +244,10 @@ const SellerServices = {
   getTopSellers,
   getShopDetail,
   createSellerReport,
-  changePassword
+  changePassword,
+  updateVideo,
+  getNotificationSetting,
+  updateNotificationSetting
 }
 
 export default SellerServices

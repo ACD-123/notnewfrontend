@@ -50,6 +50,7 @@ import TopSelling21Plus from "../pages/TopSelling21Plus"
 import ExploreAll21Plus from "../pages/ExploreAll21Plus"
 import laravelEcho from "../socket"
 import HomeService from "../services/API/HomeService"
+import NotificationPreferences from "../pages/NotificationPreferences"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -124,6 +125,7 @@ const PublicRoutes = () => {
 					<Route path="/signup" element={<SignUp />} />
 					<Route path="/emailverification/:email" element={<EmailVerification />} />
 					<Route path="/signin" element={<SignIn />} />
+					<Route path="/notification-setting" element={<NotificationPreferences cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/21-plus" element={<TwentyOnePlus cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/explore-all-21-plus" element={<ExploreAll21Plus cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/new-arrival-21-plus" element={<NewArrivals21Plus cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />

@@ -9,10 +9,10 @@ import LoadingComponents from "../../Shared/LoadingComponents";
 import { MdDelete } from "react-icons/md";
 
 const libraries = ['places'];
-const EditProfileSetup = ({ getShopDetaill }) => {
+const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
   const inputRef = useRef();
   const [inputErrors, setInputErrors] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [enabled, setEnabled] = useState(false);
   const [editprofile, setEditprofile] = useState({
     country_id: "",
@@ -28,9 +28,9 @@ const EditProfileSetup = ({ getShopDetaill }) => {
     longitude: "",
     description: "",
     file: "",
+    video: "",
     editImage: false,
-    editVideo: false,
-    video: ''
+    editVideo: false
   });
   const fileInputRef = useRef(null);
   const videoInputRef = useRef(null);
@@ -83,49 +83,82 @@ const EditProfileSetup = ({ getShopDetaill }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setInputErrors(true)
-    if (editprofile?.fullname === "" &&
-      editprofile?.file === "" &&
-      editprofile?.address === "" &&
-      editprofile?.city_id === "" &&
-      editprofile?.country_id === "" &&
-      editprofile?.zip === "" &&
-      editprofile?.description === "") {
-      return
-    }
+    if (editprofile?.fullname === "" && editprofile?.file === "" && editprofile?.address === "" &&
+      editprofile?.city_id === "" && editprofile?.country_id === "" && editprofile?.zip === "" &&
+      editprofile?.description === "" && editprofile?.video === ""
+    ) { return }
     setIsLoading(true);
     setEnabled(true);
+    // if (editprofile.editVideo) {
     const fd = new FormData();
-    fd.append("fullname", editprofile.fullname);
-    fd.append("email", editprofile.email);
-    fd.append("address", editprofile?.address);
-    fd.append("phone", editprofile.phone);
-    fd.append("country_id", editprofile.country_id);
-    fd.append("state_id", editprofile.state_id);
-    fd.append("city_id", editprofile.city_id);
-    fd.append("zip", editprofile.zip);
-    fd.append("latitude", editprofile.latitude);
-    fd.append("longitude", editprofile.longitude);
-    fd.append("description", editprofile.description);
     fd.append("video", editprofile.video);
-
-    if (editprofile.editImage) {
-      fd.append("file", editprofile?.file);
-    }
-    fd.append("guid", editprofile?.guid);
-    SellerServices.update(fd)
+    fd.append("deleted", editprofile.video ? 0 : 1);
+    SellerServices.updateVideo(fd)
       .then((response) => {
-        toast.success(response.data);
-        getShopDetaill()
+        const fd = new FormData();
+        fd.append("fullname", editprofile.fullname);
+        fd.append("email", editprofile.email);
+        fd.append("address", editprofile?.address);
+        fd.append("phone", editprofile.phone);
+        fd.append("country_id", editprofile.country_id);
+        fd.append("state_id", editprofile.state_id);
+        fd.append("city_id", editprofile.city_id);
+        fd.append("zip", editprofile.zip);
+        fd.append("latitude", editprofile.latitude);
+        fd.append("longitude", editprofile.longitude);
+        fd.append("description", editprofile.description);
+
+        if (editprofile.editImage) {
+          fd.append("file", editprofile?.file);
+        }
+        fd.append("guid", editprofile?.guid);
+        SellerServices.update(fd)
+          .then((response) => {
+            toast.success(response.data);
+            getShopDetaill()
+          })
+          .catch((error) => {
+            toast.error(error?.response?.data?.message)
+            setIsLoading(false);
+            setEnabled(false);
+          })
       })
       .catch((error) => {
         toast.error(error?.response?.data?.message)
         setIsLoading(false);
         setEnabled(false);
       })
-      .then(() => {
-        setIsLoading(false);
-        setEnabled(false);
-      });
+    // } else {
+    //   const fd = new FormData();
+    //   fd.append("fullname", editprofile.fullname);
+    //   fd.append("email", editprofile.email);
+    //   fd.append("address", editprofile?.address);
+    //   fd.append("phone", editprofile.phone);
+    //   fd.append("country_id", editprofile.country_id);
+    //   fd.append("state_id", editprofile.state_id);
+    //   fd.append("city_id", editprofile.city_id);
+    //   fd.append("zip", editprofile.zip);
+    //   fd.append("latitude", editprofile.latitude);
+    //   fd.append("longitude", editprofile.longitude);
+    //   fd.append("description", editprofile.description);
+
+    //   if (editprofile.editImage) {
+    //     fd.append("file", editprofile?.file);
+    //   }
+    //   fd.append("guid", editprofile?.guid);
+    //   SellerServices.update(fd)
+    //     .then((response) => {
+    //       toast.success(response.data);
+    //       getShopDetaill()
+    //     })
+    //     .catch((error) => {
+    //       toast.error(error?.response?.data?.message)
+    //       setIsLoading(false);
+    //       setEnabled(false);
+    //     })
+    // }
+
+
   }
 
   const handleChange = (e) => {
@@ -152,7 +185,11 @@ const EditProfileSetup = ({ getShopDetaill }) => {
           latitude: response?.data?.latitude,
           longitude: response?.data?.longitude,
           description: response?.data?.description,
-          file: response?.data?.cover_image
+          file: response?.data?.cover_image,
+          video: response?.data?.video,
+          editImage: false,
+          editVideo: false
+
         })
         setIsLoading(false);
 
@@ -167,29 +204,32 @@ const EditProfileSetup = ({ getShopDetaill }) => {
     getShopDetail();
   }, []);
 
-  const handleDeleteImage = (index) => {
-    console.log(index, 'dasdasdasdsa');
-
-    const updatedFiles = [...editprofile.video];
-    updatedFiles.splice(index, 1);
-    setEditprofile(prev => ({ ...prev, file: updatedFiles }));
-  };
-
-
   const handleImageFileChange = (e) => {
-    setEditprofile(prev => ({ ...prev, file: e.target.files[0], editImage: true }));
+    return setEditprofile(prev => ({ ...prev, file: e.target.files[0], editImage: true }));
   };
 
   const handleVideoChange = (e) => {
-    console.log(e.target.files[0] , 'e.target.files[0]');
-    
-    setEditprofile(prev => ({ ...prev, video: e.target.files[0], editVideo: true }));
+    const file = e.target.files[0];
+    if (file && file.size > 5 * 1024 * 1024) {
+      toast.error("File size must be less than 5MB");
+      e.target.value = null;
+      return;
+    }
+
+    setEditprofile({ ...editprofile, video: file, editVideo: true });
+    e.target.value = null;
   };
 
-  const oldImagesDelete = (id) => {
+  const deleteSelectedVideo = () => {
+    setEditprofile({ ...editprofile, video: "", editVideo: false });
+  }
 
-    const prevIds = [...editprofile.video]
-    setEditprofile(prev => ({ ...prev, old_files: [...prevIds, id] }));
+  const updateSellerVideo = () => {
+    if (editprofile.editVideo) {
+
+    } else {
+      handleSubmit()
+    }
   }
 
   return (
@@ -332,46 +372,47 @@ const EditProfileSetup = ({ getShopDetaill }) => {
                       </div>
                     </div>
                     <div className="p-m-i-u">
-                      <div className="p-m-i-u-wrap">
-                        <div className="upload-box" onClick={handleVideoUploadClick}>
-                          <svg width="96" height="97" viewBox="0 0 96 97" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M29.8004 48.4615H66.1696M47.985 66.6462V30.2769M47.985 93.9231C72.9888 93.9231 93.4465 73.4654 93.4465 48.4615C93.4465 23.4577 72.9888 3 47.985 3C22.9811 3 2.52344 23.4577 2.52344 48.4615C2.52344 73.4654 22.9811 93.9231 47.985 93.9231Z" stroke="#BBBBBB" stroke-width="4.54615" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
-                          <span>Click here to upload Video</span>
-                          <input
-                            type="file"
-                            ref={videoInputRef}
-                            accept="video/*" // Change this to accept video files
-                            style={{ display: 'none' }}
-                            onChange={handleVideoChange}
-                          />
-                        </div>
-                      </div>
-                      {editprofile?.video?.length > 0 ?
-                        <div className="selected-images">
-                          <div className="row">
-                            {editprofile?.video.map((image, index) => {
-                              return (
-                                !editprofile?.editVideo ?
-                                  <div className="col-lg-2" key={index}>
-                                    <div className="selected-images-box">
-                                      <img src={image?.name} alt="" />
-                                      <span onClick={() => { handleDeleteImage(index); oldImagesDelete(image?.id) }}><MdDelete /></span>
-                                    </div>
-                                  </div>
-                                  :
-                                  <div className="col-lg-2" key={index}>
-                                    <div className="selected-images-box">
-                                      <img src={URL.createObjectURL(image)} alt="" />
-                                      <span onClick={() => { handleDeleteImage(index) }}><MdDelete /></span>
-                                    </div>
-                                  </div>
-
-                              )
-                            })}
+                      {!editprofile?.editVideo && editprofile?.video == '' &&
+                        <div className="p-m-i-u-wrap">
+                          <div className="upload-box" onClick={handleVideoUploadClick}>
+                            <svg width="96" height="97" viewBox="0 0 96 97" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M29.8004 48.4615H66.1696M47.985 66.6462V30.2769M47.985 93.9231C72.9888 93.9231 93.4465 73.4654 93.4465 48.4615C93.4465 23.4577 72.9888 3 47.985 3C22.9811 3 2.52344 23.4577 2.52344 48.4615C2.52344 73.4654 22.9811 93.9231 47.985 93.9231Z" stroke="#BBBBBB" stroke-width="4.54615" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span>Click here to upload Video</span>
+                            <input
+                              type="file"
+                              ref={videoInputRef}
+                              accept="video/*"
+                              style={{ display: 'none' }}
+                              onChange={handleVideoChange}
+                            />
                           </div>
                         </div>
-                        : null}
+                      }
+                      <div className="selected-images">
+                        {editprofile?.video != '' ?
+                          (!editprofile?.editVideo && editprofile?.video?.includes('image') ?
+                            <div className="selected-videos-box">
+                              <video width="100%" controls>
+                                <source src={`${BASE_URL}/public/${editprofile?.video}`} />
+                                Your browser does not support the video tag.
+                              </video>
+                              <span onClick={() => deleteSelectedVideo()}><MdDelete /></span>
+                            </div>
+                            :
+                            <div className="selected-videos-box">
+                              <video width="100%" controls>
+                                <source src={URL.createObjectURL(editprofile?.video)} />
+                                Your browser does not support the video tag.
+                              </video>
+                              <span onClick={() => { deleteSelectedVideo() }}><MdDelete /></span>
+                            </div>
+                          )
+
+                          :
+                          null
+                        }
+                      </div>
 
                     </div>
                     <div className="b-s-u-p">

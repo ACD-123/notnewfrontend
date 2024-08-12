@@ -58,7 +58,7 @@ const ShopSetting = () => {
                             </ul>
                         </div>
                     </div>
-                    {tab === 0 && <EditProfileSetup getShopDetaill={getShopDetaill}/>}
+                    {tab === 0 && <EditProfileSetup getShopDetaill={getShopDetaill} setIsLoading={setIsLoading} isLoading={isLoading}/>}
                     {tab === 1 && <EditBankDetails />}
                     {/* {tab === 2 && <SellingNotifications />} */}
                 </div>

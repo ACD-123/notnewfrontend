@@ -292,6 +292,7 @@ section#singup .register form button.btn.btn-primary {
   border-radius: 13px;
   background: #F0F0F0;
   border: 0;
+  height: 200px;
 }
 
 #seller-account-creating button {
@@ -6326,6 +6327,25 @@ th {
   margin: 0;
   white-space: nowrap;
 }
+.selected-images .selected-videos-box{
+  position: relative;
+}
+.selected-images .selected-videos-box video{
+  border-radius: 22px;
+}
+.selected-images .selected-videos-box span{
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  background: #000;
+  padding: 3px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.selected-images .selected-videos-box span svg{
+  font-size: 30px;
+    color: red;
+}
 
 .selected-images {
   /* display: flex; */
@@ -8358,7 +8378,9 @@ input::-webkit-inner-spin-button {
   position: relative;
 }
 
-.seller-oder-managment-detail .s-o-m-d-2 .s-o-m-d-2-1 .s-o-m-d-2-1-l img {}
+.seller-oder-managment-detail .s-o-m-d-2 .s-o-m-d-2-1 .s-o-m-d-2-1-l img {
+  width: 160px;
+}
 
 .seller-oder-managment-detail .s-o-m-d-2 .s-o-m-d-2-1 .s-o-m-d-2-1-l svg {
   position: absolute;
@@ -11737,6 +11759,130 @@ input::-webkit-inner-spin-button {
   line-height: 26px;
   text-align: left;
   color: #b3b3b3;
+}
+
+
+
+
+#seller-account-creating .p-m-i-u {
+  /* margin: 20px 0px 0px 0px; */
+}
+
+#seller-account-creating .p-m-i-u p {
+  font-family: 'Cairo';
+  font-size: 16.79px;
+  font-weight: 400;
+  line-height: 31.47px;
+  text-align: left;
+  color: #878787;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 21px !important;
+}
+
+#seller-account-creating .p-m-i-u .p-m-i-u-wrap {
+  height: 200px;
+  border: 2.97px dotted #D4D4D4;
+  border-radius: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+#seller-account-creating .p-m-i-u .upload-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#seller-account-creating .p-m-i-u .upload-box svg{
+  width: 70px;
+}
+
+#seller-account-creating .p-m-i-u .upload-box span {
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #b3b3b3;
+}
+
+#seller-account-creating .selected-videos-box video{
+  border-radius: 22px;
+  height: 200px;
+}
+
+.user-notification-setting{
+  margin: 73px 0px;
+    height: 100%;
+}
+.user-notification-setting .user-notification-setting-wrap{}
+.user-notification-setting .user-notification-setting-wrap ul{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.user-notification-setting .user-notification-setting-wrap ul li{
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  justify-content: space-between;
+  list-style: none;
+}
+.user-notification-setting .user-notification-setting-wrap ul li .title{}
+.user-notification-setting .user-notification-setting-wrap ul li .title h3{}
+.user-notification-setting .user-notification-setting-wrap ul li .title p{
+  margin: 0;
+}
+.user-notification-setting .user-notification-setting-wrap ul li .check{}
+.user-notification-setting .user-notification-setting-wrap ul li .check .switch3{
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  text-align: left;
+  color: #696969;
+  margin: 0;
+  margin-bottom: 5px;
+  text-transform: capitalize;
+}
+.user-notification-setting .user-notification-setting-wrap ul li .check .switch3 .radio{
+  width: -webkit-fill-available;
+  margin-bottom: 10px;
+  background: #F0F0F0;
+  border: 0;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: 'Cairo';
+}
+
+
+
+.user-notification-setting .user-notification-setting-wrap ul li .check .switch3 .slider3{
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #8037A3;
+  transition: 0.4s;
+  border-radius: 34px;
+  cursor: pointer;
+  height: 34px;
+}
+
+.user-notification-setting .slider3.active {
+  background-color: #00C2C9 !important;
+}
+
+.user-notification-setting  .slider3.active:before {
+  transform: translateX(26px);
 }
 
 @media (max-width: 1024px) {
