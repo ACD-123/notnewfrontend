@@ -13,7 +13,7 @@ import Form from "react-bootstrap/Form";
 import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { Modal } from "react-bootstrap";
-import {  MdEdit } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 
 const stripePromise = loadStripe('pk_test_51HiCo6EHLDkHxi1YwwTc185yQTBuRIZktAiqLEus7vFq1kKxsrir4UlAUVCP6rRokopLAFCYY1DKowhrjZuLhyv200gfW8PqZc');
@@ -254,20 +254,20 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
     }
   }
 
-  const deleteCouponeCode = async (e , dataa) => {
+  const deleteCouponeCode = async (e, dataa) => {
     e.preventDefault();
-      try {
-        const data = {
-          store_id: dataa?.storeid,
-          coupon_code: dataa?.coupon_code,
-          user_id: user_id,
-        };
-        const res = await ProductServices.deleteCouponeCode(data);
-        toast.success(res?.message)
-        getBuyItNowData()
-      } catch (error) {
-        toast.error(error?.response?.data?.message);
-      }
+    try {
+      const data = {
+        store_id: dataa?.storeid,
+        coupon_code: dataa?.coupon_code,
+        user_id: user_id,
+      };
+      const res = await ProductServices.deleteCouponeCode(data);
+      toast.success(res?.message)
+      getBuyItNowData()
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
   }
 
   useEffect(() => {
@@ -288,8 +288,8 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                       {data?.coupon_code ?
                         <div className="couple-added">
                           <p>{data?.coupon_code}</p>
-                          <span className="edit" onClick={() => { setShowDiscountPopup(true); setSelectedData(data); setCouponeCode(data?.coupon_code)}}><MdEdit /></span>
-                          <span className="delete"onClick={(e) => { deleteCouponeCode(e , data) }}><MdDelete /></span>
+                          <span className="edit" onClick={() => { setShowDiscountPopup(true); setSelectedData(data); setCouponeCode(data?.coupon_code) }}><MdEdit /></span>
+                          <span className="delete" onClick={(e) => { deleteCouponeCode(e, data) }}><MdDelete /></span>
                         </div>
                         :
                         <button onClick={() => { setShowDiscountPopup(true); setSelectedData(data) }}>Apply coupon</button>
@@ -452,27 +452,33 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                     <td className="boldthtotal">${butItNowData?.sub_total}</td>
                   </tr>
                   {+butItNowData?.discount > 0 ?
-                  <tr>
-                    <th className="boldthtotal">Discount</th>
-                    <td className="boldthtotal">${butItNowData?.discount}</td>
-                  </tr>
-                  :
-                  null
+                    <tr>
+                      <th className="boldthtotal">Discount</th>
+                      <td className="boldthtotal">${butItNowData?.discount}</td>
+                    </tr>
+                    :
+                    null
+                  }
+                  {shipping?.shipping_amount?.amount &&
+                    <tr>
+                      <th className="boldthtotal">Shipping</th>
+                      <td className="boldthtotal">${shipping?.shipping_amount?.amount ? shipping?.shipping_amount?.amount : 0}</td>
+                    </tr>
                   }
                   <tr>
-                    <th className="boldthtotal">Shipping</th>
-                    <td className="boldthtotal">${shipping?.shipping_amount?.amount ? shipping?.shipping_amount?.amount : 0}</td>
-                  </tr>
-                  <tr>
                     <th className="totalthtextbold">Order Total</th>
-                    <td className="totalthtextbold">${(+butItNowData?.total) + (+shipping?.shipping_amount?.amount)}</td>
+                    {shipping?.shipping_amount?.amount ?
+                      <td className="totalthtextbold">${(+butItNowData?.total) + (+shipping?.shipping_amount?.amount)}</td>
+                      :
+                      <td className="totalthtextbold">${(+butItNowData?.total)}</td>
+                    }
                   </tr>
                 </table>
                 <div className="imgtoop">
                   <img src={Payment} alt="" />
-                  <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() => { checkout() }}>
+                  {/* <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() => { checkout() }}>
                     Confirm & Pay
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

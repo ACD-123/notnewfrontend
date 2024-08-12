@@ -741,6 +741,7 @@ header .header-wrap .header-top {
   align-items: center;
   justify-content: space-between;
   border: none;
+  gap: 40px;
 }
 
 header .header-wrap .header-top .header-left {}
@@ -1008,6 +1009,7 @@ header .header-wrap .header-top .header-right .sign-in-button a {
   font-size: 18px;
   font-weight: 700;
   line-height: 28px;
+  white-space: nowrap;
 }
 
 header .header-wrap .header-top .header-right .cart {
@@ -1047,8 +1049,8 @@ header .header-wrap .header-top .header-right .notification {
 }
 
 header .header-wrap .header-top .header-right .notification .notification-wrap {
-  width: 100%;
-  height: 100%;
+  width: 48.5px;
+  height: 48.5px;
   background: #fff;
   border-radius: 100%;
   display: flex;
