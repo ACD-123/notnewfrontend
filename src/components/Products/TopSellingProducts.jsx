@@ -3,6 +3,7 @@ import React from "react";
 import ProductCard from "../../components/Shared/Cards/ProductCard";
 import { Link } from "react-router-dom";
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
+import NoDataFound from "../Shared/NoDataFound";
 
 const TopSellingProducts = ({ data, setTopSellingProducts, title, loading }) => {
 
@@ -40,11 +41,16 @@ const TopSellingProducts = ({ data, setTopSellingProducts, title, loading }) => 
 
                   </>
                   :
+                 ( 
+                  data.length > 0 ?
                   data?.map((product, index) => (
                     <div className="col col-lg-3" key={product?.product?.guid}>
                      <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index}/>
                     </div>
                   ))
+                :
+                <NoDataFound title={'No top selling product found'}/>
+              )
                 }
               </div>
             </div>

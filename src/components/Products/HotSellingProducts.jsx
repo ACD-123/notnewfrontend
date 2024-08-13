@@ -15,6 +15,7 @@ import UserServices from "../../services/API/UserServices"; //~/services/API/Aut
 import { CiHeart } from "react-icons/ci";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
+import NoDataFound from "../Shared/NoDataFound";
 
 const HotSellingProducts = ({ loading, data, setHotProducts, title }) => {
   const [productData, setProductData] = useState([]);
@@ -84,11 +85,16 @@ const HotSellingProducts = ({ loading, data, setHotProducts, title }) => {
 
                   </>
                   :
-                  data?.map((product, index) => (
-                    <div className="col col-lg-3" key={product?.guid}>
-                   <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index}/>
-                  </div>
-                  ))
+                  (
+                    data.legth > 0 ?
+                      data?.map((product, index) => (
+                        <div className="col col-lg-3" key={product?.guid}>
+                          <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
+                        </div>
+                      ))
+                      :
+                      <NoDataFound title={'No hot selling product found'}/>
+                  )
                 }
               </div>
             </div>

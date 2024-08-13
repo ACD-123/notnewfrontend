@@ -15,6 +15,7 @@ import UserServices from "../../services/API/UserServices"; //~/services/API/Aut
 import { CiHeart } from "react-icons/ci";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
+import NoDataFound from "../Shared/NoDataFound";
 
 const RecentViewedItems = ({ title }) => {
   const [productData, setProductData] = useState([]);
@@ -98,11 +99,16 @@ const RecentViewedItems = ({ title }) => {
                     </div>
                   </>
                   :
-                  productData.map((product, index) => (
+                  (
+                    productData.legth > 0 ?
+                    productData.map((product, index) => (
                     <div className="col col-lg-3" key={product?.guid}>
                       <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index}/>
                     </div>
                   ))
+                  :
+                  <NoDataFound title={'No new item product found'}/>
+                )
                 }
               </div>
             </div>
