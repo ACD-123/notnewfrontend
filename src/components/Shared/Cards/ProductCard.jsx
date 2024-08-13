@@ -61,16 +61,29 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                 {data?.product?.auctioned ?
                                     <h2>${data?.product?.bids}</h2>
                                     :
-                                    <h2>${data?.product?.price}
-                                        {data?.product?.sale_price > 0 ?
-                                            <>
+                                    data?.product?.sale_price > 0 ?
+                                        (<>
+                                            <h2>${data?.product?.sale_price}
                                                 <div className="circle"></div>
-                                                <div className="sale-price">${data?.product?.sale_price}</div>
-                                            </>
-                                            :
-                                            null
-                                        }
-                                    </h2>
+                                                <div className="sale-price">${data?.product?.price}</div>
+                                            </h2>
+                                        </>)
+                                        :
+                                        (<>
+                                            <h2>${data?.product?.price}</h2>
+                                        </>)
+
+
+                                    //         < h2 > ${data?.product?.price}
+                                    //     {data?.product?.sale_price > 0 ?
+                                    //         <>
+                                    //             <div className="circle"></div>
+                                    //             <div className="sale-price">${data?.product?.sale_price}</div>
+                                    //         </>
+                                    //         :
+                                    //         null
+                                    //     }
+                                    // </h2>
                                 }
 
                             </Link>
@@ -95,7 +108,7 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                             </>
                         )}
                     </div>
-                </div>
+                </div >
                 :
                 <div className="productlist">
                     <>
@@ -130,16 +143,27 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                         <h2>${data?.bid_price}</h2>
                                     )
                                     :
-                                    <h2>${data?.price}
-                                        {data?.sale_price > 0 ?
-                                            <>
+                                    // <h2>${data?.price}
+                                    //     {data?.sale_price > 0 ?
+                                    //         <>
+                                    //             <div className="circle"></div>
+                                    //             <div className="sale-price">${data?.sale_price}</div>
+                                    //         </>
+                                    //         :
+                                    //         null
+                                    //     }
+                                    // </h2>
+                                    data?.sale_price > 0 ?
+                                        (<>
+                                            <h2>${data?.sale_price}
                                                 <div className="circle"></div>
-                                                <div className="sale-price">${data?.sale_price}</div>
-                                            </>
-                                            :
-                                            null
-                                        }
-                                    </h2>
+                                                <div className="sale-price">${data?.price}</div>
+                                            </h2>
+                                        </>)
+                                        :
+                                        (<>
+                                            <h2>${data?.price}</h2>
+                                        </>)
                                 }
                             </Link>
                         </>

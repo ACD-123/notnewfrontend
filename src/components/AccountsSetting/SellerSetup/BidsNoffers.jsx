@@ -147,7 +147,7 @@ const BidsNoffers = () => {
                         return (
                           <li key={index}>
                             <div className="s-n-t-s-l">
-                              <img src={data?.media?.[0]?.name} alt="" srcset="" />
+                              <img src={data?.media?.[0]?.name} />
                             </div>
                             <div className="s-n-t-s-c">
                               <h2>{data?.name}</h2>
@@ -173,7 +173,7 @@ const BidsNoffers = () => {
                         return (
                           <li key={index}>
                             <div className="s-n-t-s-l">
-                              <img src={data?.media?.[0]?.name} alt="" srcset="" />
+                              <img src={data?.media?.[0]?.name} />
                             </div>
                             <div className="s-n-t-s-c">
                               <h2>{data?.name}</h2>

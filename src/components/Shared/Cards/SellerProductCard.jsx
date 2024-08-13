@@ -3,7 +3,7 @@ import blank from "../../../assets/Images/Productcard/blank.jpg";
 import { Link } from "react-router-dom";
 import { MdDelete } from "react-icons/md";
 
-const SellerProductCard = ({ data, setSubmitted, setProductId , deleteSellerProduct }) => {
+const SellerProductCard = ({ data, setSubmitted, setProductId, deleteSellerProduct }) => {
 
     return (
         <>
@@ -61,9 +61,9 @@ const SellerProductCard = ({ data, setSubmitted, setProductId , deleteSellerProd
                             {data?.sale_price > 0 ?
                                 <>
                                     <span>
-                                        ${data?.price}
+                                        ${data?.sale_price}
                                         <div className="circle"></div>
-                                        <div className="sale-price">${data?.sale_price}</div>
+                                        <div className="sale-price">${data?.price}</div>
                                     </span>
                                     <div className="edit" onClick={() => { setSubmitted(true); setProductId(data?.guid) }}>Edit</div>
                                     <div className="delete" onClick={() => { deleteSellerProduct(data?.id) }}><MdDelete /></div>

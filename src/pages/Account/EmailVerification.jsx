@@ -25,28 +25,25 @@ const EmailVerification = () => {
     let countdownInterval;
 
     if (resendCountdown > 0) {
-      // Start the countdown timer if the countdown value is greater than 0
       countdownInterval = setInterval(() => {
-        setResendCountdown((prevCountdown) => prevCountdown - 1); // Decrement countdown value every second
+        setResendCountdown((prevCountdown) => prevCountdown - 1);
       }, 1000);
     }
 
     return () => {
-      // Cleanup function to clear the interval when component unmounts or countdown reaches 0
       clearInterval(countdownInterval);
     };
-  }, [resendCountdown]); // Run the effect whenever the resendCountdown state changes
+  }, [resendCountdown]);
 
   const extractEmail = () => {
-    setEmail(params.email); // Extract email from useParams hook
+    setEmail(params.email);
   }
   const handleInputChange = (index, value) => {
     if (value.length > 1) {
-      value = value.slice(0, 1); // Limit input to one character
+      value = value.slice(0, 1);
     }
 
     if (value !== "") {
-      // Move focus to the next input field if there's input
       if (index < inputRefs.length - 1 && inputRefs[index + 1].current) {
         inputRefs[index + 1].current.focus();
       }
@@ -55,7 +52,6 @@ const EmailVerification = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Get the values from each input field for further processing
     const code = inputRefs.map((ref) => ref.current.value).join("");
     setIsLoading(true);
     setEnabled(true);
@@ -79,6 +75,7 @@ const EmailVerification = () => {
         setEnabled(false);
       });
   };
+
   const handleResend = (e) =>{
     e.preventDefault();
     setIsLoading(true);
@@ -102,9 +99,15 @@ const EmailVerification = () => {
       setEnabled(false);
     });
 }
+
   useEffect(() => {
-    extractEmail();
-  }, []);
+    const access_token = localStorage.getItem('access_token')
+    if (access_token) {
+      navigate('/')
+    } else {
+      extractEmail();
+    }
+  }, [])
 
   const formatCountdownTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);

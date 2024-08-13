@@ -15,7 +15,7 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
     const user_details = JSON.parse(localStorage.getItem('user_details'));
     const user_id = localStorage.getItem('user_id');
     const getAuctionProducts = () => {
-        HomeService.getAuctionProducts(user_id)
+        HomeService.getAuctionProducts(user_id , 1)
             .then((response) => {
                 setAuctionProducts(response?.data?.auctioned)
                 setLatestProducts(response?.data?.latest)

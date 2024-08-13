@@ -9,14 +9,23 @@ import laravelEcho from '../socket'
 import HomeService from '../services/API/HomeService'
 import { toast } from 'react-toastify'
 import { ChatNotification } from '../components/UserNotification/ChatNotification'
+import { useNavigate } from 'react-router-dom'
 
-export const UserNotification = ({getNotificationCount , notificationCount}) => {
+export const UserNotification = ({getNotificationCount , notificationCount , cartFullResponse}) => {
     const [tab, setTab] = useState(0);
+    const navigate = useNavigate()
 
+    useEffect(() => {
+        const access_token = localStorage.getItem('access_token')
+        if (access_token) {
+        } else {
+            navigate('/')                                                                                                                                                                                                                                                                                                                                                                        
+        }
+      }, [])
 
     return (
         <>
-            <Header notificationCount={notificationCount}/>
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
             <div className="notification-Page">
                 <div className="notification-Page-wrap">
                     <div className="container">

@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from "react";
-import ProfileDb from '../../../assets/Images/SellerShop/profiledb.png'
-import Icon1 from '../../../assets/Images/SellerShop/icon1.png'
 import Icon2 from '../../../assets/Images/SellerShop/icon2.png'
 import Icon3 from '../../../assets/Images/SellerShop/icon3.png'
 import SellerServices from "../../../services/API/SellerServices";
 import { toast } from "react-toastify";
 import { BASE_URL } from "../../../services/Constant";
-import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
-import UserServices from "../../../services/API/UserServices"; //~/services/API/AuthService
-import { setUserDetails, isLoggedin, getUserDetails } from "../../../services/Auth"; // ~/services/Auth
+import ProductServices from "../../../services/API/ProductServices";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import LoadingComponents from "../../Shared/LoadingComponents";
+import { useNavigate } from "react-router-dom";
+import { isLoggedin } from "../../../services/Auth";
 
 const SellerProfileDetails = ({ id }) => {
-    const { pathname } = window.location;
     const [shopData, setShopData] = useState(null);
-    // const id = pathname.split("/").pop();
     const [isLoading, setIsLoading] = useState(true);
-    const [favData, setFavData] = useState([]);
-    const [user, setUser] = useState({});
-    const [productData, setProductData] = useState({});
+    const user_id = localStorage.getItem('user_id')
+    const navigate = useNavigate()
 
     const getShopData = async () => {
         try {
@@ -36,18 +31,24 @@ const SellerProfileDetails = ({ id }) => {
         try {
             const data = {
                 favourite_against_id: productId,
-                user_id: user,
+                user_id: user_id,
                 type: "2"
             };
             const res = await ProductServices.isFavorite(data);
-            if (res.status) {
-                toast.success("Product added to favorites!");
-                setFavData(res.data);
-            }
+            toast.success(res.message);
+            getShopData()
+            // if (res.status) {
+            //     setFavData(res.data);
+            // }
         } catch (error) {
             toast.error(error?.response?.data?.message)
         }
     };
+
+    const shareThisSeller = () => {
+        navigator.clipboard.writeText(`${window.location.origin}/sellershop/${id}`);
+        toast.success('Link copied')
+    }
 
     useEffect(() => {
         getShopData();
@@ -81,8 +82,14 @@ const SellerProfileDetails = ({ id }) => {
                         </div>
                         <div className="user-data-right">
                             <ul>
-                                <li><img src={Icon3} alt="Share" />Share</li>
-                                <li><img src={Icon2} alt="Message Seller" />Message Seller</li>
+                                <li onClick={() => { shareThisSeller() }}><img src={Icon3} alt="Share" />Share</li>
+                                {isLoggedin() ?
+                                    <li onClick={() => navigate(`/customerdashboard?tab=messages&id=${id}`)}>
+                                        <img src={Icon2} alt="Message Seller" />Message Seller</li>
+                                    :
+                                    <li onClick={() => navigate(`/signup`)}>
+                                        <img src={Icon2} alt="Message Seller" />Message Seller</li>
+                                }
                                 <li> {shopData?.is_favourite === true ? (
                                     <FaHeart onClick={() => addToFavorites(shopData?.guid)} />
                                 ) : (

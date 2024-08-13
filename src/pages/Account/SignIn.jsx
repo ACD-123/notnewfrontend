@@ -66,7 +66,7 @@ const SignIn = () => {
     onSuccess: (credentialResponse) => {
       // console.log(credentialResponse , 'credentialResponse');
 
-      AuthServices.googleLogin({...credentialResponse , guest_user_id: guest_user_id})
+      AuthServices.googleLogin({ ...credentialResponse, guest_user_id: guest_user_id })
         .then((res) => {
           localStorage.setItem("user_details", JSON.stringify(res.data));
           localStorage.setItem("user_id", res.data?.id);
@@ -119,11 +119,6 @@ const SignIn = () => {
     }
   };
 
-  const checkLogin = () => {
-    if (user.length > 0) {
-      navigate('/')
-    }
-  };
   const fbInit = (response) => {
     window.fbAsyncInit = function () {
       FB.init({
@@ -196,8 +191,8 @@ const SignIn = () => {
           }
         })
         .catch((error) => {
-          console.log(error , 'errorerror');
-          
+          console.log(error, 'errorerror');
+
           toast.error(error.response.data.message);
           setIsLoading(false);
           setEnabled(false);
@@ -206,10 +201,14 @@ const SignIn = () => {
   };
 
   useEffect(() => {
-    // fbInit();
-    getUserData();
-    checkLogin();
-  }, []);
+    const access_token = localStorage.getItem('access_token')
+    if (access_token) {
+      navigate('/')
+    } else {
+      getUserData();
+    }
+  }, [])
+
   return (
     <>
       <section id="signin" style={Signinbg}>

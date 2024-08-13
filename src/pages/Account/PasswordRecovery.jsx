@@ -25,6 +25,7 @@ const PasswordRecovery = () => {
       [name]: value,
     });
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -57,6 +58,14 @@ const PasswordRecovery = () => {
         });
     }
   };
+
+  useEffect(() => {
+    const access_token = localStorage.getItem('access_token')
+    if (access_token) {
+      navigate('/')
+    } else {
+    }
+  }, [])
 
   return (
     <>

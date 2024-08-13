@@ -16,6 +16,7 @@ import Select from 'react-select';
 import { loadStripe } from "@stripe/stripe-js";
 import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
 import Form from "react-bootstrap/Form";
+import LoadingComponents from "../../components/Shared/LoadingComponents";
 
 const stripePromise = loadStripe('pk_test_51HiCo6EHLDkHxi1YwwTc185yQTBuRIZktAiqLEus7vFq1kKxsrir4UlAUVCP6rRokopLAFCYY1DKowhrjZuLhyv200gfW8PqZc');
 
@@ -37,6 +38,7 @@ const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
     phone_number: "",
     email: "",
   });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -44,6 +46,7 @@ const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
       [name]: value,
     });
   };
+
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -156,6 +159,7 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
   const [inputError, setInputError] = useState(false);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
+  const [shippingLoader, setShippingLoader] = useState(false)
   const navigate = useNavigate();
 
   const getBuyItNowData = async () => {
@@ -172,14 +176,23 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
   const getShippingData = async () => {
     setInputError(true)
     if (shippingData.postalCode != "" && shippingData.country != null) {
+      setShippingLoader(true)
       try {
         const response = await CheckoutServices.getShippingData(shippingData.country.label, shippingData.postalCode, butItNowData?.weight, '3');
         setShipping(response?.data)
+        setShippingLoader(false)
       } catch (error) {
+        setShippingLoader(false)
         toast.error(error?.response?.data?.message)
       }
     }
   }
+
+  useEffect(() => {
+    if (shippingData.postalCode.length > 2 && shippingData.country != null && !shippingLoader) {
+      getShippingData()
+    }
+  }, [shippingData.postalCode, shippingData.country])
 
   const checkoutButItNow = async () => {
 
@@ -218,9 +231,15 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
     setShowDiscountField(!showDiscountField);
   };
 
+
   useEffect(() => {
-    getBuyItNowData();
-  }, []);
+    const access_token = localStorage.getItem('access_token')
+    if (access_token) {
+      getBuyItNowData();
+    } else {
+      navigate('/')
+    }
+  }, [])
 
   const handleDiscountSubmit = async (e) => {
     e.preventDefault();
@@ -243,12 +262,13 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
     }
   };
 
-
-
-  useEffect(() => {
-  }, []);
   return (
     <>
+      {shippingLoader &&
+        <div className="full-screen-loader">
+          <LoadingComponents />
+        </div>
+      }
       <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount} />
       <section id="cart-details">
         <div className="container">
@@ -384,10 +404,10 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                     </div>
                   </div>
                 </div>
-                <div className="b-w-p-w">
+                {/* <div className="b-w-p-w">
                   <div className="b-w-p-w-l"></div>
                   <div className="b-w-p-w-r" onClick={() => { getShippingData() }}>Shipping</div>
-                </div>
+                </div> */}
               </div>
               {shipping?.shipping_amount?.amount ?
                 <div className="stripe-payment-card">
@@ -420,7 +440,7 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                   <tr>
                     <th className="totalthtextbold">Order Total</th>
                     {shipping?.shipping_amount?.amount ?
-                      <td className="totalthtextbold">${(+butItNowData.total)+(+shipping?.shipping_amount?.amount)}</td>
+                      <td className="totalthtextbold">${(+butItNowData.total) + (+shipping?.shipping_amount?.amount)}</td>
                       :
                       <td className="totalthtextbold">${butItNowData.total}</td>
                     }

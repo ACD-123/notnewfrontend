@@ -41,7 +41,7 @@ const SellerShop = ({ cartFullResponse , notificationCount }) => {
           </div>
           <div className="row">
             {tab === 0 && <SellerCategories />}
-            {tab === 1 && <SellerAbout />}
+            {tab === 1 && <SellerAbout/>}
             {tab === 2 && <SellerFeedbackNew />}
           </div>
         </div>

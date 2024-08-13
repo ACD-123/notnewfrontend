@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import ProductSkeletonLoader from '../components/Shared/ProductSkeletonLoader';
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 const Topsellers = ({cartFullResponse , notificationCount}) => {
     const [seller, setSeller] = useState([])
@@ -60,7 +61,7 @@ const Topsellers = ({cartFullResponse , notificationCount}) => {
                                             <h2>{data?.sellerName}</h2>
                                             <div className="button">
                                             <div className="button-wrap">
-                                                <a href="">Visit Shop</a>
+                                                <Link to={`/sellershop/${data?.seller_guid}`}>Visit Shop</Link>
                                             </div>
                                             </div>
                                         </div>

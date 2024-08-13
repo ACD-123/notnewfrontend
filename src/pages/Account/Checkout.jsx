@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
-import CheckoutServices from "../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
+import ProductServices from "../../services/API/ProductServices";
+import CheckoutServices from "../../services/API/CheckoutServices";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Payment from "../../assets/Images/Shoppingcart/payment.png"
@@ -15,6 +14,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { Modal } from "react-bootstrap";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import LoadingComponents from "../../components/Shared/LoadingComponents";
 
 const stripePromise = loadStripe('pk_test_51HiCo6EHLDkHxi1YwwTc185yQTBuRIZktAiqLEus7vFq1kKxsrir4UlAUVCP6rRokopLAFCYY1DKowhrjZuLhyv200gfW8PqZc');
 
@@ -148,7 +148,6 @@ const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
 };
 
 const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
-  const dispatch = useDispatch();
   const [butItNowData, setButItNowData] = useState([]);
   const [shippingData, setShippingData] = useState({ postalCode: "", country: null });
   const [shipping, setShipping] = useState([]);
@@ -156,10 +155,10 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
   const [couponeCode, setCouponeCode] = useState('');
   const user_id = localStorage.getItem('user_id');
   const [inputError, setInputError] = useState(false);
-  const { pathname } = window.location;
   const navigate = useNavigate();
   const [selectedData, setSelectedData] = useState('')
   const [couponError, setCouponError] = useState(false)
+  const [shippingLoader, setShippingLoader] = useState(false)
 
   const getBuyItNowData = async () => {
     try {
@@ -173,14 +172,24 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
   const getShippingData = async () => {
     setInputError(true)
     if (shippingData.postalCode != "" && shippingData.country != null) {
+      setShippingLoader(true)
       try {
         const response = await CheckoutServices.getShippingData(shippingData.country.label, shippingData.postalCode, butItNowData?.weight, '3');
         setShipping(response?.data)
+        setShippingLoader(false)
       } catch (error) {
+        setShippingLoader(false)
+        setShipping([])
         toast.error(error?.response?.data?.message)
       }
     }
   }
+
+  useEffect(() => {
+    if (shippingData.postalCode.length > 2 && shippingData.country != null && !shippingLoader) {
+      getShippingData()
+    }
+  }, [shippingData.postalCode, shippingData.country])
 
   const checkout = async () => {
     let orders = [];
@@ -223,8 +232,13 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
   const [showDiscountPopup, setShowDiscountPopup] = useState(false);
 
   useEffect(() => {
-    getBuyItNowData();
-  }, []);
+    const access_token = localStorage.getItem('access_token')
+    if (access_token) {
+      getBuyItNowData();
+    } else {
+      navigate('/')
+    }
+  }, [])
 
   const addCouponCode = async (e) => {
     console.log(selectedData);
@@ -270,10 +284,13 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
     }
   }
 
-  useEffect(() => {
-  }, []);
   return (
     <>
+      {shippingLoader &&
+        <div className="full-screen-loader">
+          <LoadingComponents />
+        </div>
+      }
       <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount} />
       <section id="cart-details">
         <div className="container">
@@ -427,10 +444,10 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                     </div>
                   </div>
                 </div>
-                <div className="b-w-p-w">
+                {/* <div className="b-w-p-w">
                   <div className="b-w-p-w-l"></div>
                   <div className="b-w-p-w-r" onClick={() => { getShippingData() }}>Shipping</div>
-                </div>
+                </div> */}
               </div>
               {shipping?.shipping_amount?.amount ?
                 <div className="stripe-payment-card">
@@ -488,6 +505,7 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
       <Footer />
       <Modal show={showDiscountPopup} onHide={setShowDiscountPopup} className='place-a-bid-modal'>
         <div className='c-c-body'>
+          <div className="cross" onClick={() =>{setShowDiscountPopup(false)}}>X</div>
           <div className="title">Coupons, Vouchers, Discount Codes</div>
           <div className="options">
           </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from 'react-redux';
 import Logo from "../assets/Images/logo.png";
 import Cart from "../assets/Images/Elements/cart.png";
@@ -21,21 +21,20 @@ import NoDataFound from "./Shared/NoDataFound";
 import ProductServices from "../services/API/ProductServices";
 import { toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
-import { RxCross2 } from "react-icons/rx";
-import laravelEcho from "../socket";
-const Header = ({ cartFullResponse , notificationCount }) => {
+
+const Header = ({ cartFullResponse, notificationCount }) => {
   const [show21PlusDropdown, setShow21PlusDropdown] = useState(false);
   const [userDropdown, setUserDropdown] = useState(false);
   const [searchProduct, setSearchProduct] = useState([]);
   const [categoryDropdown, setCategoryDropdown] = useState(false);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [seletedCategory, setSeletedCategory] = useState('');
   const [user, setUser] = useState({});
   const [inputSearch, setInputSearch] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   let token = localStorage.getItem("access_token");
   const underage = localStorage.getItem("underage");
-  const items = useSelector(state => state.cupon.cupon);
   let user_details = JSON.parse(localStorage.getItem('user_details'));
   const user_id = localStorage.getItem('user_id');
   const path = location.pathname;
@@ -119,6 +118,7 @@ const Header = ({ cartFullResponse , notificationCount }) => {
       });
   }
 
+
   const controlUnderAge = () => {
     const underage = localStorage.getItem('underage')
     if (underage == 1) {
@@ -128,6 +128,34 @@ const Header = ({ cartFullResponse , notificationCount }) => {
       navigate('/21-plus')
     }
   }
+
+  const categoryDropdownRef = useRef(null);
+  const userDropdownRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (categoryDropdownRef.current && !categoryDropdownRef.current.contains(event.target)) {
+      setCategoryDropdown(false);
+    }
+  };
+
+  const handleUserClickOutside = (event) => {
+    if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
+      setUserDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+  useEffect(() => {
+    document.addEventListener('mousedown', handleUserClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleUserClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -158,10 +186,11 @@ const Header = ({ cartFullResponse , notificationCount }) => {
                           <div className="input">
                             <input type="text" placeholder="Search Here Anything....." onChange={handelInputChange} />
                           </div>
-                          <div className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
+                          <div ref={categoryDropdownRef} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
                             <div className="value">
                               <div className="value-wrap">
-                                Categories
+                                {seletedCategory === "" ? "Categories" : seletedCategory}
+                                
                                 <HeaderCategoryArrowSvg />
                               </div>
                             </div>
@@ -171,11 +200,11 @@ const Header = ({ cartFullResponse , notificationCount }) => {
                                   {categories?.slice(0, 3)?.map((data, index) => {
                                     return (
                                       <div key={index}>
-                                        <h4 onClick={() => { navigate(`/category?category-id=${data?.id}`) }}>{data?.name}</h4>
+                                        <h4 onClick={() => { navigate(`/category?category-id=${data?.id}`); setSeletedCategory(data?.name) }}>{data?.name}</h4>
                                         <ul>
                                           {data?.children_recursive?.slice(0, 3)?.map(
                                             (subcategory, index) => (
-                                              <li key={index}>
+                                              <li key={index} onClick={() =>{setSeletedCategory(subcategory.name)}}>
                                                 <Link to={`/category?category-id=${subcategory?.id}`}>
                                                   {subcategory.name}
                                                 </Link>
@@ -255,13 +284,13 @@ const Header = ({ cartFullResponse , notificationCount }) => {
                       {underage == 1 ?
                         <div className="notification" onClick={() => { navigate('/21-plus') }}>
                           <div className="notification-wrap">
-                            <img src={Plus} alt="" srcset="" />
+                            <img src={Plus} alt="21-plus" />
                           </div>
                         </div>
                         :
                         <div className="notification" onClick={() => { setShow21PlusDropdown(true) }}>
                           <div className="notification-wrap">
-                            <img src={Plus} alt="" srcset="" />
+                            <img src={Plus} alt="21-plus" />
                           </div>
                         </div>
                       }
@@ -295,7 +324,7 @@ const Header = ({ cartFullResponse , notificationCount }) => {
                       </div>
                       {isLoggedin() ? (
                         <>
-                          <div className="user" onClick={() => { setUserDropdown(!userDropdown) }}>
+                          <div ref={userDropdownRef} className="user" onClick={() => { setUserDropdown(!userDropdown) }}>
                             {user?.profile_image ? (
                               <>
                                 {user?.profile_image.includes("http") ?

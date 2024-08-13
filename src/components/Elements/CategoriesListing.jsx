@@ -1,19 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Categorylistimage1 from "../../assets/Images/Categorylist/1.png";
 import Categorylistimage2 from "../../assets/Images/Categorylist/2.png";
-import Categorylistimage3 from "../../assets/Images/Categorylist/3.png";
-import Categorylistimage4 from "../../assets/Images/Categorylist/4.png";
-import Categorylistimage5 from "../../assets/Images/Categorylist/5.png";
-import Categorylistimage6 from "../../assets/Images/Categorylist/6.png";
-import Categorylistimage7 from "../../assets/Images/Categorylist/7.png";
-import Categorylistimage8 from "../../assets/Images/Categorylist/8.png";
-import Categorylistimage9 from "../../assets/Images/Categorylist/9.png";
-import Categorylistimage10 from "../../assets/Images/Categorylist/10.png";
-import Categorylistimage11 from "../../assets/Images/Categorylist/11.png";
-import Categorylistimage12 from "../../assets/Images/Categorylist/12.png";
-import Category from "../../services/API/Category"; //~/services/API/Category
 import { BASE_URL } from "../../services/Constant";
-import HomeService from "../../services/API/HomeService"; //~/services/API/Home
+import HomeService from "../../services/API/HomeService";
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -66,7 +54,7 @@ const CategoriesListing = () => {
                             <>
                               {product.media?.map((media , index) => {
                                 return (
-                                  <div className="Top-category-card-img" key={index}>
+                                  <div className="Top-category-card-img" key={index} onClick={() =>{navigate(`/category?category-id=${product?.id}`)}}>
                                     <img
                                       src={`${BASE_URL}/image/category/${media.name}`}
                                       alt={media.name}
@@ -76,7 +64,7 @@ const CategoriesListing = () => {
                               })}
                             </>
                           ) : (
-                            <div className="Top-category-card-img">
+                            <div className="Top-category-card-img" onClick={() =>{navigate(`/category?category-id=${product?.id}`)}}>
                               <img src={Categorylistimage2} alt={product.name} />
                             </div>
                           )}

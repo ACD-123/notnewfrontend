@@ -385,7 +385,7 @@ function Chat() {
                             <img src={`${BASE_URL}/${data?.profile_image}`} alt="" />
                           )
                           :
-                          <img src={blank} alt="" srcset="" />
+                          <img src={blank} />
                         }
                         <p>{data?.name}</p>
                       </li>

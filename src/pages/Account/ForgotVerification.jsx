@@ -65,7 +65,7 @@ const ForgotVerification = () => {
       .then((response) => {
         toast.success(response.message);
         setTimeout(() => {
-          navigate("/resetpassword/"+email)
+          navigate("/resetpassword/" + email)
         }, 1500);
       })
       .catch((error) => {
@@ -78,35 +78,43 @@ const ForgotVerification = () => {
         setEnabled(false);
       });
   };
-  const handleResend = (e) =>{
+  const handleResend = (e) => {
     e.preventDefault();
     setIsLoading(true);
     setEnabled(true);
     setResendCountdown(60);
-    let data={
+    let data = {
       'email': email
     }
     UserServices.resendForgetOtp(data)
-     .then((response) => {
-      if(response.status){
-        toast.success(response.data)
-      }
-    })
-    .catch((error) => {
-      toast.error(error?.response?.data?.message)
-      setIsLoading(false);
-      setEnabled(false);
-    }).then(() => {
-      setIsLoading(false);
-      setEnabled(false);
-    });
-}
-// Helper function to format countdown time in minutes and seconds
-const formatCountdownTime = (seconds) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-};
+      .then((response) => {
+        if (response.status) {
+          toast.success(response.data)
+        }
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
+        setIsLoading(false);
+        setEnabled(false);
+      }).then(() => {
+        setIsLoading(false);
+        setEnabled(false);
+      });
+  }
+  // Helper function to format countdown time in minutes and seconds
+  const formatCountdownTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
+
+  useEffect(() => {
+    const access_token = localStorage.getItem('access_token')
+    if (access_token) {
+      navigate('/')
+    } else {
+    }
+  }, [])
   return (
     <>
       <section id="emailverification" style={Emailverifybg}>
@@ -160,23 +168,23 @@ const formatCountdownTime = (seconds) => {
                       value="Send Code"
                     /> */}
                     <div className="emailresend-recieve py-4">
-                      <ul style={{alignItems:'center'}}>
-                      <li className="code">
-            {/* Display the countdown timer */}
-            <a href=''>
-              {resendCountdown > 0
-              ? `Resend code in ${formatCountdownTime(resendCountdown)}`
-              : "Didn't receive the code?"}
-              </a>
-          </li>
-          <li className="resend">
-            {/* Disable the resend button during countdown */}
-            <button disabled={resendCountdown > 0} onClick={handleResend}>
-              Resend
-            </button>
-          </li>
+                      <ul style={{ alignItems: 'center' }}>
+                        <li className="code">
+                          {/* Display the countdown timer */}
+                          <a href=''>
+                            {resendCountdown > 0
+                              ? `Resend code in ${formatCountdownTime(resendCountdown)}`
+                              : "Didn't receive the code?"}
+                          </a>
+                        </li>
+                        <li className="resend">
+                          {/* Disable the resend button during countdown */}
+                          <button disabled={resendCountdown > 0} onClick={handleResend}>
+                            Resend
+                          </button>
+                        </li>
                       </ul>
-                      
+
                     </div>
                     <button
                       type="submit"

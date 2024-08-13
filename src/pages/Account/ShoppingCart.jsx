@@ -292,7 +292,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest, noti
                                 {data?.is_auctioned === 1 ?
                                   <div className="price">Bid Price: <span>${data?.price}</span></div>
                                   :
-                                  <div className="price">Price: <span>${data.products?.price}</span></div>
+                                  <div className="price">Price: <span>${data.products?.sale_price > 0 ? data.products?.sale_price : data.products?.price}</span></div>
                                 }
                                 <div className="price">Quantity available: <span>{data.products?.stockcapacity}</span></div>
                                 {data?.is_auctioned === 1 ? null :
@@ -426,10 +426,10 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest, noti
                         <th className="boldthtotal">Subtotal ( {cartFullResponse?.product_count ? cartFullResponse?.product_count : 0} items )</th>
                         <td className="boldthtotal">$ {cartFullResponse?.sub_total ? cartFullResponse?.sub_total : 0}</td>
                       </tr>
-                      <tr>
+                      {/* <tr>
                         <th className="boldthtotal">Shipping</th>
                         <td className="boldthtotal">$ {cartFullResponse?.shipping ? cartFullResponse?.shipping : 0}</td>
-                      </tr>
+                      </tr> */}
                       <tr>
                         <th className="totalthtextbold">Order Total</th>
                         <td className="totalthtextbold">$ {cartFullResponse?.total ? cartFullResponse?.total : 0}</td>

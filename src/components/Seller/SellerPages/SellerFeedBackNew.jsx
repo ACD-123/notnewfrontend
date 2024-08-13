@@ -14,26 +14,10 @@ import { toast } from 'react-toastify'
 const SellerFeedbackNew = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [sellerShopId, setSellerShopId] = useState(null); // Changed initial state to null
   const { pathname } = window.location;
   const shopId = pathname.split("/").pop();
 
-  const getUserOffersCount = () => {
-    OrderServices.getuserbidscount()
-      .then((res) => {
-        setIsLoading(false);
-        setSellerShopId(res.data.seller_guid);
-        getFeedbacks(res.data.seller_guid);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        toast.error(error?.response?.data?.message)
-      });
-  };
-
   const getFeedbacks = (sellerShopId) => {
-    // const seller_guid = localStorage.getItem('seller_guid')
-
     SellerServices.getShopDetailFeedback(sellerShopId)
       .then((res) => {
         setIsLoading(false);
@@ -46,12 +30,8 @@ const SellerFeedbackNew = () => {
   };
 
   useEffect(() => {
-    getUserOffersCount();
-  }, []);
-
-  useEffect(() => {
-    
-  }, []);
+    getFeedbacks(shopId)
+  }, [shopId]);
   return (
     <>
       {isLoading ?

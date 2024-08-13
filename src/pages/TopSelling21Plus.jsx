@@ -7,6 +7,7 @@ import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 import Footer from '../components/Footer';
 import ProductCard from '../components/Shared/Cards/ProductCard';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const TopSelling21Plus = ({ cartFullResponse , notificationCount}) => {
     const [topSellingProducts, setTopSellingProducts] = useState([]);
@@ -28,9 +29,15 @@ const TopSelling21Plus = ({ cartFullResponse , notificationCount}) => {
             });
     };
 
+    const navigate = useNavigate()
     useEffect(() => {
-        getTopSellingUnderAge(user_id)
-    }, [])
+        const underage = localStorage.getItem('underage');
+        if (underage == 1) {
+            getTopSellingUnderAge(user_id)
+        } else {
+          navigate('/')
+        }
+      }, [])
 
     const handleToggleFavourite = (index) => {
         const updatedProducts = [...topSellingProducts];
@@ -45,7 +52,7 @@ const TopSelling21Plus = ({ cartFullResponse , notificationCount}) => {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1 className="title">Top Sellign Products</h1>
+                                <h1 className="title">Top Selling Products</h1>
                             </div>
                             {loading ?
                                 <>

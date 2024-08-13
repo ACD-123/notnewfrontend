@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
 import SellerServices from "../../../services/API/SellerServices";
-import { Modal, Spinner } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import LoadingComponents from "../../Shared/LoadingComponents";
-import { MdOutlineFlag, MdOutlineReportOff } from "react-icons/md";
-import { AiOutlineLike, AiOutlineDislike } from "react-icons/ai";
+import { MdOutlineFlag } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-toastify";
-
-const sellersData = [
-  { id: 1, name: "Seller 1", joinedSince: "2022-05-10", location: "New York" },
-  // Add more seller objects as needed
-];
+import { isLoggedin } from "../../../services/Auth";
+import { useNavigate } from "react-router-dom";
 
 const SellerAbout = () => {
   const [details, setDetails] = useState([]);
@@ -22,6 +18,7 @@ const SellerAbout = () => {
     message: '',
     seller_guid: ''
   });
+  const navigate = useNavigate()
 
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
@@ -53,12 +50,12 @@ const SellerAbout = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     setInputError(true);
-    setIsLoading(true);
     const formData = new FormData();
     formData.append("reason", reportData?.reason);
     formData.append("message", reportData?.message);
     formData.append("seller_guid", reportData?.seller_guid);
     if (reportData.message != '' && reportData?.reason != '') {
+      setIsLoading(true);
       SellerServices.createSellerReport(formData)
         .then((res) => {
           setIsLoading(false);
@@ -98,14 +95,19 @@ const SellerAbout = () => {
               </ul>
             </div>
             <div className="seller-about-section-3">
-              <button>Contact</button>
+
+              {isLoggedin() ?
+                <button onClick={() => navigate(`/customerdashboard?tab=messages&id=${id}`)}>Contact</button>
+                :
+                <button onClick={() => navigate(`/signup`)}>Contact</button>
+              }
             </div>
             <div className="seller-about-section-4">
               <h2>Our Top Related Seller</h2>
               <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
             </div>
             <div className="seller-about-section-5">
-              <p>Do you like our store experience?</p>
+              {/* <p>Do you like our store experience?</p>
               <ul>
                 <li>
                   <div>
@@ -117,7 +119,7 @@ const SellerAbout = () => {
                     <AiOutlineDislike />
                   </div>
                 </li>
-              </ul>
+              </ul> */}
             </div>
           </div>
         </>
@@ -125,7 +127,7 @@ const SellerAbout = () => {
 
       <Modal show={showReport} size="lg" className="report-modal-wrap" onHide={setShowReport} backdrop="static">
         <div className="modal-body">
-          <span className="close" onClick={() =>{setShowReport(false)}}><RxCross2 /></span>
+          <span className="close" onClick={() => { setShowReport(false) }}><RxCross2 /></span>
           <form onSubmit={onSubmit}>
             <h2>Report</h2>
             <div className="input">

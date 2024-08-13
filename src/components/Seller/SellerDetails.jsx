@@ -41,36 +41,13 @@ const SellerDetails = () => {
       setShopGuid(res.data.shop);
       setShopGuidSave(res.data.shop.guid);
       setIsLoading(false);
-      console.log(res.data , 'getshopData');
-      // HomeService.getshopData(res?.data?.shop?.guid)
-      //   .then((response) => {
-      //     if (response.status) {
-      //       setShopData(response.data)
-      //     }
-      //   }).catch((error) => {
-      //     toast.error(error?.response?.data?.message)
-      //   });
     });
   };
-  const getItemSold = () => {
-    ProductServices.getTrendingProduct(id).then((response) => {
-      setTrendingProduct(response)
-    });
-  };
+
   useEffect(() => {
     getProduct();
   }, []);
-  const itemsPerPage = 4;
-  const [currentPage, setCurrentPage] = useState(1);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = feedbacks.slice(indexOfFirstItem, indexOfLastItem);
   const navigate = useNavigate()
-  const totalPages = Math.ceil(feedbacks.length / itemsPerPage);
-  const changePage = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
   const [shopGuid, setShopGuid] = useState([]);
   const [shopGuidSave, setShopGuidSave] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -81,35 +58,6 @@ const SellerDetails = () => {
     logedIn = JSON.parse(loggedIn);
   }
 
-
-  const handleSellerServices = (e) => {
-    e.preventDefault();
-    if (logedIn) {
-      let data = {
-        shop_id: productData.shop_id
-      };
-      SellerServices.saveSeller(data)
-        .then((response) => {
-          toast.success(response);
-          getSellerSavedData(shopGuidSave);
-        })
-        .catch((error) => {
-          toast.error(error?.response?.data?.message)
-        });
-    } else {
-      navigate("/signin")
-    }
-  };
-
-  const getSellerSavedData = () => {
-    ProductServices.getSavedSellerDetails(shopGuidSave)
-      .then((response) => {
-        setSavedSeller(response.shop_id);
-      })
-      .catch((error) => {
-        toast.error(error?.response?.data?.message)
-      });
-  };
 
   const getUser = () => {
     UserServices.detail()
@@ -159,7 +107,7 @@ const SellerDetails = () => {
       ) : (
         <>
           <div className="sellerdetails-wrap">
-            <div className='profile-details-seller'>
+            <div className='profile-details-seller' onClick={() =>{navigate(`/sellershop/${shopGuid.guid}`)}}>
               <div className='image'>
                 <img src={`${shopData.sellerImage}`} width="100" height="100" />
               </div>
@@ -174,10 +122,10 @@ const SellerDetails = () => {
             <div className='seller-callto-actions'>
               <Link to={`/sellershop/${shopGuid.guid}`}><button>Visit Seller Shop</button></Link>
               <div>
-                {shopData.is_favourite === true ? 
+                {shopData.is_favourite === true ?
                   <button onClick={() => addToFavorites(shopGuidSave)}>Un Save this seller</button>
-                 : 
-                 (token === null ?
+                  :
+                  (token === null ?
                     <button
                       onClick={() => {
                         navigate(`/signup`);
@@ -187,15 +135,12 @@ const SellerDetails = () => {
                     :
                     <button onClick={() => addToFavorites(shopGuidSave)} className='saveseller'>Save this seller</button>
 
-                )}
+                  )}
               </div>
               {token === null ?
-                <div><button
-                  onClick={() => {
-                    navigate(`/signup`);
-                    localStorage.setItem('redirectionPage', pathname)
-                  }}
-                  className='messageseller'>Message seller</button></div>
+                <div>
+                  <button onClick={() => { navigate(`/signup`); localStorage.setItem('redirectionPage', pathname) }} className='messageseller'>Message seller</button>
+                </div>
                 :
                 <div><button onClick={() => navigate(`/customerdashboard?tab=messages&id=${shopGuid.guid}`)} className='messageseller'>Message seller</button></div>
               }

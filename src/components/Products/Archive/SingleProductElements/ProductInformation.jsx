@@ -64,6 +64,7 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
     SellerServices.createRecent(data).then((response) => {
     });
   };
+
   const getProduct = () => {
     ProductServices.get(id)
       .then((res) => {
@@ -85,6 +86,7 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
         setIsLoading(false);
       });
   };
+  
   const addByNow = (e) => {
     e.preventDefault();
     setInputError(true)
@@ -295,7 +297,8 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
                 <>
                   <div className="p-p">
                     <div className="p-p">Price</div>
-                    <div className="p-p">${productData.price}</div>
+
+                    <div className="p-p">${productData.sale_price > 0 ? productData.sale_price : productData.price}</div>
                   </div>
                   <div className="pay-buttons">
                     <button onClick={addByNow}>Buy It Now</button>

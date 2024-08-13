@@ -8,17 +8,23 @@ import Addresses from '../components/AccountsSetting/PersonalInfoAllPages/Addres
 import NotFound_ from './NotFound_';
 import Header from '../components/Header';
 
-const PersonalInformation = ({cartFullResponse , notificationCount}) => {
+const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
     const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
+        const access_token = localStorage.getItem('access_token')
+        if (access_token) {
+        } else {
+            navigate('/')
+        }
+    }, [])
 
+    useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const componentName = searchParams.get('component');
-
         if (componentName) {
             setSelectedMenuItem(componentName);
         }
@@ -56,7 +62,7 @@ const PersonalInformation = ({cartFullResponse , notificationCount}) => {
 
     return (
         <>
-            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount} />
             <section id="main-dashboard">
                 <div className="container">
                     <div className="row">

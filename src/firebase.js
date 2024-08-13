@@ -4,13 +4,13 @@ import { useEffect } from 'react';
 
 
 var firebaseConfig = {
-  apiKey: "AIzaSyBQneFmYicGtLWBBEqAEUCjOs7ytqDAqng",
-  authDomain: "notnew-9f938.firebaseapp.com",
-  projectId: "notnew-9f938",
-  storageBucket: "notnew-9f938.appspot.com",
-  messagingSenderId: "937173650105",
-  appId: "1:937173650105:web:922d81b9168f6ce6fc2968",
-  measurementId: "G-Z5LVP4PZVB"
+  apiKey: "AIzaSyDabamDXQWktkbaIjZIWbHSfQsUmVs96uA",
+    authDomain: "notnew-2fd71.firebaseapp.com",
+    projectId: "notnew-2fd71",
+    storageBucket: "notnew-2fd71.appspot.com",
+    messagingSenderId: "967971865445",
+    appId: "1:967971865445:web:9910e8df867325bdde178c",
+    measurementId: "G-Q1Q469FGFE"
 };
 
 
@@ -21,7 +21,7 @@ const messaging = getMessaging(firebaseApp);
 export { messaging };
 
 export const getTokenn = (setTokenFound , setFcmToken) => {
-    return getToken(messaging, {vapidKey: 'BEuIDgKRn_rOIg_8fq-EwLbxef5DcTd9jV51hQTakfeD8Y1lH4-8HJ48V1ygI-pR2e_-0jMn1_pjUsNNzRg0XRs'}).then((currentToken) => {
+    return getToken(messaging, {vapidKey: 'BO985_9xZLIW-r1kN2-vTdfmg7LnDuq0S8-qUMSX4GikoITwdOByALoJ1SlDF-IugGjE-gARegNLuEWkr1wMVH0'}).then((currentToken) => {
       if (currentToken) {
         console.log('current token for client: ', currentToken);
         setTokenFound(true);

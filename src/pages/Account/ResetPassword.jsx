@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Emailverifyimagebg from "../../assets/Images/Accountimages/signup.png";
 import Logo from "../../assets/Images/logo.png";
 import Line from "../../assets/Images/Accountimages/line.png";
@@ -26,6 +26,7 @@ const ResetPassword = () => {
       [name]: value,
     });
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const newErrors = {};
@@ -43,7 +44,6 @@ const ResetPassword = () => {
     if (Object.keys(newErrors).length === 0) {
       setIsLoading(true);
       setEnabled(true);
-      // Perform any necessary actions (e.g., password reset logic)
       AuthServices.resetPassword(formData)
         .then((response) => {
           toast.success(response.message);
@@ -62,6 +62,14 @@ const ResetPassword = () => {
         });
     }
   };
+
+  useEffect(() => {
+    const access_token = localStorage.getItem('access_token')
+    if (access_token) {
+      navigate('/')
+    } else {
+    }
+  }, [])
 
   return (
     <>

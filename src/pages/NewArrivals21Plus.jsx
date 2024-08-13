@@ -7,6 +7,7 @@ import Footer from '../components/Footer';
 import ProductCard from '../components/Shared/Cards/ProductCard';
 import { toast } from 'react-toastify';
 import ProductServices from '../services/API/ProductServices';
+import { useNavigate } from 'react-router-dom';
 
 const PageNumbers = ({
     totalPages,
@@ -67,10 +68,15 @@ const NewArrivals21Plus = ({ cartFullResponse, notificationCount }) => {
         }
     };
 
-
+    const navigate = useNavigate()
     useEffect(() => {
-        getUnderAgeProducts(user_id, pageSize, 1);
-    }, []);
+        const underage = localStorage.getItem('underage');
+        if (underage == 1) {
+            getUnderAgeProducts(user_id, pageSize, 1);
+        } else {
+          navigate('/')
+        }
+      }, [])
 
     return (
         <>

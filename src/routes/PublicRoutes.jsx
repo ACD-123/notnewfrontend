@@ -157,7 +157,7 @@ const PublicRoutes = () => {
 					<Route path="/auctionproduct/:guid" element={<AuctionSingleProductPage cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/bidwin/:guid" element={<BidWin cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/searchhistory" element={<SearchHistory />} />
-					<Route path="/notification" element={<UserNotification getNotificationCount={getNotificationCount} notificationCount={notificationCount} />} />
+					<Route path="/notification" element={<UserNotification cartFullResponse={cartFullResponse} getNotificationCount={getNotificationCount} notificationCount={notificationCount} />} />
 					<Route path="/ongoingorder/:guid" element={<OngoingOrderManagement />} />
 					<Route path="/completedorder/:guid" element={<CompleteOrderManagement />} />
 					<Route path="/refund/:guid" element={<Refund />} />

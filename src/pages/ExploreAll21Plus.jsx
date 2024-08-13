@@ -7,6 +7,7 @@ import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 import Footer from '../components/Footer';
 import ProductCard from '../components/Shared/Cards/ProductCard';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const PageNumbers = ({
     totalPages,
@@ -58,10 +59,15 @@ const ExploreAll21Plus = ({ cartFullResponse, notificationCount }) => {
                 toast.error(error?.response?.data?.message)
             });
     };
-
+    const navigate = useNavigate()
     useEffect(() => {
-        getHotUnderAge(user_id, pageSize, 1)
-    }, [])
+        const underage = localStorage.getItem('underage');
+        if (underage == 1) {
+            getHotUnderAge(user_id, pageSize, 1)
+        } else {
+          navigate('/')
+        }
+      }, [])
 
     const handleToggleFavourite = (index) => {
         const updatedProducts = [...topSellingProducts];

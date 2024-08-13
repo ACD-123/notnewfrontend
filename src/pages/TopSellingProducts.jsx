@@ -50,7 +50,7 @@ const TopSellingProducts = ({cartFullResponse , notificationCount}) => {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1 className="title">Top Sellign Products</h1>
+                                <h1 className="title">Top Selling Products</h1>
                             </div>
                             {loading ?
                                 <>

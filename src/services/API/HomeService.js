@@ -125,9 +125,9 @@ function getUnderAgeBanners() {
   })
 }
 
-function getAuctionProducts(user_id) {
+function getAuctionProducts(user_id , underage) {
   return request({
-    url: `${baseUrl}products/auctioned?user_id=${user_id}`,
+    url: `${baseUrl}products/auctioned?user_id=${user_id}&underage=${underage}`,
     method: 'GET',
   })
 }
