@@ -27,10 +27,11 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
   const id = pathname.split("/").pop();
   let loggedInUser = localStorage.getItem("user_details");
   const user_id = localStorage.getItem('user_id');
+  const seller_guid = localStorage.getItem('seller_guid');
   const [inputError, setInputError] = useState(false);
   const loggedInUsers = JSON.parse(loggedInUser);
   const navigate = useNavigate();
-  
+
   // ali monis
   const [ProductAttribute, SetproductAttribute] = useState([])
 
@@ -69,6 +70,8 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
     ProductServices.get(id)
       .then((res) => {
         setProductData(res.data);
+        console.log(res.data?.shop?.guid, 'getProduct');
+
         const categoryAddons = res?.data?.attributes?.map(attribute => ({
           name: attribute.key,
           selected: null,
@@ -86,7 +89,7 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
         setIsLoading(false);
       });
   };
-  
+
   const addByNow = (e) => {
     e.preventDefault();
     setInputError(true)
@@ -245,50 +248,54 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
               <div className="p-i-2-w-l">Descriptions</div>
               <div className="p-i-2-w-r">{productData?.description}</div>
             </div>
+            {seller_guid != productData?.shop?.guid &&
+              <>
+                {ProductAttribute.map((data, index) => {
+                  return (
+                    <div className="p-i-2-w" key={index}>
+                      <div className="p-i-2-w-l">{data?.name}</div>
+                      <div className="p-i-2-w-r">
+                        <Select
+                          value={data?.selected}
+                          onChange={(e) => { handelAddonsChange(e, data, index) }}
+                          options={ProductAttribute?.[index]?.options}
+                          placeholder={`Select ${data?.name}`}
+                        />
+                        {data?.selectToSend === null && inputError && <div className="error-input">{data.name} is required</div>}
+                      </div>
+                    </div>
 
-            {ProductAttribute.map((data, index) => {
-              return (
-                <div className="p-i-2-w" key={index}>
-                  <div className="p-i-2-w-l">{data?.name}</div>
+                  )
+                })}
+                <div className="p-i-2-w">
+                  <div className="p-i-2-w-l">Quantity {productData?.stockcapacity} available</div>
                   <div className="p-i-2-w-r">
-                    <Select
-                      value={data?.selected}
-                      onChange={(e) => { handelAddonsChange(e, data, index) }}
-                      options={ProductAttribute?.[index]?.options}
-                      placeholder={`Select ${data?.name}`}
-                    />
-                    {data?.selectToSend === null && inputError && <div className="error-input">{data.name} is required</div>}
+                    <div className="price">
+                      <div className="input-group">
+                        <div className="input-group-prepend">
+                          <button className="btn" type="button" onClick={decNum}>
+                            -
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={quantity}
+                          readOnly
+                        // onChange={handleQuantity}
+                        />
+                        <div className="input-group-prepend">
+                          <button className="btn" type="button" onClick={incNum}>
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
+              </>
 
-              )
-            })}
-            <div className="p-i-2-w">
-              <div className="p-i-2-w-l">Quantity {productData?.stockcapacity} available</div>
-              <div className="p-i-2-w-r">
-                <div className="price">
-                  <div className="input-group">
-                    <div className="input-group-prepend">
-                      <button className="btn" type="button" onClick={decNum}>
-                        -
-                      </button>
-                    </div>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={quantity}
-                      readOnly
-                    // onChange={handleQuantity}
-                    />
-                    <div className="input-group-prepend">
-                      <button className="btn" type="button" onClick={incNum}>
-                        +
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            }
             <hr />
           </div>
           <div className="p-i-3">
@@ -297,13 +304,14 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
                 <>
                   <div className="p-p">
                     <div className="p-p">Price</div>
-
                     <div className="p-p">${productData.sale_price > 0 ? productData.sale_price : productData.price}</div>
                   </div>
-                  <div className="pay-buttons">
-                    <button onClick={addByNow}>Buy It Now</button>
-                    <button onClick={addToCart} disabled={enabled}>{isLoading ? "loading.." : "Add to Cart"}</button>
-                  </div>
+                  {seller_guid != productData?.shop?.guid &&
+                    <div className="pay-buttons">
+                      <button onClick={addByNow}>Buy It Now</button>
+                      <button onClick={addToCart} disabled={enabled}>{isLoading ? "loading.." : "Add to Cart"}</button>
+                    </div>
+                  }
                 </>
               ) : (
                 <>
@@ -312,11 +320,11 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
                     <div className="p-p">${productData.price}</div>
                   </div>
                   <div className="pay-buttons">
-                    <button 
-                    onClick={() => {
-                      navigate(`/signup`);
-                      localStorage.setItem('redirectionPage', pathname)
-                    }}
+                    <button
+                      onClick={() => {
+                        navigate(`/signup`);
+                        localStorage.setItem('redirectionPage', pathname)
+                      }}
                     >Buy It Now</button>
                     <button onClick={addToCart} disabled={enabled}>{isLoading ? "loading.." : "Add to Cart"}</button>
                   </div>

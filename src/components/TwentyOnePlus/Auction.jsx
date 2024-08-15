@@ -7,36 +7,38 @@ import HomeService from "../../services/API/HomeService";
 import { toast } from "react-toastify";
 import NoDataFound from "../Shared/NoDataFound";
 
-const ExploreAll = ({ title }) => {
-    const [topSellingProducts, setTopSellingProducts] = useState([]);
-    const [pagination, setPagination] = useState({});
-    const [loading, setLoading] = useState(true);
-    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
+const Auction = ({type ,  title }) => {
+    const [auctionProducts, setAuctionProducts] = useState([]);
+    const [latestProducts, setLatestProducts] = useState([]);
+    const [Loader, setLoader] = useState(true)
+    const user_details = JSON.parse(localStorage.getItem('user_details'));
     const user_id = localStorage.getItem('user_id');
-
-    const getHotUnderAge = (id) => {
-        HomeService.getHotUnderAge(id)
+    const getAuctionProducts = (user_id, type , page , page_size) => {
+        HomeService.getAuctionProducts(user_id, type , page , page_size)
             .then((response) => {
-                setTopSellingProducts(response?.data?.products)
-                setPagination(response?.data?.pagination)
-                setTimeout(() => {
-                    setLoading(false)
-                }, 1000);
+                setAuctionProducts(response?.data?.auctioned)
+                setLatestProducts(response?.data?.latest)
+                setLoader(false)
             })
             .catch((error) => {
-                setLoading(false)
+                setLoader(false)
                 toast.error(error?.response?.data?.message)
             });
     };
 
     useEffect(() => {
-        getHotUnderAge(user_id)
+        getAuctionProducts(user_id, type , 1 , 4)
     }, [])
 
-    const handleToggleFavourite = (index) => {
-        const updatedProducts = [...topSellingProducts];
+    const handleToggleFavouriteAuction = (index) => {
+        const updatedProducts = [...auctionProducts];
         updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
-        setTopSellingProducts(updatedProducts);
+        setAuctionProducts(updatedProducts);
+    };
+    const handleToggleFavouriteLatest = (index) => {
+        const updatedProducts = [...auctionProducts];
+        updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
+        setAuctionProducts(updatedProducts);
     };
 
     return (
@@ -48,9 +50,14 @@ const ExploreAll = ({ title }) => {
                             <div className="headings">
                                 <h3>
                                     {title}
-                                    {topSellingProducts.length > 0 &&
+                                    {latestProducts.length > 0 &&
+                                    type == 1 ?
                                         <span>
-                                            <Link to="/explore-all-21-plus">View More</Link>
+                                            <Link to="/auctions">View More</Link>
+                                        </span>
+                                        :
+                                        <span>
+                                            <Link to="/auctions-21-plus">View More</Link>
                                         </span>
                                     }
                                 </h3>
@@ -60,7 +67,7 @@ const ExploreAll = ({ title }) => {
                     <section id="productcard">
                         <div className="container">
                             <div className="row">
-                                {loading ?
+                                {Loader ?
                                     <>
                                         <div className="col-lg-3"><ProductSkeletonLoader /></div>
                                         <div className="col-lg-3"><ProductSkeletonLoader /></div>
@@ -71,14 +78,14 @@ const ExploreAll = ({ title }) => {
                                     :
 
                                     (
-                                        topSellingProducts.length > 0 ?
-                                            topSellingProducts?.map((product, index) => (
+                                        latestProducts.length > 0 ?
+                                            latestProducts?.map((product, index) => (
                                                 <div className="col col-lg-3" key={product?.product?.guid}>
-                                                    <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
+                                                    <ProductCard data={product} handleToggleFavourite={handleToggleFavouriteLatest} index={index} />
                                                 </div>
                                             ))
                                             :
-                                            <NoDataFound title={'No explore all product found'} />
+                                            <NoDataFound title={'No auction product found'} />
                                     )
                                 }
                             </div>
@@ -90,4 +97,4 @@ const ExploreAll = ({ title }) => {
     );
 };
 
-export default ExploreAll;
+export default Auction;

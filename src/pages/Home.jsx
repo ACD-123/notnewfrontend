@@ -15,6 +15,7 @@ import TopSellingProducts from "../components/Products/TopSellingProducts";
 import HotSellingProducts from "../components/Products/HotSellingProducts";
 import HomeCategorySlider from "../components/Shared/Sliders/HomeCategorySlider";
 import { toast } from "react-toastify";
+import Auction from "../components/TwentyOnePlus/Auction";
 
 const Home = ({cartFullResponse , notificationCount}) => {
 	const [user, setUser] = useState({});
@@ -54,6 +55,7 @@ const Home = ({cartFullResponse , notificationCount}) => {
 			<Items title={'New Items'} />
 			<TopSellingProducts loading={loading} data={topSellingProducts} setTopSellingProducts={setTopSellingProducts} title={'Top Selling Products'} />
 			<HotSellingProducts loading={loading} data={hotProducts} setHotProducts={setHotProducts} title={'Hot Selling Products'} />
+			<Auction type={1} title={'Latest Auctions'}/>
 			<CategoryList />
 			<GetSurprisedBanner />
 			<Footer />

@@ -58,9 +58,11 @@ const HotSellingProducts = ({ loading, data, setHotProducts, title }) => {
               <div className="headings">
                 <h3>
                   {title}
-                  <span>
-                    <Link to="/hot-deals">View More</Link>
-                  </span>
+                  {data.legth > 0 &&
+                    <span>
+                      <Link to="/hot-deals">View More</Link>
+                    </span>
+                  }
                 </h3>
               </div>
             </div>
@@ -93,7 +95,7 @@ const HotSellingProducts = ({ loading, data, setHotProducts, title }) => {
                         </div>
                       ))
                       :
-                      <NoDataFound title={'No hot selling product found'}/>
+                      <NoDataFound title={'No hot selling product found'} />
                   )
                 }
               </div>

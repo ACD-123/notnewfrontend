@@ -43,7 +43,6 @@ function UserChat() {
 
 
     const getUserChat = (data) => {
-        console.log(data?.participants, 'getUserChat one');
         UserServices.conversations(user_id, 1)
             .then((response) => {
                 setChatList(response?.data);

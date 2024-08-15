@@ -72,6 +72,7 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
   const [ProductAttribute, SetproductAttribute] = useState([])
   const { pathname } = window.location;
   const token = localStorage.getItem('access_token');
+  const seller_guid = localStorage.getItem('seller_guid');
   const id = pathname.split("/").pop();
 
 
@@ -216,11 +217,13 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
       });
   };
   const [inputError, setInputError] = useState(false);
+  const [placeABidLoader, setPlaceABidLoader] = useState(false);
   const placeAbid = (e) => {
     e.preventDefault();
     setInputError(true)
     if (customBidPrice != "" && customBidPrice > productData.max_bid
     ) {
+      setPlaceABidLoader(true)
       const requestData = {
         product_id: productData?.id,
         bid_value: customBidPrice,
@@ -234,9 +237,11 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
           setCustomBidPrice('')
           setInputError(false)
           toast.success(response?.message)
+          setPlaceABidLoader(false)
         })
         .catch((error) => {
-          toast.error(error?.response?.data?.message)
+          toast.error(error?.response?.data?.message);
+          setPlaceABidLoader(false)
         });
     }
   };
@@ -282,7 +287,7 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
               <div className="p-i-2-w-r"><CountdownTimer initialTimeMicroseconds={productData?.auction_remainig_time} /></div>
             </div>
 
-            {ProductAttribute.map((data, index) => {
+            {/* {ProductAttribute.map((data, index) => {
               return (
                 <div className="p-i-2-w" key={index}>
                   <div className="p-i-2-w-l">{data?.name}</div>
@@ -297,7 +302,7 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
                 </div>
 
               )
-            })}
+            })} */}
             <hr />
           </div>
           <div className="p-i-4">
@@ -337,9 +342,11 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
                       </div>
                     }
                   </div>
-                  <div className="pay-buttons">
-                    <button onClick={() => { setShowPlacedBids(true) }}>Place a Bid</button>
-                  </div>
+                  {seller_guid != productData?.shop?.guid &&
+                    <div className="pay-buttons">
+                      <button onClick={() => { setShowPlacedBids(true) }}>Place a Bid</button>
+                    </div>
+                  }
                 </>
               )}
             </div>
@@ -516,40 +523,40 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
           <div className="options">
             {+productData.max_bid > 0 ?
               <ul>
-                <li onClick={() => { setCustomBidPrice(+productData.max_bid + (+productData.max_bid * 0.10)) }}>
+                <li onClick={() => { setCustomBidPrice((+productData.max_bid + (+productData.max_bid * 0.10)).toFixed(0)) }}>
                   <div className="s-b-p">10%</div>
-                  <div className="s-b-pp">${+productData.max_bid + (+productData.max_bid * 0.10)}</div>
+                  <div className="s-b-pp">${(+productData.max_bid + (+productData.max_bid * 0.10)).toFixed(0)}</div>
                 </li>
-                <li onClick={() => { setCustomBidPrice(+productData.max_bid + (+productData.max_bid * 0.25)) }}>
+                <li onClick={() => { setCustomBidPrice((+productData.max_bid + (+productData.max_bid * 0.25)).toFixed(2)) }}>
                   <div className="s-b-p">25%</div>
-                  <div className="s-b-pp">${+productData.max_bid + (+productData.max_bid * 0.25)}</div>
+                  <div className="s-b-pp">${(+productData.max_bid + (+productData.max_bid * 0.25)).toFixed(0)}</div>
                 </li>
-                <li onClick={() => { setCustomBidPrice(+productData.max_bid + (+productData.max_bid * 0.5)) }}>
+                <li onClick={() => { setCustomBidPrice((+productData.max_bid + (+productData.max_bid * 0.5)).toFixed(0)) }}>
                   <div className="s-b-p">50%</div>
-                  <div className="s-b-pp">${+productData.max_bid + (+productData.max_bid * 0.5)}</div>
+                  <div className="s-b-pp">${(+productData.max_bid + (+productData.max_bid * 0.5)).toFixed(0)}</div>
                 </li>
-                <li onClick={() => { setCustomBidPrice(+productData.max_bid + (+productData.max_bid * 1)) }}>
+                <li onClick={() => { setCustomBidPrice((+productData.max_bid + (+productData.max_bid * 1)).toFixed(0)) }}>
                   <div className="s-b-p">100%</div>
-                  <div className="s-b-pp">${+productData.max_bid + (+productData.max_bid * 1)}</div>
+                  <div className="s-b-pp">${(+productData.max_bid + (+productData.max_bid * 1)).toFixed(0)}</div>
                 </li>
               </ul>
               :
               <ul>
-                <li onClick={() => { setCustomBidPrice(+productData.bids + (+productData.bids * 0.10)) }}>
+                <li onClick={() => { setCustomBidPrice((+productData.bids + (+productData.bids * 0.10)).toFixed(0)) }}>
                   <div className="s-b-p">10%</div>
-                  <div className="s-b-pp">${+productData.bids + (+productData.bids * 0.10)}</div>
+                  <div className="s-b-pp">${(+productData.bids + (+productData.bids * 0.10)).toFixed(0)}</div>
                 </li>
                 <li onClick={() => { setCustomBidPrice(+productData.bids + (+productData.bids * 0.25)) }}>
                   <div className="s-b-p">25%</div>
-                  <div className="s-b-pp">${+productData.bids + (+productData.bids * 0.25)}</div>
+                  <div className="s-b-pp">${(+productData.bids + (+productData.bids * 0.25)).toFixed(0)}</div>
                 </li>
                 <li onClick={() => { setCustomBidPrice(+productData.bids + (+productData.bids * 0.5)) }}>
                   <div className="s-b-p">50%</div>
-                  <div className="s-b-pp">${+productData.bids + (+productData.bids * 0.5)}</div>
+                  <div className="s-b-pp">${(+productData.bids + (+productData.bids * 0.5)).toFixed(0)}</div>
                 </li>
                 <li onClick={() => { setCustomBidPrice(+productData.bids + (+productData.bids * 1)) }}>
                   <div className="s-b-p">100%</div>
-                  <div className="s-b-pp">${+productData.bids + (+productData.bids * 1)}</div>
+                  <div className="s-b-pp">${(+productData.bids + (+productData.bids * 1)).toFixed(0)}</div>
                 </li>
               </ul>
 
@@ -564,7 +571,7 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
             </div>
             <p>By bidding, you are Afree to pay the seller price if you win</p>
             <div className="button">
-              <button type='submit'>Place A Bid</button>
+              <button type='submit' disable={placeABidLoader}>{placeABidLoader ? "Loading..." : 'Place A Bid'}</button>
             </div>
           </form>
         </div>

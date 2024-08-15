@@ -51,6 +51,7 @@ import ExploreAll21Plus from "../pages/ExploreAll21Plus"
 import laravelEcho from "../socket"
 import HomeService from "../services/API/HomeService"
 import NotificationPreferences from "../pages/NotificationPreferences"
+import Auctions21Plus from "../components/Products/Archive/Auctions21Plus"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -138,6 +139,7 @@ const PublicRoutes = () => {
 					<Route path="/category" element={<SingleCategory cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/sub-category" element={<SubCategory cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/auctions" element={<Auctions cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
+					<Route path="/auctions-21-plus" element={<Auctions21Plus cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/product-filter" element={<AllProducts cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/personal-info" element={<PersonalInformation cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/AllNewProducts" element={<AllNewProducts cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />

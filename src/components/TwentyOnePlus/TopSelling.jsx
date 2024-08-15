@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
 import HomeService from "../../services/API/HomeService";
 import { toast } from "react-toastify";
+import NoDataFound from "../Shared/NoDataFound";
 
 const TopSelling = ({ title }) => {
     const [topSellingProducts, setTopSellingProducts] = useState([]);
@@ -45,9 +46,11 @@ const TopSelling = ({ title }) => {
                             <div className="headings">
                                 <h3>
                                     {title}
-                                    <span>
-                                        <Link to="/top-selling-21-plus">View More</Link>
-                                    </span>
+                                    {topSellingProducts.length > 0 &&
+                                        <span>
+                                            <Link to="/top-selling-21-plus">View More</Link>
+                                        </span>
+                                    }
                                 </h3>
                             </div>
                         </div>
@@ -64,11 +67,17 @@ const TopSelling = ({ title }) => {
 
                                     </>
                                     :
-                                    topSellingProducts?.map((product, index) => (
-                                        <div className="col col-lg-3" key={product?.product?.guid}>
-                                            <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
-                                        </div>
-                                    ))
+
+                                    (
+                                        topSellingProducts.length > 0 ?
+                                            topSellingProducts?.map((product, index) => (
+                                                <div className="col col-lg-3" key={product?.product?.guid}>
+                                                    <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
+                                                </div>
+                                            ))
+                                            :
+                                            <NoDataFound title={'No top selling product found'} />
+                                    )
                                 }
                             </div>
                         </div>

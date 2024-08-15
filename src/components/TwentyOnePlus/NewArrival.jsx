@@ -15,6 +15,7 @@ import UserServices from "../../services/API/UserServices"; //~/services/API/Aut
 import { CiHeart } from "react-icons/ci";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
+import NoDataFound from "../Shared/NoDataFound";
 
 const NewArrival = ({ title }) => {
   const [productData, setProductData] = useState([]);
@@ -42,7 +43,7 @@ const NewArrival = ({ title }) => {
         }, 1000);
       }
     } catch (error) {
-        setLoading(false)
+      setLoading(false)
       toast.error(error?.response?.data?.message)
     }
   };
@@ -60,7 +61,9 @@ const NewArrival = ({ title }) => {
             <div className="row">
               <div className="headings">
                 <h3>{title}
-                  <span><Link to="/new-arrival-21-plus">View More</Link></span>
+                  {productData.length > 0 &&
+                    <span><Link to="/new-arrival-21-plus">View More</Link></span>
+                  }
                 </h3>
               </div>
             </div>
@@ -84,11 +87,16 @@ const NewArrival = ({ title }) => {
                     </div>
                   </>
                   :
-                  productData?.slice(0,4)?.map((product, index) => (
-                    <div className="col col-lg-3" key={product?.guid}>
-                      <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index}/>
-                    </div>
-                  ))
+                  (
+                    productData.length > 0 ?
+                      productData?.slice(0, 4)?.map((product, index) => (
+                        <div className="col col-lg-3" key={product?.guid}>
+                          <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
+                        </div>
+                      ))
+                      :
+                      <NoDataFound title={'No new arrival product found'} />
+                  )
                 }
               </div>
             </div>

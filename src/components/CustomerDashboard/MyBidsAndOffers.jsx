@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import OrderServices from '../../services/API/OrderServices';
 import NoDataFound from '../Shared/NoDataFound';
 import BidsSkeletonLoader from '../Shared/Loaders/BidsSkeletonLoader';
+import { useNavigate } from 'react-router-dom';
 
 const CountdownTimer = ({ initialTimeMicroseconds }) => {
     const [remainingTime, setRemainingTime] = useState(initialTimeMicroseconds);
@@ -41,6 +42,7 @@ const MyBidsAndOffers = () => {
     const [myBidsAndOffersList, setMyBidsAndOffersList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const user_id = localStorage.getItem('user_id');
+    const navigate = useNavigate()
 
     const getMyBidsAndOffers = () => {
         OrderServices.getMyBidsAndOffers(user_id)
@@ -71,7 +73,7 @@ const MyBidsAndOffers = () => {
                                     <div className="h-a-s-b-a-o">
                                         {myBidsAndOffersList?.map((data, index) => {
                                             return (
-                                                <div className="h-a-s-b-a-o-l" key={index}>
+                                                <div className="h-a-s-b-a-o-l" key={index} onClick={() =>{navigate(`/auctionproduct/${data?.product?.guid}`)}}>
                                                     <div className="h-a-s-b-a-o-l-l">
                                                         <img src={data?.product?.media?.[0]?.name} alt="" />
                                                     </div>

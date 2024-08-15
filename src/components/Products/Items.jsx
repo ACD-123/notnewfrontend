@@ -75,7 +75,9 @@ const RecentViewedItems = ({ title }) => {
             <div className="row">
               <div className="headings">
                 <h3>{title}
-                  <span><Link to="/product-filter">View More</Link></span>
+                  {productData.length > 0 &&
+                    <span><Link to="/product-filter">View More</Link></span>
+                  }
                 </h3>
               </div>
             </div>
@@ -100,15 +102,15 @@ const RecentViewedItems = ({ title }) => {
                   </>
                   :
                   (
-                    productData.legth > 0 ?
-                    productData.map((product, index) => (
-                    <div className="col col-lg-3" key={product?.guid}>
-                      <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index}/>
-                    </div>
-                  ))
-                  :
-                  <NoDataFound title={'No new item product found'}/>
-                )
+                    productData.length > 0 ?
+                      productData.map((product, index) => (
+                        <div className="col col-lg-3" key={product?.guid}>
+                          <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
+                        </div>
+                      ))
+                      :
+                      <NoDataFound title={'No new item product found'} />
+                  )
                 }
               </div>
             </div>

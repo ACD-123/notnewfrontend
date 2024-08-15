@@ -22,9 +22,11 @@ const TopSellingProducts = ({ data, setTopSellingProducts, title, loading }) => 
               <div className="headings">
                 <h3>
                   {title}
-                  <span>
-                    <Link to="/top-selling-prodcuts">View More</Link>
-                  </span>
+                  {data.length > 0 &&
+                    <span>
+                      <Link to="/top-selling-prodcuts">View More</Link>
+                    </span>
+                  }
                 </h3>
               </div>
             </div>
@@ -41,16 +43,16 @@ const TopSellingProducts = ({ data, setTopSellingProducts, title, loading }) => 
 
                   </>
                   :
-                 ( 
-                  data.length > 0 ?
-                  data?.map((product, index) => (
-                    <div className="col col-lg-3" key={product?.product?.guid}>
-                     <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index}/>
-                    </div>
-                  ))
-                :
-                <NoDataFound title={'No top selling product found'}/>
-              )
+                  (
+                    data.length > 0 ?
+                      data?.map((product, index) => (
+                        <div className="col col-lg-3" key={product?.product?.guid}>
+                          <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
+                        </div>
+                      ))
+                      :
+                      <NoDataFound title={'No top selling product found'} />
+                  )
                 }
               </div>
             </div>

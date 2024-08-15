@@ -19,6 +19,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
   const fileInputRef = useRef(null);
   const inputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [noAttributeFounded, setNoAttributeFounded] = useState(false);
   const [success, setSuccess] = useState(false);
   const [popupText, setPopupText] = useState('');
   const [isFromLoading, setIsFromLoading] = useState(false);
@@ -103,8 +104,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
   };
 
   const handleDeleteImage = (index) => {
-    console.log(index , 'dasdasdasdsa');
-    
+    console.log(index, 'dasdasdasdsa');
+
     const updatedFiles = [...productManagment.file];
     updatedFiles.splice(index, 1);
     setProductManagments(prev => ({ ...prev, file: updatedFiles }));
@@ -185,6 +186,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
             }
             setProductManagments(prev => ({ ...prev, attributes: updateAddons, category: data }));
           }
+        } else {
+          setProductManagments(prev => ({ ...prev, attributes: [] }));
+          setNoAttributeFounded(true)
         }
       })
       .catch((error) => {
@@ -263,17 +267,26 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     e.preventDefault();
     setInputError(true)
     setIsFromLoading(true)
-    if (productManagment.file.length === 0 || productManagment.condition === "" || productManagment.attributes.length === 0 ||
+    if (productManagment.file.length === 0 || productManagment.condition === "" ||
       productManagment.category === null || productManagment.stockCapacity === "" || productManagment.brand_id === null ||
       productManagment.model === "" || productManagment.description === "" || productManagment.address === "" ||
       productManagment.latitude === "" || productManagment.longitude === "" || productManagment.country === "" ||
       productManagment.state === "" || productManagment.city === "" || productManagment.zip === "" ||
       productManagment.weight === "" || productManagment.weight === 0 || productManagment.width === "" ||
       productManagment.width === 0 || productManagment.height === "" || productManagment.height === 0 ||
-      productManagment.length === "" || productManagment.length === 0 
+      productManagment.length === "" || productManagment.length === 0
     ) {
       setIsFromLoading(false)
       return false;
+    }
+
+    if (productManagment.attributes.length > 0) {
+      for (let i = 0; i < productManagment.attributes.length; i++) {
+        if (productManagment.attributes[i].selected === null) {
+          setIsFromLoading(false)
+          return false;
+        }
+      }
     }
 
     // SellingNow specific validations
@@ -315,9 +328,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
     formData.append("underage", productManagment?.underage);
     formData.append("condition", productManagment?.condition);
-  if(productManagment?.condition === "Used" ){
-    formData.append("used_condition", productManagment?.used_condition?.label);
-  }
+    if (productManagment?.condition === "Used") {
+      formData.append("used_condition", productManagment?.used_condition?.label);
+    }
     if (productManagment?.attributes?.length > 0) {
       let attributes = [];
       for (let i = 0; i < productManagment?.attributes?.length; i++) {
@@ -695,7 +708,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                       }
                     </div>
                   }
-                  <div className="two-field-left">
+                  {/* <div className="two-field-left">
                     <label>Item model</label>
                     <input type="text" name="model" value={productManagment?.model} onChange={handleChange} placeholder="Enter item model" />
                     {productManagment.model === "" && inputError &&
@@ -705,7 +718,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                   {productManagment?.condition != "Used" &&
                     <div className="two-field-left">
                     </div>
-                  }
+                  } */}
                 </div>
                 <div className="two-field">
                   <div className="two-field-left">
@@ -926,7 +939,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                       <>
                         {isLoaded && (
                           <StandaloneSearchBox onPlacesChanged={handlePlaceChanged} style={{ width: '100%' }}>
-                            <input type="text" value={productManagment.address} placeholder={productManagment.address} />
+                            <input type="text" defaultValue={productManagment.address} placeholder={productManagment.address} />
                           </StandaloneSearchBox>
                         )}
                       </>

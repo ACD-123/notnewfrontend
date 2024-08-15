@@ -330,7 +330,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest, noti
                           <>
                             <hr className="dashed" />
                             <div className="buttonright">
-                              {data?.products?.is_favourite ? (
+                              {/* {data?.products?.is_favourite ? (
                                 <button
                                   className="btn btn-info btn-lg transparent"
                                   type="button"
@@ -351,7 +351,7 @@ const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest, noti
                                     Save for later
                                   </button>
                                 </>
-                              )}
+                              )} */}
                               <button
                                 className="btn btn-info btn-lg danger"
                                 type="button"

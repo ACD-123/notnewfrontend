@@ -25,7 +25,7 @@ const PageNumbers = ({
               onClick={() => {
                 getAuctionProducts(
                   loggedInUserId,
-                  1,
+                  0,
                   number,
                   pageSize)
               }}>
@@ -37,7 +37,7 @@ const PageNumbers = ({
     );
   };
 
-const Auctions = ({cartFullResponse , notificationCount}) => {
+const Auctions21Plus = ({cartFullResponse , notificationCount}) => {
     const [auctionProducts, setAuctionProducts] = useState([]);
     const [latestProducts, setLatestProducts] = useState([]);
     const [pagination, setPagination] = useState([]);
@@ -60,7 +60,7 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
     };
 
     useEffect(() => {
-        getAuctionProducts(user_id , 1 , 1 , pageSize)
+        getAuctionProducts(user_id , 0 , 1 , pageSize)
     }, [])
 
     const handleToggleFavouriteAuction = (index) => {
@@ -154,7 +154,7 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
                       onClick={() => {
                         getAuctionProducts(
                           user_id,
-                          1,
+                          0,
                           (+pagination?.page) - 1,
                           pageSize)
                       }}
@@ -166,7 +166,7 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
                             onClick={() => {
                               getAuctionProducts(
                                 user_id,
-                                1,
+                                0,
                                 1,
                                 pageSize
                             )
@@ -176,7 +176,7 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
                             onClick={() => {
                               getAuctionProducts(
                                 user_id,
-                                1,
+                                0,
                                 2,
                                 pageSize
                             )
@@ -186,7 +186,7 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
                             onClick={() => {
                               getAuctionProducts(
                                 user_id,
-                                1,
+                                0,
                                 3,
                                 pageSize
                             )
@@ -201,7 +201,7 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
                             onClick={() => {
                               getAuctionProducts(
                                 user_id,
-                                1,
+                                0,
                                 pagination?.total_pages,
                                 pageSize
                             )
@@ -223,7 +223,7 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
                       onClick={() => {
                         getAuctionProducts(
                           user_id,
-                          1,
+                          0,
                           (+pagination?.page) + 1,
                           pageSize
                         )
@@ -241,4 +241,4 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
     )
 }
 
-export default Auctions
+export default Auctions21Plus

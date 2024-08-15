@@ -13,9 +13,6 @@ import NoDataFound from '../../Shared/NoDataFound';
 import ProductSkeletonLoader from '../../Shared/ProductSkeletonLoader';
 import Select from 'react-select';
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
 
 const PageNumbers = ({
   totalPages,

@@ -8,6 +8,7 @@ import TopSelling from '../components/TwentyOnePlus/TopSelling'
 import ExploreAll from '../components/TwentyOnePlus/ExploreAll'
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner'
 import { useNavigate } from 'react-router-dom'
+import Auction from '../components/TwentyOnePlus/Auction'
 
 const TwentyOnePlus = ({ cartFullResponse, notificationCount }) => {
   const navigate = useNavigate()
@@ -27,6 +28,7 @@ const TwentyOnePlus = ({ cartFullResponse, notificationCount }) => {
       <NewArrival title={'New Arrivals'} />
       <TopSelling title={'Top Selling'} />
       <ExploreAll title={'Explore All'} />
+      <Auction type={0} title={'Latest Auctions'} />
       <Footer />
     </>
   )

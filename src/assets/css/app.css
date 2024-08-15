@@ -1561,7 +1561,7 @@ span.auction-badge {
   color: #fff;
   width: 70px;
   height: 19px;
-  left: 0px;
+  left: 10px;
   top: 19px;
   border-radius: 0 5px 5px 0px;
   font-family: "Lato", sans-serif;
@@ -7765,6 +7765,7 @@ th {
   border-radius: 12px;
   padding: 10px 20px 10px 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  cursor: pointer;
 }
 
 .seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l .h-a-s-b-a-o-l-l {}
