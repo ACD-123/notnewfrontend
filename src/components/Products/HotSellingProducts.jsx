@@ -88,7 +88,7 @@ const HotSellingProducts = ({ loading, data, setHotProducts, title }) => {
                   </>
                   :
                   (
-                    data.legth > 0 ?
+                    data.length > 0 ?
                       data?.map((product, index) => (
                         <div className="col col-lg-3" key={product?.guid}>
                           <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />

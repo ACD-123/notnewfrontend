@@ -52,7 +52,7 @@ const Home = ({cartFullResponse , notificationCount}) => {
 			<Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
 			<Banner data={banners} loading={loading} />
 			<HomeCategorySlider/>
-			<Items title={'New Items'} />
+			<Items title={'New Arrivals '} />
 			<TopSellingProducts loading={loading} data={topSellingProducts} setTopSellingProducts={setTopSellingProducts} title={'Top Selling Products'} />
 			<HotSellingProducts loading={loading} data={hotProducts} setHotProducts={setHotProducts} title={'Hot Selling Products'} />
 			<Auction type={1} title={'Latest Auctions'}/>

@@ -22,8 +22,8 @@ messaging.onBackgroundMessage(function (payload) {
         const notificationTitle = payload.data.title
         const notificationOptions = {
             body: payload.data.body,
-            icon: 'https://notnewbackendv1.testingwebsitelink.com/image/logo.png',
-            image: 'https://notnewbackendv1.testingwebsitelink.com/image/logo.png',
+            // icon: 'https://notnewbackendv1.testingwebsitelink.com/image/logo.png',
+            // image: 'https://notnewbackendv1.testingwebsitelink.com/image/logo.png',
             click_action : payload.data.click_action
         }
         self.registration.showNotification(notificationTitle, notificationOptions);

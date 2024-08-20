@@ -12,6 +12,7 @@ import ProductCard from '../../Shared/Cards/ProductCard'
 import { Link } from 'react-router-dom'
 import LoadingComponents from '../../Shared/LoadingComponents'
 import { toast } from 'react-toastify'
+import NoDataFound from '../../Shared/NoDataFound'
 const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse , notificationCount}) => {
   const [moreToLove, setMoreToLove] = useState([])
   const [productId, setProductId] = useState('')
@@ -61,6 +62,7 @@ const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse 
             </div>
             <div className="more-to-love" id='productcard'>
               <h3>More to love<span><Link to={`/more-to-love?id=${productId}`}>View More</Link></span></h3>
+              {moreToLove.length > 0 ?
               <div className="row">
                 {moreToLove?.slice(0, 4)?.map((data, index) => {
                   return (
@@ -70,6 +72,9 @@ const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse 
                   )
                 })}
               </div>
+              :
+              <NoDataFound title={'No more to love product found'}/>
+            }
             </div>
           </div>
         {/* } */}

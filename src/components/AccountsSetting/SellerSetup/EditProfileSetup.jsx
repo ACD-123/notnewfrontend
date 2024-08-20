@@ -372,7 +372,7 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
                       </div>
                     </div>
                     <div className="p-m-i-u">
-                      {!editprofile?.editVideo && editprofile?.video == '' &&
+                      {!editprofile?.editVideo && editprofile?.video == null &&
                         <div className="p-m-i-u-wrap">
                           <div className="upload-box" onClick={handleVideoUploadClick}>
                             <svg width="96" height="97" viewBox="0 0 96 97" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -390,7 +390,7 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
                         </div>
                       }
                       <div className="selected-images">
-                        {editprofile?.video != '' ?
+                        {editprofile?.video != '' && editprofile?.video != null ?
                           (!editprofile?.editVideo && editprofile?.video?.includes('image') ?
                             <div className="selected-videos-box">
                               <video width="100%" controls>

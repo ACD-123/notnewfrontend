@@ -45,10 +45,9 @@ function Chat() {
       .then((response) => {
         setChatList(response?.data);
         for (let i = 0; i < response?.data?.length; i++) {
-          if (+data?.participants == +response?.data[i]?.id) {
+          if (data?.participants == response?.data[i]?.id) {
             getMessagesById(data?.participants)
             if (selectedChat === null) {
-              // setLoadingChat(true);
               setSelectedChat(response?.data[i])
             }
           }
@@ -66,6 +65,8 @@ function Chat() {
   const navigate = useNavigate();
 
   const handleChatSelection = (reciptId, chat) => {
+    console.log(chat, 'chat');
+
     setLoadingChat(true);
     UserServices.getMessagesById(reciptId, seller_guid)
       .then((response) => {
@@ -124,7 +125,6 @@ function Chat() {
   const getChatUsers = () => {
     MessagesServices.getChatUsers(seller_guid, 0)
       .then((response) => {
-        console.log(response?.data, 'sender_profile_image');
         setChatUsers(response?.data);
       })
       .catch((error) => {
@@ -151,6 +151,7 @@ function Chat() {
   useEffect(() => {
     getChatUsers();
   }, [seller_guid]);
+
   useEffect(() => {
     if (room_id) {
       getUserChat({ participants: room_id });
@@ -170,6 +171,7 @@ function Chat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
   return (
     <>
       {loading ?
@@ -219,12 +221,14 @@ function Chat() {
                               <p className="message">{chat?.message?.substring(0, 10)}...</p>
                             </div>
                             <div className="time">
-                              {chat?.read_count > 0 &&
+                              {selectedChat?.id == messages?.[0]?.room_id ? null :
+                                chat?.read_count > 0 &&
                                 <div className="read">
                                   <span>
                                     {chat?.read_count}
                                   </span>
                                 </div>
+
                               }
                               <div className="time">
                                 {chat?.date?.slice(0, 5)}

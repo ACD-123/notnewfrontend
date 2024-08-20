@@ -236,12 +236,14 @@ function UserChat() {
                                                                 <p className="message">{chat?.message?.substring(0, 10)}...</p>
                                                             </div>
                                                             <div className="time">
-                                                                {chat?.read_count > 0 &&
+                                                                {selectedChat?.id == messages?.[0]?.room_id ? null :
+                                                                    chat?.read_count > 0 &&
                                                                     <div className="read">
                                                                         <span>
                                                                             {chat?.read_count}
                                                                         </span>
                                                                     </div>
+
                                                                 }
                                                                 <div className="time">
                                                                     {chat?.date?.slice(0, 5)}

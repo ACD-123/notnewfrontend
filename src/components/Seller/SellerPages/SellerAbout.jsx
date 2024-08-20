@@ -7,6 +7,7 @@ import { RxCross2 } from "react-icons/rx";
 import { toast } from "react-toastify";
 import { isLoggedin } from "../../../services/Auth";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../../services/Constant";
 
 const SellerAbout = () => {
   const [details, setDetails] = useState([]);
@@ -80,6 +81,16 @@ const SellerAbout = () => {
       ) : (
         <>
           <div className="seller-about-section">
+            {details.video ?
+              <div className="seller-about-section-6">
+                <video width="100%" controls>
+                  <source src={`${BASE_URL}/public/${details?.video}`} />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              :
+              null
+            }
             <div className="seller-about-section-1">
               <p>
                 {details.description}
