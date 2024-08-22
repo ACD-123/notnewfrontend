@@ -16,8 +16,7 @@ const SellerAbout = () => {
   const [inputError, setInputError] = useState(false);
   const [reportData, setReportData] = useState({
     reason: '',
-    message: '',
-    seller_guid: ''
+    message: ''
   });
   const navigate = useNavigate()
 
@@ -26,10 +25,8 @@ const SellerAbout = () => {
 
 
   const getAbout = () => {
-    const seller_guid = localStorage.getItem('seller_guid')
     SellerServices.getShopDetailAbout(id)
       .then((res) => {
-        setReportData((prev) => ({ ...prev, seller_guid: seller_guid }))
         setDetails(res.data);
         setIsLoading(false);
       })
@@ -54,7 +51,7 @@ const SellerAbout = () => {
     const formData = new FormData();
     formData.append("reason", reportData?.reason);
     formData.append("message", reportData?.message);
-    formData.append("seller_guid", reportData?.seller_guid);
+    formData.append("seller_guid", id);
     if (reportData.message != '' && reportData?.reason != '') {
       setIsLoading(true);
       SellerServices.createSellerReport(formData)
