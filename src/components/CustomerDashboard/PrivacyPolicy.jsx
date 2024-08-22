@@ -1,48 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import SellerServices from '../../services/API/SellerServices';
+import LoadingComponents from '../Shared/LoadingComponents';
 
 const PrivacyPolicy = () => {
 
+    const [isLoading, setIsLoading] = useState(true)
+    const [privacys, setPrivacys] = useState([])
+
+
+    const getPrivacy = (type) => {
+        SellerServices.getFaqs(type)
+            .then((res) => {
+                setPrivacys(res.data);
+                console.log(res.data, 'getFaqs');
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.message)
+                setIsLoading(false);
+            });
+    };
+
+    useEffect(() => {
+        getPrivacy('privacy')
+    }, [])
+
     return (
         <>
-            <div className="seller-new-transaction">
-                <div className="title">Privacy Policy</div>
-                <div className="h-a-s">
-                    <div className="h-a-s-p-p">
-                        <ul>
-                            <li>
-                                <div className="h-a-s-p-p-w">
-                                    <div className="h-a-s-p-p-q">
-                                        <div>
-                                            Human Friendly
-                                            <span>Legal Mumbo-Jumbo</span>
-                                        </div>
-                                    </div>
-                                    <div className="h-a-s-p-p-a">
-                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div className="h-a-s-p-p-w">
-                                    <div className="h-a-s-p-p-q">
-                                        <div>
-                                            Legal
-                                            <span>Legal Mumbo-Jumbo</span>
-                                        </div>
-                                    </div>
-                                    <div className="h-a-s-p-p-a">
-                                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+            {isLoading ?
+                <LoadingComponents />
+                :
+                <div className="seller-new-transaction">
+                    <div className="title">Privacy Policy</div>
+                    <div className="h-a-s">
+                        <div className="h-a-s-p-p">
+                            <ul>
+                                {privacys.map((privacy, index) => {
+                                    return (
+                                        <li key={index}>
+                                            <div className="h-a-s-p-p-w">
+                                                <div className="h-a-s-p-p-q">
+                                                    <div>
+                                                        {privacy?.heading}
+                                                    </div>
+                                                </div>
+                                                <div className="h-a-s-p-p-a">
+                                                    {privacy?.description}
+                                                </div>
+                                            </div>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </div>
+
                     </div>
-                    {/* {isLoading ?
-                                <LoadingComponents />
-                                : */}
-                    {/* } */}
                 </div>
-            </div>
+            }
         </>
     );
 };

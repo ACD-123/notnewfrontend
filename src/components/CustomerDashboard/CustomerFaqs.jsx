@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import SellerServices from '../../services/API/SellerServices';
+import { toast } from 'react-toastify';
+import LoadingComponents from '../Shared/LoadingComponents';
 
 const CustomerFaqs = () => {
-    const [activeTab, setActiveTab] = useState(1)
+    const [isLoading, setIsLoading] = useState(true)
+    const [activeTab, setActiveTab] = useState(0)
+    const [faqs, setFaqs] = useState([])
 
     const changeTab = (number) => {
         if (number === activeTab) {
@@ -12,81 +17,60 @@ const CustomerFaqs = () => {
         }
     }
 
+    const getFaqs = (type) => {
+        SellerServices.getFaqs(type)
+            .then((res) => {
+                setFaqs(res.data);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                toast.error(error?.response?.data?.message)
+                setIsLoading(false);
+            });
+    };
+
+    useEffect(() => {
+        getFaqs('faq')
+    }, [])
+
     return (
         <>
-            <div className="seller-new-transaction">
-                <div className="title">Faqs</div>
-                <div className="h-a-s">
-                    <div className="h-a-s-f-a-q">
-                        <ul>
-                            <li onClick={() => { changeTab(1) }}>
-                                <div className="h-a-s-f-a-q-w">
-                                    <div className="h-a-s-f-a-q-q" style={{paddingBottom : activeTab === 1 ? '2px' : '0px'}}>
-                                        <div>
-                                            Question # 1
-                                            {activeTab === 1 ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                                        </div>
-                                    </div>
-                                    {activeTab === 1 &&
-                                        <div className="h-a-s-f-a-q-a">
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                        </div>
-                                    }
-                                </div>
-                            </li>
-                            <li onClick={() => { changeTab(2) }}>
-                                <div className="h-a-s-f-a-q-w">
-                                    <div className="h-a-s-f-a-q-q" style={{paddingBottom : activeTab === 2 ? '2px' : '0px'}}>
-                                        <div>
-                                            Question # 2
-                                            {activeTab === 2 ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                                        </div>
-                                    </div>
-                                    {activeTab === 2 &&
-                                        <div className="h-a-s-f-a-q-a">
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                        </div>
-                                    }
-                                </div>
-                            </li>
-                            <li onClick={() => { changeTab(3) }}>
-                                <div className="h-a-s-f-a-q-w">
-                                    <div className="h-a-s-f-a-q-q" style={{paddingBottom : activeTab === 3 ? '2px' : '0px'}}>
-                                        <div>
-                                            Question # 3
-                                            {activeTab === 3 ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                                        </div>
-                                    </div>
-                                    {activeTab === 3 &&
-                                        <div className="h-a-s-f-a-q-a">
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                        </div>
-                                    }
-                                </div>
-                            </li>
-                            <li onClick={() => { changeTab(4) }}>
-                                <div className="h-a-s-f-a-q-w">
-                                    <div className="h-a-s-f-a-q-q" style={{paddingBottom : activeTab === 4 ? '2px' : '0px'}}>
-                                        <div>
-                                            Question # 4
-                                            {activeTab === 4 ? <IoIosArrowUp /> : <IoIosArrowDown />}
-                                        </div>
-                                    </div>
-                                    {activeTab === 4 &&
-                                        <div className="h-a-s-f-a-q-a">
-                                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                                        </div>
-                                    }
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    {/* {isLoading ?
+            {isLoading ?
+                <LoadingComponents />
+                :
+                <div className="seller-new-transaction">
+                    <div className="title">Faqs</div>
+                    <div className="h-a-s">
+                        <div className="h-a-s-f-a-q">
+                            <ul>
+                                {faqs.map((faq, index) => {
+                                    return (
+                                        <li onClick={() => { changeTab(index) }} key={index}>
+                                            <div className="h-a-s-f-a-q-w">
+                                                <div className="h-a-s-f-a-q-q" style={{ paddingBottom: activeTab === index ? '2px' : '0px' }}>
+                                                    <div>
+                                                        {faq?.question}
+                                                        {activeTab === index ? <IoIosArrowUp /> : <IoIosArrowDown />}
+                                                    </div>
+                                                </div>
+                                                {activeTab === index &&
+                                                    <div className="h-a-s-f-a-q-a">
+                                                        {faq?.answer}
+                                                    </div>
+                                                }
+                                            </div>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                        </div>
+                        {/* {isLoading ?
                                 <LoadingComponents />
                                 : */}
-                    {/* } */}
+                        {/* } */}
+                    </div>
                 </div>
-            </div>
+            }
         </>
     );
 };

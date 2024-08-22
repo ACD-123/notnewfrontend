@@ -111,6 +111,13 @@ function setBank(data) {
       method: 'GET',
     })
   }
+
+  function getFaqs(type) {
+    return request({
+      url: `${baseUrl}additional_pages/get?type=${type}`, // Modify the endpoint to include the GUID
+      method: 'GET',
+    })
+  }
   
   function getStore(data) {
     return request({
@@ -247,7 +254,8 @@ const SellerServices = {
   changePassword,
   updateVideo,
   getNotificationSetting,
-  updateNotificationSetting
+  updateNotificationSetting,
+  getFaqs
 }
 
 export default SellerServices

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"; // Assuming you're using React Router
 import Footerlogo from "../assets/Images/footerlogo.png";
 
 const Footer = () => {
+	const token = localStorage.getItem('access_token')
 	return (
 		<>
 			<footer>
@@ -21,7 +22,11 @@ const Footer = () => {
 								<div className="nav-links-footer">
 									<h6>Buy</h6>
 									<ul>
+										{token == null ?
 										<li><Link to="/signup">Registration</Link></li>
+										:
+										<li><Link to="/my-seller-account?tab=dashboard">Dashbaord</Link></li>
+										}
 										<li><Link to="/notfound">Auction Help</Link></li>
 										<li><Link to="/notfound">Stores</Link></li>
 									</ul>
