@@ -346,6 +346,9 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                             {userDropdown &&
                               <div className="user-drop-dropdown">
                                 <ul>
+                                  <li onClick={() => window.location.href='/my-seller-account?tab=dashboard'}>
+                                    Dashboard
+                                  </li>
                                   <li onClick={() => handleDropdownItemClick("my-orders")}>
                                     My Orders
                                   </li>

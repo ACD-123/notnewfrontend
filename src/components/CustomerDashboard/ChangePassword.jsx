@@ -24,7 +24,6 @@ const ChangePassword = () => {
     const onSubmit = (e) => {
         e.preventDefault();
         setInputError(true);
-        setIsLoading(true);
         const formData = new FormData();
         formData.append("old_password", changePasswordData?.old_password);
         formData.append("password", changePasswordData?.password);
@@ -34,6 +33,7 @@ const ChangePassword = () => {
             changePasswordData?.password_confirmation != '' &&
             changePasswordData?.password === changePasswordData?.password_confirmation
         ) {
+        setIsLoading(true);
             SellerServices.changePassword(formData)
                 .then((res) => {
                     setIsLoading(false);

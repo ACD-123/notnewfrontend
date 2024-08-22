@@ -60,7 +60,6 @@ const Tabs = () => {
           </button>
         </div>
         <div className='t-b-w'>
-          <Link to="">Tell us what you Think</Link>
         </div>
       </div>
       <div className="tab-content">

@@ -255,7 +255,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                         </div>
                         <div className="p-o-m-w-l-r">
                           <div className="p-o-m-w-l-r-w-d">
-                            <button onClick={() => { getCompletedOdersDetail(data?.order_id, false) }}>Re Order</button>
+                            <button onClick={() => { getCompletedOdersDetail(data?.order_id, false) }}>Review</button>
                             <button onClick={() => { getRefundOdersDetail(data?.order_id, false) }}><span>Refund</span></button>
                           </div>
                         </div>

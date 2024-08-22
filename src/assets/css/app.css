@@ -2867,6 +2867,7 @@ section#activity-main-dashboard .left-menu ul .ordaw:hover {
 .favoriteImg svg {
   cursor: pointer;
   font-size: 26px;
+  color: #5c18c1;
 }
 
 /* .productlist.gradient h3{
@@ -4676,9 +4677,6 @@ input:checked+.slider:before {
   color: #fff;
 }
 
-/* Account Info end */
-
-/* Search History */
 section#searchhistory .list-inline p {
   margin: 0;
   padding: 0;
@@ -4719,8 +4717,6 @@ section#searchhistory .title-buton h3 {
   margin: 0;
 }
 
-/* End Search History */
-/* General Notifications */
 section#general-notifications .stepverification {
   align-items: center;
 }
@@ -6439,7 +6435,7 @@ th {
 .top-sellers .top-sellers-wrap .top-seller-card img {
   height: 200px;
   width: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .top-sellers .top-sellers-wrap .top-seller-card h2 {
@@ -6717,13 +6713,15 @@ th {
 }
 
 .seller-new-transaction .peronsinfo-form .pranker {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+
   margin-bottom: 20px;
 }
 
-.seller-new-transaction .peronsinfo-form .pranker {}
+.seller-new-transaction .peronsinfo-form .pranker .pranker-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 
 .seller-new-transaction .title {
   font-family: 'Cairo';
@@ -11205,7 +11203,9 @@ input::-webkit-inner-spin-button {
 .seller-about-section .seller-about-section-6{
   margin: 30px 0px 0px 0px;
 }
-.seller-about-section .seller-about-section-6 video{}
+.seller-about-section .seller-about-section-6 video{
+  height: 250px;
+}
 
 
 

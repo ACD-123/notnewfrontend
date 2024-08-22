@@ -71,13 +71,8 @@ const ProfileInformationTabs = (props) => {
             <li className={selectedMenuItem === 'component1' ? 'active' : ''} onClick={() => handleMenuItemClick('component1')}>
             Profile information
             </li>
-            <li className={selectedMenuItem === 'component2' ? 'active' : ''} onClick={() => handleMenuItemClick('component2')}>
-            Sign in and security            </li>
             <li className={selectedMenuItem === 'component3' ? 'active' : ''} onClick={() => handleMenuItemClick('component3')}>
             Addresses
-            </li>
-            <li className={selectedMenuItem === 'component4' ? 'active' : ''} onClick={() => handleMenuItemClick('component4')}>
-            Save images
             </li>
             <li className={selectedMenuItem === 'component5' ? 'active' : ''} onClick={() => handleMenuItemClick('component5')}>
             Search History

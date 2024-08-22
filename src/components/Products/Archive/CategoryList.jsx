@@ -92,23 +92,21 @@ const CategoryList = () => {
                     {categoryData.map((category , index) => {
                       return (
                         <div className='col col-lg-2' key={index}>
-                          <Link to={`/category?category-id=${category.id}`}>
-                            <div className='category' key={category.id}>
+                          <Link to={`/category?category-id=${category?.id}`}>
+                            <div className='category' key={category?.id}>
                               <div>
-                                {category.media.length > 0 ? (
+                                {category?.media?.length > 0 ? (
                                   <>
-                                    {category.media?.map((media , index) => {
+                                    {category?.media?.map((media , index) => {
                                       return (
                                         <>
-                                          <img src={`${BASE_URL}/image/category/${media.name}`} alt={media.name} key={index}/>
+                                          <img src={`${BASE_URL}/image/category/${media?.name}`} alt={media?.name} key={index}/>
                                         </>
                                       )
                                     })}
                                   </>
                                 ) : (
-                                  <Link to={`/notfound`}>
                                     <img src={blank} alt="blank" />
-                                  </Link>
                                 )
                                 }
                               </div>

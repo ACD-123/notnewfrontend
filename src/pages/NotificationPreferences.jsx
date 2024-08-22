@@ -70,7 +70,6 @@ const NotificationPreferences = ({ cartFullResponse, notificationCount }) => {
                   <button className="active" onClick={() => { navigate('/customerdashboard?tab=account') }}>Account</button>
                 </div>
                 <div className='t-b-w'>
-                  <Link to="">Tell us what you Think</Link>
                 </div>
               </div>
               <div className="tab-content">

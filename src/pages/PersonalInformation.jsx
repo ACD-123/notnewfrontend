@@ -74,7 +74,6 @@ const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
                                     <button className="active" onClick={() => { navigate('/customerdashboard?tab=account') }}>Account</button>
                                 </div>
                                 <div className='t-b-w'>
-                                    <Link to="">Tell us what you Think</Link>
                                 </div>
                             </div>
                             <div className="tab-content">
@@ -93,15 +92,10 @@ const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
                                                                 <li className={selectedMenuItem === 'profile-information' ? 'active' : ''} onClick={() => handleMenuItemClick('profile-information')}>
                                                                     Profile information
                                                                 </li>
-                                                                <li className={selectedMenuItem === 'sign-in-and-security' ? 'active' : ''} onClick={() => handleMenuItemClick('sign-in-and-security')}>
-                                                                    Sign in and security            </li>
                                                                 <li className={selectedMenuItem === 'addresses' ? 'active' : ''} onClick={() => handleMenuItemClick('addresses')}>
                                                                     Addresses
                                                                 </li>
-                                                                <li className={selectedMenuItem === 'save-images' ? 'active' : ''} onClick={() => handleMenuItemClick('save-images')}>
-                                                                    Save images
-                                                                </li>
-                                                                <li className={selectedMenuItem === 'search-history' ? 'active' : ''} onClick={() => handleMenuItemClick('search-history')}>
+                                                                <li onClick={() => window.location.href='/customerdashboard?component=recently-searched-items'}>
                                                                     Search History
                                                                 </li>
                                                             </ul>

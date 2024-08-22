@@ -45,9 +45,6 @@ const SellerFeedbackNew = () => {
               <div className="s-p-f-w-1-l">
                 Feedback ratings
               </div>
-              <div className="s-p-f-w-1-r">
-                Last 12 Months
-              </div>
             </div>
             <div className="s-p-f-w-2">
               <div className="seller-new-transaction" style={{ marginTop: '30px' }}>

@@ -98,8 +98,6 @@ const PersonalInfo = () => {
     e.preventDefault();
     setInputError(true);
 
-    // Check if any field is non-empty
-    const hasValidInput = Object.values(userFormData).some(field => field !== "");
     if (
       userFormData?.address != "" &&
       userFormData?.city != "" &&
@@ -131,6 +129,7 @@ const PersonalInfo = () => {
           setIsLoading(false);
           setInputError(false);
           setEnabled(false);
+          toast.success(response?.message)
         })
         .catch((error) => {
           toast.error(error?.response?.data?.message)
@@ -161,99 +160,90 @@ const PersonalInfo = () => {
                   <div className="title">Profile Information</div>
                   <div className="peronsinfo-form">
                     <div className="pranker">
-                      <div className="profile-pic-wrapper">
-                        <div className="pic-holder">
-                          {!editImage ? (
-                            userFormData?.file ?
-                              userFormData?.file?.includes('http') ? (
-                                <img
-                                  id="profilePic"
-                                  className="pic"
-                                  src={userFormData.file}
-                                />
-                              ) : (
-                                <img
-                                  id="profilePic"
-                                  className="pic"
-                                  src={`${BASE_URL}/${userFormData?.file}`}
-                                />
-                              )
-                              :
-                              null
-                          ) : (
-                            <img id="profilePic" className="pic" src={URL.createObjectURL(userFormData?.file)} />
-                          )}
+                      <div className="pranker-wrap">
+                        <div className="profile-pic-wrapper">
+                          <div className="pic-holder">
+                            {!editImage ? (
+                              userFormData?.file ?
+                                userFormData?.file?.includes('http') ?
+                                  (<img id="profilePic" className="pic" src={userFormData.file} />) :
+                                  (<img id="profilePic" className="pic" src={`${BASE_URL}/${userFormData?.file}`} />)
+                                :
+                                null
+                            ) : (<img id="profilePic" className="pic" src={URL.createObjectURL(userFormData?.file)} />)}
 
-                          <input
-                            className="uploadProfileInput"
-                            type="file"
-                            accept="image/png, image/jpeg"
-                            name="profile_pic"
-                            style={{ display: "none" }}
-                            id="newProfilePhoto"
-                            onChange={handleFileChange}
-                          />
-                          <label htmlFor="newProfilePhoto" className="upload-file-block">
-                            <div className="text-center">
-                              <div className="text-uppercase">
-                                <IoIosCamera />
+                            <input
+                              className="uploadProfileInput"
+                              type="file"
+                              accept="image/png, image/jpeg"
+                              name="profile_pic"
+                              style={{ display: "none" }}
+                              id="newProfilePhoto"
+                              onChange={handleFileChange}
+                            />
+                            <label htmlFor="newProfilePhoto" className="upload-file-block">
+                              <div className="text-center">
+                                <div className="text-uppercase">
+                                  <IoIosCamera />
+                                </div>
                               </div>
-                            </div>
-                          </label>
+                            </label>
+                          </div>
+                        </div>
+                        <div>
+                          <h2>{userFormData.name}</h2>
+                          <h6><a href={`mailto:${userFormData.email}`}>{userFormData.email}</a></h6>
                         </div>
                       </div>
-                      <div>
-                        <h2>{userFormData.name}</h2>
-                        <h6><a href={`mailto:${userFormData.email}`}>{userFormData.email}</a></h6>
-                      </div>
+                      {inputError && userFormData.file === '' && <div className="error-input">Image is required</div>}
                     </div>
                     <div className="prnform">
                       <form onSubmit={handleSubmit}>
                         <div className="input-wrap">
                           <div className="input">
                             <input type="text" name="name" value={userFormData.name} onChange={handleChange} placeholder="Enter name" />
-                            {inputError && userFormData.name === '' && <div className="error-input">Name is required</div>}
+                            {inputError && !userFormData.name && <div className="error-input">Name is required</div>}
                           </div>
 
                           <div className="input">
                             <input type="text" name="lastname" value={userFormData.lastname} onChange={handleChange} placeholder="Enter last Name" />
-                            {inputError && userFormData.lastname === '' && <div className="error-input">Last name is required</div>}
+                            {inputError && !userFormData.lastname && <div className="error-input">Last name is required</div>}
                           </div>
                         </div>
                         <div className="input-wrap">
                           <div className="input">
                             <input type="tel" name="phone" value={userFormData.phone} onChange={handleChange} placeholder="Enter phone number" />
-                            {inputError && userFormData.phone === '' && <div className="error-input">Phone number is required</div>}
+                            {inputError && !userFormData.phone && <div className="error-input">Phone number is required</div>}
                           </div>
 
                           <div className="input">
                             {isLoaded && (
                               <StandaloneSearchBox onLoad={(ref) => (inputRef.current = ref)} onPlacesChanged={handlePlaceChanged}>
-                                <input type="text" defaultValue={userFormData.address} placeholder={userFormData.address} />
+                                <input type="text" defaultValue={userFormData.address} placeholder="Enter address" />
                               </StandaloneSearchBox>
                             )}
-                            {userFormData.address === "" && inputError && <div className="error-input">Address is required</div>}
+                            {!userFormData.address && inputError && <div className="error-input">Address is required</div>}
                           </div>
                         </div>
                         <div className="input-wrap">
                           <div className="input">
                             <input name="country" readOnly onChange={handleChange} value={userFormData.country} placeholder="Enter country" />
-                            {userFormData.country === "" && inputError && <div className="error-input">Country is required</div>}
+                            {!userFormData.country && inputError && <div className="error-input">Country is required</div>}
                           </div>
 
                           <div className="input">
                             <input name="states" readOnly onChange={handleChange} value={userFormData.states} placeholder="Enter State" />
-                            {userFormData.states === "" && inputError && <div className="error-input">State is required</div>}
+                            {!userFormData.states && inputError && <div className="error-input">State is required</div>}
                           </div>
 
                           <div className="input">
                             <input name="city" readOnly onChange={handleChange} value={userFormData.city} placeholder="Enter city" />
-                            {userFormData.city === "" && inputError && <div className="error-input">City is required</div>}
+                            {!userFormData.city && inputError && <div className="error-input">City is required</div>}
                           </div>
                         </div>
                         <div className="input-wrap">
                           <div className="input">
-                            <input name="email" readOnly onChange={handleChange} value={userFormData.email} placeholder="Enter email" />
+                            <input name="email"  onChange={handleChange} value={userFormData.email} placeholder="Enter email" />
                             {userFormData.email === "" && inputError && <div className="error-input">Email is required</div>}
                           </div>
 

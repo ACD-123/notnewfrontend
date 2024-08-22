@@ -28,6 +28,7 @@ const SellerProfileDetails = ({ id }) => {
     };
 
     const addToFavorites = async (productId) => {
+        setShopData((prev) =>({...prev , is_favourite : !shopData.is_favourite}))
         try {
             const data = {
                 favourite_against_id: productId,

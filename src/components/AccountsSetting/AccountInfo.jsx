@@ -111,10 +111,9 @@ const AccountInfo = () => {
               <h4><span>Personal Info</span></h4>
               <ul>
                 <li onClick={() => navigate('/personal-info?component=profile-information')}>Personal information</li>
-                <li onClick={() => navigate('/personal-info?component=sign-in-and-security')}>Sign in and security</li>
                 <li onClick={() => navigate('/personal-info?component=addresses')}>Addresses</li>
-                <li onClick={() => navigate('/personal-info?component=save-images')}>Save images</li>
-                <li onClick={() => navigate('/personal-info?component=search-history')}>Search History</li>
+                {/* <li onClick={() => navigate('/personal-info?component=save-images')}>Save images</li> */}
+                <li onClick={() => window.location.href='/customerdashboard?component=recently-searched-items'}>Search History</li>
               </ul>
             </div>
           </div>

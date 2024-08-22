@@ -14,7 +14,7 @@ const SellerCategories = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [cardsPerPage] = useState(6);
   const [productData, setProductData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
+  const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("")
 
   const { pathname } = window.location;
@@ -22,7 +22,6 @@ const SellerCategories = () => {
 
 
   const getProduct = (search) => {
-    setIsLoading(true)
     SellerServices.getShopDetailProducts(id, search)
       .then((res) => {
         setProductData(res.data.products);
