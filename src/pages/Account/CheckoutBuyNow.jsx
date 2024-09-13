@@ -276,7 +276,7 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
           <div className="row">
             <div className="col-lg-8">
               <div className="order-details" id="sectionToRemove">
-                <div><h3 id="storetitle">Seller Shop : {butItNowData?.[0]?.storename}</h3></div>
+                <div><h3 id="storetitle">Seller Shop : {butItNowData?.data?.[0]?.storename}</h3></div>
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="product-detail">

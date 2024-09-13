@@ -2,14 +2,11 @@
 import React, { useState, useEffect } from "react";
 import Signinbgs from "../../assets/Images/Accountimages/signinbg.png";
 import Logo from "../../assets/Images/logo.png";
-import Google from "../../assets/Images/Accountimages/google.png";
-import Facebook from "../../assets/Images/Accountimages/facebook.png";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useGoogleLogin } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
-import FacebookLogin from 'react-facebook-login';
 import { useGoogleOneTapLogin } from "@react-oauth/google";
+import FacebookLogin from 'react-facebook-login';
 import {
   setAccessToken,
   setRefreshToken,
@@ -94,9 +91,7 @@ const SignIn = () => {
           toast.error(error?.response?.data?.message)
         });
     },
-    onError: () => {
-
-    },
+    onError: () => {},
   });
 
   const handleChange = (e) => {
@@ -269,9 +264,6 @@ const SignIn = () => {
 
                           }}
                         />
-                        {/* <a href="#" onClick={() => login()}> */}
-                        {/* <img src={Google} /> */}
-                        {/* </a> */}
                       </li>
                       <li>
                         <FacebookLogin

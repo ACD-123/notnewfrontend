@@ -221,7 +221,7 @@ function Chat() {
                               <p className="message">{chat?.message?.substring(0, 10)}...</p>
                             </div>
                             <div className="time">
-                              {selectedChat?.id == messages?.[0]?.room_id ? null :
+                              {selectedChat?.id == messages?.[0]?.room_id && selectedChat?.id && messages?.[0]?.room_id  ? null :
                                 chat?.read_count > 0 &&
                                 <div className="read">
                                   <span>

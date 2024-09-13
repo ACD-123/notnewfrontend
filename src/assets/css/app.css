@@ -5863,6 +5863,8 @@ th {
 .Top-category-card .Top-category-card-wrap .Top-category-card-img img {
   width: 100%;
   border-radius: 22px;
+  height: 200px;
+  object-fit: cover;
 }
 
 .Top-category-card .Top-category-card-wrap h3 {
