@@ -751,7 +751,7 @@ const ListingForm = (props) => {
           },
         };
         axios
-          .post(`https://notnewbackendv1.testingwebsitelink.com/api/products/${props.guid}`, fD, config)
+          .post(`https://notnewbackendv2.testingwebsitelink.com/api/products/${props.guid}`, fD, config)
           .then((response) => {
             setShowEditPopup(true);
             setIsLoading(false);
@@ -836,7 +836,7 @@ const ListingForm = (props) => {
           },
         };
         axios
-          .post("https://notnewbackendv1.testingwebsitelink.com/api/products/add", formData, config)
+          .post("https://notnewbackendv2.testingwebsitelink.com/api/products/add", formData, config)
           .then((response) => {
             setShowPopup(true);
             setIsLoading(false);

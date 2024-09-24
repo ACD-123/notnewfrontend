@@ -226,7 +226,7 @@ function UserChat() {
                                                                     />
                                                                     :
                                                                     <img
-                                                                        src={chat?.sender_profile_image ? "https://notnewbackendv1.testingwebsitelink.com/" + chat?.sender_profile_image : blank}
+                                                                        src={chat?.sender_profile_image ? "https://notnewbackendv2.testingwebsitelink.com/" + chat?.sender_profile_image : blank}
                                                                         style={{ borderRadius: "40px" }} width="40" height="40"
                                                                     />
                                                                 }
@@ -273,7 +273,7 @@ function UserChat() {
                                                             {selectedChat?.sender_profile_image?.includes('google') ?
                                                                 <img src={selectedChat?.sender_profile_image} />
                                                                 :
-                                                                <img src={"https://notnewbackendv1.testingwebsitelink.com/" + selectedChat?.sender_profile_image} />
+                                                                <img src={"https://notnewbackendv2.testingwebsitelink.com/" + selectedChat?.sender_profile_image} />
                                                             }
                                                         </>
                                                     ) : (
@@ -296,7 +296,7 @@ function UserChat() {
                                                                         key={msg?.id}
                                                                         className="sent-message">
                                                                         <div className="sent-message-wrap">
-                                                                            <img src={"https://notnewbackendv1.testingwebsitelink.com/" + msg?.testuser?.profile_image} />
+                                                                            <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.testuser?.profile_image} />
                                                                             <p className="message">{msg?.message}</p>
                                                                         </div>
                                                                     </div>
@@ -312,8 +312,8 @@ function UserChat() {
                                                                                     {msg?.testuser?.profile_image?.includes("http") ?
                                                                                         <img src={msg?.testuser?.profile_image} />
                                                                                         :
-                                                                                        // <img src={"https://notnewbackendv1.testingwebsitelink.com/" + msg?.participants?.profile_image} />
-                                                                                        <img src={"https://notnewbackendv1.testingwebsitelink.com/" + msg?.seller?.cover_image} />
+                                                                                        // <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.participants?.profile_image} />
+                                                                                        <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.seller?.cover_image} />
                                                                                     }
                                                                                 </>
                                                                             ) : (

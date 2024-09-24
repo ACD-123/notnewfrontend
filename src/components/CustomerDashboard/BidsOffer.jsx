@@ -61,7 +61,7 @@ const BidsOffer = () => {
                       if(index == 0){
                         return(
                           <>
-                          <img key={index} src={`https://notnewbackendv1.testingwebsitelink.com/image/product/${image}`} alt={image} />
+                          <img key={index} src={`https://notnewbackendv2.testingwebsitelink.com/image/product/${image}`} alt={image} />
                           </>
                         )                  
                       }

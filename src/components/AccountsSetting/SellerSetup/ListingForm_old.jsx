@@ -514,7 +514,7 @@ const handleAddAddress =()=>{
           },
         };
         axios
-          .post("https://notnewbackendv1.testingwebsitelink.com/api/products/add", formData, config)
+          .post("https://notnewbackendv2.testingwebsitelink.com/api/products/add", formData, config)
           .then((response) => {
             setShowPopup(true);
             setIsLoading(false);
@@ -859,7 +859,7 @@ const handleAddAddress =()=>{
                   <>
                     <img
                       key={index}
-                      src={`https://notnewbackendv1.testingwebsitelink.com/image/product/${blob.name}`}
+                      src={`https://notnewbackendv2.testingwebsitelink.com/image/product/${blob.name}`}
                       alt={`Product ${index + 1}`}
                       style={{
                         width: "100px",

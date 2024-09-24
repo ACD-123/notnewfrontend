@@ -104,8 +104,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
   };
 
   const handleDeleteImage = (index) => {
-    console.log(index, 'dasdasdasdsa');
-
     const updatedFiles = [...productManagment.file];
     updatedFiles.splice(index, 1);
     setProductManagments(prev => ({ ...prev, file: updatedFiles }));
