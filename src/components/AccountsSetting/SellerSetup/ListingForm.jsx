@@ -267,8 +267,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     setIsFromLoading(true)
     if (productManagment.file.length === 0 || productManagment.condition === "" ||
       productManagment.category === null || productManagment.stockCapacity === "" || productManagment.brand_id === null ||
-      productManagment.model === "" || productManagment.description === "" || productManagment.address === "" ||
-      productManagment.latitude === "" || productManagment.longitude === "" || productManagment.country === "" ||
+     productManagment.description === "" || productManagment.address === "" ||
+       productManagment.country === "" ||
       productManagment.state === "" || productManagment.city === "" || productManagment.zip === "" ||
       productManagment.weight === "" || productManagment.weight === 0 || productManagment.width === "" ||
       productManagment.width === 0 || productManagment.height === "" || productManagment.height === 0 ||
