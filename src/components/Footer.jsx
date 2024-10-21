@@ -10,7 +10,7 @@ const Footer = () => {
 				<div className="footer-widgets">
 					<div className="container">
 						<div className="row">
-							<div className="col">
+							<div className="col-lg-3 col-md-12">
 								<div className="footerlogo">
 									<Link to="/"><img src={Footerlogo} alt="Footer Logo" /></Link>
 								</div>
@@ -18,54 +18,42 @@ const Footer = () => {
 									<p>We are passionate about what we do, and we take pride in the work we deliver.</p>
 								</div>
 							</div>
-							<div className="col">
+							<div className="col-lg-2 col-md-6 col-sm-6 col-12">
 								<div className="nav-links-footer">
-									<h6>Buy</h6>
+									<h6>Sell / Buy</h6>
 									<ul>
 										{token == null ?
 										<li><Link to="/signup">Registration</Link></li>
 										:
 										<li><Link to="/my-seller-account?tab=dashboard">Dashbaord</Link></li>
 										}
-										<li><Link to="/notfound">Auction Help</Link></li>
 										<li><Link to="/notfound">Stores</Link></li>
-									</ul>
-								</div>
-							</div>
-							<div className="col">
-								<div className="nav-links-footer">
-									<h6>Sell</h6>
-									<ul>
 										<li><Link to="/notfound">Start selling</Link></li>
-										<li><Link to="/notfound">learn to sell</Link></li>
-										<li><Link to="/notfound">Refund Policy</Link></li>
 									</ul>
 								</div>
 							</div>
-							<div className="col">
+							<div className="col-lg-2 col-md-6 col-sm-6 col-12">
 								<div className="nav-links-footer">
 									<h6>Useful Links</h6>
 									<ul>
 										<li><Link to="/">Home</Link></li>
 										<li><Link to="/notfound">About Us</Link></li>
 										<li><Link to="/notfound">Services</Link></li>
-										<li><Link to="/notfound">Portfolio</Link></li>
 										<li><Link to="/notfound">Contact</Link></li>
 									</ul>
 								</div>
 							</div>
-							<div className="col">
+							<div className="col-lg-2 col-md-6 col-sm-6 col-12">
 								<div className="nav-links-footer">
 									<h6>About NotNew</h6>
 									<ul>
 										<li><Link to="/notfound">Terms & Condition</Link></li>
 										<li><Link to="/notfound">Privacy Policy</Link></li>
 										<li><Link to="/notfound">Refund Policy</Link></li>
-										<li><Link to="/notfound">Site Map</Link></li>
 									</ul>
 								</div>
 							</div>
-							<div className="col">
+							<div className="col-lg-3 col-md-6 col-sm-6 col-12">
 								<div className="nav-links-footer">
 									<h6>Contact Us</h6>
 									<ul>

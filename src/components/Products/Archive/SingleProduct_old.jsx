@@ -57,9 +57,9 @@ const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse 
               </div>
             </div>
             <SellerDetails />
-            <div className='row'>
+            {/* <div className='row'>
               <RecentViewedItems />
-            </div>
+            </div> */}
             <div className="more-to-love" id='productcard'>
               <h3>More to love<span><Link to={`/more-to-love?id=${productId}`}>View More</Link></span></h3>
               {moreToLove.length > 0 ?

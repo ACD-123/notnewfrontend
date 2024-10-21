@@ -63,7 +63,7 @@ const PageNumbers = ({
   );
 };
 
-const AllProducts = ({ cartFullResponse, notificationCount }) => {
+const AllProducts21Plus = ({ cartFullResponse, notificationCount }) => {
   const [categoryProducts, setCategoryProducts] = useState([]);
   const [categoryAttributes, setCategoryAttributes] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -113,7 +113,7 @@ const AllProducts = ({ cartFullResponse, notificationCount }) => {
     } else {
       setLoading(true)
     }
-    HomeService.getFilterProducts(user_id, category, brand, condition, attribute, min_price, max_price, page_size, page, usedCondition, underage, auctioned)
+    HomeService.getFilterProducts21Plus(user_id, category, brand, condition, attribute, min_price, max_price, page_size, page, usedCondition, underage, auctioned)
       .then((response) => {
         setProducts(response?.data)
         setLoading(false)
@@ -878,4 +878,4 @@ const AllProducts = ({ cartFullResponse, notificationCount }) => {
   );
 };
 
-export default AllProducts;
+export default AllProducts21Plus;

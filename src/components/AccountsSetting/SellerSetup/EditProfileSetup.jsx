@@ -128,37 +128,6 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
         setIsLoading(false);
         setEnabled(false);
       })
-    // } else {
-    //   const fd = new FormData();
-    //   fd.append("fullname", editprofile.fullname);
-    //   fd.append("email", editprofile.email);
-    //   fd.append("address", editprofile?.address);
-    //   fd.append("phone", editprofile.phone);
-    //   fd.append("country_id", editprofile.country_id);
-    //   fd.append("state_id", editprofile.state_id);
-    //   fd.append("city_id", editprofile.city_id);
-    //   fd.append("zip", editprofile.zip);
-    //   fd.append("latitude", editprofile.latitude);
-    //   fd.append("longitude", editprofile.longitude);
-    //   fd.append("description", editprofile.description);
-
-    //   if (editprofile.editImage) {
-    //     fd.append("file", editprofile?.file);
-    //   }
-    //   fd.append("guid", editprofile?.guid);
-    //   SellerServices.update(fd)
-    //     .then((response) => {
-    //       toast.success(response.data);
-    //       getShopDetaill()
-    //     })
-    //     .catch((error) => {
-    //       toast.error(error?.response?.data?.message)
-    //       setIsLoading(false);
-    //       setEnabled(false);
-    //     })
-    // }
-
-
   }
 
   const handleChange = (e) => {

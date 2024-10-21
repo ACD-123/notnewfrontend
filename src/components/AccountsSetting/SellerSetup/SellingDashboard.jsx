@@ -7,7 +7,6 @@ const Selling = () => {
   const [showComponentTwo, setShowComponentTwo] = useState(false);
   const [trustedseller, setTrustedseller] = useState(false);
   const handleGetStartedClick = () => {
-    // Toggle the state to switch between components
     setShowComponentTwo(true);
   };
 

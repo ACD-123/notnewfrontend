@@ -20,9 +20,9 @@ const SellerProductCard = ({ data, setSubmitted, setProductId, deleteSellerProdu
                         />
                     </Link>
 
-                    {(data?.auctioned && data?.recurring !== 0 && data?.recurring !== 1 && data?.underage === 1) ? (<span className="auction-badge">Auction</span>) : null}
-                    {(data?.auctioned && data?.recurring !== 0 && data?.recurring !== 1 && data?.underage === 0) ? (<span className="auction-badge-21">Auction</span>) : null}
-                    {data?.underage === 0 && <span className="plus21">21 +</span>}
+                    {(data?.auctioned && data?.recurring != 0 && data?.recurring != 1 && data?.underage == 1) ? (<span className="auction-badge">Auction</span>) : null}
+                    {(data?.auctioned && data?.recurring != 0 && data?.recurring != 1 && data?.underage == 0) ? (<span className="auction-badge-21">Auction</span>) : null}
+                    {data?.underage == 0 && <span className="plus21">21 +</span>}
                     {(!data?.auctioned && data?.recurring === 0) ? (<span className="auction-badge">{data?.soldstatus}</span>) : null}
                     {(!data?.auctioned && data?.recurring === 1) ? (<span className="auction-badge">{data?.soldstatus}</span>) : null}
                     <div className="px-2">
@@ -50,7 +50,13 @@ const SellerProductCard = ({ data, setSubmitted, setProductId, deleteSellerProdu
                             }
                         />
                     </Link>
-                    {(data?.auctioned && data?.recurring !== 0 && data?.recurring !== 1) ? (<span className="auction-badge">Auction</span>) : null}
+                    {/* {(data?.auctioned && data?.recurring !== 0 && data?.recurring !== 1) ? (<span className="auction-badge">Auction</span>) : null}
+                    {(!data?.auctioned && data?.recurring === 0) ? (<span className="auction-badge">{data?.soldstatus}</span>) : null}
+                    {(!data?.auctioned && data?.recurring === 1) ? (<span className="auction-badge">{data?.soldstatus}</span>) : null}
+                    {data?.underage == 0 && <span className="plus21">21 +</span>} */}
+                    {(data?.auctioned && data?.recurring != 0 && data?.recurring != 1 && data?.underage == 1) ? (<span className="auction-badge">Auction</span>) : null}
+                    {(data?.auctioned && data?.recurring != 0 && data?.recurring != 1 && data?.underage == 0) ? (<span className="auction-badge-21">Auction</span>) : null}
+                    {data?.underage == 0 && <span className="plus21">21 +</span>}
                     {(!data?.auctioned && data?.recurring === 0) ? (<span className="auction-badge">{data?.soldstatus}</span>) : null}
                     {(!data?.auctioned && data?.recurring === 1) ? (<span className="auction-badge">{data?.soldstatus}</span>) : null}
                     <div className="px-2">

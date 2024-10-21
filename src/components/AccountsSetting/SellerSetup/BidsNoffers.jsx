@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import UserServices from "../../../services/API/UserServices"; 
+import UserServices from "../../../services/API/UserServices";
 import { toast } from "react-toastify";
 import LoadingComponents from '../../Shared/LoadingComponents';
 import NoDataFound from '../../Shared/NoDataFound';
 import { IoIosArrowBack } from "react-icons/io";
 import laravelEcho from '../../../socket';
+import { BASE_URL } from "../../../services/Constant"
 
 const BidsNoffers = () => {
   const user_id = localStorage.getItem('user_id');
@@ -100,7 +101,7 @@ const BidsNoffers = () => {
 
   const acceptAuctionBid = (bidId) => {
     setIsLoading(true)
-    UserServices.acceptSellerActiveBid({id : bidId})
+    UserServices.acceptSellerActiveBid({ id: bidId })
       .then((response) => {
         setShowAuctionDetail(false)
         getSellerBid()
@@ -111,17 +112,17 @@ const BidsNoffers = () => {
   }
 
   useEffect(() => {
-		const channel = laravelEcho.channel("bid-channel-" + auctionId);
-		channel.listen(".bid-channel", (data) => {
-      console.log(data , 'bid-channel');
-      
-			getAuctionDetails(auctionId)
-		});
+    const channel = laravelEcho.channel("bid-channel-" + auctionId);
+    channel.listen(".bid-channel", (data) => {
+      console.log(data, 'bid-channel');
 
-		return () => {
-			channel.stopListening(".bid-channel");
-		};
-	}, []);
+      getAuctionDetails(auctionId)
+    });
+
+    return () => {
+      channel.stopListening(".bid-channel");
+    };
+  }, []);
   return (
     <>
       {isLoading ?
@@ -173,7 +174,8 @@ const BidsNoffers = () => {
                         return (
                           <li key={index}>
                             <div className="s-n-t-s-l">
-                              <img src={data?.media?.[0]?.name} />
+                              <img src={`${BASE_URL}/${data?.media?.[0]?.url}`}  />
+                              {/* <img src={data?.media?.[0]?.url} /> */}
                             </div>
                             <div className="s-n-t-s-c">
                               <h2>{data?.name}</h2>
@@ -218,7 +220,7 @@ const BidsNoffers = () => {
                     </li>
                     <li>
                       <h2>Total Bids</h2>
-                      <p>${auctionDetail?.product?.total_bids}</p>
+                      <p>{auctionDetail?.product?.total_bids}</p>
                     </li>
                   </ul>
                 </div>
@@ -240,7 +242,7 @@ const BidsNoffers = () => {
                               <li>
                                 <div className="bid-user">
                                   <div className="b-s-l">
-                                    <img src={data?.media?.[1]?.name} alt="" />
+                                  <img src={`${BASE_URL}/${data?.media?.[0]?.url}`}  />
                                   </div>
                                   <div className="b-s-r">
                                     <h2>{data?.name} {data?.last_name}</h2>
@@ -250,7 +252,7 @@ const BidsNoffers = () => {
                               </li>
                               <li>
                                 <div className="price">${data?.bid_amount}</div>
-                                {type === 'active'&& index === 0 && <div onClick={() =>{acceptAuctionBid(data?.bid_id)}} className="action">Accept Bid</div>}
+                                {type === 'active' && index === 0 && <div onClick={() => { acceptAuctionBid(data?.bid_id) }} className="action">Accept Bid</div>}
 
                               </li>
                             </ul>

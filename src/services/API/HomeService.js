@@ -36,7 +36,7 @@ function getHigherProductPrice() {
 }
 
 function getNotificationCount(user_id) {
-  
+
   return request({
     url: `${baseUrl}notifications/user-count?user_id=${user_id}`
   })
@@ -55,36 +55,66 @@ function getSearchProducts(search) {
 }
 
 function getFilterProducts(
-  user_id, 
-  category, 
-  brand, 
-  condition, 
-  attribute, 
-  min_price, 
-  max_price , 
-  page_size , 
-  page , 
-  usedCondition , 
-  underage,
+  user_id,
+  category,
+  brand,
+  condition,
+  attribute,
+  min_price,
+  max_price,
+  page_size,
+  page,
+  usedCondition,
   auctioned) {
   let attributes = [];
   for (let i = 0; i < attribute?.length; i++) {
-    // for (let j = 0; j < attribute[i].selectToSend.length; j++) {
-      attributes.push({ key: attribute[i].name, value: attribute[i].selectToSend })
-    // }
+    attributes.push({ key: attribute[i].name, value: attribute[i].selectToSend })
   }
   return request({
     url: `${baseUrl}products/filterProducts?user_id=${user_id}
     &category=${category ? category : null}
     &brand=${brand ? brand : null}
-    &condition=${condition ? condition : null }
+    &condition=${condition ? condition : null}
     &attributes=${attribute.length > 0 ? JSON.stringify(attributes) : "[]"}
     &min_price=${min_price}
     &max_price=${max_price}
     &page_size=${page_size}
     &page=${page}
     &used_condition=${usedCondition}
-    &underage=${underage}
+    &auctioned=${auctioned}
+    `
+  })
+}
+
+function getFilterProducts21Plus(
+  user_id,
+  category,
+  brand,
+  condition,
+  attribute,
+  min_price,
+  max_price,
+  page_size,
+  page,
+  usedCondition,
+  auctioned) {
+  let attributes = [];
+  for (let i = 0; i < attribute?.length; i++) {
+    // for (let j = 0; j < attribute[i].selectToSend.length; j++) {
+    attributes.push({ key: attribute[i].name, value: attribute[i].selectToSend })
+    // }
+  }
+  return request({
+    url: `${baseUrl}products/filterProductsUnderAge?user_id=${user_id}
+    &category=${category ? category : null}
+    &brand=${brand ? brand : null}
+    &condition=${condition ? condition : null}
+    &attributes=${attribute.length > 0 ? JSON.stringify(attributes) : "[]"}
+    &min_price=${min_price}
+    &max_price=${max_price}
+    &page_size=${page_size}
+    &page=${page}
+    &used_condition=${usedCondition}
     &auctioned=${auctioned}
     `
   })
@@ -104,6 +134,20 @@ function getTopSelling(user_id) {
   })
 }
 
+function getUsedProduct(condition, user_id) {
+  return request({
+    url: `${baseUrl}products/filterProducts?condition=${condition}&user_id=${user_id}`,
+    method: 'GET',
+  })
+}
+
+function getUsedProduct18Plus(condition, user_id) {
+  return request({
+    url: `${baseUrl}products/filterProductsUnderAge?condition=${condition}&user_id=${user_id}`,
+    method: 'GET',
+  })
+}
+
 function getTopSellingUnderAge(user_id) {
   return request({
     url: `${baseUrl}products/getTopSellingUnderAge?user_id=${user_id}`,
@@ -111,7 +155,7 @@ function getTopSellingUnderAge(user_id) {
   })
 }
 
-function getHotUnderAge(id , page_size , page) {
+function getHotUnderAge(id, page_size, page) {
   return request({
     url: `${baseUrl}products/getHotUnderAge?user_id=${id}&page_size=${page_size}&page=${page}`,
     method: 'GET',
@@ -125,7 +169,7 @@ function getUnderAgeBanners() {
   })
 }
 
-function getAuctionProducts(user_id , underage , page , page_size) {
+function getAuctionProducts(user_id, underage, page, page_size) {
   return request({
     url: `${baseUrl}products/auctioned?user_id=${user_id}&underage=${underage}&page=${page}&page_size=${page_size}`,
     method: 'GET',
@@ -156,9 +200,12 @@ const HomeService = {
   getbrands,
   getrecursive,
   getTopSelling,
+  getUsedProduct,
+  getUsedProduct18Plus,
   getAuctionProducts,
   getSearchProducts,
   getFilterProducts,
+  getFilterProducts21Plus,
   getHigherProductPrice,
   getUnderAgeBanners,
   fetchCategoryUnderag,

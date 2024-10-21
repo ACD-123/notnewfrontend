@@ -7,7 +7,7 @@ import HomeService from '../services/API/HomeService';
 import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
 import { toast } from 'react-toastify';
 
-const TopCategory = ({cartFullResponse , notificationCount}) => {
+const TopCategory = ({ cartFullResponse, notificationCount }) => {
   const [banners, setBanners] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,17 +31,13 @@ const TopCategory = ({cartFullResponse , notificationCount}) => {
   }, [])
   return (
     <>
-      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
+      <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount} />
       <div className="top-category">
         <div className="top-category-wrap">
+          <Banner data={banners} loading={loading} />
           <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <Banner data={banners} loading={loading} />
                 <CategoriesListing />
                 <GetSurprisedBanner />
-              </div>
-            </div>
           </div>
         </div>
       </div>

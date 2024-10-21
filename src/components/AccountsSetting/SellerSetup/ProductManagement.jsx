@@ -23,10 +23,12 @@ const ProductManagement = ({ submitted, setSubmitted , setProductId , productId 
               </div>
             </div>
             <div className='row'>
+              <div className="col-lg-12">
               <ul className='active-inactive-schedule'>
                 <li className={activeTab === 'active' ? 'active' : ''} onClick={() => setActiveTab('active')}>Active products</li>
                 <li className={activeTab === 'inactive' ? 'active' : ''} onClick={() => setActiveTab('inactive')}>Inactive products</li>
               </ul>
+              </div>
             </div>
             <div className='row'>
               {activeTab === 'active' && !submitted && <ProductCard setSubmitted={setSubmitted} setProductId={setProductId} />}

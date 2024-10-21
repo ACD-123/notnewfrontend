@@ -212,7 +212,7 @@ const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }
                       {product?.refund?.refundedImages.length > 0 ?
                         product?.refund?.refundedImages?.map((image , k) => {
                           return (
-                            <div className="col-lg-2" key={k}>
+                            <div className="col-lg-2 col-md-4 col-6" key={k}>
                               <div className="s-o-m-d-7-i-w">
                                 <img src={image} alt="Product" />
                               </div>

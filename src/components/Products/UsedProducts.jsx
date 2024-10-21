@@ -3,38 +3,35 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "../../components/Shared/Cards/ProductCard";
 import { Link } from "react-router-dom";
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
+import NoDataFound from "../Shared/NoDataFound";
 import HomeService from "../../services/API/HomeService";
 import { toast } from "react-toastify";
-import NoDataFound from "../Shared/NoDataFound";
 
-const TopSelling = ({ title }) => {
-    const [topSellingProducts, setTopSellingProducts] = useState([]);
+const UsedProducts = () => {
+    const [usedProducts, setUsedProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
     const user_id = localStorage.getItem('user_id');
-
-    const getTopSellingUnderAge = (id) => {
-        HomeService.getTopSellingUnderAge(id)
+    const getUsedProduct = (id) => {
+        HomeService.getUsedProduct('Used', id)
             .then((response) => {
-                setTopSellingProducts(response?.data?.products?.slice(0, 4))
+                setUsedProducts(response?.data?.products?.slice(0, 4))
                 setTimeout(() => {
                     setLoading(false)
                 }, 1000);
             })
             .catch((error) => {
-                setLoading(false)
                 toast.error(error?.response?.data?.message)
             });
     };
 
     useEffect(() => {
-        getTopSellingUnderAge(user_id)
-    }, [])
+        getUsedProduct(user_id)
+    }, [user_id])
 
     const handleToggleFavourite = (index) => {
-        const updatedProducts = [...topSellingProducts];
-        updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
-        setTopSellingProducts(updatedProducts);
+        const updatedProducts = [...usedProducts];
+        updatedProducts[index].product.is_favourite = !updatedProducts[index].product.is_favourite;
+        setUsedProducts(updatedProducts);
     };
 
     return (
@@ -52,17 +49,17 @@ const TopSelling = ({ title }) => {
 
                 </>
                 :
-                topSellingProducts?.length > 0 ?
+                usedProducts?.length > 0 ?
                     <section id="product-recents-viewed" className="top-selling-product">
                         <>
                             <div className="container">
                                 <div className="row">
                                     <div className="headings">
                                         <h3>
-                                            {title}
-                                            {topSellingProducts?.length > 0 &&
+                                            Used Products
+                                            {usedProducts?.length > 0 &&
                                                 <span>
-                                                    <Link to="/top-selling-21-plus">View More</Link>
+                                                    <Link to="/product-filter">View More</Link>
                                                 </span>
                                             }
                                         </h3>
@@ -72,13 +69,13 @@ const TopSelling = ({ title }) => {
                             <section id="productcard">
                                 <div className="container">
                                     <div className="row">
-
-                                        {topSellingProducts?.map((product, index) => (
-                                            <div className="col col-lg-3" key={product?.product?.guid}>
-                                                <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
-                                            </div>
-                                        ))}
-
+                                        {
+                                            usedProducts?.map((product, index) => (
+                                                <div className="col col-lg-3" key={product?.product?.guid}>
+                                                    <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
+                                                </div>
+                                            ))
+                                        }
                                     </div>
                                 </div>
                             </section>
@@ -91,4 +88,4 @@ const TopSelling = ({ title }) => {
     );
 };
 
-export default TopSelling;
+export default UsedProducts;

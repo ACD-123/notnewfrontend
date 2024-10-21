@@ -25,9 +25,10 @@ const CategoriesListing = () => {
     <>
       <div className="top-category-listings">
         <div className="top-category-listings-wrap">
-          <div className="container">
-            <div className="row">
+          <div className="row">
+              <div className="col-lg-12">
               <h1 className="title">Categories</h1>
+              </div>
               {loading ?
                 <>
                   <div className="col-lg-3">
@@ -47,7 +48,7 @@ const CategoriesListing = () => {
                 categories.length > 0 ? (
                 <>
                   {categories?.map((product) => (
-                    <div className="col-lg-3" key={product.id}>
+                    <div className="col-lg-3 col-md-4 col-sm-6" key={product.id}>
                       <div className="Top-category-card">
                         <div className="Top-category-card-wrap">
                           {product.media.length > 0 ? (
@@ -98,7 +99,6 @@ const CategoriesListing = () => {
                 </>
               )
           }
-            </div>
           </div>
         </div>
       </div>

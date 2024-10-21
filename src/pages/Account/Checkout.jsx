@@ -351,69 +351,6 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                   </div>
                 )
               })}
-              {/* <div className="order-details" id="border-order-details">
-                <div><h3 id="storetitle">Pay with</h3></div>
-                <div className="b-w-p-w">
-                  <div className="b-w-p-w-l">SELECT A PAYMENT OPTION</div>
-                  <div className="b-w-p-w-r">ADD NEW CARD</div>
-                </div>
-                <div className="b-w-c-o">
-                  <ul>
-                    <li>
-                      <div className="b-w-c-o-l" onClick={() => { setPaymentMethod(0) }}>
-                        <div className={`b-w-c-o-l-c ${paymentMethod === 0 ? 'active' : ''}`}></div>
-                      </div>
-                      <div className="b-w-c-o-r">
-                        <div className="b-w-c-o-r-l">
-                          <img src={applyPay} alt="" />
-                        </div>
-                        <div className="b-w-c-o-r-r">APPLE PAY</div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="b-w-c-o-l" onClick={() => { setPaymentMethod(1) }}>
-                        <div className={`b-w-c-o-l-c ${paymentMethod === 1 ? 'active' : ''}`}></div>
-                      </div>
-                      <div className="b-w-c-o-r">
-                        <div className="b-w-c-o-r-l">
-                          <img src={Visa} alt="" />
-                        </div>
-                        <div className="b-w-c-o-r-r">VISE PREMIUM</div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="b-w-c-o-l" onClick={() => { setPaymentMethod(2) }}>
-                        <div className={`b-w-c-o-l-c ${paymentMethod === 2 ? 'active' : ''}`}></div>
-                      </div>
-                      <div className="b-w-c-o-r">
-                        <div className="b-w-c-o-r-l">
-                          <img src={Mastercard} alt="" />
-                        </div>
-                        <div className="b-w-c-o-r-r">MASTER CARD</div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div> */}
-              {/* <div className="order-details" id="border-order-details">
-                <h5 onClick={toggleDiscountField}>
-                  Coupons, Vouchers, Discount Codes
-                  <div id="iconrightaligin">
-                    <img src={Arrowright} />
-                  </div>
-                </h5>
-                {showDiscountField && (
-                  <div className="discountfields">
-                    <input
-                      type="text"
-                      placeholder="Enter discount code"
-                      value={couponeCode}
-                      onChange={(e) => setCouponeCode(e.target.value)}
-                    />
-                    <button onClick={handleDiscountSubmit}>Apply</button>
-                  </div>
-                )}
-              </div> */}
               <div className="order-details" id="border-order-details">
                 <div><h3 id="storetitle">Shipping</h3></div>
                 <div className="b-w-s-i-f">
@@ -425,7 +362,8 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                         type="number"
                         name="postalCode"
                         value={shippingData.postalCode}
-                        onChange={(e) => { setShippingData({ ...shippingData, postalCode: e.target.value }) }} placeholder="Enter quantity" />
+                        onChange={(e) => { setShippingData({ ...shippingData, postalCode: e.target.value }) }} 
+                        placeholder="Enter postal code" />
                       {shippingData.postalCode === "" && inputError &&
                         <div className="error-input">Postal code is required</div>
                       }

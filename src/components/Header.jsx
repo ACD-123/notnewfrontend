@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useSelector } from 'react-redux';
 import Logo from "../assets/Images/logo.png";
 import Cart from "../assets/Images/Elements/cart.png";
 import blankUser from "../../src/assets/Images/User/blankuser.jpg"
@@ -21,6 +20,10 @@ import NoDataFound from "./Shared/NoDataFound";
 import ProductServices from "../services/API/ProductServices";
 import { toast } from "react-toastify";
 import { Modal } from "react-bootstrap";
+import { GiHamburgerMenu } from "react-icons/gi";
+import Drawer from 'react-modern-drawer'
+import 'react-modern-drawer/dist/index.css'
+import { RxCross2 } from "react-icons/rx";
 
 const Header = ({ cartFullResponse, notificationCount }) => {
   const [show21PlusDropdown, setShow21PlusDropdown] = useState(false);
@@ -39,6 +42,11 @@ const Header = ({ cartFullResponse, notificationCount }) => {
   const user_id = localStorage.getItem('user_id');
   const path = location.pathname;
   const search = location.search;
+
+  const [isOpen, setIsOpen] = React.useState(false)
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState)
+  }
 
 
   const handleDropdownItemClick = (componentName) => {
@@ -130,17 +138,11 @@ const Header = ({ cartFullResponse, notificationCount }) => {
   }
 
   const categoryDropdownRef = useRef(null);
-  const userDropdownRef = useRef(null);
+
 
   const handleClickOutside = (event) => {
     if (categoryDropdownRef.current && !categoryDropdownRef.current.contains(event.target)) {
       setCategoryDropdown(false);
-    }
-  };
-
-  const handleUserClickOutside = (event) => {
-    if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
-      setUserDropdown(false);
     }
   };
 
@@ -150,6 +152,13 @@ const Header = ({ cartFullResponse, notificationCount }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const userDropdownRef = useRef(null);
+  const handleUserClickOutside = (event) => {
+    if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
+      setUserDropdown(false);
+    }
+  };
   useEffect(() => {
     document.addEventListener('mousedown', handleUserClickOutside);
     return () => {
@@ -174,7 +183,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                       </div>
                     </div>
                     <div className="header-right">
-                      <div className="search-bar">
+                      <div className="search-bar" id="hide-on-mobile-768">
                         <div className="search-bar-t" style={{
                           borderBottomLeftRadius: inputSearch !== "" ? '0px' : '24px',
                           borderBottomRightRadius: inputSearch !== "" ? '0px' : '24px',
@@ -190,7 +199,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                             <div className="value">
                               <div className="value-wrap">
                                 {seletedCategory === "" ? "Categories" : seletedCategory}
-                                
+
                                 <HeaderCategoryArrowSvg />
                               </div>
                             </div>
@@ -204,7 +213,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                                         <ul>
                                           {data?.children_recursive?.slice(0, 3)?.map(
                                             (subcategory, index) => (
-                                              <li key={index} onClick={() =>{setSeletedCategory(subcategory.name)}}>
+                                              <li key={index} onClick={() => { setSeletedCategory(subcategory.name) }}>
                                                 <Link to={`/category?category-id=${subcategory?.id}`}>
                                                   {subcategory.name}
                                                 </Link>
@@ -282,13 +291,13 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                         }
                       </div>
                       {underage == 1 ?
-                        <div className="notification" onClick={() => { navigate('/21-plus') }}>
+                        <div className="notification twentyOnePlus" onClick={() => { navigate('/21-plus') }}>
                           <div className="notification-wrap">
                             <img src={Plus} alt="21-plus" />
                           </div>
                         </div>
                         :
-                        <div className="notification" onClick={() => { setShow21PlusDropdown(true) }}>
+                        <div className="notification twentyOnePlus" onClick={() => { setShow21PlusDropdown(true) }}>
                           <div className="notification-wrap">
                             <img src={Plus} alt="21-plus" />
                           </div>
@@ -322,6 +331,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                         }
                         <img src={Cart} />
                       </div>
+
                       {isLoggedin() ? (
                         <>
                           <div ref={userDropdownRef} className="user" onClick={() => { setUserDropdown(!userDropdown) }}>
@@ -346,7 +356,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                             {userDropdown &&
                               <div className="user-drop-dropdown">
                                 <ul>
-                                  <li onClick={() => window.location.href='/my-seller-account?tab=dashboard'}>
+                                  <li onClick={() => window.location.href = '/my-seller-account?tab=dashboard'}>
                                     Dashboard
                                   </li>
                                   <li onClick={() => handleDropdownItemClick("my-orders")}>
@@ -382,11 +392,14 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                       )
                         :
                         (
-                          <div className="sign-in-button">
+                          <div className="sign-in-button" id="hide-on-mobile-768">
                             <Link to={'/signin'}>Sign In</Link>
                           </div>
                         )
                       }
+                      <div className="hanburgur-header" id="hanburgur-header" onClick={toggleDrawer}>
+                        <GiHamburgerMenu />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -435,6 +448,143 @@ const Header = ({ cartFullResponse, notificationCount }) => {
           </div>
         </div>
       </Modal>
+      <Drawer
+        open={isOpen}
+        onClose={toggleDrawer}
+        direction='right'
+        className='bla bla bla'
+        size={'90%'}
+      >
+        <div className="mobile-header">
+          <div className="top-bar">
+            <img src="/static/media/logo.21458318e562f5ae622a.png" width="20%" height="100%" />
+            <span onClick={toggleDrawer}><RxCross2 /></span>
+          </div>
+          <div className="mobile-header-body">
+            <div className="search-bar">
+              <div className="search-bar-t" style={{
+                borderBottomLeftRadius: inputSearch !== "" ? '0px' : '6px',
+                borderBottomRightRadius: inputSearch !== "" ? '0px' : '6px',
+                borderBottom: inputSearch !== "" ? '0px' : '1px solid #DBDBDB'
+              }}>
+                <div className="search-icon">
+                  <SearchSvg />
+                </div>
+                <div className="input">
+                  <input type="text" placeholder="Search Here Anything....." onChange={handelInputChange} />
+                </div>
+                <div ref={categoryDropdownRef} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
+                  <div className="value">
+                    <div className="value-wrap">
+                      {seletedCategory === "" ? "Categories" : seletedCategory}
+
+                      <HeaderCategoryArrowSvg />
+                    </div>
+                  </div>
+                  {categoryDropdown &&
+                    <div className="options">
+                      <div className="options-wrap">
+                        {categories?.slice(0, 3)?.map((data, index) => {
+                          return (
+                            <div key={index}>
+                              <h4 onClick={() => { navigate(`/category?category-id=${data?.id}`); toggleDrawer(); setSeletedCategory(data?.name) }}>{data?.name}</h4>
+                              <ul>
+                                {data?.children_recursive?.slice(0, 3)?.map(
+                                  (subcategory, index) => (
+                                    <li key={index} onClick={() => { setSeletedCategory(subcategory.name) }}>
+                                      <Link to={`/category?category-id=${subcategory?.id}`} onClick={toggleDrawer}>
+                                        {subcategory.name}
+                                      </Link>
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+
+                            </div>
+                          )
+                        })}
+                      </div>
+                      <div className="footer">
+                        <Link to={'/top-category'} onClick={toggleDrawer}>See All Categories</Link>
+                        <HeaderArrowRightSvg />
+                        <HeaderArrowRightSvg />
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+              {inputSearch != '' &&
+                <div className="search-bar-b">
+                  <div className="search-bar-b-w">
+                    <div className="search-bar-b-w-list">
+                      {inputSearch != '' ?
+                        (searchLoading ?
+                          <ul>
+                            <li><Skeleton /></li>
+                            <li><Skeleton /></li>
+                            <li><Skeleton /></li>
+                          </ul>
+                          :
+                          <>
+                            {searchProduct?.products?.length > 0 ?
+                              <ul>
+                                {searchProduct?.products?.slice(0, 5)?.map((data, index) => {
+                                  return (
+                                    <li key={index} onClick={() => {
+                                      addSearchProduct(data?.id);
+                                      toggleDrawer()
+                                      if (data?.auctioned) {
+                                        navigate(`/auctionproduct/${data?.guid}`)
+                                      } else {
+                                        navigate(`/singleproduct/${data?.guid}`)
+                                      }
+                                    }}>
+                                      <div>
+                                        <img src={data?.media?.[0]?.name} alt="" />
+                                      </div>
+                                      <div>
+                                        <h3>{data?.name}</h3>
+                                        <p>{data?.description}</p>
+                                      </div>
+                                    </li>
+                                  )
+                                })}
+                              </ul>
+                              :
+                              <NoDataFound title={'No product found'} />
+                            }
+                          </>
+                        )
+                        :
+                        null
+                      }
+                    </div>
+                    {searchProduct?.products?.length > 0 ?
+                      <div className="search-bar-b-w-l-m">
+                        <Link to={`/search-product?text=${inputSearch}`} onClick={toggleDrawer}>Load More</Link>
+                      </div>
+                      :
+                      null}
+                  </div>
+                </div>
+              }
+            </div>
+            {isLoggedin() ?
+              (
+                <div className="sign-in-button" onClick={toggleDrawer}>
+                  <button onClick={signOut}>Sign Out</button>
+                </div>
+              )
+              :
+              (
+                <div className="sign-in-button">
+                  <Link to={'/signin'} onClick={toggleDrawer}>Sign In</Link>
+                </div>
+              )
+            }
+          </div>
+        </div>
+      </Drawer>
     </>
   );
 };

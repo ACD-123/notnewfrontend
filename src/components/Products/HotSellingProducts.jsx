@@ -51,58 +51,73 @@ const HotSellingProducts = ({ loading, data, setHotProducts, title }) => {
 
   return (
     <>
-      <section id="product-recents-viewed" className="hot-selling-product">
+      {loading ?
         <>
-          <div className="container">
+          <div className="container my-5">
             <div className="row">
-              <div className="headings">
-                <h3>
-                  {title}
-                  {data.legth > 0 &&
-                    <span>
-                      <Link to="/hot-deals">View More</Link>
-                    </span>
-                  }
-                </h3>
-              </div>
+              <div className="col-lg-3"><ProductSkeletonLoader /></div>
+              <div className="col-lg-3"><ProductSkeletonLoader /></div>
+              <div className="col-lg-3"><ProductSkeletonLoader /></div>
+              <div className="col-lg-3"><ProductSkeletonLoader /></div>
             </div>
           </div>
-          <section id="productcard">
-            <div className="container">
-              <div className="row">
-                {loading ?
-                  <>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
-
-                  </>
-                  :
-                  (
-                    data.length > 0 ?
-                      data?.map((product, index) => (
-                        <div className="col col-lg-3" key={product?.guid}>
-                          <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
-                        </div>
-                      ))
-                      :
-                      <NoDataFound title={'No hot selling product found'} />
-                  )
-                }
-              </div>
-            </div>
-          </section>
         </>
-      </section>
+        :
+        data.length > 0 ?
+          <section id="product-recents-viewed" className="hot-selling-product">
+            <>
+              <div className="container">
+                <div className="row">
+                  <div className="headings">
+                    <h3>
+                      {title}
+                      {data.legth > 0 &&
+                        <span>
+                          <Link to="/hot-deals">View More</Link>
+                        </span>
+                      }
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <section id="productcard">
+                <div className="container">
+                  <div className="row">
+                    {loading ?
+                      <>
+                        <div className="col-lg-3">
+                          <ProductSkeletonLoader />
+                        </div>
+                        <div className="col-lg-3">
+                          <ProductSkeletonLoader />
+                        </div>
+                        <div className="col-lg-3">
+                          <ProductSkeletonLoader />
+                        </div>
+                        <div className="col-lg-3">
+                          <ProductSkeletonLoader />
+                        </div>
+
+                      </>
+                      :
+                      (
+                        data.length > 0 ?
+                          data?.map((product, index) => (
+                            <div className="col col-lg-3" key={product?.guid}>
+                              <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
+                            </div>
+                          ))
+                          :
+                          <NoDataFound title={'No hot selling product found'} />
+                      )
+                    }
+                  </div>
+                </div>
+              </section>
+            </>
+          </section>
+          :
+          null}
     </>
   );
 };

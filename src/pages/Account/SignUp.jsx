@@ -88,7 +88,6 @@ const SignUp = () => {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    // Perform validations or modifications if needed
     setProfilePic(selectedFile);
   };
 
@@ -101,7 +100,6 @@ const SignUp = () => {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Perform validation here (e.g., check for empty fields)
     const newErrors = {};
     if (!formData.firstname) {
       newErrors.name = "User First Name is required";
@@ -193,7 +191,7 @@ const SignUp = () => {
         })
         .catch((error) => {
           if (error.response.status == "409") {
-            toast.error("Email Already Exists");
+            toast.error("Email Already Exist");
             // toast.error(e.response?.data.message);
           } else {
           

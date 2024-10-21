@@ -355,7 +355,7 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                   </ul>
                 </div>
               </div> */}
-              <div className="order-details" id="border-order-details">
+              {/* <div className="order-details" id="border-order-details">
                 <h5 onClick={toggleDiscountField}>
                   Coupons, Vouchers, Discount Codes
                   <div id="iconrightaligin">
@@ -373,7 +373,7 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                     <button onClick={handleDiscountSubmit}>Apply</button>
                   </div>
                 )}
-              </div>
+              </div> */}
               <div className="order-details" id="border-order-details">
                 <div><h3 id="storetitle">Shipping</h3></div>
                 <div className="b-w-s-i-f">
@@ -385,7 +385,8 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                         type="number"
                         name="postalCode"
                         value={shippingData.postalCode}
-                        onChange={(e) => { setShippingData({ ...shippingData, postalCode: e.target.value }) }} placeholder="Enter quantity" />
+                        onChange={(e) => { setShippingData({ ...shippingData, postalCode: e.target.value }) }} 
+                        placeholder="Enter postal code" />
                       {shippingData.postalCode === "" && inputError &&
                         <div className="error-input">Postal code is required</div>
                       }

@@ -88,17 +88,22 @@ const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
                                                     <div className='col-lg-3'>
                                                         <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
                                                             <div className="title-customer-side">Profile Info</div>
-                                                            <ul>
-                                                                <li className={selectedMenuItem === 'profile-information' ? 'active' : ''} onClick={() => handleMenuItemClick('profile-information')}>
-                                                                    Profile information
-                                                                </li>
-                                                                <li className={selectedMenuItem === 'addresses' ? 'active' : ''} onClick={() => handleMenuItemClick('addresses')}>
-                                                                    Addresses
-                                                                </li>
-                                                                <li onClick={() => window.location.href='/customerdashboard?component=recently-searched-items'}>
-                                                                    Search History
-                                                                </li>
-                                                            </ul>
+                                                            <div className='personal-info'>
+                                                                <ul>
+                                                                    <li className={selectedMenuItem === 'profile-information' ? 'active' : ''} onClick={() => handleMenuItemClick('profile-information')}>
+                                                                        Profile information
+                                                                    </li>
+                                                                    <li className={selectedMenuItem === 'addresses' ? 'active' : ''} onClick={() => handleMenuItemClick('addresses')}>
+                                                                        Addresses
+                                                                    </li>
+                                                                    <li onClick={() => window.location.href = '/customerdashboard?component=recently-searched-items'}>
+                                                                        Search History
+                                                                    </li>
+                                                                </ul>
+                                                                <div className="button">
+                                                                    <button onClick={() => { navigate('/customerdashboard?tab=account') }}>Go Back</button>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div className='col-lg-9'>

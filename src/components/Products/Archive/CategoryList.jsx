@@ -36,93 +36,95 @@ const CategoryList = () => {
 
   return (
     <>
-      <section id='product-recents-viewed' className='explore-category'>
-        <>
-          <div className='container'>
-            <div className='row'>
-              <div className='headings'>
-                <h3>Explore Known Categories <span><Link to="/top-category">View More</Link></span></h3>
-              </div>
-            </div>
-          </div>
-          <section id='productcard'>
+      {categoryData?.length > 0 &&
+        <section id='product-recents-viewed' className='explore-category'>
+          <>
             <div className='container'>
               <div className='row'>
-                {loading ? (
-                  <>
-                    <div className='col col-lg-2'>
-                      <div className='category-loading'>
-                        <div><Skeleton /></div>
-                        <h5><Skeleton /></h5>
-                      </div>
-                    </div>
-                    <div className='col col-lg-2'>
-                      <div className='category-loading'>
-                        <div><Skeleton /></div>
-                        <h5><Skeleton /></h5>
-                      </div>
-                    </div>
-                    <div className='col col-lg-2'>
-                      <div className='category-loading'>
-                        <div><Skeleton /></div>
-                        <h5><Skeleton /></h5>
-                      </div>
-                    </div>
-                    <div className='col col-lg-2'>
-                      <div className='category-loading'>
-                        <div><Skeleton /></div>
-                        <h5><Skeleton /></h5>
-                      </div>
-                    </div>
-                    <div className='col col-lg-2'>
-                      <div className='category-loading'>
-                        <div><Skeleton /></div>
-                        <h5><Skeleton /></h5>
-                      </div>
-                    </div>
-                    <div className='col col-lg-2'>
-                      <div className='category-loading'>
-                        <div><Skeleton /></div>
-                        <h5><Skeleton /></h5>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    {categoryData.map((category , index) => {
-                      return (
-                        <div className='col col-lg-2' key={index}>
-                          <Link to={`/category?category-id=${category?.id}`}>
-                            <div className='category' key={category?.id}>
-                              <div>
-                                {category?.media?.length > 0 ? (
-                                  <>
-                                    {category?.media?.map((media , index) => {
-                                      return (
-                                        <>
-                                          <img src={`${BASE_URL}/image/category/${media?.name}`} alt={media?.name} key={index}/>
-                                        </>
-                                      )
-                                    })}
-                                  </>
-                                ) : (
-                                    <img src={blank} alt="blank" />
-                                )
-                                }
-                              </div>
-                              <h5 style={{ textAlign: "center" }}>{category.name}</h5>
-                            </div>
-                          </Link>
-                        </div>
-                      )
-                    })}
-                  </>
-                )}
+                <div className='headings'>
+                  <h3>Explore Known Categories <span><Link to="/top-category">View More</Link></span></h3>
+                </div>
               </div>
             </div>
-          </section>
-        </>
-      </section>
+            <section id='productcard'>
+              <div className='container'>
+                <div className='row'>
+                  {loading ? (
+                    <>
+                      <div className='col-lg-2 col-md-4 col-sm-6 col-6'>
+                        <div className='category-loading'>
+                          <div><Skeleton /></div>
+                          <h5><Skeleton /></h5>
+                        </div>
+                      </div>
+                      <div className='col-lg-2 col-md-4 col-sm-6 col-6'>
+                        <div className='category-loading'>
+                          <div><Skeleton /></div>
+                          <h5><Skeleton /></h5>
+                        </div>
+                      </div>
+                      <div className='col-lg-2 col-md-4 col-sm-6 col-6'>
+                        <div className='category-loading'>
+                          <div><Skeleton /></div>
+                          <h5><Skeleton /></h5>
+                        </div>
+                      </div>
+                      <div className='col-lg-2 col-md-4 col-sm-6 col-6'>
+                        <div className='category-loading'>
+                          <div><Skeleton /></div>
+                          <h5><Skeleton /></h5>
+                        </div>
+                      </div>
+                      <div className='col-lg-2 col-md-4 col-sm-6 col-6'>
+                        <div className='category-loading'>
+                          <div><Skeleton /></div>
+                          <h5><Skeleton /></h5>
+                        </div>
+                      </div>
+                      <div className='col-lg-2 col-md-4 col-sm-6 col-6'>
+                        <div className='category-loading'>
+                          <div><Skeleton /></div>
+                          <h5><Skeleton /></h5>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {categoryData.map((category, index) => {
+                        return (
+                          <div className='col-lg-2 col-md-4 col-sm-6 col-6' key={index}>
+                            <Link to={`/category?category-id=${category?.id}`}>
+                              <div className='category' key={category?.id}>
+                                <div>
+                                  {category?.media?.length > 0 ? (
+                                    <>
+                                      {category?.media?.map((media, index) => {
+                                        return (
+                                          <>
+                                            <img src={`${BASE_URL}/image/category/${media?.name}`} alt={media?.name} key={index} />
+                                          </>
+                                        )
+                                      })}
+                                    </>
+                                  ) : (
+                                    <img src={blank} alt="blank" />
+                                  )
+                                  }
+                                </div>
+                                <h5 style={{ textAlign: "center" }}>{category.name}</h5>
+                              </div>
+                            </Link>
+                          </div>
+                        )
+                      })}
+                    </>
+                  )}
+                </div>
+              </div>
+            </section>
+          </>
+        </section>
+      }
     </>
   )
 }

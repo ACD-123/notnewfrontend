@@ -55,54 +55,59 @@ const NewArrival = ({ title }) => {
 
   return (
     <>
-      <section id="product-recents-viewed">
+      {loading ?
         <>
-          <div className="container">
+          <div className="container my-5">
             <div className="row">
-              <div className="headings">
-                <h3>{title}
-                  {productData.length > 0 &&
-                    <span><Link to="/new-arrival-21-plus">View More</Link></span>
-                  }
-                </h3>
+              <div className="col-lg-3">
+                <ProductSkeletonLoader />
+              </div>
+              <div className="col-lg-3">
+                <ProductSkeletonLoader />
+              </div>
+              <div className="col-lg-3">
+                <ProductSkeletonLoader />
+              </div>
+              <div className="col-lg-3">
+                <ProductSkeletonLoader />
               </div>
             </div>
           </div>
-          <section id="productcard">
-            <div className="container">
-              <div className="row">
-                {loading ?
-                  <>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
-                    <div className="col-lg-3">
-                      <ProductSkeletonLoader />
-                    </div>
-                  </>
-                  :
-                  (
-                    productData.length > 0 ?
-                      productData?.slice(0, 4)?.map((product, index) => (
-                        <div className="col col-lg-3" key={product?.guid}>
-                          <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
-                        </div>
-                      ))
-                      :
-                      <NoDataFound title={'No new arrival product found'} />
-                  )
-                }
-              </div>
-            </div>
-          </section>
         </>
-      </section>
+        :
+        productData.length > 0 ?
+          <section id="product-recents-viewed">
+            <>
+              <div className="container">
+                <div className="row">
+                  <div className="headings">
+                    <h3>{title}
+                      <span><Link to="/new-arrival-21-plus">View More</Link></span>
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <section id="productcard">
+                <div className="container">
+                  <div className="row">
+                    {
+                      productData.length > 0 ?
+                        productData?.slice(0, 4)?.map((product, index) => (
+                          <div className="col col-lg-3" key={product?.guid}>
+                            <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
+                          </div>
+                        ))
+                        :
+                        <NoDataFound title={'No new arrival product found'} />
+                    }
+                  </div>
+                </div>
+              </section>
+            </>
+          </section>
+          : null
+
+      }
     </>
   );
 };

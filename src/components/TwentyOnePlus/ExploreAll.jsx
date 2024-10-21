@@ -41,51 +41,50 @@ const ExploreAll = ({ title }) => {
 
     return (
         <>
-            <section id="product-recents-viewed" className="top-selling-product under-age">
+            {loading ?
                 <>
-                    <div className="container">
-                        <div className="row">
-                            <div className="headings">
-                                <h3>
-                                    {title}
-                                    {topSellingProducts.length > 0 &&
-                                        <span>
-                                            <Link to="/explore-all-21-plus">View More</Link>
-                                        </span>
-                                    }
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <section id="productcard">
-                        <div className="container">
+                        <div className="container my-5">
                             <div className="row">
-                                {loading ?
-                                    <>
-                                        <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                                        <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                                        <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                                        <div className="col-lg-3"><ProductSkeletonLoader /></div>
-
-                                    </>
-                                    :
-
-                                    (
-                                        topSellingProducts.length > 0 ?
-                                            topSellingProducts?.map((product, index) => (
-                                                <div className="col col-lg-3" key={product?.product?.guid}>
-                                                    <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
-                                                </div>
-                                            ))
-                                            :
-                                            <NoDataFound title={'No explore all product found'} />
-                                    )
-                                }
+                                <div className="col-lg-3"><ProductSkeletonLoader /></div>
+                                <div className="col-lg-3"><ProductSkeletonLoader /></div>
+                                <div className="col-lg-3"><ProductSkeletonLoader /></div>
+                                <div className="col-lg-3"><ProductSkeletonLoader /></div>
                             </div>
-                        </div>
-                    </section>
+                    </div>
+
                 </>
-            </section>
+                :
+                topSellingProducts?.length > 0 ?
+                    <section id="product-recents-viewed" className="top-selling-product under-age">
+                        <>
+                            <div className="container">
+                                <div className="row">
+                                    <div className="headings">
+                                        <h3>
+                                            {title}
+                                            <span>
+                                                <Link to="/explore-all-21-plus">View More</Link>
+                                            </span>
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <section id="productcard">
+                                <div className="container">
+                                    <div className="row">
+                                        {topSellingProducts?.map((product, index) => (
+                                            <div className="col col-lg-3" key={product?.product?.guid}>
+                                                <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </section>
+                        </>
+                    </section>
+                    :
+                    null
+            }
         </>
     );
 };

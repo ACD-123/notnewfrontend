@@ -68,7 +68,7 @@ export const AuctionNotification = ({ getNotificationCount }) => {
               (notification?.notifications?.map((data, index) => {
                 return (
                   data?.auction_status === 1 ?
-                    <div className="col-lg-6" key={index} onClick={() =>{naviage(`/auctionproduct/${data?.product_guid}`)}}>
+                    <div className="col-lg-6 col-md-6 col-12" key={index} onClick={() =>{naviage(`/auctionproduct/${data?.product_guid}`)}}>
                       <div className="n-l-d">
                         <div className="n-l-d-w">
                           <div className="n-l-d-w-l">
@@ -85,7 +85,7 @@ export const AuctionNotification = ({ getNotificationCount }) => {
                       </div>
                     </div>
                     :
-                    <div className="col-lg-6" key={index} onClick={() =>{toast.error('Auction is ended')}}>
+                    <div className="col-lg-6 col-md-6 col-12" key={index} onClick={() =>{toast.error('Auction is ended')}}>
                       <div className="n-l-d">
                         <div className="n-l-d-w">
                           <div className="n-l-d-w-l">
@@ -101,8 +101,6 @@ export const AuctionNotification = ({ getNotificationCount }) => {
                         </div>
                       </div>
                     </div>
-
-
                 )
               }))
               :

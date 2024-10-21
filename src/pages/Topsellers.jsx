@@ -55,7 +55,7 @@ const Topsellers = ({cartFullResponse , notificationCount}) => {
                             :
                             seller?.map((data, index) => {
                                 return (
-                                    <div className="col-lg-3" key={index}>
+                                    <div className="col-lg-3 col-md-6 col-sm-6" key={index}>
                                         <div className="top-seller-card">
                                             <img src={data?.sellerImage} alt="" />
                                             <h2>{data?.sellerName}</h2>

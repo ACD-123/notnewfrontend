@@ -52,6 +52,7 @@ import laravelEcho from "../socket"
 import HomeService from "../services/API/HomeService"
 import NotificationPreferences from "../pages/NotificationPreferences"
 import Auctions21Plus from "../components/Products/Archive/Auctions21Plus"
+import AllProducts21Plus from "../components/Products/Archive/AllProducts21Plus"
 
 function ScrollToTop() {
 	const { pathname } = useLocation();
@@ -141,6 +142,7 @@ const PublicRoutes = () => {
 					<Route path="/auctions" element={<Auctions cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/auctions-21-plus" element={<Auctions21Plus cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/product-filter" element={<AllProducts cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
+					<Route path="/product-filter-21-plus" element={<AllProducts21Plus cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/personal-info" element={<PersonalInformation cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/AllNewProducts" element={<AllNewProducts cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 					<Route path="/forget-password" element={<PasswordRecovery />} />

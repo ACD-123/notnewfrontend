@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Leftmenuimage from '../assets/Images/leftmenu.png';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import SellerFeedback from '../components/Seller/SellerFeedback';
 import DiscountAndCoupens from '../components/AccountsSetting/SellerSetup/DiscountAndCoupens';
 import MyTransactions from '../components/AccountsSetting/SellerSetup/MyTransactions';
@@ -11,9 +10,12 @@ import Chat from '../components/CustomerDashboard/Chat';
 import Header from '../components/Header';
 import OderManagments from '../components/AccountsSetting/SellerSetup/OderManagments';
 import ShopSetting from '../components/AccountsSetting/SellerSetup/ShopSetting';
+import { GiHamburgerMenu } from "react-icons/gi";
+import Drawer from 'react-modern-drawer'
+import 'react-modern-drawer/dist/index.css'
+import { RxCross2 } from "react-icons/rx";
 
-const MySellerAccount = ({props , cartFullResponse , notificationCount}) => {
-// const MySellerAccount = (props) => {
+const MySellerAccount = ({ cartFullResponse, notificationCount }) => {
     const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
@@ -30,18 +32,6 @@ const MySellerAccount = ({props , cartFullResponse , notificationCount}) => {
         }
     }, [location.search]);
 
-    const togglePositionOfMessage = (number) => {
-        if (number === showMessage) {
-            setShowMessage(0);
-        } else {
-            setShowMessage(number)
-            setTimeout(() => {
-                setShowMessage(0)
-            }, 5000);
-        }
-
-    }
-
     useEffect(() => {
         const storedUser = localStorage.getItem('user_details');
         if (storedUser) {
@@ -54,15 +44,17 @@ const MySellerAccount = ({props , cartFullResponse , notificationCount}) => {
         setSelectedMenuItem(menu);
         navigate(`/my-seller-account?tab=${menu}`)
     };
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
 
     const handleCallbacks = (value) => {
         setSelectedMenuItem(value);
     }
     const [submitted, setSubmitted] = useState(false);
     const [productId, setProductId] = useState('');
+
+    const [isOpen, setIsOpen] = React.useState(false)
+    const toggleDrawer = () => {
+        setIsOpen((prevState) => !prevState)
+    }
 
     const renderComponent = () => {
         switch (selectedMenuItem) {
@@ -91,7 +83,7 @@ const MySellerAccount = ({props , cartFullResponse , notificationCount}) => {
 
     return (
         <>
-            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
+            <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount} />
             <section id="main-dashboard">
                 <div className="container">
                     <div className="row">
@@ -110,155 +102,161 @@ const MySellerAccount = ({props , cartFullResponse , notificationCount}) => {
                                     <div className="row">
                                         <div>
                                             <section id='activity-main-dashboard'>
-                                                <button className="mobile-menu-toggle" onClick={toggleMenu}>
-                                                    <img src={Leftmenuimage} alt="Menu" />
-                                                </button>
+                                                <div id="hide-on-desktop-991" onClick={toggleDrawer}>
+                                                    <GiHamburgerMenu />
+                                                </div>
                                                 <div className='row'>
-                                                    <div className='col-lg-3'>
-                                                        <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
+                                                    <div className='col-lg-3' id='hide-on-mobile-991'>
+                                                        <div className='left-menu'>
                                                             <div className="title-selling-hub">Selling Hub</div>
-                                                            <ul>
-                                                                <li className={selectedMenuItem === 'dashboard' ? 'active' : ''} onClick={() => { handleMenuItemClick('dashboard'); setProductId('') }}>
-                                                                    Dashboard
-                                                                </li>
-                                                                {user?.isTrustedSeller === 0 ?
-                                                                    <>
-                                                                        <li onClick={() => { togglePositionOfMessage(1) }}>
-                                                                            Product Management
-                                                                        </li>
-                                                                        {showMessage === 1 &&
-                                                                            <li className='no-access-for-nonseller'>
-                                                                                To Access this Feature Create seller account from dashboard
+                                                            <div className="personal-info">
+                                                                <ul>
+                                                                    <li className={selectedMenuItem === 'dashboard' ? 'active' : ''} onClick={() => { handleMenuItemClick('dashboard'); setProductId('') }}>
+                                                                        Dashboard
+                                                                    </li>
+                                                                    {user?.isTrustedSeller === 0 ?
+                                                                        null
+                                                                        // <>
+                                                                        //     <li onClick={() => { togglePositionOfMessage(1) }}>
+                                                                        //         Product Management
+                                                                        //     </li>
+                                                                        //     {showMessage === 1 &&
+                                                                        //         <li className='no-access-for-nonseller'>
+                                                                        //             To Access this Feature Create seller account from dashboard
+                                                                        //         </li>
+                                                                        //     }
+                                                                        //     <li onClick={() => { togglePositionOfMessage(2) }}>
+                                                                        //         Order Management
+                                                                        //     </li>
+                                                                        //     {showMessage === 2 &&
+                                                                        //         <li className='no-access-for-nonseller'>
+                                                                        //             To Access this Feature Create seller account from dashboard
+                                                                        //         </li>
+                                                                        //     }
+                                                                        //     <li onClick={() => { togglePositionOfMessage(3) }}>
+                                                                        //         Bids & Offers
+                                                                        //     </li>
+                                                                        //     {showMessage === 3 &&
+                                                                        //         <li className='no-access-for-nonseller'>
+                                                                        //             To Access this Feature Create seller account from dashboard
+                                                                        //         </li>
+                                                                        //     }
+                                                                        //     <li onClick={() => { togglePositionOfMessage(4) }}>
+                                                                        //         Chats
+                                                                        //     </li>
+                                                                        //     {showMessage === 4 &&
+                                                                        //         <li className='no-access-for-nonseller'>
+                                                                        //             To Access this Feature Create seller account from dashboard
+                                                                        //         </li>
+                                                                        //     }
+                                                                        //     <li onClick={() => { togglePositionOfMessage(5) }}>
+                                                                        //         Feedbacks
+                                                                        //     </li>
+                                                                        //     {showMessage === 5 &&
+                                                                        //         <li className='no-access-for-nonseller'>
+                                                                        //             To Access this Feature Create seller account from dashboard
+                                                                        //         </li>
+                                                                        //     }
+                                                                        //     <li onClick={() => { togglePositionOfMessage(6) }}>
+                                                                        //         Discounts & coupons
+                                                                        //     </li>
+                                                                        //     {showMessage === 6 &&
+                                                                        //         <li className='no-access-for-nonseller'>
+                                                                        //             To Access this Feature Create seller account from dashboard
+                                                                        //         </li>
+                                                                        //     }
+                                                                        //     <li onClick={() => { togglePositionOfMessage(7) }}>
+                                                                        //         Transactions
+                                                                        //     </li>
+                                                                        //     {showMessage === 7 &&
+                                                                        //         <li className='no-access-for-nonseller'>
+                                                                        //             To Access this Feature Create seller account from dashboard
+                                                                        //         </li>
+                                                                        //     }
+                                                                        //     <li onClick={() => { togglePositionOfMessage(8) }}>
+                                                                        //         Shop Settings
+                                                                        //     </li>
+                                                                        //     {showMessage === 8 &&
+                                                                        //         <li className='no-access-for-nonseller'>
+                                                                        //             To Access this Feature Create seller account from dashboard
+                                                                        //         </li>
+                                                                        //     }
+                                                                        // </>
+                                                                        :
+                                                                        <>
+                                                                            <li
+                                                                                className={selectedMenuItem === 'product-management' ? 'active' : ''}
+                                                                                onClick={() => {
+                                                                                    handleMenuItemClick('product-management');
+                                                                                    setSubmitted(false);
+                                                                                    setProductId('')
+                                                                                }}>
+                                                                                Product Management
                                                                             </li>
-                                                                        }
-                                                                        <li onClick={() => { togglePositionOfMessage(2) }}>
-                                                                            Order Management
-                                                                        </li>
-                                                                        {showMessage === 2 &&
-                                                                            <li className='no-access-for-nonseller'>
-                                                                                To Access this Feature Create seller account from dashboard
+                                                                            <li
+                                                                                className={selectedMenuItem === 'order-management' ? 'active' : ''}
+                                                                                onClick={() => {
+                                                                                    handleMenuItemClick('order-management');
+                                                                                    setSubmitted(false);
+                                                                                    setProductId('')
+                                                                                }}>
+                                                                                Order Management
                                                                             </li>
-                                                                        }
-                                                                        <li onClick={() => { togglePositionOfMessage(3) }}>
-                                                                            Bids & Offers
-                                                                        </li>
-                                                                        {showMessage === 3 &&
-                                                                            <li className='no-access-for-nonseller'>
-                                                                                To Access this Feature Create seller account from dashboard
+                                                                            <li className={selectedMenuItem === 'bids-offers' ? 'active' : ''}
+                                                                                onClick={() => {
+                                                                                    handleMenuItemClick('bids-offers');
+                                                                                    setSubmitted(false);
+                                                                                    setProductId('')
+                                                                                }}>
+                                                                                Bids & Offers
                                                                             </li>
-                                                                        }
-                                                                        <li onClick={() => { togglePositionOfMessage(4) }}>
-                                                                            Chats
-                                                                        </li>
-                                                                        {showMessage === 4 &&
-                                                                            <li className='no-access-for-nonseller'>
-                                                                                To Access this Feature Create seller account from dashboard
+                                                                            <li className={selectedMenuItem === 'chat' ? 'active' : ''}
+                                                                                onClick={() => {
+                                                                                    handleMenuItemClick('chat');
+                                                                                    setSubmitted(false);
+                                                                                    setProductId('')
+                                                                                }}>
+                                                                                Chats
                                                                             </li>
-                                                                        }
-                                                                        <li onClick={() => { togglePositionOfMessage(5) }}>
-                                                                            Feedbacks
-                                                                        </li>
-                                                                        {showMessage === 5 &&
-                                                                            <li className='no-access-for-nonseller'>
-                                                                                To Access this Feature Create seller account from dashboard
+                                                                            <li className={selectedMenuItem === 'seller-feedback' ? 'active' : ''}
+                                                                                onClick={() => {
+                                                                                    handleMenuItemClick('seller-feedback');
+                                                                                    setSubmitted(false);
+                                                                                    setProductId('')
+                                                                                }}>
+                                                                                Feedbacks
                                                                             </li>
-                                                                        }
-                                                                        <li onClick={() => { togglePositionOfMessage(6) }}>
-                                                                            Discounts & coupons
-                                                                        </li>
-                                                                        {showMessage === 6 &&
-                                                                            <li className='no-access-for-nonseller'>
-                                                                                To Access this Feature Create seller account from dashboard
+                                                                            <li className={selectedMenuItem === 'discount-coupens' ? 'active' : ''}
+                                                                                onClick={() => {
+                                                                                    handleMenuItemClick('discount-coupens');
+                                                                                    setSubmitted(false);
+                                                                                    setProductId('')
+                                                                                }}>
+                                                                                Discounts & coupons
                                                                             </li>
-                                                                        }
-                                                                        <li onClick={() => { togglePositionOfMessage(7) }}>
-                                                                            Transactions
-                                                                        </li>
-                                                                        {showMessage === 7 &&
-                                                                            <li className='no-access-for-nonseller'>
-                                                                                To Access this Feature Create seller account from dashboard
+                                                                            <li className={selectedMenuItem === 'm-transactions' ? 'active' : ''}
+                                                                                onClick={() => {
+                                                                                    handleMenuItemClick('m-transactions');
+                                                                                    setSubmitted(false);
+                                                                                    setProductId('')
+                                                                                }}>
+                                                                                Transactions
                                                                             </li>
-                                                                        }
-                                                                        <li onClick={() => { togglePositionOfMessage(8) }}>
-                                                                            Shop Settings
-                                                                        </li>
-                                                                        {showMessage === 8 &&
-                                                                            <li className='no-access-for-nonseller'>
-                                                                                To Access this Feature Create seller account from dashboard
+                                                                            <li className={selectedMenuItem === 'shop-settings' ? 'active' : ''}
+                                                                                onClick={() => {
+                                                                                    handleMenuItemClick('shop-settings');
+                                                                                    setSubmitted(false);
+                                                                                    setProductId('')
+                                                                                }}>
+                                                                                Shop Settings
                                                                             </li>
-                                                                        }
-                                                                    </>
-                                                                    :
-                                                                    <>
-                                                                        <li
-                                                                            className={selectedMenuItem === 'product-management' ? 'active' : ''}
-                                                                            onClick={() => {
-                                                                                handleMenuItemClick('product-management');
-                                                                                setSubmitted(false);
-                                                                                setProductId('')
-                                                                            }}>
-                                                                            Product Management
-                                                                        </li>
-                                                                        <li
-                                                                            className={selectedMenuItem === 'order-management' ? 'active' : ''}
-                                                                            onClick={() => {
-                                                                                handleMenuItemClick('order-management');
-                                                                                setSubmitted(false);
-                                                                                setProductId('')
-                                                                            }}>
-                                                                            Order Management
-                                                                        </li>
-                                                                        <li className={selectedMenuItem === 'bids-offers' ? 'active' : ''}
-                                                                            onClick={() => {
-                                                                                handleMenuItemClick('bids-offers');
-                                                                                setSubmitted(false);
-                                                                                setProductId('')
-                                                                            }}>
-                                                                            Bids & Offers
-                                                                        </li>
-                                                                        <li className={selectedMenuItem === 'chat' ? 'active' : ''}
-                                                                            onClick={() => {
-                                                                                handleMenuItemClick('chat');
-                                                                                setSubmitted(false);
-                                                                                setProductId('')
-                                                                            }}>
-                                                                            Chats
-                                                                        </li>
-                                                                        <li className={selectedMenuItem === 'seller-feedback' ? 'active' : ''}
-                                                                            onClick={() => {
-                                                                                handleMenuItemClick('seller-feedback');
-                                                                                setSubmitted(false);
-                                                                                setProductId('')
-                                                                            }}>
-                                                                            Feedbacks
-                                                                        </li>
-                                                                        <li className={selectedMenuItem === 'discount-coupens' ? 'active' : ''}
-                                                                            onClick={() => {
-                                                                                handleMenuItemClick('discount-coupens');
-                                                                                setSubmitted(false);
-                                                                                setProductId('')
-                                                                            }}>
-                                                                            Discounts & coupons
-                                                                        </li>
-                                                                        <li className={selectedMenuItem === 'm-transactions' ? 'active' : ''}
-                                                                            onClick={() => {
-                                                                                handleMenuItemClick('m-transactions');
-                                                                                setSubmitted(false);
-                                                                                setProductId('')
-                                                                            }}>
-                                                                            Transactions
-                                                                        </li>
-                                                                        <li className={selectedMenuItem === 'shop-settings' ? 'active' : ''}
-                                                                            onClick={() => {
-                                                                                handleMenuItemClick('shop-settings');
-                                                                                setSubmitted(false);
-                                                                                setProductId('')
-                                                                            }}>
-                                                                            Shop Settings
-                                                                        </li>
-                                                                    </>
-                                                                }
-                                                            </ul>
+                                                                        </>
+                                                                    }
+                                                                </ul>
+                                                                <div className="button">
+                                                                    <button onClick={() => { navigate('/customerdashboard?tab=account') }}>Go Back</button>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div className='col-lg-9'>
@@ -276,7 +274,111 @@ const MySellerAccount = ({props , cartFullResponse , notificationCount}) => {
                     </div>
                 </div>
             </section>
+            <Drawer
+                open={isOpen}
+                onClose={toggleDrawer}
+                direction='left'
+                className='mobile-product-filter'
+                size={'90%'}
+            >
 
+                <div className='left-menu'>
+                    <div className="title-selling-hub">Selling Hub <span onClick={toggleDrawer}><RxCross2 /></span></div>
+                    <div className="personal-info">
+                        <ul>
+                            <li className={selectedMenuItem === 'dashboard' ? 'active' : ''} onClick={() => { handleMenuItemClick('dashboard'); setProductId(''); toggleDrawer() }}>
+                                Dashboard
+                            </li>
+                            {user?.isTrustedSeller === 0 ?
+                                null
+                                :
+                                <>
+                                    <li
+                                        className={selectedMenuItem === 'product-management' ? 'active' : ''}
+                                        onClick={() => {
+                                            handleMenuItemClick('product-management');
+                                            setSubmitted(false);
+                                            setProductId('');
+                                            toggleDrawer();
+                                        }}>
+                                        Product Management
+                                    </li>
+                                    <li
+                                        className={selectedMenuItem === 'order-management' ? 'active' : ''}
+                                        onClick={() => {
+                                            handleMenuItemClick('order-management');
+                                            setSubmitted(false);
+                                            setProductId('');
+                                            toggleDrawer();
+                                        }}>
+                                        Order Management
+                                    </li>
+                                    <li className={selectedMenuItem === 'bids-offers' ? 'active' : ''}
+                                        onClick={() => {
+                                            handleMenuItemClick('bids-offers');
+                                            setSubmitted(false);
+                                            setProductId('');
+                                            toggleDrawer();
+                                        }}>
+                                        Bids & Offers
+                                    </li>
+                                    <li className={selectedMenuItem === 'chat' ? 'active' : ''}
+                                        onClick={() => {
+                                            handleMenuItemClick('chat');
+                                            setSubmitted(false);
+                                            setProductId('');
+                                            toggleDrawer();
+                                        }}>
+                                        Chats
+                                    </li>
+                                    <li className={selectedMenuItem === 'seller-feedback' ? 'active' : ''}
+                                        onClick={() => {
+                                            handleMenuItemClick('seller-feedback');
+                                            setSubmitted(false);
+                                            setProductId('');
+                                            toggleDrawer();
+                                        }}>
+                                        Feedbacks
+                                    </li>
+                                    <li className={selectedMenuItem === 'discount-coupens' ? 'active' : ''}
+                                        onClick={() => {
+                                            handleMenuItemClick('discount-coupens');
+                                            setSubmitted(false);
+                                            setProductId('');
+                                            toggleDrawer();
+
+                                        }}>
+                                        Discounts & coupons
+                                    </li>
+                                    <li className={selectedMenuItem === 'm-transactions' ? 'active' : ''}
+                                        onClick={() => {
+                                            handleMenuItemClick('m-transactions');
+                                            setSubmitted(false);
+                                            setProductId('');
+                                            toggleDrawer();
+
+                                        }}>
+                                        Transactions
+                                    </li>
+                                    <li className={selectedMenuItem === 'shop-settings' ? 'active' : ''}
+                                        onClick={() => {
+                                            handleMenuItemClick('shop-settings');
+                                            setSubmitted(false);
+                                            setProductId('');
+                                            toggleDrawer();
+
+                                        }}>
+                                        Shop Settings
+                                    </li>
+                                </>
+                            }
+                        </ul>
+                        <div className="button">
+                            <button onClick={() => { navigate('/customerdashboard?tab=account'); toggleDrawer() }}>Go Back</button>
+                        </div>
+                    </div>
+                </div>
+            </Drawer>
         </>
     );
 };

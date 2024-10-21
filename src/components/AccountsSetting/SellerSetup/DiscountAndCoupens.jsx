@@ -185,7 +185,7 @@ const DiscountAndCoupens = () => {
                 :
                 <div className="seller-new-transaction">
                     <div className="title">Discounts & Coupons</div>
-                    <div className="seller-new-transaction-one">
+                    <div className="seller-new-transaction-one" style={{ minWidth: 'auto', flexWrap: 'wrap' }}>
                         <div className="s-n-d-o-o">
                             <p>{copons.active_count}</p>
                             <h4>Active Coupons</h4>
@@ -194,8 +194,6 @@ const DiscountAndCoupens = () => {
                             <p>{copons.expired_count}</p>
                             <h4>Expired Coupons</h4>
                             <div className="d-d"></div>
-                        </div>
-                        <div className="s-n-d-o-th">
                         </div>
                     </div>
                     <div className="seller-new-transaction-three">
@@ -211,64 +209,68 @@ const DiscountAndCoupens = () => {
                     </div>
                     {tab === 0 ?
                         <div className="seller-new-transaction-two">
-                            <div className="s-n-t-t-transaction-listing">
-                                <div className="s-n-t-t-titles">
-                                    <ul>
-                                        <li>S.no</li>
-                                        <li>Coupons code</li>
-                                        <li>Discounts</li>
-                                        <li>Valid Till</li>
-                                        <li>Action</li>
-                                    </ul>
-                                </div>
-                                <div className="s-n-t-t-listing">
-                                    <div className="s-n-t-t-listing-wrap">
-                                        {copons?.active_coupons?.length > 0 ?
-                                            copons?.active_coupons?.map((data, index) => {
-                                                return (
-                                                    <ul key={index}>
-                                                        <li>{index + 1}</li>
-                                                        <li>{data?.code}</li>
-                                                        <li>{data?.discount}</li>
-                                                        <li>{data?.end_date?.slice(0, 10)}</li>
-                                                        <li className='edit-delete'><span onClick={() => { deleteCoupons(data?.id) }}><MdDelete /></span> <span onClick={() => { getCouponsById(data?.id) }}><FaPencilAlt /></span></li>
-                                                    </ul>
-                                                )
-                                            })
-                                            :
-                                            <NoDataFound title={'No transaction Found'} />
-                                        }
+                            <div className="s-n-t-t-transaction-listing-wrap">
+                                <div className="s-n-t-t-transaction-listing">
+                                    <div className="s-n-t-t-titles">
+                                        <ul>
+                                            <li>S.no</li>
+                                            <li>Coupons code</li>
+                                            <li>Discounts</li>
+                                            <li>Valid Till</li>
+                                            <li>Action</li>
+                                        </ul>
+                                    </div>
+                                    <div className="s-n-t-t-listing">
+                                        <div className="s-n-t-t-listing-wrap">
+                                            {copons?.active_coupons?.length > 0 ?
+                                                copons?.active_coupons?.map((data, index) => {
+                                                    return (
+                                                        <ul key={index}>
+                                                            <li>{index + 1}</li>
+                                                            <li>{data?.code}</li>
+                                                            <li>{data?.discount}</li>
+                                                            <li>{data?.end_date?.slice(0, 10)}</li>
+                                                            <li className='edit-delete'><span onClick={() => { deleteCoupons(data?.id) }}><MdDelete /></span> <span onClick={() => { getCouponsById(data?.id) }}><FaPencilAlt /></span></li>
+                                                        </ul>
+                                                    )
+                                                })
+                                                :
+                                                <NoDataFound title={'No transaction Found'} />
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         :
                         <div className="seller-new-transaction-two">
-                            <div className="s-n-t-t-transaction-listing">
-                                <div className="s-n-t-t-titles">
-                                    <ul>
-                                        <li>S.no</li>
-                                        <li>Coupons code</li>
-                                        <li>Discounts</li>
-                                        <li>Valid Till</li>
-                                    </ul>
-                                </div>
-                                <div className="s-n-t-t-listing">
-                                    <div className="s-n-t-t-listing-wrap">
-                                        {copons?.expired_coupons?.length > 0 ?
-                                            copons?.expired_coupons?.map((data, index) => {
-                                                return (
-                                                    <ul key={index}>
-                                                        <li>{index + 1}</li>
-                                                        <li>{data?.code}</li>
-                                                        <li>{data?.discount}</li>
-                                                        <li>{data?.end_date?.slice(0, 10)}</li>
-                                                    </ul>
-                                                )
-                                            })
-                                            :
-                                            <NoDataFound title={'No transaction Found'} />
-                                        }
+                            <div className="s-n-t-t-transaction-listing-wrap">
+                                <div className="s-n-t-t-transaction-listing">
+                                    <div className="s-n-t-t-titles">
+                                        <ul>
+                                            <li>S.no</li>
+                                            <li>Coupons code</li>
+                                            <li>Discounts</li>
+                                            <li>Valid Till</li>
+                                        </ul>
+                                    </div>
+                                    <div className="s-n-t-t-listing">
+                                        <div className="s-n-t-t-listing-wrap">
+                                            {copons?.expired_coupons?.length > 0 ?
+                                                copons?.expired_coupons?.map((data, index) => {
+                                                    return (
+                                                        <ul key={index}>
+                                                            <li>{index + 1}</li>
+                                                            <li>{data?.code}</li>
+                                                            <li>{data?.discount}</li>
+                                                            <li>{data?.end_date?.slice(0, 10)}</li>
+                                                        </ul>
+                                                    )
+                                                })
+                                                :
+                                                <NoDataFound title={'No transaction Found'} />
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -369,7 +369,7 @@ const SetupSellerAccount = () => {
                         {errors.state && <p className="error">{errors.state}</p>}
                       </div>
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-6 mb-3">
                       <div className="fieldss">
                         <label className="form-control">
                           {cities}
@@ -385,7 +385,7 @@ const SetupSellerAccount = () => {
                       </div>
                       {errors.zip && <p className="error">{errors.zip}</p>}
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-6 mb-3">
                       <textarea
                         className="form-control"
                         id="description"
@@ -397,7 +397,7 @@ const SetupSellerAccount = () => {
                       </textarea>
                       {errors.description && <p className="error">{errors.description}</p>}
                     </div>
-                    <div className="col-lg-6">
+                    <div className="col-lg-6 mb-3">
                       <div className="p-m-i-u">
                         {!formData?.editVideo && formData?.video == '' &&
                           <div className="p-m-i-u-wrap">

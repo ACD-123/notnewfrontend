@@ -15,50 +15,65 @@ const TopSellingProducts = ({ data, setTopSellingProducts, title, loading }) => 
 
   return (
     <>
-      <section id="product-recents-viewed" className="top-selling-product">
+      {loading ?
         <>
-          <div className="container">
+          <div className="container my-5">
             <div className="row">
-              <div className="headings">
-                <h3>
-                  {title}
-                  {data.length > 0 &&
-                    <span>
-                      <Link to="/top-selling-prodcuts">View More</Link>
-                    </span>
-                  }
-                </h3>
-              </div>
+              <div className="col-lg-3"><ProductSkeletonLoader /></div>
+              <div className="col-lg-3"><ProductSkeletonLoader /></div>
+              <div className="col-lg-3"><ProductSkeletonLoader /></div>
+              <div className="col-lg-3"><ProductSkeletonLoader /></div>
             </div>
           </div>
-          <section id="productcard">
-            <div className="container">
-              <div className="row">
-                {loading ?
-                  <>
-                    <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                    <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                    <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                    <div className="col-lg-3"><ProductSkeletonLoader /></div>
-
-                  </>
-                  :
-                  (
-                    data.length > 0 ?
-                      data?.map((product, index) => (
-                        <div className="col col-lg-3" key={product?.product?.guid}>
-                          <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
-                        </div>
-                      ))
-                      :
-                      <NoDataFound title={'No top selling product found'} />
-                  )
-                }
-              </div>
-            </div>
-          </section>
         </>
-      </section>
+        :
+        data.length > 0 ?
+          <section id="product-recents-viewed" className="top-selling-product">
+            <>
+              <div className="container">
+                <div className="row">
+                  <div className="headings">
+                    <h3>
+                      {title}
+                      {data.length > 0 &&
+                        <span>
+                          <Link to="/top-selling-prodcuts">View More</Link>
+                        </span>
+                      }
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <section id="productcard">
+                <div className="container">
+                  <div className="row">
+                    {loading ?
+                      <>
+                        <div className="col-lg-3"><ProductSkeletonLoader /></div>
+                        <div className="col-lg-3"><ProductSkeletonLoader /></div>
+                        <div className="col-lg-3"><ProductSkeletonLoader /></div>
+                        <div className="col-lg-3"><ProductSkeletonLoader /></div>
+
+                      </>
+                      :
+                      (
+                        data.length > 0 ?
+                          data?.map((product, index) => (
+                            <div className="col col-lg-3" key={product?.product?.guid}>
+                              <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
+                            </div>
+                          ))
+                          :
+                          <NoDataFound title={'No top selling product found'} />
+                      )
+                    }
+                  </div>
+                </div>
+              </section>
+            </>
+          </section>
+          :
+          null}
     </>
   );
 };

@@ -81,11 +81,16 @@ const NotificationPreferences = ({ cartFullResponse, notificationCount }) => {
                           <div className='col-lg-3'>
                             <div className={`left-menu`}>
                               <div className="title-customer-side">Notification</div>
-                              <ul>
-                                <li className={selectedMenuItem === 'notification-settings' ? 'active' : ''}>
-                                  Notification Settings
-                                </li>
-                              </ul>
+                              <div className="personal-info">
+                                <ul>
+                                  <li className={selectedMenuItem === 'notification-settings' ? 'active' : ''}>
+                                    Notification Settings
+                                  </li>
+                                </ul>
+                                <div className="button">
+                                  <button onClick={() => { navigate('/customerdashboard?tab=account') }}>Go Back</button>
+                                </div>
+                              </div>
                             </div>
                           </div>
                           <div className='col-lg-9'>

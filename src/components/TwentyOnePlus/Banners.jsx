@@ -39,13 +39,15 @@ const Banners = () => {
 
     return (
         <>
-            <section id='banners'>
-                <div className='container'>
-                    <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="true">
-                        {loading ?
-                            <Skeleton />
-                            :
-                            <>
+            {loading ?
+                    <div id="carouselExampleIndicators">
+                        <Skeleton />
+                    </div>
+                :
+                banners?.length > 0 ?
+                    <section id='banners'>
+                        <div className='container'>
+                            <div id="carouselExampleIndicators" className="carousel slide" data-bs-ride="true">
                                 <div className="carousel-inner">
                                     {banners?.map((item, index) => {
                                         return (
@@ -65,7 +67,6 @@ const Banners = () => {
                                         )
                                     })}
                                 </div>
-
                                 <div className="carousel-indicators">
                                     {data?.map((item, index) => {
                                         return (
@@ -73,11 +74,12 @@ const Banners = () => {
                                         )
                                     })}
                                 </div>
-                            </>
-                        }
-                    </div>
-                </div>
-            </section>
+                            </div>
+                        </div>
+                    </section>
+                    :
+                    null
+            }
         </>
     )
 }

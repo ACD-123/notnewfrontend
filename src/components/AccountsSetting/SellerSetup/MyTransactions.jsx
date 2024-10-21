@@ -26,11 +26,11 @@ const MyTransactions = () => {
   return (
     <>
       {isLoading ?
-        <LoadingComponents/>
+        <LoadingComponents />
         :
         <div className="seller-new-transaction">
           <div className="title">Transactions</div>
-          <div className="seller-new-transaction-one">
+          <div className="seller-new-transaction-one" style={{minWidth:'auto' , flexWrap:'wrap'}}>
             <div className="s-n-d-o-o">
               <p>${transactions?.availableBalance}</p>
               <h4>Available Balance</h4>
@@ -40,36 +40,36 @@ const MyTransactions = () => {
               <h4>Total earning this month</h4>
               <div className="d-d"></div>
             </div>
-            <div className="s-n-d-o-th">
-            </div>
           </div>
           <div className="seller-new-transaction-two">
             <div className="two-title">Transactions History</div>
-            <div className="s-n-t-t-transaction-listing">
-              <div className="s-n-t-t-titles">
-                <ul>
-                  <li>Transaction Id</li>
-                  <li>Date</li>
-                  <li>Amount</li>
-                  <li>Purpose</li>
-                </ul>
-              </div>
-              <div className="s-n-t-t-listing">
-                <div className="s-n-t-t-listing-wrap">
-                  {transactions?.transactions?.length > 0 ?
-                    transactions?.transactions?.map((data, index) => {
-                      return (
-                        <ul key={index}>
-                          <li>{data?.id}</li>
-                          <li>{data?.date?.slice(0, 10)}</li>
-                          <li>${data?.amount}</li>
-                          <li>{data?.type}</li>
-                        </ul>
-                      )
-                    })
-                    :
-                    <NoDataFound title={'No transaction Found'}/>
-                  }
+            <div className="s-n-t-t-transaction-listing-wrap">
+              <div className="s-n-t-t-transaction-listing">
+                <div className="s-n-t-t-titles">
+                  <ul>
+                    <li>Transaction Id</li>
+                    <li>Date</li>
+                    <li>Amount</li>
+                    <li>Purpose</li>
+                  </ul>
+                </div>
+                <div className="s-n-t-t-listing">
+                  <div className="s-n-t-t-listing-wrap">
+                    {transactions?.transactions?.length > 0 ?
+                      transactions?.transactions?.map((data, index) => {
+                        return (
+                          <ul key={index}>
+                            <li>{data?.id}</li>
+                            <li>{data?.date?.slice(0, 10)}</li>
+                            <li>${data?.amount}</li>
+                            <li>{data?.type}</li>
+                          </ul>
+                        )
+                      })
+                      :
+                      <NoDataFound title={'No transaction Found'} />
+                    }
+                  </div>
                 </div>
               </div>
             </div>

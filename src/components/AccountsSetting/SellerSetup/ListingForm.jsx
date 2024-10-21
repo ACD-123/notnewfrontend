@@ -267,8 +267,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     setIsFromLoading(true)
     if (productManagment.file.length === 0 || productManagment.condition === "" ||
       productManagment.category === null || productManagment.stockCapacity === "" || productManagment.brand_id === null ||
-     productManagment.description === "" || productManagment.address === "" ||
-       productManagment.country === "" ||
+      productManagment.description === "" || productManagment.address === "" ||
+      productManagment.country === "" ||
       productManagment.state === "" || productManagment.city === "" || productManagment.zip === "" ||
       productManagment.weight === "" || productManagment.weight === 0 || productManagment.width === "" ||
       productManagment.width === 0 || productManagment.height === "" || productManagment.height === 0 ||
@@ -344,7 +344,11 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     formData.append("termsdescription", productManagment.termsdescription);
     formData.append("title", productManagment.title);
     formData.append("category", productManagment?.category?.value);
-    formData.append("stockCapacity", productManagment.stockCapacity);
+    if (productManagment.condition === 'Used') {
+      formData.append("stockCapacity", 1);
+    } else {
+      formData.append("stockCapacity", productManagment.stockCapacity);
+    }
     formData.append("brand_id", productManagment.brand_id?.value);
     formData.append("model", productManagment.model);
     formData.append("description", productManagment.description);
@@ -650,13 +654,15 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                       <div className="error-input">Brand is required</div>
                     }
                   </div>
-                  <div className="two-field-left">
-                    <label>Stock capacity (Quantity)</label>
-                    <input type="number" name="stockCapacity" value={productManagment?.stockCapacity} onChange={handleChange} placeholder="Enter quantity" />
-                    {productManagment.stockCapacity === "" && inputError &&
-                      <div className="error-input">Stock capacity is required</div>
-                    }
-                  </div>
+                  {productManagment.condition === "Used" ? null :
+                    <div className="two-field-left">
+                      <label>Stock capacity (Quantity)</label>
+                      <input type="number" name="stockCapacity" value={productManagment?.stockCapacity} onChange={handleChange} placeholder="Enter quantity" />
+                      {productManagment.stockCapacity === "" && inputError &&
+                        <div className="error-input">Stock capacity is required</div>
+                      }
+                    </div>
+                  }
                 </div>
                 <div className="two-field">
                   <div className="two-field-left">
@@ -803,17 +809,17 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                   <>
                     <div className="two-field">
                       <div className="two-field-left">
-                        <label>Price</label>
+                        <label>Price ($)</label>
                         <input type="number" name="price" value={productManagment?.price} onChange={handleChange} placeholder="Enter price" />
                         {(productManagment.price === "" && inputError && productManagment.sellingNow) &&
-                          <div className="error-input">Price is required</div>
+                          <div className="error-input">Price ($) is required</div>
                         }
                       </div>
                       <div className="two-field-left">
-                        <label>Sale price</label>
+                        <label>Sale price  ($)</label>
                         <input type="number" name="saleprice" value={productManagment?.saleprice} onChange={handleChange} placeholder="Enter sale price" />
                         {(productManagment.saleprice === "" && inputError && productManagment.sellingNow) &&
-                          <div className="error-input">Sale price is required</div>
+                          <div className="error-input">Sale price  ($) is required</div>
                         }
                       </div>
                     </div>
@@ -839,10 +845,10 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                   <>
                     <div className="two-field">
                       <div className="two-field-left">
-                        <label>Starting Bid</label>
+                        <label>Starting Bid ($)</label>
                         <input type="number" name="bids" value={productManagment?.bids} onChange={handleChange} placeholder="Enter bid" />
                         {(productManagment.bids === "" && inputError && productManagment.auctioned) &&
-                          <div className="error-input">Starting bid is required</div>
+                          <div className="error-input">Starting bid ($) is required</div>
                         }
                       </div>
                       <div className="two-field-left">

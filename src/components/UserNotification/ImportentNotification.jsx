@@ -71,7 +71,7 @@ export const ImportentNotification = ({ getNotificationCount }) => {
                     {data?.notification_type === 'chat' ?
                       (<>
                         {data?.recieved_from == 1 ?
-                          <div className="col-lg-6" style={{ cursor: 'pointer' }} key={data?.id} onClick={() => { navigate(`/customerdashboard?tab=messages&room-id=${data?.room_id}`) }}>
+                          <div className="col-lg-6 col-md-6 col-12" style={{ cursor: 'pointer' }} key={data?.id} onClick={() => { navigate(`/customerdashboard?tab=messages&room-id=${data?.room_id}`) }}>
                             <div className="n-l-d">
                               <div className="n-l-d-w">
                                 <div className="n-l-d-w-l">
@@ -88,7 +88,7 @@ export const ImportentNotification = ({ getNotificationCount }) => {
                             </div>
                           </div>
                           :
-                          < div className="col-lg-6" style={{ cursor: 'pointer' }} key={data?.id} onClick={() => { navigate(`/my-seller-account?tab=chat&room-id=${data?.room_id}`) }}>
+                          < div className="col-lg-6 col-md-6 col-12" style={{ cursor: 'pointer' }} key={data?.id} onClick={() => { navigate(`/my-seller-account?tab=chat&room-id=${data?.room_id}`) }}>
                             <div className="n-l-d">
                               <div className="n-l-d-w">
                                 <div className="n-l-d-w-l">
@@ -107,7 +107,7 @@ export const ImportentNotification = ({ getNotificationCount }) => {
                         }
                       </>)
                       :
-                      <div className="col-lg-6" key={index}>
+                      <div className="col-lg-6 col-md-6 col-12" key={index}>
                         <div className="n-l-d">
                           <div className="n-l-d-w">
                             <div className="n-l-d-w-l">
