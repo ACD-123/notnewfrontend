@@ -36,7 +36,7 @@ const PopularProductSearch = (props) => {
     <div className='popular-search'>
         <h4>Popular Categories on this Shop</h4>
         <ul>
-          {categoryList.length > 0 ?(
+          {categoryList?.length > 0 ?(
             <>
               {categoryList.map((category , index) => {
                   return(

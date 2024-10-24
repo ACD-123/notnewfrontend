@@ -28,22 +28,24 @@ const ProductGallery = () => {
 
   return (
     <div className="p-g">
-      {product.length > 1 &&
-        <div className="p-g-t">
-          {product.length > 0 &&
-            <>
-              {product?.slice(0, 5)?.map((image , index) => {
-                return (
-                  <>
-                    <div key={index}>
-                      <img key={image.id} src={`${image.name}`} alt={image.name} onClick={() => handleThumbnailClick(image.name)}
-                        className={selectedImage === image.name ? "active" : ""} />
-                    </div>
-                  </>
-                );
-              })}
-            </>
-          }
+      {product?.length > 1 &&
+        <div className="p-g-t-w">
+          <div className="p-g-t">
+            {product.length > 0 &&
+              <>
+                {product?.slice(0, 5)?.map((image, index) => {
+                  return (
+                    <>
+                      <div key={index}>
+                        <img key={image.id} src={`${image.name}`} alt={image.name} onClick={() => handleThumbnailClick(image.name)}
+                          className={selectedImage === image.name ? "active" : ""} />
+                      </div>
+                    </>
+                  );
+                })}
+              </>
+            }
+          </div>
         </div>
       }
       {selectedImage ? (

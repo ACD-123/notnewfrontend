@@ -30,19 +30,19 @@ const SearchwithCategories = () => {
   <div className="input-group categoruu">
     <select id="category" name="category">
       <option value="all">Categories</option>
-      {categories.length > 0 ? (
+      {categories?.length > 0 ? (
         <>
           {categories?.map(category => {
             return (
-              <option key={category.id} value={category.id}>
-                <a href={category.guid}><b>{category.name}</b></a>
-                {category.children_recursive.length > 0 ?(
+              <option key={category?.id} value={category?.id}>
+                <a href={category?.guid}><b>{category?.name}</b></a>
+                {category?.children_recursive?.length > 0 ?(
                   <>
                   <ul className="dropdown-menu shadow">
                     {category.children_recursive.map(child => {
                       return(
                         <>
-                        <li key={child.id}><a href={child.guid}><b>{child.name}</b></a></li>
+                        <li key={child?.id}><a href={child?.guid}><b>{child?.name}</b></a></li>
                         </>
                       )
                     })}

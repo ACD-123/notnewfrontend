@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import ProductCard from "../Elements/ProductCard"
 import blank from "../../assets/Images/Productcard/blank.jpg";
-import ProductImage1 from "../../assets/Images/Productcard/1.png";
 import { Link } from "react-router-dom";
-import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
+import ProductServices from '../../services/API/ProductServices';
 import { toast } from "react-toastify";
-import { BASE_URL } from "../../services/Constant";
-import { setUserDetails, isLoggedin, getUserDetails, setUserId } from "../../services/Auth"; // ~/services/Auth
-import UserServices from "../../services/API/UserServices"; //~/services/API/AuthService
+import { setUserDetails, isLoggedin, setUserId } from "../../services/Auth";
+import UserServices from "../../services/API/UserServices";
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 
 const RecentViewedItems = () => {
@@ -19,7 +16,7 @@ const RecentViewedItems = () => {
     const fetchProductData = async () => {      
       ProductServices.recent()
       .then((res) => {
-        setProductData(res.slice(0, 4)); // Limit to the first 5 products
+        setProductData(res.slice(0, 4));
       }).catch(error => {
         toast.error(error?.response?.data?.message)
       });
@@ -42,7 +39,6 @@ const RecentViewedItems = () => {
     useEffect(() => {
       if (isLoggedin()) {
         getUser();
-        // let cartItems = localStorage.getItem('cupon');
       }
       }, []);
     const addToFavorites = async (productId) => {
@@ -54,9 +50,7 @@ const RecentViewedItems = () => {
             };
             const res = await ProductServices.isFavorite(data);
             if (res.status) {
-                // Optionally, update UI or show a success message
                 toast.success("Product added to favorites!");
-                // Update favorites data if necessary
                 setFavData(res.data);
             }
         } catch (error) {
@@ -71,7 +65,7 @@ const RecentViewedItems = () => {
   return (
     <>
     <section id='product-recents-viewed'>
-    {productData.length === 0 ?(
+    {productData?.length === 0 ?(
               <>
         <div className='container'>
             <div className='row'>
@@ -88,7 +82,6 @@ const RecentViewedItems = () => {
                 <div className='productlist'>
                   {product?.auctioned ? (
                     <>
-                      {/* {product.products?.name} */}
                       <Link to={`/auctionproduct/${product.products?.guid}`}>
                       {product.products?.media[0].name? (
                         <>
@@ -99,7 +92,6 @@ const RecentViewedItems = () => {
                           <img src={blank} alt="blank" />
                         </>
                       ) }
-                        {/* <img src={product.cover_image} alt={product.name} /> */}
                       </Link>
                     </>
                   ) : (
@@ -114,7 +106,6 @@ const RecentViewedItems = () => {
                           <img src={blank} alt="blank" />
                         </>
                       ) }
-                        {/* <img src={product.cover_image} alt={product.name} /> */}
                       </Link>
                     </>
                   )}
@@ -204,30 +195,6 @@ const RecentViewedItems = () => {
                                   </ul>
                                 </>
                               )}
-                      {/* {product.products?.auctioned ? (
-                      <ul>
-                      {product.products?.bids !== null && (
-                        <li className='price'> Maximum Bid: ${product.products?.bids}</li>
-                      )}
-                    </ul>
-                    ) : (
-                      <ul>
-                          {product.products?.price !== null && (
-                            <li className='price'>${product.products?.price}</li>
-                          )}
-                          {product.products?.price !== null && product.products?.sale_price !== null && (
-                            <li className='sale'>
-                              <del>${product.products?.price}</del>
-                            </li>
-                          )}
-                          {product.products?.price !== null && product.products?.sale_price !== null && (
-                            <li className='discount'>
-                              {((product.products?.price - product.products?.sale_price) / product.products?.price * 100).toFixed(2)}% OFF
-                            </li>
-                          )}
-                        </ul>
-                    )} */}
-                        
                       </p>
                     </p>
                   </div>

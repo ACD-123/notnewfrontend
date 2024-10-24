@@ -67,7 +67,7 @@ const CustomerSellerShops = () => {
                                 })}
                             </div>
                             :
-                            <NoDataFound title={'No seller shop found'} />
+                            <NoDataFound title={'No Data Found'} />
                         }
                     </div>
                 }

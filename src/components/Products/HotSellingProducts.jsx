@@ -55,15 +55,15 @@ const HotSellingProducts = ({ loading, data, setHotProducts, title }) => {
         <>
           <div className="container my-5">
             <div className="row">
-              <div className="col-lg-3"><ProductSkeletonLoader /></div>
-              <div className="col-lg-3"><ProductSkeletonLoader /></div>
-              <div className="col-lg-3"><ProductSkeletonLoader /></div>
-              <div className="col-lg-3"><ProductSkeletonLoader /></div>
+              <div className="col-lg-3 col-md-6 col-sm-12"><ProductSkeletonLoader /></div>
+              <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'><ProductSkeletonLoader /></div>
+              <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991"><ProductSkeletonLoader /></div>
+              <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991"><ProductSkeletonLoader /></div>
             </div>
           </div>
         </>
         :
-        data.length > 0 ?
+        data?.length > 0 ?
           <section id="product-recents-viewed" className="hot-selling-product">
             <>
               <div className="container">
@@ -85,30 +85,30 @@ const HotSellingProducts = ({ loading, data, setHotProducts, title }) => {
                   <div className="row">
                     {loading ?
                       <>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
 
                       </>
                       :
                       (
-                        data.length > 0 ?
+                        data?.length > 0 ?
                           data?.map((product, index) => (
-                            <div className="col col-lg-3" key={product?.guid}>
+                            <div className="col-lg-3 col-md-6 col-sm-12" key={product?.guid}>
                               <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
                             </div>
                           ))
                           :
-                          <NoDataFound title={'No hot selling product found'} />
+                          <NoDataFound title={'No Data Found'} />
                       )
                     }
                   </div>

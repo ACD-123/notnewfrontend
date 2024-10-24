@@ -51,8 +51,6 @@ const SellerCategories = () => {
         </div>
         :
         <section id='singlecategory'>
-          <div className='row'>
-            <>
               <div className="seller-product-filter" id='productcard'>
                 <div className="filter">
                   <div className="search-bar-t">
@@ -70,28 +68,28 @@ const SellerCategories = () => {
                   <div className="row">
                     {isLoading ?
                       <>
-                        <div className="col-lg-3 mb-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-3">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-3" id='hide-on-mobile-768'>
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-3" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-3" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-3" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-3" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-3" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-3" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
                       </>
@@ -99,20 +97,18 @@ const SellerCategories = () => {
                       (productData?.length > 0 ?
                         (productData?.map((product, index) => {
                           return (
-                            <div className="col-lg-3 mb-3" key={index}>
+                            <div className="col-lg-3 col-md-6 col-sm-12 mb-3" key={index}>
                               <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
                             </div>
                           )
                         }))
                         :
-                        <NoDataFound title={'No seller product found'} />
+                        <NoDataFound title={'No Data Found'} />
                       )
                     }
                   </div>
                 </div>
               </div>
-            </>
-          </div>
         </section>
       }
     </>

@@ -92,7 +92,7 @@ const SavedSellers = () => {
         <div className="row align-items-center">
           <div className="col-lg-6">
             <h3>Saved sellers</h3>
-            <p>{saveSeller.length} Saved sellers</p>
+            <p>{saveSeller?.length} Saved sellers</p>
           </div>
           <div className="col-lg-6">
             <div className="sorting">
@@ -116,7 +116,7 @@ const SavedSellers = () => {
                     </div>
                   ) : (
                     <>
-                      {saveSeller.length == 0 ? (
+                      {saveSeller?.length == 0 ? (
                         <div>You Could Not save any Seller</div>
                       ) : (
                         <>

@@ -118,6 +118,18 @@ const Header = ({ cartFullResponse, notificationCount }) => {
     });
   }
 
+  const handelUnderAgeInputChange = (e) => {
+    setSearchLoading(true)
+    setInputSearch(e.target.value)
+    HomeService.getSearchProductsUnderAge(e.target.value).then((res) => {
+      setSearchProduct(res?.data)
+      setSearchLoading(false)
+    }).catch((error) => {
+      toast.error(error?.response?.data?.message)
+      setSearchLoading(false)
+    });
+  }
+
   const addSearchProduct = (product_id) => {
     ProductServices.addSearchProduct({ user_id: user_id, product_id: product_id })
       .then((res) => {
@@ -154,6 +166,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
   }, []);
 
   const userDropdownRef = useRef(null);
+  
   const handleUserClickOutside = (event) => {
     if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
       setUserDropdown(false);
@@ -163,6 +176,20 @@ const Header = ({ cartFullResponse, notificationCount }) => {
     document.addEventListener('mousedown', handleUserClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleUserClickOutside);
+    };
+  }, []);
+
+  const searchRef = useRef(null);
+
+  const handleSearchClickOutside = (event) => {
+    if (searchRef.current && !searchRef.current.contains(event.target)) {
+      setInputSearch('');
+    }
+  };
+  useEffect(() => {
+    document.addEventListener('mousedown', handleSearchClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleSearchClickOutside);
     };
   }, []);
 
@@ -183,113 +210,223 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                       </div>
                     </div>
                     <div className="header-right">
-                      <div className="search-bar" id="hide-on-mobile-768">
-                        <div className="search-bar-t" style={{
-                          borderBottomLeftRadius: inputSearch !== "" ? '0px' : '24px',
-                          borderBottomRightRadius: inputSearch !== "" ? '0px' : '24px',
-                          borderBottom: inputSearch !== "" ? '0px' : '1px solid #DBDBDB'
-                        }}>
-                          <div className="search-icon">
-                            <SearchSvg />
-                          </div>
-                          <div className="input">
-                            <input type="text" placeholder="Search Here Anything....." onChange={handelInputChange} />
-                          </div>
-                          <div ref={categoryDropdownRef} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
-                            <div className="value">
-                              <div className="value-wrap">
-                                {seletedCategory === "" ? "Categories" : seletedCategory}
-
-                                <HeaderCategoryArrowSvg />
-                              </div>
+                      {path.includes('21-plus') ?
+                        <div className="search-bar" id="hide-on-mobile-768" ref={searchRef}>
+                          <div className="search-bar-t" style={{
+                            borderBottomLeftRadius: inputSearch !== "" ? '0px' : '24px',
+                            borderBottomRightRadius: inputSearch !== "" ? '0px' : '24px',
+                            borderBottom: inputSearch !== "" ? '0px' : '1px solid #DBDBDB'
+                          }}>
+                            <div className="search-icon">
+                              <SearchSvg />
                             </div>
-                            {categoryDropdown &&
-                              <div className="options">
-                                <div className="options-wrap">
-                                  {categories?.slice(0, 3)?.map((data, index) => {
-                                    return (
-                                      <div key={index}>
-                                        <h4 onClick={() => { navigate(`/category?category-id=${data?.id}`); setSeletedCategory(data?.name) }}>{data?.name}</h4>
-                                        <ul>
-                                          {data?.children_recursive?.slice(0, 3)?.map(
-                                            (subcategory, index) => (
-                                              <li key={index} onClick={() => { setSeletedCategory(subcategory.name) }}>
-                                                <Link to={`/category?category-id=${subcategory?.id}`}>
-                                                  {subcategory.name}
-                                                </Link>
-                                              </li>
-                                            )
-                                          )}
-                                        </ul>
+                            <div className="input">
+                              <input type="text" value={inputSearch} placeholder="Search Here Anything....." onChange={handelUnderAgeInputChange} />
+                            </div>
+                            <div ref={categoryDropdownRef} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
+                              <div className="value">
+                                <div className="value-wrap">
+                                  {seletedCategory === "" ? "Categories" : seletedCategory}
 
-                                      </div>
+                                  <HeaderCategoryArrowSvg />
+                                </div>
+                              </div>
+                              {categoryDropdown &&
+                                <div className="options">
+                                  <div className="options-wrap">
+                                    {categories?.slice(0, 3)?.map((data, index) => {
+                                      return (
+                                        <div key={index}>
+                                          <h4 onClick={() => { navigate(`/category?category-id=${data?.id}`); setSeletedCategory(data?.name) }}>{data?.name}</h4>
+                                          <ul>
+                                            {data?.children_recursive?.slice(0, 3)?.map(
+                                              (subcategory, index) => (
+                                                <li key={index} onClick={() => { setSeletedCategory(subcategory.name) }}>
+                                                  <Link to={`/category?category-id=${subcategory?.id}`}>
+                                                    {subcategory.name}
+                                                  </Link>
+                                                </li>
+                                              )
+                                            )}
+                                          </ul>
+
+                                        </div>
+                                      )
+                                    })}
+                                  </div>
+                                  <div className="footer">
+                                    <Link to={'/top-category'}>See All Categories</Link>
+                                    <HeaderArrowRightSvg />
+                                    <HeaderArrowRightSvg />
+                                  </div>
+                                </div>
+                              }
+                            </div>
+                          </div>
+                          {inputSearch != '' &&
+                            <div className="search-bar-b">
+                              <div className="search-bar-b-w">
+                                <div className="search-bar-b-w-list">
+                                  {inputSearch != '' ?
+                                    (searchLoading ?
+                                      <ul>
+                                        <li><Skeleton /></li>
+                                        <li><Skeleton /></li>
+                                        <li><Skeleton /></li>
+                                      </ul>
+                                      :
+                                      <>
+                                        {searchProduct?.products?.length > 0 ?
+                                          <ul>
+                                            {searchProduct?.products?.slice(0, 5)?.map((data, index) => {
+                                              return (
+                                                <li key={index} onClick={() => {
+                                                  addSearchProduct(data?.id);
+                                                  if (data?.auctioned) {
+                                                    navigate(`/auctionproduct/${data?.guid}`)
+                                                  } else {
+                                                    navigate(`/singleproduct/${data?.guid}`)
+                                                  }
+                                                }}>
+                                                  <div>
+                                                    <img src={data?.media?.[0]?.name} alt="" />
+                                                  </div>
+                                                  <div>
+                                                    <h3>{data?.name}</h3>
+                                                    <p>{data?.description}</p>
+                                                  </div>
+                                                </li>
+                                              )
+                                            })}
+                                          </ul>
+                                          :
+                                          <NoDataFound title={'No Data Found'} />
+                                        }
+                                      </>
                                     )
-                                  })}
-                                </div>
-                                <div className="footer">
-                                  <Link to={'/top-category'}>See All Categories</Link>
-                                  <HeaderArrowRightSvg />
-                                  <HeaderArrowRightSvg />
-                                </div>
-                              </div>
-                            }
-                          </div>
-                        </div>
-                        {inputSearch != '' &&
-                          <div className="search-bar-b">
-                            <div className="search-bar-b-w">
-                              <div className="search-bar-b-w-list">
-                                {inputSearch != '' ?
-                                  (searchLoading ?
-                                    <ul>
-                                      <li><Skeleton /></li>
-                                      <li><Skeleton /></li>
-                                      <li><Skeleton /></li>
-                                    </ul>
                                     :
-                                    <>
-                                      {searchProduct?.products?.length > 0 ?
-                                        <ul>
-                                          {searchProduct?.products?.slice(0, 5)?.map((data, index) => {
-                                            return (
-                                              <li key={index} onClick={() => {
-                                                addSearchProduct(data?.id);
-                                                if (data?.auctioned) {
-                                                  navigate(`/auctionproduct/${data?.guid}`)
-                                                } else {
-                                                  navigate(`/singleproduct/${data?.guid}`)
-                                                }
-                                              }}>
-                                                <div>
-                                                  <img src={data?.media?.[0]?.name} alt="" />
-                                                </div>
-                                                <div>
-                                                  <h3>{data?.name}</h3>
-                                                  <p>{data?.description}</p>
-                                                </div>
-                                              </li>
-                                            )
-                                          })}
-                                        </ul>
-                                        :
-                                        <NoDataFound title={'No product found'} />
-                                      }
-                                    </>
-                                  )
-                                  :
-                                  null
-                                }
-                              </div>
-                              {searchProduct?.products?.length > 0 ?
-                                <div className="search-bar-b-w-l-m">
-                                  <Link to={`/search-product?text=${inputSearch}`}>Load More</Link>
+                                    null
+                                  }
                                 </div>
-                                :
-                                null}
+                                {searchProduct?.products?.length > 0 ?
+                                  <div className="search-bar-b-w-l-m">
+                                    <Link to={`/search-product-21-plus?text=${inputSearch}`}>Load More</Link>
+                                  </div>
+                                  :
+                                  null}
+                              </div>
+                            </div>
+                          }
+                        </div>
+                        :
+                        <div className="search-bar" id="hide-on-mobile-768" ref={searchRef}>
+                          <div className="search-bar-t" style={{
+                            borderBottomLeftRadius: inputSearch !== "" ? '0px' : '24px',
+                            borderBottomRightRadius: inputSearch !== "" ? '0px' : '24px',
+                            borderBottom: inputSearch !== "" ? '0px' : '1px solid #DBDBDB'
+                          }}>
+                            <div className="search-icon">
+                              <SearchSvg />
+                            </div>
+                            <div className="input">
+                              <input type="text" value={inputSearch} placeholder="Search Here Anything....." onChange={handelInputChange} />
+                            </div>
+                            <div ref={categoryDropdownRef} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
+                              <div className="value">
+                                <div className="value-wrap">
+                                  {seletedCategory === "" ? "Categories" : seletedCategory}
+
+                                  <HeaderCategoryArrowSvg />
+                                </div>
+                              </div>
+                              {categoryDropdown &&
+                                <div className="options">
+                                  <div className="options-wrap">
+                                    {categories?.slice(0, 3)?.map((data, index) => {
+                                      return (
+                                        <div key={index}>
+                                          <h4 onClick={() => { navigate(`/category?category-id=${data?.id}`); setSeletedCategory(data?.name) }}>{data?.name}</h4>
+                                          <ul>
+                                            {data?.children_recursive?.slice(0, 3)?.map(
+                                              (subcategory, index) => (
+                                                <li key={index} onClick={() => { setSeletedCategory(subcategory.name) }}>
+                                                  <Link to={`/category?category-id=${subcategory?.id}`}>
+                                                    {subcategory.name}
+                                                  </Link>
+                                                </li>
+                                              )
+                                            )}
+                                          </ul>
+
+                                        </div>
+                                      )
+                                    })}
+                                  </div>
+                                  <div className="footer">
+                                    <Link to={'/top-category'}>See All Categories</Link>
+                                    <HeaderArrowRightSvg />
+                                    <HeaderArrowRightSvg />
+                                  </div>
+                                </div>
+                              }
                             </div>
                           </div>
-                        }
-                      </div>
+                          {inputSearch != '' &&
+                            <div className="search-bar-b">
+                              <div className="search-bar-b-w">
+                                <div className="search-bar-b-w-list">
+                                  {inputSearch != '' ?
+                                    (searchLoading ?
+                                      <ul>
+                                        <li><Skeleton /></li>
+                                        <li><Skeleton /></li>
+                                        <li><Skeleton /></li>
+                                      </ul>
+                                      :
+                                      <>
+                                        {searchProduct?.products?.length > 0 ?
+                                          <ul>
+                                            {searchProduct?.products?.slice(0, 5)?.map((data, index) => {
+                                              return (
+                                                <li key={index} onClick={() => {
+                                                  addSearchProduct(data?.id);
+                                                  if (data?.auctioned) {
+                                                    navigate(`/auctionproduct/${data?.guid}`)
+                                                  } else {
+                                                    navigate(`/singleproduct/${data?.guid}`)
+                                                  }
+                                                }}>
+                                                  <div>
+                                                    <img src={data?.media?.[0]?.name} alt="" />
+                                                  </div>
+                                                  <div>
+                                                    <h3>{data?.name}</h3>
+                                                    <p>{data?.description}</p>
+                                                  </div>
+                                                </li>
+                                              )
+                                            })}
+                                          </ul>
+                                          :
+                                          <NoDataFound title={'No Data Found'} />
+                                        }
+                                      </>
+                                    )
+                                    :
+                                    null
+                                  }
+                                </div>
+                                {searchProduct?.products?.length > 0 ?
+                                  <div className="search-bar-b-w-l-m">
+                                    <Link to={`/search-product?text=${inputSearch}`}>Load More</Link>
+                                  </div>
+                                  :
+                                  null}
+                              </div>
+                            </div>
+                          }
+                        </div>
+                      }
                       {underage == 1 ?
                         <div className="notification twentyOnePlus" onClick={() => { navigate('/21-plus') }}>
                           <div className="notification-wrap">
@@ -461,7 +598,8 @@ const Header = ({ cartFullResponse, notificationCount }) => {
             <span onClick={toggleDrawer}><RxCross2 /></span>
           </div>
           <div className="mobile-header-body">
-            <div className="search-bar">
+          {path.includes('21-plus') ?
+            <div className="search-bar" ref={searchRef}>
               <div className="search-bar-t" style={{
                 borderBottomLeftRadius: inputSearch !== "" ? '0px' : '6px',
                 borderBottomRightRadius: inputSearch !== "" ? '0px' : '6px',
@@ -471,7 +609,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                   <SearchSvg />
                 </div>
                 <div className="input">
-                  <input type="text" placeholder="Search Here Anything....." onChange={handelInputChange} />
+                  <input type="text" value={inputSearch} placeholder="Search Here Anything....." onChange={handelUnderAgeInputChange} />
                 </div>
                 <div ref={categoryDropdownRef} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
                   <div className="value">
@@ -551,7 +689,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                                 })}
                               </ul>
                               :
-                              <NoDataFound title={'No product found'} />
+                              <NoDataFound title={'No Data Found'} />
                             }
                           </>
                         )
@@ -569,6 +707,116 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                 </div>
               }
             </div>
+            :
+            <div className="search-bar" ref={searchRef}>
+              <div className="search-bar-t" style={{
+                borderBottomLeftRadius: inputSearch !== "" ? '0px' : '6px',
+                borderBottomRightRadius: inputSearch !== "" ? '0px' : '6px',
+                borderBottom: inputSearch !== "" ? '0px' : '1px solid #DBDBDB'
+              }}>
+                <div className="search-icon">
+                  <SearchSvg />
+                </div>
+                <div className="input">
+                  <input type="text" value={inputSearch} placeholder="Search Here Anything....." onChange={handelInputChange} />
+                </div>
+                <div ref={categoryDropdownRef} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
+                  <div className="value">
+                    <div className="value-wrap">
+                      {seletedCategory === "" ? "Categories" : seletedCategory}
+
+                      <HeaderCategoryArrowSvg />
+                    </div>
+                  </div>
+                  {categoryDropdown &&
+                    <div className="options">
+                      <div className="options-wrap">
+                        {categories?.slice(0, 3)?.map((data, index) => {
+                          return (
+                            <div key={index}>
+                              <h4 onClick={() => { navigate(`/category?category-id=${data?.id}`); toggleDrawer(); setSeletedCategory(data?.name) }}>{data?.name}</h4>
+                              <ul>
+                                {data?.children_recursive?.slice(0, 3)?.map(
+                                  (subcategory, index) => (
+                                    <li key={index} onClick={() => { setSeletedCategory(subcategory.name) }}>
+                                      <Link to={`/category?category-id=${subcategory?.id}`} onClick={toggleDrawer}>
+                                        {subcategory.name}
+                                      </Link>
+                                    </li>
+                                  )
+                                )}
+                              </ul>
+
+                            </div>
+                          )
+                        })}
+                      </div>
+                      <div className="footer">
+                        <Link to={'/top-category'} onClick={toggleDrawer}>See All Categories</Link>
+                        <HeaderArrowRightSvg />
+                        <HeaderArrowRightSvg />
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+              {inputSearch != '' &&
+                <div className="search-bar-b">
+                  <div className="search-bar-b-w">
+                    <div className="search-bar-b-w-list">
+                      {inputSearch != '' ?
+                        (searchLoading ?
+                          <ul>
+                            <li><Skeleton /></li>
+                            <li><Skeleton /></li>
+                            <li><Skeleton /></li>
+                          </ul>
+                          :
+                          <>
+                            {searchProduct?.products?.length > 0 ?
+                              <ul>
+                                {searchProduct?.products?.slice(0, 5)?.map((data, index) => {
+                                  return (
+                                    <li key={index} onClick={() => {
+                                      addSearchProduct(data?.id);
+                                      toggleDrawer()
+                                      if (data?.auctioned) {
+                                        navigate(`/auctionproduct/${data?.guid}`)
+                                      } else {
+                                        navigate(`/singleproduct/${data?.guid}`)
+                                      }
+                                    }}>
+                                      <div>
+                                        <img src={data?.media?.[0]?.name} alt="" />
+                                      </div>
+                                      <div>
+                                        <h3>{data?.name}</h3>
+                                        <p>{data?.description}</p>
+                                      </div>
+                                    </li>
+                                  )
+                                })}
+                              </ul>
+                              :
+                              <NoDataFound title={'No Data Found'} />
+                            }
+                          </>
+                        )
+                        :
+                        null
+                      }
+                    </div>
+                    {searchProduct?.products?.length > 0 ?
+                      <div className="search-bar-b-w-l-m">
+                        <Link to={`/search-product?text=${inputSearch}`} onClick={toggleDrawer}>Load More</Link>
+                      </div>
+                      :
+                      null}
+                  </div>
+                </div>
+              }
+            </div>
+}
             {isLoggedin() ?
               (
                 <div className="sign-in-button" onClick={toggleDrawer}>

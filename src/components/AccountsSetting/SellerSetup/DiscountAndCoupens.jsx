@@ -235,7 +235,7 @@ const DiscountAndCoupens = () => {
                                                     )
                                                 })
                                                 :
-                                                <NoDataFound title={'No transaction Found'} />
+                                                <NoDataFound title={'No data Found'} />
                                             }
                                         </div>
                                     </div>
@@ -268,7 +268,7 @@ const DiscountAndCoupens = () => {
                                                     )
                                                 })
                                                 :
-                                                <NoDataFound title={'No transaction Found'} />
+                                                <NoDataFound title={'No data Found'} />
                                             }
                                         </div>
                                     </div>

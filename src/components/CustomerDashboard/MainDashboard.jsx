@@ -11,7 +11,6 @@ const MainDashboard = ({cartFullResponse , notificationCount}) => {
         <div className='row'><Tabs /></div>
     </div>
     </section>
-    <Footer />
     </>
   )
 }

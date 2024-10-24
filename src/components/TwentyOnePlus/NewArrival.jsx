@@ -59,23 +59,23 @@ const NewArrival = ({ title }) => {
         <>
           <div className="container my-5">
             <div className="row">
-              <div className="col-lg-3">
+              <div className="col-lg-3 col-md-6 col-sm-12">
                 <ProductSkeletonLoader />
               </div>
-              <div className="col-lg-3">
+              <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                 <ProductSkeletonLoader />
               </div>
-              <div className="col-lg-3">
+              <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                 <ProductSkeletonLoader />
               </div>
-              <div className="col-lg-3">
+              <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                 <ProductSkeletonLoader />
               </div>
             </div>
           </div>
         </>
         :
-        productData.length > 0 ?
+        productData?.length > 0 ?
           <section id="product-recents-viewed">
             <>
               <div className="container">
@@ -91,14 +91,14 @@ const NewArrival = ({ title }) => {
                 <div className="container">
                   <div className="row">
                     {
-                      productData.length > 0 ?
+                      productData?.length > 0 ?
                         productData?.slice(0, 4)?.map((product, index) => (
-                          <div className="col col-lg-3" key={product?.guid}>
+                          <div className="col-lg-3 col-md-6 col-sm-12" key={product?.guid}>
                             <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
                           </div>
                         ))
                         :
-                        <NoDataFound title={'No new arrival product found'} />
+                        <NoDataFound title={'No Data Found'} />
                     }
                   </div>
                 </div>

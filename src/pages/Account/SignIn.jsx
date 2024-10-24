@@ -20,7 +20,6 @@ import { isEmpty } from "../../services/Utilities";
 var Signinbg = {
   backgroundImage: `url(${Signinbgs})`,
   backgroundSize: "cover",
-  paddingTop: "40px",
 };
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -61,8 +60,6 @@ const SignIn = () => {
 
   useGoogleOneTapLogin({
     onSuccess: (credentialResponse) => {
-      // console.log(credentialResponse , 'credentialResponse');
-
       AuthServices.googleLogin({ ...credentialResponse, guest_user_id: guest_user_id })
         .then((res) => {
           localStorage.setItem("user_details", JSON.stringify(res.data));
@@ -186,8 +183,6 @@ const SignIn = () => {
           }
         })
         .catch((error) => {
-          console.log(error, 'errorerror');
-
           toast.error(error.response.data.message);
           setIsLoading(false);
           setEnabled(false);
@@ -228,7 +223,7 @@ const SignIn = () => {
             </div>
             <div className="col-lg-6 dsa">
               <div className="signup-form-fields signinbutton">
-                <div className="topbuttons" style={{ margin: "20px 0px" }}>
+                <div className="topbuttons">
                   <ul>
                     <li>
                       <Link to="/signin">Sign in</Link>

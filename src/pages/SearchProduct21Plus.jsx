@@ -1,49 +1,53 @@
 import React, { useEffect, useState } from 'react'
-import SellerServices from '../services/API/SellerServices';
-import Footer from '../components/Footer';
-import Header from "../components/Header";
-import ProductSkeletonLoader from '../components/Shared/ProductSkeletonLoader';
-import HomeService from '../services/API/HomeService';
+
 import ProductCard from '../components/Shared/Cards/ProductCard';
-import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
+import ProductSkeletonLoader from '../components/Shared/ProductSkeletonLoader';
+import Header from '../components/Header';
 import NoDataFound from '../components/Shared/NoDataFound';
+import GetSurprisedBanner from '../components/Elements/GetSurprisedBanner';
+import Footer from '../components/Footer';
+import HomeService from '../services/API/HomeService';
+import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const HotDeals = ({cartFullResponse , notificationCount}) => {
-    const [hotProducts, setHotProducts] = useState([]);
+const SearchProduct21Plus = ({cartFullResponse , notificationCount}) => {
+    const [auctionProducts, setAuctionProducts] = useState([]);
     const [Loader, setLoader] = useState(true)
-    const getTopSellers = () => {
-        const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
-        const user_id = localStorage.getItem('user_id');
-        HomeService.getTopSelling(user_id)
-            .then((response) => {
-                setHotProducts(response?.data?.hot)
-                setLoader(false)
-            })
-            .catch((error) => {
-                setLoader(false)
-                toast.error(error?.response?.data?.message)
-            });
-    };
+    const user_details = JSON.parse(localStorage.getItem('user_details'));
+    const user_id = localStorage.getItem('user_id');
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const text = searchParams.get('text');
+    const [searchProduct, setSearchProduct] = useState([]);
+
+    const handelInputChange = (text) => {
+    HomeService.getSearchProductsUnderAge(text).then((res) => {
+      setSearchProduct(res?.data)
+      setLoader(false)
+    }).catch((error) => {
+        setLoader(false)
+        toast.error(error?.response?.data?.message)
+    });
+  }
 
     useEffect(() => {
-        getTopSellers()
-    }, [])
+        handelInputChange(text)
+    }, [text])
 
     const handleToggleFavourite = (index) => {
-        const updatedProducts = [...hotProducts];
+        const updatedProducts = [...searchProduct];
         updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
-        setHotProducts(updatedProducts);
+        setSearchProduct(updatedProducts);
     };
     return (
         <>
             <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
-            <div className="top-sellers">
-                <div className="top-sellers-wrap" id='productcard'>
+            <div className="top-sellers" id='productcard'>
+                <div className="top-sellers-wrap">
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <h1 className="title">Hot Deals</h1>
+                                <h1 className="title">Search Product</h1>
                             </div>
                             {Loader ?
                                 <>
@@ -61,8 +65,8 @@ const HotDeals = ({cartFullResponse , notificationCount}) => {
                                     </div>
                                 </>
                                 :
-                                (hotProducts?.length > 0 ?
-                                    hotProducts?.map((data, index) => {
+                                (searchProduct?.products?.length > 0 ?
+                                    searchProduct?.products?.map((data, index) => {
                                         return (
                                             <div className="col-lg-3 col-md-6 col-sm-12" key={index}>
                                                 <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
@@ -83,4 +87,4 @@ const HotDeals = ({cartFullResponse , notificationCount}) => {
     )
 }
 
-export default HotDeals
+export default SearchProduct21Plus

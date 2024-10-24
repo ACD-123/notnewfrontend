@@ -128,7 +128,7 @@ export const ImportentNotification = ({ getNotificationCount }) => {
                 )
               }))
               :
-              <NoDataFound title={'No important notification found'} />
+              <NoDataFound title={'No Data Found'} />
             }
           </div>
           {notification?.pagination?.total_pages > 1 &&

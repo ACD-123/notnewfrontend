@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import TransactionServices from "../../../services/API/TransactionServices";
-import { Spinner } from 'react-bootstrap';
 import NoDataFound from '../../Shared/NoDataFound';
 import LoadingComponents from '../../Shared/LoadingComponents';
 import { toast } from 'react-toastify';
+import { Modal } from "react-bootstrap";
+import { RxCross2 } from "react-icons/rx";
+import SellerServices from "../../../services/API/SellerServices";
 
 const MyTransactions = () => {
   const [transactions, setTransactions] = useState({});
-  let seller_guid = localStorage.getItem("seller_guid");
   const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
+  const [showWithdraw, setShowWithdraw] = useState(false);
+  const [inputError, setInputError] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const seller_guid = localStorage.getItem('seller_guid');
+  const [withdrawData, setWithdrawData] = useState({
+    amount: ''
+  });
 
   const getTransactions = () => {
     TransactionServices.gettransactions(seller_guid)
@@ -23,14 +31,48 @@ const MyTransactions = () => {
   useEffect(() => {
     getTransactions();
   }, []);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    if (type === 'checkbox') {
+      setWithdrawData(prev => ({ ...prev, [name]: checked }));
+    } else {
+      setWithdrawData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    setInputError(true);
+    const formData = new FormData();
+    formData.append("amount", withdrawData?.amount);
+    if (withdrawData.amount != '' && withdrawData.amount < (+transactions?.availableBalance)) {
+      setFormLoading(true);
+      SellerServices.createSellerWithdraw(seller_guid, formData)
+        .then((res) => {
+          setFormLoading(false);
+          setShowWithdraw(false);
+          toast.success(res.message);
+          getTransactions();
+          setWithdrawData({ amount: '' })
+        })
+        .catch(() => {
+          setFormLoading(false);
+        });
+    }
+  }
   return (
     <>
       {isLoading ?
         <LoadingComponents />
         :
         <div className="seller-new-transaction">
-          <div className="title">Transactions</div>
-          <div className="seller-new-transaction-one" style={{minWidth:'auto' , flexWrap:'wrap'}}>
+
+          <div className="seller-desh">
+            <div className="title">Transactions</div>
+            <button onClick={() => { setShowWithdraw(true) }}>Withdraw</button>
+          </div>
+          <div className="seller-new-transaction-one" style={{ minWidth: 'auto', flexWrap: 'wrap' }}>
             <div className="s-n-d-o-o">
               <p>${transactions?.availableBalance}</p>
               <h4>Available Balance</h4>
@@ -67,7 +109,7 @@ const MyTransactions = () => {
                         )
                       })
                       :
-                      <NoDataFound title={'No transaction Found'} />
+                      <NoDataFound title={'No data Found'} />
                     }
                   </div>
                 </div>
@@ -76,6 +118,29 @@ const MyTransactions = () => {
           </div>
         </div>
       }
+
+      <Modal show={showWithdraw} size="lg" className="report-modal-wrap" onHide={setShowWithdraw} backdrop="static">
+        <div className="modal-body">
+          <span className="close" onClick={() => { setShowWithdraw(false) }}><RxCross2 /></span>
+          <form onSubmit={onSubmit}>
+            <h2>Withdraw</h2>
+            <div className="input">
+              <label htmlFor="">Withdraw Amount</label>
+              <input type="text" name="amount" value={withdrawData?.amount} onChange={handleChange} placeholder="Enter withdraw amount" />
+              {withdrawData.amount === "" && inputError &&
+                <div className="error-input">Withdraw amount is required</div>
+              }
+              {withdrawData.amount != "" && inputError && withdrawData.amount > (+transactions?.availableBalance) &&
+                <div className="error-input">Withdraw amount can't be more then ${transactions?.availableBalance} </div>
+              }
+            </div>
+
+            <div className="button">
+              <button disabled={formLoading}>{formLoading ? 'Loading...' : 'Submit'}</button>
+            </div>
+          </form>
+        </div>
+      </Modal>
     </>
   );
 };

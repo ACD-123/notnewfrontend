@@ -128,7 +128,7 @@ export const ChatNotification = ({ getNotificationCount }) => {
                 )
               }))
               :
-              <NoDataFound title={'No chat notification found'} />
+              <NoDataFound title={'No Data Found'} />
             }
           </div>
           {notification?.pagination?.total_pages > 1 &&

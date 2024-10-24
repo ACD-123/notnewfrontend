@@ -105,7 +105,7 @@ const ConnectBank = () => {
               placeholder="Select Your Bank"
             >
               <option value="">Select Your Bank:</option>
-              {banks.length >0 ?(
+              {banks?.length >0 ?(
                 <>
                   {banks?.map((bank , index) => {
                     return (

@@ -19,8 +19,6 @@ const App = () => {
 		}
 	}, [])
 
-	console.log(fcmToken, 'isTokenFound');
-
 	const access_token = localStorage.getItem('access_token')
 	const fcm_token = localStorage.getItem('fcm_token')
 	const updateFcmToken = () => {
@@ -43,7 +41,6 @@ const App = () => {
 
 	useEffect(() => {
 		const unsubscribe = onMessage(messaging, (payload) => {
-			console.log('Message received. ', payload);
 			// Handle the message as needed, e.g., show a notification or update state
 		});
 	
@@ -52,12 +49,6 @@ const App = () => {
 
 	return (
 		<>
-			{/* {isTokenFound &&
-				'Notification permission enabled 👍🏻'
-			}
-			{!isTokenFound &&
-				'Need notification permission ❗️ '
-			} */}
 			<ToastContainer
 				position="top-right"
 				autoClose={2000}

@@ -108,7 +108,7 @@ const DetailedProductInfo = ({ order }) => {
                 </select>
               </div>
             </div>
-            {orderitems.length > 0 ? (
+            {orderitems?.length > 0 ? (
               <>
                 {orderitems.map((items , index) => {
                   let attributes = JSON.parse(items.attributes);
@@ -124,7 +124,7 @@ const DetailedProductInfo = ({ order }) => {
                             <div className="prd-details">
                               <h5>{items.name}</h5>
                               <p>${items.price}</p>
-                              {attributes.length > 0 ? (
+                              {attributes?.length > 0 ? (
                                 <>
                                   {attributes?.map((attribute , index) => {
                                     return (
@@ -152,7 +152,7 @@ const DetailedProductInfo = ({ order }) => {
                           </div>
                         </div>
                         <div className="col-lg-3">
-                          {attributes.length > 0 ? (
+                          {attributes?.length > 0 ? (
                             <>
                               {attributes?.map((attribute , index) => {
                                 return (
@@ -255,7 +255,7 @@ const StripeTransactions = () => {
                 </div>
                 <br />
                 <div className='row'>
-                   {transactions.length > 0 ?(<>
+                   {transactions?.length > 0 ?(<>
                     {transactions.map((item, index) => {
                       return(
                         <>

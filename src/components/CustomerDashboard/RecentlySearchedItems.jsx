@@ -53,26 +53,26 @@ const RecentlySearchedItems = () => {
                                     <div className="row">
                                         {recentlySearchedItemsList?.products?.map((data, index) => {
                                             return (
-                                                <div className="col-lg-4" key={index}>
+                                                <div className="col-lg-4 col-md-6 col-sm-12" key={index}>
                                                     <RecentlySearchCard data={data} removeProductFromSearchList={removeProductFromSearchList} index={index} />
                                                 </div>
                                             )
                                         })}
                                     </div>
                                     :
-                                    <NoDataFound title={'No Recently SearchedItems found'} />
+                                    <NoDataFound title={'No Data Found'} />
                             )
                             :
                             <>
                                 <div className="h-a-s-b-a-o">
                                     <div className="row">
-                                        <div className="col-lg-4">
+                                        <div className="col-lg-4 col-md-6 col-sm-12">
                                             <ProductSkeletonLoader />
                                         </div>
-                                        <div className="col-lg-4">
+                                        <div className="col-lg-4 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                                             <ProductSkeletonLoader />
                                         </div>
-                                        <div className="col-lg-4">
+                                        <div className="col-lg-4 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                             <ProductSkeletonLoader />
                                         </div>
                                     </div>

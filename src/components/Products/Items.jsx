@@ -73,16 +73,16 @@ const RecentViewedItems = ({ title }) => {
         <>
           <div className="container my-5">
             <div className="row">
-              <div className="col-lg-3">
+              <div className="col-lg-3 col-md-6 col-sm-12">
                 <ProductSkeletonLoader />
               </div>
-              <div className="col-lg-3">
+              <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                 <ProductSkeletonLoader />
               </div>
-              <div className="col-lg-3">
+              <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                 <ProductSkeletonLoader />
               </div>
-              <div className="col-lg-3">
+              <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                 <ProductSkeletonLoader />
               </div>
             </div>
@@ -108,16 +108,16 @@ const RecentViewedItems = ({ title }) => {
                   <div className="row">
                     {loading ?
                       <>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
                       </>
@@ -125,12 +125,12 @@ const RecentViewedItems = ({ title }) => {
                       (
                         productData?.length > 0 ?
                           productData.map((product, index) => (
-                            <div className="col col-lg-3" key={product?.guid}>
+                            <div className="col-lg-3 col-md-6 col-sm-12" key={product?.guid}>
                               <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
                             </div>
                           ))
                           :
-                          <NoDataFound title={'No new item product found'} />
+                          <NoDataFound title={'No Data Found'} />
                       )
                     }
                   </div>

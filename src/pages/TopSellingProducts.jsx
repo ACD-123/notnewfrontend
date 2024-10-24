@@ -9,14 +9,10 @@ import ProductCard from '../components/Shared/Cards/ProductCard';
 import { toast } from 'react-toastify';
 
 const TopSellingProducts = ({cartFullResponse , notificationCount}) => {
-    const [user, setUser] = useState({});
-	const [data, setData] = useState([]);
 	const [banners, setBanners] = useState([]);
 	const [topSellingProducts, setTopSellingProducts] = useState([]);
 	const [hotProducts, setHotProducts] = useState([]);
-	const [topSelling, setTopSelling] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
     const user_id = localStorage.getItem('user_id');
 
 	const getTopSelling = (id) => {
@@ -54,16 +50,16 @@ const TopSellingProducts = ({cartFullResponse , notificationCount}) => {
                             </div>
                             {loading ?
                                 <>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12">
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                         <ProductSkeletonLoader />
                                     </div>
                                 </>
@@ -71,13 +67,13 @@ const TopSellingProducts = ({cartFullResponse , notificationCount}) => {
                                 (topSellingProducts?.length > 0 ?
                                     topSellingProducts?.map((data, index) => {
                                         return (
-                                            <div className="col-lg-3" key={index}>
+                                            <div className="col-lg-3 col-md-6 col-sm-12" key={index}>
                                                 <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
                                             </div>
                                         )
                                     })
                                     :
-                                    <NoDataFound title={'No latest auction products found'} />
+                                    <NoDataFound title={'No Data Found'} />
                                 )
                             }
                         </div>

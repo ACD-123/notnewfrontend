@@ -78,7 +78,7 @@ const DetailedProductInfo = ({ order }) => {
                   <span>{order.order.status}</span>
               </div>
             </div>
-            {orderitems.length > 0 ? (
+            {orderitems?.length > 0 ? (
               <>
                 {orderitems.map((items , index) => {
                   let attributes = JSON.parse(items.attributes);
@@ -94,7 +94,7 @@ const DetailedProductInfo = ({ order }) => {
                             <div className="prd-details">
                               <h5>{items.name}</h5>
                               <p>${items.price}</p>
-                              {attributes.length > 0 ? (
+                              {attributes?.length > 0 ? (
                                 <>
                                   {attributes?.map((attribute , index) => {
                                     return (
@@ -122,7 +122,7 @@ const DetailedProductInfo = ({ order }) => {
                           </div>
                         </div>
                         <div className="col-lg-3">
-                          {attributes.length > 0 ? (
+                          {attributes?.length > 0 ? (
                             <>
                               {attributes?.map((attribute , index) => {
                                 return (
@@ -149,7 +149,7 @@ const DetailedProductInfo = ({ order }) => {
             )}
             <div className="order-price-detail">
               <p className="order-price-detail-list">
-                <div>Subtotal ( {orderitems.length} )</div>
+                <div>Subtotal ( {orderitems?.length} )</div>
                 <div>$ {order.order.subtotal_cost}</div>
               </p>
               <p className="order-price-detail-list">
@@ -374,16 +374,10 @@ const BuyAgain = () => {
       </section>
 
       <div className='ongoing'>
-        {/* {ordersData.map((order, idx) => (
-          <React.Fragment key={idx}>
-            {renderOrderBlock(order, idx)}
-            {idx !== ordersData.length - 1 && <hr />}
-          </React.Fragment>
-        ))} */}
       </div>
       <section id='purchaseDate'>
         <hr />
-        {customerorders.length > 0?(
+        {customerorders?.length > 0?(
           <>
           <div className='ongoing'>
           <h3>{purchaseDate.toDateString()}</h3>
@@ -392,17 +386,10 @@ const BuyAgain = () => {
                 <>
                   <React.Fragment key={idx}>
                     {renderOrderBlock(order, idx)}
-                    {idx !== customerorders.length - 1 && <hr />}
+                    {idx !== customerorders?.length - 1 && <hr />}
                   </React.Fragment>
                 </>
             )})}
-
-            {/* {ordersData.map((order, idx) => (
-              <React.Fragment key={idx}>
-                {renderOrderBlock(order, idx)}
-                {idx !== ordersData.length - 1 && <hr />}
-              </React.Fragment>
-            ))} */}
           </div>
           </>
         ):('')}

@@ -11,6 +11,10 @@ import BuyAgain from './BuyAgain';
 import BidsOffer from './BidsOffer';
 import NotFound_ from '../../pages/NotFound_'
 import { useNavigate } from 'react-router-dom';
+import Drawer from 'react-modern-drawer'
+import 'react-modern-drawer/dist/index.css'
+import { RxCross2 } from "react-icons/rx";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 import Chat from './Chat';
 import MyFavCustomer from './MyFavCustomer';
@@ -45,6 +49,12 @@ const Activity = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+
+  const [isOpen, setIsOpen] = React.useState(false)
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState)
+  }
+
   // Render the component based on the selected menu item
   const renderComponent = () => {
     switch (selectedMenuItem) {
@@ -56,8 +66,6 @@ const Activity = () => {
         return <RecentlySearchedItems />;
       case 'my-favourites':
         return <MyFavCustomer />;
-      // case 'edit-profile':
-      //   return <EditProfileSetup />;
       case 'change-password':
         return <ChangePassword />;
       case 'help-and-support':
@@ -74,12 +82,12 @@ const Activity = () => {
   return (
     <>
       <section id='activity-main-dashboard'>
-        <button className="mobile-menu-toggle" onClick={toggleMenu}>
-          <img src={Leftmenuimage} />
-        </button>
+        <div id="hide-on-desktop-991" onClick={toggleDrawer}>
+          <GiHamburgerMenu />
+        </div>
         <div className='row'>
-          <div className='col-lg-3'>
-            <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
+          <div className='col-lg-3' id='hide-on-mobile-991'>
+            <div className={`left-menu`}>
               <div className="title-customer-side">Shopping</div>
               <ul>
                 <li className={selectedMenuItem === 'my-orders' ? 'active' : ''} onClick={() => handleMenuItemClick('my-orders')}>
@@ -97,11 +105,8 @@ const Activity = () => {
               </ul>
               <div className="title-customer-side-2">Account</div>
               <ul>
-                {/* <li className={selectedMenuItem === 'edit-profile' ? 'active' : ''} onClick={() => handleMenuItemClick('edit-profile')}>
-                Edit Profile
-                </li> */}
                 <li className={selectedMenuItem === 'change-password' ? 'active' : ''} onClick={() => handleMenuItemClick('change-password')}>
-                Change Password
+                  Change Password
                 </li>
                 <li className={selectedMenuItem === 'help-and-support' ? 'active' : ''} onClick={() => handleMenuItemClick('help-and-support')}>
                   Help And Support
@@ -122,6 +127,46 @@ const Activity = () => {
           </div>
         </div>
       </section>
+      <Drawer
+        open={isOpen}
+        onClose={toggleDrawer}
+        direction='left'
+        className='mobile-product-filter'
+        size={'90%'}
+      >
+        <div className={`left-menu`}>
+          <div className="title-customer-side">Shopping <span onClick={toggleDrawer}><RxCross2 /></span></div>
+          <ul>
+            <li className={selectedMenuItem === 'my-orders' ? 'active' : ''} onClick={() => {handleMenuItemClick('my-orders'); toggleDrawer()}}>
+              My Orders
+            </li>
+            <li className={selectedMenuItem === 'my-bids-and-offers' ? 'active' : ''} onClick={() => {handleMenuItemClick('my-bids-and-offers'); toggleDrawer()}}>
+              My Bids And Offers
+            </li>
+            <li className={selectedMenuItem === 'my-favourites' ? 'active' : ''} onClick={() => {handleMenuItemClick('my-favourites'); toggleDrawer()}}>
+              My Favourites
+            </li>
+            <li className={selectedMenuItem === 'recently-searched-items' ? 'active' : ''} onClick={() => {handleMenuItemClick('recently-searched-items'); toggleDrawer()}}>
+              Recently Searched Items
+            </li>
+          </ul>
+          <div className="title-customer-side-2">Account</div>
+          <ul>
+            <li className={selectedMenuItem === 'change-password' ? 'active' : ''} onClick={() => {handleMenuItemClick('change-password'); toggleDrawer()}}>
+              Change Password
+            </li>
+            <li className={selectedMenuItem === 'help-and-support' ? 'active' : ''} onClick={() => {handleMenuItemClick('help-and-support'); toggleDrawer()}}>
+              Help And Support
+            </li>
+            <li className={selectedMenuItem === 'faq' ? 'active' : ''} onClick={() => {handleMenuItemClick('faq'); toggleDrawer()}}>
+              FAQs
+            </li>
+            <li className={selectedMenuItem === 'privacy-policy' ? 'active' : ''} onClick={() => {handleMenuItemClick('privacy-policy'); toggleDrawer()}}>
+              Privacy Policy
+            </li>
+          </ul>
+        </div>
+      </Drawer>
     </>
   );
 };

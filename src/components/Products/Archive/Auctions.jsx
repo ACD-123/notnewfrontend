@@ -86,16 +86,16 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
                             </div>
                             {Loader ?
                                 <>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12">
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                         <ProductSkeletonLoader />
                                     </div>
                                 </>
@@ -103,13 +103,13 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
                                 (latestProducts?.length > 0 ?
                                     latestProducts?.map((data, index) => {
                                         return (
-                                            <div className="col-lg-3" key={index}>
+                                            <div className="col-lg-3 col-md-6 col-sm-12" key={index}>
                                                 <ProductCard data={data} handleToggleFavourite={handleToggleFavouriteLatest} index={index} />
                                             </div>
                                         )
                                     })
                                     :
-                                    <NoDataFound title={'No latest auction products found'} />
+                                    <NoDataFound title={'No Data Found'} />
                                 )
                             }
                         </div>
@@ -119,16 +119,16 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
                             </div>
                             {Loader ?
                                 <>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12">
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                         <ProductSkeletonLoader />
                                     </div>
                                 </>
@@ -136,13 +136,13 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
                                 (auctionProducts?.length > 0 ?
                                     auctionProducts?.map((data, index) => {
                                         return (
-                                            <div className="col-lg-3" key={index}>
+                                            <div className="col-lg-3 col-md-6 col-sm-12" key={index}>
                                                 <ProductCard data={data} handleToggleFavourite={handleToggleFavouriteAuction} index={index} />
                                             </div>
                                         )
                                     })
                                     :
-                                    <NoDataFound title={'No auction products found'} />
+                                    <NoDataFound title={'No Data Found'} />
                                 )
                             }
                         </div>

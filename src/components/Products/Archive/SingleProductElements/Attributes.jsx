@@ -55,7 +55,7 @@ const Attribute = () => {
   let sizes = 0;
   return (
     <div className="product-attributes">
-      {attributes.length > 0 ? (
+      {attributes?.length > 0 ? (
         <>
           <div className="inner-attributes">
             {attributes.map((item) => {

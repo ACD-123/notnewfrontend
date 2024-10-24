@@ -137,7 +137,7 @@ const DetailedProductInfo = ({ order }) => {
                 </select>
               </div>
             </div>
-            {orderitems.length > 0 ? (
+            {orderitems?.length > 0 ? (
               <>
                 {orderitems.map((items) => {
                   let attributes = JSON.parse(items.attributes);
@@ -153,7 +153,7 @@ const DetailedProductInfo = ({ order }) => {
                             <div className="prd-details">
                               <h5>{items.name}</h5>
                               <p>${items.price}</p>
-                              {attributes.length > 0 ? (
+                              {attributes?.length > 0 ? (
                                 <>
                                   {attributes?.map((attribute) => {
                                     return (
@@ -181,7 +181,7 @@ const DetailedProductInfo = ({ order }) => {
                           </div>
                         </div>
                         <div className="col-lg-3">
-                          {attributes.length > 0 ? (
+                          {attributes?.length > 0 ? (
                             <>
                               {attributes?.map((attribute) => {
                                 return (
@@ -208,7 +208,7 @@ const DetailedProductInfo = ({ order }) => {
             )}
             <div className="order-price-detail">
               <p className="order-price-detail-list">
-                <div>Subtotal ( {orderitems.length} )</div>
+                <div>Subtotal ( {orderitems?.length} )</div>
                 <div>$ {order.order.subtotal_cost}</div>
               </p>
               <p className="order-price-detail-list">
@@ -400,7 +400,7 @@ useEffect(() => {
         <div className='order-feeds'>
           <h3>Orders Feed</h3>
         {/* Secondrow */}
-        {ordersummary.length > 0 ?(
+        {ordersummary?.length > 0 ?(
           <>
           {ordersummary.map((summary) => {
           return(
@@ -494,7 +494,7 @@ useEffect(() => {
             <div className="order-feeds">
               <h3>Orders Feed</h3>
               {/* Secondrow */}
-              {ordersummary.length > 0 ? (
+              {ordersummary?.length > 0 ? (
                 <>
                   {ordersummary.map((summary) => {
                     return (

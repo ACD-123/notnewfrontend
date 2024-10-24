@@ -68,7 +68,6 @@ const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
       setLoading(false);
       return;
     }
-    console.log(paymentMethod.id, 'paymentMethod.id');
     const token = sessionStorage.getItem("userToken");
 
     const orderItems = {
@@ -106,7 +105,6 @@ const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
   const handleCardChange = (event) => {
     if (event.error) {
       setCardError(event.error.message)
-      console.log("Card validation error:", event.error.message);
     } else {
       setCardError('')
     }
@@ -165,8 +163,6 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
   const getBuyItNowData = async () => {
     try {
       const response = await CheckoutServices.getBuyItNowData();
-      console.log(response?.data?.[0]?.products?.[0], 'getBuyItNowData');
-
       setButItNowData(response)
     } catch (error) {
       toast.error(error?.response?.data?.message)
@@ -293,19 +289,28 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                       </div>
                       <div className="product-order-details">
                         <div className="name">Name: <span>{butItNowData?.data?.[0]?.products?.[0]?.name}</span></div>
-                        <div className="attribute">Attributes: <span>
-                          <ul>
-                            {butItNowData?.data?.[0]?.products?.[0]?.attributes.map((attribute, index) => {
-                              return (
-                                <li key={index}>{attribute.key}: <span>{attribute.value}</span>{butItNowData?.data?.[0]?.products?.[0]?.attributes?.length - 1 !== index ? ',' : ''}</li>
-                              )
-                            })}
-                          </ul>
-                        </span>
+                        {butItNowData?.data?.[0]?.products?.[0]?.attributes?.length > 0 &&
+                          <div className="attribute">Attributes: <span>
+                            <ul>
+                              {butItNowData?.data?.[0]?.products?.[0]?.attributes.map((attribute, index) => {
+                                return (
+                                  <li key={index}>{attribute.key}: <span>{attribute.value}</span>{butItNowData?.data?.[0]?.products?.[0]?.attributes?.length - 1 !== index ? ',' : ''}</li>
+                                )
+                              })}
+                            </ul>
+                          </span>
+                          </div>
+                        }
+                        <div className="price">Price:
+                          {butItNowData?.data?.[0]?.products?.[0]?.price > butItNowData?.data?.[0]?.products?.[0]?.originalPrice ?
+                            <>
+                              <span>${butItNowData?.data?.[0]?.products?.[0]?.originalPrice}</span>
+                              <span style={{ textDecoration: 'line-through' }}>${butItNowData?.data?.[0]?.products?.[0]?.price}</span>
+                            </>
+                            :
+                            <span>${butItNowData?.data?.[0]?.products?.[0]?.buynowprice}</span>
+                          }
                         </div>
-                        <div className="price">Price: <span>${butItNowData?.data?.[0]?.products?.[0]?.buynowprice}</span></div>
-                        <div className="price">Quantity available: <span>{butItNowData?.data?.[0]?.products?.[0]?.buynowquantity}</span></div>
-                        <div className="price">Shipping Weight: <span>{butItNowData?.weight}</span></div>
                       </div>
                     </div>
                   </div>
@@ -385,7 +390,7 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                         type="number"
                         name="postalCode"
                         value={shippingData.postalCode}
-                        onChange={(e) => { setShippingData({ ...shippingData, postalCode: e.target.value }) }} 
+                        onChange={(e) => { setShippingData({ ...shippingData, postalCode: e.target.value }) }}
                         placeholder="Enter postal code" />
                       {shippingData.postalCode === "" && inputError &&
                         <div className="error-input">Postal code is required</div>
@@ -428,7 +433,7 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                 <table style={{ width: "100%" }}>
                   <tr>
                     <th className="boldthtotal">Subtotal ( 1 item )</th>
-                    <td className="boldthtotal">${butItNowData?.data?.[0]?.products?.[0]?.buynowprice}</td>
+                    <td className="boldthtotal">${butItNowData?.sub_total}</td>
                   </tr>
                   {shipping?.shipping_amount?.amount ?
                     <tr>
@@ -438,6 +443,10 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                     :
                     null
                   }
+                  <tr>
+                    <th className="boldthtotal">Discount</th>
+                    <td className="boldthtotal">${butItNowData?.discount}</td>
+                  </tr>
                   <tr>
                     <th className="totalthtextbold">Order Total</th>
                     {shipping?.shipping_amount?.amount ?

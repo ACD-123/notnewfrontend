@@ -49,24 +49,8 @@ const RecentlyViewed = () => {
         <div><button onClick={clearAllProducts}>Clear All</button></div>
         </div>
         </div>
-        {/* Render the list of products */}
-        {products.length > 0 ?(<>
-          <ProductCard products={products} />
-          {/* {products.map((product) => {
-          return(
-                <>
-                  <ProductCard products={product.guid} />
-                </>
-              )
-            }
-              // <ProductCard key={product.id} {...product} />
-              // <ProductCard key={product.id} {...product} />
-            
-          )} */}
+        {products?.length > 0 ?(<>
         </>):('Not Product Exists!')}
-        
-
-        {/* Button to clear all products */}
       </section>
     </>
   );

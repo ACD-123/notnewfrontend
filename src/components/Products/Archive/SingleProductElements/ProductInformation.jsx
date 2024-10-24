@@ -70,8 +70,6 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
     ProductServices.get(id)
       .then((res) => {
         setProductData(res.data);
-        console.log(res.data?.shop?.guid, 'getProduct');
-
         const categoryAddons = res?.data?.attributes?.map(attribute => ({
           name: attribute.key,
           selected: null,
@@ -242,7 +240,7 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
             </div>
             <div className="p-i-2-w">
               <div className="p-i-2-w-l">Model</div>
-              <div className="p-i-2-w-r">{productData?.model}</div>
+              <div className="p-i-2-w-r">{id?.slice(0, 8)}</div>
             </div>
             <div className="p-i-2-w">
               <div className="p-i-2-w-l">Descriptions</div>
@@ -267,34 +265,35 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
 
                   )
                 })}
-                <div className="p-i-2-w">
-                  <div className="p-i-2-w-l">Quantity {productData?.stockcapacity} available</div>
-                  <div className="p-i-2-w-r">
-                    <div className="price">
-                      <div className="input-group">
-                        <div className="input-group-prepend">
-                          <button className="btn" type="button" onClick={decNum}>
-                            -
-                          </button>
-                        </div>
-                        <input
-                          type="text"
-                          className="form-control"
-                          value={quantity}
-                          readOnly
-                        // onChange={handleQuantity}
-                        />
-                        <div className="input-group-prepend">
-                          <button className="btn" type="button" onClick={incNum}>
-                            +
-                          </button>
+                {productData?.condition === 'Used' ? null :
+                  <div className="p-i-2-w">
+                    <div className="p-i-2-w-l">Quantity {productData?.stockcapacity} available</div>
+                    <div className="p-i-2-w-r">
+                      <div className="price">
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <button className="btn" type="button" onClick={decNum}>
+                              -
+                            </button>
+                          </div>
+                          <input
+                            type="text"
+                            className="form-control"
+                            value={quantity}
+                            readOnly
+                          // onChange={handleQuantity}
+                          />
+                          <div className="input-group-prepend">
+                            <button className="btn" type="button" onClick={incNum}>
+                              +
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                }
               </>
-
             }
             <hr />
           </div>
@@ -320,12 +319,7 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
                     <div className="p-p">${productData.price}</div>
                   </div>
                   <div className="pay-buttons">
-                    <button
-                      onClick={() => {
-                        navigate(`/signup`);
-                        localStorage.setItem('redirectionPage', pathname)
-                      }}
-                    >Buy It Now</button>
+                    <button onClick={() => { navigate(`/signup`); localStorage.setItem('redirectionPage', pathname) }}>Buy It Now</button>
                     <button onClick={addToCart} disabled={enabled}>{isLoading ? "loading.." : "Add to Cart"}</button>
                   </div>
                 </>

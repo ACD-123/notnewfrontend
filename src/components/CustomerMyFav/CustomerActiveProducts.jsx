@@ -50,7 +50,7 @@ const CustomerActiveProducts = () => {
                                 <div className="row">
                                     {activeFavProductList?.map((product, index) => {
                                         return (
-                                            <div className="col col-lg-3" key={product?.guid}>
+                                            <div className="col-lg-4 col-md-6 col-sm-12" key={product?.guid}>
                                                 <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
                                             </div>
                                         )
@@ -58,7 +58,7 @@ const CustomerActiveProducts = () => {
                                 </div>
                             </div>
                             :
-                            <NoDataFound title={'No active favourite product found'} />
+                            <NoDataFound title={'No Data Found'} />
                         }
                     </div>
                 }

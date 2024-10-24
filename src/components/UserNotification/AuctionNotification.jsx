@@ -104,7 +104,7 @@ export const AuctionNotification = ({ getNotificationCount }) => {
                 )
               }))
               :
-              <NoDataFound title={'No auction notification found'} />
+              <NoDataFound title={'No Data Found'} />
             }
           </div>
           {notification?.pagination?.total_pages > 1 &&

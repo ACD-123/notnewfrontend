@@ -40,9 +40,6 @@ const WinningBidProduct = (props) => {
                   <img src={blank} alt="blank" />
                 </>
               )}
-              {/* {images.map((image, index) => (
-                <img key={index} src={image} alt={`Product ${index + 1}`} />
-              ))} */}
             </div>
             </>):('')}
             <div className="prd-details">
@@ -108,16 +105,9 @@ const WinningBidProduct = (props) => {
           <>
             <React.Fragment>
             {renderOrderBlock(bidata)}
-            {/* {index !== ordersData.length - 1 && <hr />} */}
             </React.Fragment>
           </>
         ):('')}
-        {/* {ordersData.map((order, index) => (
-          <React.Fragment key={index}>
-            {renderOrderBlock(order, index)} */}
-            {/* {index !== ordersData.length - 1 && <hr />} */}
-          {/* </React.Fragment>
-        ))} */}
       </div>
     </>
   );

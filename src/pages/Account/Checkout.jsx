@@ -64,7 +64,6 @@ const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
       setLoading(false);
       return;
     }
-    console.log(paymentMethod.id, 'paymentMethod.id');
     const token = sessionStorage.getItem("userToken");
 
     let orders = [];
@@ -109,7 +108,6 @@ const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
   const handleCardChange = (event) => {
     if (event.error) {
       setCardError(event.error.message)
-      console.log("Card validation error:", event.error.message);
     } else {
       setCardError('')
     }
@@ -241,7 +239,6 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
   }, [])
 
   const addCouponCode = async (e) => {
-    console.log(selectedData);
     e.preventDefault();
     setCouponError(true)
     const date = new Date();
@@ -328,17 +325,23 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                                   </div>
                                   <div className="product-order-details">
                                     <div className="name">Name: <span>{product?.name}</span></div>
-                                    <div className="attribute">Attributes: <span>
-                                      <ul>
-                                        {product?.attributes.map((attribute, index) => {
-                                          return (
-                                            <li key={index}>{attribute.key}: <span>{attribute.value}</span>{product?.attributes?.length - 1 !== index ? ',' : ''}</li>
-                                          )
-                                        })}
-                                      </ul>
-                                    </span>
-                                    </div>
+                                    {product?.attributes?.length > 0 &&
+                                      <div className="attribute">Attributes: <span>
+                                        <ul>
+                                          {product?.attributes.map((attribute, index) => {
+                                            return (
+                                              <li key={index}>{attribute.key}: <span>{attribute.value}</span>{product?.attributes?.length - 1 !== index ? ',' : ''}</li>
+                                            )
+                                          })}
+                                        </ul>
+                                      </span>
+                                      </div>
+                                    }
+                                    {product?.originalPrice > product?.cartprice ?
+                                    <div className="price">Price: <span>${product?.cartprice}</span> <span style={{ textDecoration: 'line-through' }}>${product?.originalPrice}</span></div>
+                                    :
                                     <div className="price">Price: <span>${product?.cartprice}</span></div>
+                                    }
                                     <div className="price">Quantity: <span>{product?.cartquantity}</span></div>
                                   </div>
                                 </div>
@@ -382,10 +385,6 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="b-w-p-w">
-                  <div className="b-w-p-w-l"></div>
-                  <div className="b-w-p-w-r" onClick={() => { getShippingData() }}>Shipping</div>
-                </div> */}
               </div>
               {shipping?.shipping_amount?.amount ?
                 <div className="stripe-payment-card">
@@ -431,9 +430,6 @@ const Checkout = ({ cartFullResponse, getCartCount, notificationCount }) => {
                 </table>
                 <div className="imgtoop">
                   <img src={Payment} alt="" />
-                  {/* <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() => { checkout() }}>
-                    Confirm & Pay
-                  </button> */}
                 </div>
               </div>
             </div>

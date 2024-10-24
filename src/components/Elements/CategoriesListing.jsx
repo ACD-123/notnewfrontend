@@ -31,34 +31,34 @@ const CategoriesListing = () => {
               </div>
               {loading ?
                 <>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-6 col-sm-12">
                     <ProductSkeletonLoader />
                   </div>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                     <ProductSkeletonLoader />
                   </div>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                     <ProductSkeletonLoader />
                   </div>
-                  <div className="col-lg-3">
+                  <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                     <ProductSkeletonLoader />
                   </div>
                 </>
                 :
-                categories.length > 0 ? (
+                categories?.length > 0 ? (
                 <>
                   {categories?.map((product) => (
-                    <div className="col-lg-3 col-md-4 col-sm-6" key={product.id}>
+                    <div className="col-lg-3 col-md-6 col-sm-12" key={product.id}>
                       <div className="Top-category-card">
                         <div className="Top-category-card-wrap">
-                          {product.media.length > 0 ? (
+                          {product?.media?.length > 0 ? (
                             <>
                               {product.media?.map((media , index) => {
                                 return (
                                   <div className="Top-category-card-img" key={index} onClick={() =>{navigate(`/category?category-id=${product?.id}`)}}>
                                     <img
-                                      src={`${BASE_URL}/image/category/${media.name}`}
-                                      alt={media.name}
+                                      src={`${BASE_URL}/image/category/${media?.name}`}
+                                      alt={media?.name}
                                     />
                                   </div>
                                 );

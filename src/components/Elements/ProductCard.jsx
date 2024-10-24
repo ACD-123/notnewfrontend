@@ -42,8 +42,8 @@ const ProductCard = ({ setSubmitted, setProductId }) => {
             <LoadingComponents/>
           ) : (
             <>
-              {activeProducts.length === 0 ? (
-                <NoDataFound title={'No Active Products'}/>
+              {activeProducts?.length === 0 ? (
+                <NoDataFound title={'No data Products'}/>
               ) : (
                 <>
                   {activeProducts.map((product) => (

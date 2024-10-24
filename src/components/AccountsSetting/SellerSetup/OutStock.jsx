@@ -39,7 +39,7 @@ const OutStock = () => {
                 </div>
                 <br />
                 <div className='row'>
-                   {stock.length > 0 ?(<>
+                   {stock?.length > 0 ?(<>
                     {stock.map((item, index) => {
                         const attributes = JSON.parse(item.attributes);
                       return(
@@ -56,7 +56,7 @@ const OutStock = () => {
                           <p>Price: $ {item.price}</p>
                           <br />
                           <h4>Attributes:</h4>
-                            {attributes.length > 0 ? (
+                            {attributes?.length > 0 ? (
                               <>
                               
                                 {attributes.map((attribute , index) => {

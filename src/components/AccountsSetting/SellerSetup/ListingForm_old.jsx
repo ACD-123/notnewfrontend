@@ -852,7 +852,7 @@ const handleAddAddress =()=>{
               onChange={handleEditImageUpload}
             />
              <div className="imgegallry">
-          {blobs.length > 0 ? (
+          {blobs?.length > 0 ? (
             <>
               {blobs.map((blob, index) => {
                 return (
@@ -879,7 +879,7 @@ const handleAddAddress =()=>{
           ) : (
             ""
           )}
-          {editBlobs.length > 0 ?(
+          {editBlobs?.length > 0 ?(
             <>
             {editBlobs.map((blob, index) => {
               return (
@@ -905,7 +905,7 @@ const handleAddAddress =()=>{
           </>
           ):('')}
           {errors.editimages && <p className="error">{errors.editimages}</p>}
-          {product.images.length > 0 ? (
+          {product?.images?.length > 0 ? (
             <>
               {product.images.map((imageUrl, index) => {
                 return (
@@ -939,7 +939,7 @@ const handleAddAddress =()=>{
               onChange={handleImageUpload}
             />
              <div className="imgegallry">
-          {blobs.length > 0 ? (
+          {blobs?.length > 0 ? (
             <>
               {blobs.map((blob, index) => {
                 return (
@@ -970,7 +970,7 @@ const handleAddAddress =()=>{
           )}
           {errors.images && <p className="error">{errors.images}</p>}
 
-          {product.images.length > 0 ? (
+          {product?.images?.length > 0 ? (
             <>
               {product.images.map((imageUrl, index) => {
                 return (
@@ -1133,7 +1133,7 @@ const handleAddAddress =()=>{
           <div>
             <select value={brand} onChange={handleBrands}>
             <option>Select Brands</option>
-            {brands.length > 0 ? (
+            {brands?.length > 0 ? (
                 <>
                   {brands?.map((brand , index) => {
                     return (
@@ -1155,7 +1155,7 @@ const handleAddAddress =()=>{
           <div>
             <select value={category} onChange={handleCategory}>
               <option value="">All Category</option>
-              {categories.length > 0 ? (
+              {categories?.length > 0 ? (
                 <>
                   {categories?.map((cat , index) => {
                     return (
@@ -1607,7 +1607,7 @@ const handleAddAddress =()=>{
               onChange={handleDeliverCompany}
             >
               <option value="">Select Delivery Company</option>
-              {deliveryCompany.length > 0 ?(<>
+              {deliveryCompany?.length > 0 ?(<>
                 {deliveryCompany.map((company , index) => (
                   <option key={index} value={company.name}>{company.name}</option>
                 ))}

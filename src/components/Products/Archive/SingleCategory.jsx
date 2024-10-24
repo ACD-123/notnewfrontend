@@ -136,41 +136,41 @@ const SingleCategory = ({cartFullResponse , notificationCount}) => {
                   <div className="row">
                     {!Loading ?
                       (
-                        categoryProducts.length > 0 ?
+                        categoryProducts?.length > 0 ?
                           (categoryProducts?.map((data, index) => {
                             return (
-                              <div className="col-lg-3" key={index}>
+                              <div className="col-lg-3 col-md-6 col-sm-12" key={index}>
                                 <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
                               </div>
                             )
                           }))
                           :
-                          <NoDataFound title={'No products found'} />
+                          <NoDataFound title={'No Data Found'} />
                       )
                       :
                       <>
-                        <div className="col-lg-3 mb-4">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-4">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-4" id='hide-on-mobile-768'>
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-4">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-4" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-4">
+                        <div className="col-lg-3 col-md-6 col-sm-12 mb-4" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
                       </>

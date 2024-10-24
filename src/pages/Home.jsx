@@ -17,17 +17,18 @@ import BrandNewProducts from "../components/Products/BrandNewProducts";
 
 const Home = ({ cartFullResponse, notificationCount }) => {
 	const [banners, setBanners] = useState([]);
+	const [featureBanners, setFeatureBanners] = useState([]);
 	const [topSellingProducts, setTopSellingProducts] = useState([]);
 	const [hotProducts, setHotProducts] = useState([]);
 	const [topSelling, setTopSelling] = useState([]);
 	const [loading, setLoading] = useState(true);
-	const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
 	const user_id = localStorage.getItem('user_id');
 
 	const getTopSelling = (id) => {
 		HomeService.getTopSelling(id)
 			.then((response) => {
-				setBanners(response?.data?.banners?.slice(0, 4))
+				setBanners(response?.data?.banners)
+				setFeatureBanners(response?.data?.featuredBanners)
 				setTopSellingProducts(response?.data?.products?.slice(0, 4))
 				setHotProducts(response?.data?.hot?.slice(0, 4))
 				setTimeout(() => {
@@ -55,7 +56,7 @@ const Home = ({ cartFullResponse, notificationCount }) => {
 			<HotSellingProducts loading={loading} data={hotProducts} setHotProducts={setHotProducts} title={'Hot Selling Products'} />
 			<Auction type={1} title={'Latest Auctions'} />
 			<CategoryList />
-			<GetSurprisedBanner />
+			<GetSurprisedBanner featureBanners={featureBanners}/>
 			<Footer />
 
 		</>

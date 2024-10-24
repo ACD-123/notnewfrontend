@@ -2,21 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import Signupimage from "../../assets/Images/Accountimages/signup.png";
 import Logo from "../../assets/Images/logo.png";
 import Avatarprofile from "../../assets/Images/avatarsignup.png";
-import { Link, useLocation } from "react-router-dom";
-import CountryServices from "../../services/API/CountryServices"; //~/services/API/CountryServices
-import State from "../../services/API/State"; //~/services/API/State
-import City from "../../services/API/City"; //~/services/API/City
+import { Link } from "react-router-dom";
 import AuthService from "../../services/API/AuthService"; //~/services/API/CountryServices
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
-import { GOOGLE_LOCATION_KEY } from '../../services/Constant'
-import { BASE_URL } from "../../services/Constant"
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 var Submitcss = {
   backgroundImage: `url(${Signupimage})`,
   backgroundSize: "cover",
-  paddingTop: "40px",
 };
 const libraries = ['places'];
 
@@ -192,7 +186,6 @@ const SignUp = () => {
         .catch((error) => {
           if (error.response.status == "409") {
             toast.error("Email Already Exist");
-            // toast.error(e.response?.data.message);
           } else {
           
           }
@@ -387,23 +380,6 @@ const SignUp = () => {
                       <label className="form-control">
                         {states}
                       </label>
-                      {/* <select className="form-select" 
-                        name="state"
-                        value={formData.state}
-                        onChange={handleStateChange}  
-                        id="state"
-                      >
-                        <option value="">Select States</option>
-                        {states.length > 0 ?(
-                          <>
-                          {states?.map(state => {
-                              return (
-                                <option key={state.id} value={state.id}>{state.name}</option>
-                              )
-                            } )}
-                          </>
-                        ):('')}
-                      </select> */}
                       {errors.state && (
                         <p className="error">{errors.state}</p>
                       )}
@@ -412,24 +388,6 @@ const SignUp = () => {
                       <label className="form-control">
                         {cities}
                       </label>
-                      {/* <select 
-                        className="form-select" 
-                        id="city"
-                        name="city"
-                        value={formData.city}
-                        onChange={handleChange}  
-                        >
-                        <option value="">Select City</option>
-                        {cities.length > 0 ? (
-                          <>
-                            {cities?.map(city => {
-                              return (
-                                <option key={city.id} value={city.id}>{city.name}</option>
-                              )
-                            } )}
-                          </>
-                        ):('')}
-                      </select> */}
                       {errors.city && (
                         <p className="error">{errors.city}</p>
                       )}

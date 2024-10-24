@@ -292,7 +292,7 @@ const Checkout_old = () => {
                               </div>
                       </>
                     ):(<>
-                    {cart.length > 0 ? (
+                    {cart?.length > 0 ? (
                       <>
                         {cart.map((cat, index) => {
                           let attributes = JSON.parse(cat.attributes);
@@ -308,7 +308,7 @@ const Checkout_old = () => {
                               <div className="row">
                                 <div className="col-lg-9">
                                   <div className="product-detail">
-                                    {cat.products.media.length > 0 ? (
+                                    {cat?.products?.media?.length > 0 ? (
                                       <>
                                         <div className="product-image">
                                           <img src={cat.products.media[0].name}
@@ -321,7 +321,7 @@ const Checkout_old = () => {
                                     <div className="product-order-details">
                                       <h5>{cat.products?.name}</h5>
                                       {/* <span>Size : 9.5 , Color: Red</span> */}
-                                      {attributes.length > 0 ? (
+                                      {attributes?.length > 0 ? (
                                         <>
                                           {attributes.map(
                                             (attribute, index) => {
@@ -400,7 +400,7 @@ const Checkout_old = () => {
               ) : (
                 <>
                   <div className="order-details">
-                    {cart.length > 0 ? (
+                    {cart?.length > 0 ? (
                       <>
                         {cart.map((cat, index) => {
                           let attributes = JSON.parse(cat.attributes);
@@ -418,7 +418,7 @@ const Checkout_old = () => {
                                     <div className="product-order-details">
                                       <h5>{cat.products?.name}</h5>
                                       {/* <span>Size : 9.5 , Color: Red</span> */}
-                                      {attributes.length > 0 ? (
+                                      {attributes?.length > 0 ? (
                                         <>
                                           {attributes.map(
                                             (attribute, index) => {
@@ -720,7 +720,7 @@ const Checkout_old = () => {
                             <td>$ 4.0</td>
                           </tr> */}
 
-                      {prices.length > 0 ? (
+                      {prices?.length > 0 ? (
                         <>
                           {prices.map((price, index) => {
                             return (
@@ -754,14 +754,14 @@ const Checkout_old = () => {
                 </>
               ):(
                 <>
-                  {cart.length > 0 ? (
+                  {cart?.length > 0 ? (
                 <>
                   <div className="order-details" id="totalordervalue">
                     <h3>Order Total</h3>
                     <table style={{ width: "100%" }}>
                       <tr>
                         <th className="boldthtotal">
-                          Subtotal ( {cart.length} items )
+                          Subtotal ( {cart?.length} items )
                         </th>
                         <td className="boldthtotal">$ {subTotal}</td>
                       </tr>
@@ -774,7 +774,7 @@ const Checkout_old = () => {
                             <td>$ 4.0</td>
                           </tr> */}
 
-                      {prices.length > 0 ? (
+                      {prices?.length > 0 ? (
                         <>
                           {prices.map((price, index) => {
                             return (

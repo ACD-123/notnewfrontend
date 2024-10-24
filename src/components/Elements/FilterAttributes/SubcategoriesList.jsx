@@ -31,7 +31,7 @@ const SubcategoriesList = (props) => {
       <div className='subcategory-list'>
         {/* <h4>Antiques</h4> */}
 
-        {categories.length > 0 ? (<>
+        {categories?.length > 0 ? (<>
           <ul>
           {categories.map((category, index) => {
             return(

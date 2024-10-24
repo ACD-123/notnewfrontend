@@ -163,7 +163,6 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
   const filterAttribute = (attribute) => {
     const attributes = attribute;
     const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
-    console.log(validJsonString, 'response?.data?.stores.length');
     let normalArray = JSON.parse(validJsonString);
     return normalArray
   };
@@ -188,7 +187,6 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
     const index = oldData[parentIndex][childIndex]['images'].indexOf(image);
     oldData[parentIndex][childIndex]['images'].splice(index, 1);
     setFormStructure((prev) => [...oldData])
-    console.log(index);
   };
 
   const addRefund = (e, productId, reason, images, index, k) => {
@@ -221,7 +219,6 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
   }
 
   const onReasonChnage = (e, i, k) => {
-    console.log(e, i, k, 'oldData');
     const oldData = formStructure;
     oldData[i][k]['reason'] = e;
     setFormStructure(oldData)
@@ -262,7 +259,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                 })}
               </div>
               :
-              <NoDataFound title={'No active oders found'} />
+              <NoDataFound title={'No Data Found'} />
             }
           </div>
           :
@@ -326,7 +323,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                       </li>
                       <li>
                         <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5.03561 6.28853C4.97599 6.28257 4.90445 6.28257 4.83887 6.28853C4.15458 6.2653 3.5062 5.97663 3.03104 5.48367C2.55588 4.9907 2.29125 4.33214 2.29319 3.64746C2.29319 2.18682 3.47362 1.00043 4.94022 1.00043C5.28744 0.994167 5.6325 1.05636 5.95569 1.18344C6.27888 1.31053 6.57387 1.50004 6.82382 1.74113C7.07377 1.98222 7.27379 2.27019 7.41245 2.58858C7.55111 2.90698 7.6257 3.24956 7.63197 3.59679C7.63823 3.94401 7.57604 4.28906 7.44895 4.61225C7.32186 4.93544 7.13236 5.23043 6.89127 5.48038C6.65017 5.73033 6.36221 5.93035 6.04382 6.06901C5.72542 6.20768 5.38283 6.28227 5.03561 6.28853ZM2.05472 8.48843C0.611968 9.45424 0.611968 11.0281 2.05472 11.988C3.69421 13.085 6.38297 13.085 8.02247 11.988C9.46522 11.0222 9.46522 9.44828 8.02247 8.48843C6.38894 7.39742 3.70017 7.39742 2.05472 8.48843Z" stroke="url(#paint0_linear_14_34171)" stroke-width="0.894267" stroke-linecap="round" stroke-linejoin="round" />
+                          <path d="M5.03561 6.28853C4.97599 6.28257 4.90445 6.28257 4.83887 6.28853C4.15458 6.2653 3.5062 5.97663 3.03104 5.48367C2.55588 4.9907 2.29125 4.33214 2.29319 3.64746C2.29319 2.18682 3.47362 1.00043 4.94022 1.00043C5.28744 0.994167 5.6325 1.05636 5.95569 1.18344C6.27888 1.31053 6.57387 1.50004 6.82382 1.74113C7.07377 1.98222 7.27379 2.27019 7.41245 2.58858C7.55111 2.90698 7.6257 3.24956 7.63197 3.59679C7.63823 3.94401 7.57604 4.28906 7.44895 4.61225C7.32186 4.93544 7.13236 5.23043 6.89127 5.48038C6.65017 5.73033 6.36221 5.93035 6.04382 6.06901C5.72542 6.20768 5.38283 6.28227 5.03561 6.28853ZM2.05472 8.48843C0.611968 9.45424 0.611968 11.0281 2.05472 11.988C3.69421 13.085 6.38297 13.085 8.02247 11.988C9.46522 11.0222 9.46522 9.44828 8.02247 8.48843C6.38894 7.39742 3.70017 7.39742 2.05472 8.48843Z" stroke="url(#paint0_linear_14_34171)" stroke-width="0.894267" strokeLinecap="round" stroke-linejoin="round" />
                           <defs>
                             <linearGradient id="paint0_linear_14_34171" x1="5.03859" y1="1" x2="5.03859" y2="12.8107" gradientUnits="userSpaceOnUse">
                               <stop stop-color="#00C3C9" />
@@ -395,7 +392,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                                   <div className="p-m-i-u-wrap">
                                     <div className="upload-box" onClick={() => { handleUploadClick(index, k) }}>
                                       <svg width="96" height="97" viewBox="0 0 96 97" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M29.8004 48.4615H66.1696M47.985 66.6462V30.2769M47.985 93.9231C72.9888 93.9231 93.4465 73.4654 93.4465 48.4615C93.4465 23.4577 72.9888 3 47.985 3C22.9811 3 2.52344 23.4577 2.52344 48.4615C2.52344 73.4654 22.9811 93.9231 47.985 93.9231Z" stroke="#BBBBBB" stroke-width="4.54615" stroke-linecap="round" stroke-linejoin="round" />
+                                        <path d="M29.8004 48.4615H66.1696M47.985 66.6462V30.2769M47.985 93.9231C72.9888 93.9231 93.4465 73.4654 93.4465 48.4615C93.4465 23.4577 72.9888 3 47.985 3C22.9811 3 2.52344 23.4577 2.52344 48.4615C2.52344 73.4654 22.9811 93.9231 47.985 93.9231Z" stroke="#BBBBBB" stroke-width="4.54615" strokeLinecap="round" stroke-linejoin="round" />
                                       </svg>
                                       <span>Click here to upload images</span>
                                       <input
@@ -545,7 +542,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                       </li>
                       <li>
                         <svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M5.03561 6.28853C4.97599 6.28257 4.90445 6.28257 4.83887 6.28853C4.15458 6.2653 3.5062 5.97663 3.03104 5.48367C2.55588 4.9907 2.29125 4.33214 2.29319 3.64746C2.29319 2.18682 3.47362 1.00043 4.94022 1.00043C5.28744 0.994167 5.6325 1.05636 5.95569 1.18344C6.27888 1.31053 6.57387 1.50004 6.82382 1.74113C7.07377 1.98222 7.27379 2.27019 7.41245 2.58858C7.55111 2.90698 7.6257 3.24956 7.63197 3.59679C7.63823 3.94401 7.57604 4.28906 7.44895 4.61225C7.32186 4.93544 7.13236 5.23043 6.89127 5.48038C6.65017 5.73033 6.36221 5.93035 6.04382 6.06901C5.72542 6.20768 5.38283 6.28227 5.03561 6.28853ZM2.05472 8.48843C0.611968 9.45424 0.611968 11.0281 2.05472 11.988C3.69421 13.085 6.38297 13.085 8.02247 11.988C9.46522 11.0222 9.46522 9.44828 8.02247 8.48843C6.38894 7.39742 3.70017 7.39742 2.05472 8.48843Z" stroke="url(#paint0_linear_14_34171)" stroke-width="0.894267" stroke-linecap="round" stroke-linejoin="round" />
+                          <path d="M5.03561 6.28853C4.97599 6.28257 4.90445 6.28257 4.83887 6.28853C4.15458 6.2653 3.5062 5.97663 3.03104 5.48367C2.55588 4.9907 2.29125 4.33214 2.29319 3.64746C2.29319 2.18682 3.47362 1.00043 4.94022 1.00043C5.28744 0.994167 5.6325 1.05636 5.95569 1.18344C6.27888 1.31053 6.57387 1.50004 6.82382 1.74113C7.07377 1.98222 7.27379 2.27019 7.41245 2.58858C7.55111 2.90698 7.6257 3.24956 7.63197 3.59679C7.63823 3.94401 7.57604 4.28906 7.44895 4.61225C7.32186 4.93544 7.13236 5.23043 6.89127 5.48038C6.65017 5.73033 6.36221 5.93035 6.04382 6.06901C5.72542 6.20768 5.38283 6.28227 5.03561 6.28853ZM2.05472 8.48843C0.611968 9.45424 0.611968 11.0281 2.05472 11.988C3.69421 13.085 6.38297 13.085 8.02247 11.988C9.46522 11.0222 9.46522 9.44828 8.02247 8.48843C6.38894 7.39742 3.70017 7.39742 2.05472 8.48843Z" stroke="url(#paint0_linear_14_34171)" stroke-width="0.894267" strokeLinecap="round" stroke-linejoin="round" />
                           <defs>
                             <linearGradient id="paint0_linear_14_34171" x1="5.03859" y1="1" x2="5.03859" y2="12.8107" gradientUnits="userSpaceOnUse">
                               <stop stop-color="#00C3C9" />

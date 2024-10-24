@@ -37,7 +37,7 @@ const InActiveProducts = ({ setSubmitted, setProductId }) => {
           ) : (
             <>
               {activeProducts?.length == 0 ? (
-                <NoDataFound title={'No inactive product founds'}/>
+                <NoDataFound title={'No data founds'}/>
               ) : (
                 <>
                   {activeProducts.map((product) => (

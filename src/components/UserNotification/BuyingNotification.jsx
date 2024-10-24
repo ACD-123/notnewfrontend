@@ -86,7 +86,7 @@ export const BuyingNotification = ({getNotificationCount}) => {
                 )
               }))
               :
-              <NoDataFound title={'No buying notification found'} />
+              <NoDataFound title={'No Data Found'} />
             }
           </div>
           {notification?.pagination?.total_pages > 1 &&

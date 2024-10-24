@@ -55,7 +55,7 @@ const BidsOffer = () => {
         <div className="col-lg-6">
           <div className="product-image">
             <div className="image">
-              {images.length > 0 ? (
+              {images?.length > 0 ? (
                 <>
                 {images.map((image, index) => {
                       if(index == 0){
@@ -196,7 +196,7 @@ const BidsOffer = () => {
       <div className="ongoing">
         {/* {bids.length} */}
         {/* {ordersData.map((order, index) => ( */}
-        {bids.length > 0 ?(
+        {bids?.length > 0 ?(
           <>
             {bids.map((order, index) => (
                 <React.Fragment key={index}>

@@ -114,8 +114,6 @@ const BidsNoffers = () => {
   useEffect(() => {
     const channel = laravelEcho.channel("bid-channel-" + auctionId);
     channel.listen(".bid-channel", (data) => {
-      console.log(data, 'bid-channel');
-
       getAuctionDetails(auctionId)
     });
 
@@ -162,7 +160,7 @@ const BidsNoffers = () => {
                         )
                       })
                       :
-                      <NoDataFound title={'No Active Auction Found'} />
+                      <NoDataFound title={'No data Found'} />
                     }
                   </ul>
                 </div>
@@ -189,7 +187,7 @@ const BidsNoffers = () => {
                         )
                       })
                       :
-                      <NoDataFound title={'No Inactive Auction Found'} />
+                      <NoDataFound title={'No data Found'} />
                     }
                   </ul>
                 </div>
@@ -259,7 +257,7 @@ const BidsNoffers = () => {
                           )
                         })
                         :
-                        <NoDataFound title={'No Auction Bids Found'} />
+                        <NoDataFound title={'No data Found'} />
                       }
                     </div>
                   </div>

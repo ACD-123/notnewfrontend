@@ -103,7 +103,7 @@ const MyBidsAndOffers = () => {
                                         })}
                                     </div>
                                     :
-                                    <NoDataFound title={'No bid and offer found'} />
+                                    <NoDataFound title={'No Data Found'} />
                             )
                             :
                             <>

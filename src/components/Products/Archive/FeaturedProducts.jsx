@@ -22,7 +22,7 @@ const FeaturedProducts = () => {
       }, []);
   return (
     <>
-    {featured.length > 0 ? (<>
+    {featured?.length > 0 ? (<>
         <section id='featuredproduct'>
         <div className='container noenCon'>
             <div className='row' style={{justifyContent:'center'}}>

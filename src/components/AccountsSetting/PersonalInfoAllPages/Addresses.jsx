@@ -88,7 +88,6 @@ const Addresses = () => {
           for (var j = 0; j < place.address_components[i].types.length; j++) {
             if (place.address_components[i].types[j] == "postal_code") {
                 setZip(place.address_components[i].long_name)
-            // document.getElementById('postal_code').innerHTML = place.address_components[i].long_name;
             }
             if (place.address_components[i].types[0] == "locality") {
                   setCity(place.address_components[i].long_name);

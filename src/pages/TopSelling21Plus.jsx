@@ -56,16 +56,16 @@ const TopSelling21Plus = ({ cartFullResponse , notificationCount}) => {
                             </div>
                             {loading ?
                                 <>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12">
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                         <ProductSkeletonLoader />
                                     </div>
                                 </>
@@ -73,13 +73,13 @@ const TopSelling21Plus = ({ cartFullResponse , notificationCount}) => {
                                 (topSellingProducts?.length > 0 ?
                                     topSellingProducts?.map((data, index) => {
                                         return (
-                                            <div className="col-lg-3" key={index}>
+                                            <div className="col-lg-3 col-md-6 col-sm-12" key={index}>
                                                 <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
                                             </div>
                                         )
                                     })
                                     :
-                                    <NoDataFound title={'No latest auction products found'} />
+                                    <NoDataFound title={'No Data Found'} />
                                 )
                             }
                         </div>

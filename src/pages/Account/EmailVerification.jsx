@@ -10,7 +10,6 @@ import { useNavigate, useParams } from "react-router-dom";
 var Emailverifybg = {
   backgroundImage: `url(${Emailverifyimagebg})`,
   backgroundSize: "cover",
-  paddingTop: "40px",
 };
 
 const EmailVerification = () => {

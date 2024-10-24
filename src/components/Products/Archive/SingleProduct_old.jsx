@@ -41,9 +41,6 @@ const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse 
     <>
       <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id='single-product' className='single-product-detail'>
-        {/* {loading ?
-          <LoadingComponents />
-          : */}
           <div className='container'>
             <div className='row p-0'>
               <div className="col-lg-12 p-0">
@@ -51,29 +48,25 @@ const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse 
                   <div className="p-d-w-1">
                     <div className="p-d-w-l"><ProductGallery /></div>
                     <div className="p-d-w-c"><ProductInformation getCartCount={getCartCount} getMoreToLove={getMoreToLove} setProductId={setProductId} getCartCountGuest={getCartCountGuest}/></div>
-                    {/* <div className="p-d-w-r"><SingleProductSidebar /></div> */}
                   </div>
                 </div>
               </div>
             </div>
             <SellerDetails />
-            {/* <div className='row'>
-              <RecentViewedItems />
-            </div> */}
             <div className="more-to-love" id='productcard'>
               <h3>More to love<span><Link to={`/more-to-love?id=${productId}`}>View More</Link></span></h3>
-              {moreToLove.length > 0 ?
+              {moreToLove?.length > 0 ?
               <div className="row">
                 {moreToLove?.slice(0, 4)?.map((data, index) => {
                   return (
-                    <div className="col-lg-3" key={index}>
+                    <div className="col-lg-4 col-md-6 col-sm-12" key={index}>
                       <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
                     </div>
                   )
                 })}
               </div>
               :
-              <NoDataFound title={'No more to love product found'}/>
+              <NoDataFound title={'No Data Found'}/>
             }
             </div>
           </div>

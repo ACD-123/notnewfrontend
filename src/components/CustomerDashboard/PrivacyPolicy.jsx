@@ -13,7 +13,6 @@ const PrivacyPolicy = () => {
         SellerServices.getFaqs(type)
             .then((res) => {
                 setPrivacys(res.data);
-                console.log(res.data, 'getFaqs');
                 setIsLoading(false);
             })
             .catch((error) => {

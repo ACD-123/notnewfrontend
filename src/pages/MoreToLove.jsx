@@ -49,16 +49,16 @@ export const MoreToLove = ({cartFullResponse , notificationCount}) => {
                             </div>
                             {Loader ?
                                 <>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12">
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                         <ProductSkeletonLoader />
                                     </div>
-                                    <div className="col-lg-3">
+                                    <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                         <ProductSkeletonLoader />
                                     </div>
                                 </>
@@ -66,13 +66,13 @@ export const MoreToLove = ({cartFullResponse , notificationCount}) => {
                                 (moreToLove?.length > 0 ?
                                     moreToLove?.map((data, index) => {
                                         return (
-                                            <div className="col-lg-3" key={index}>
+                                            <div className="col-lg-4 col-md-6 col-sm-12" key={index}>
                                                 <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
                                             </div>
                                         )
                                     })
                                     :
-                                    <NoDataFound title={'No more to love products found'} />
+                                    <NoDataFound title={'No Data Found'} />
                                 )
                             }
                         </div>

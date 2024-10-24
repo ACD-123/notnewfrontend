@@ -193,7 +193,7 @@ const SellerFeedbackNew = () => {
                         )
                       })
                       :
-                      <NoDataFound title={'No feedback Found'} />
+                      <NoDataFound title={'No data Found'} />
                     }
                   </div>
                 </div>

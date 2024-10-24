@@ -37,12 +37,12 @@ const PriceRange = (props) => {
     let finalArray =chunkIntoN(array, 4);
     // setresultArray(chunkIntoN(array, 4));
     return(
-      <>{finalArray.length > 0 ?(
+      <>{finalArray?.length > 0 ?(
         <>
           <ul style={{ listStyle: "none", marginTop: "10px"}}>
             {finalArray.map((arr, index) => {
               let first = arr.at(0);
-              let last= arr.at(arr.length - 1);
+              let last= arr.at(arr?.length - 1);
               return(
                 <>
                 <li key={index}>

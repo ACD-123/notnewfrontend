@@ -39,16 +39,16 @@ const Topsellers = ({cartFullResponse , notificationCount}) => {
                             </div>
                             {Loader ?
                             <>
-                            <div className="col-lg-3">
+                            <div className="col-lg-3 col-md-6 col-sm-12">
                                 <ProductSkeletonLoader/>
                             </div>
-                            <div className="col-lg-3">
+                            <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'>
                                 <ProductSkeletonLoader/>
                             </div>
-                            <div className="col-lg-3">
+                            <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                 <ProductSkeletonLoader/>
                             </div>
-                            <div className="col-lg-3">
+                            <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991">
                                 <ProductSkeletonLoader/>
                             </div>
                             </>

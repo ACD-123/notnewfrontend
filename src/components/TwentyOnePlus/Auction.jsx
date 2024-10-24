@@ -47,10 +47,10 @@ const Auction = ({ type, title }) => {
                 <>
                     <div className="container my-5">
                         <div className="row">
-                            <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                            <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                            <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                            <div className="col-lg-3"><ProductSkeletonLoader /></div>
+                            <div className="col-lg-3 col-md-6 col-sm-12"><ProductSkeletonLoader /></div>
+                            <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'><ProductSkeletonLoader /></div>
+                            <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991"><ProductSkeletonLoader /></div>
+                            <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991"><ProductSkeletonLoader /></div>
                         </div>
                     </div>
 
@@ -81,10 +81,10 @@ const Auction = ({ type, title }) => {
                                     <div className="row">
                                         {Loader ?
                                             <>
-                                                <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                                                <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                                                <div className="col-lg-3"><ProductSkeletonLoader /></div>
-                                                <div className="col-lg-3"><ProductSkeletonLoader /></div>
+                                                <div className="col-lg-3 col-md-6 col-sm-12"><ProductSkeletonLoader /></div>
+                                                <div className="col-lg-3 col-md-6 col-sm-12" id='hide-on-mobile-768'><ProductSkeletonLoader /></div>
+                                                <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991"><ProductSkeletonLoader /></div>
+                                                <div className="col-lg-3 col-md-6 col-sm-12" id="hide-on-mobile-991"><ProductSkeletonLoader /></div>
 
                                             </>
                                             :
@@ -92,12 +92,12 @@ const Auction = ({ type, title }) => {
                                             (
                                                 latestProducts?.length > 0 ?
                                                     latestProducts?.map((product, index) => (
-                                                        <div className="col col-lg-3" key={product?.product?.guid}>
+                                                        <div className="col-lg-3 col-md-6 col-sm-12" key={product?.product?.guid}>
                                                             <ProductCard data={product} handleToggleFavourite={handleToggleFavouriteLatest} index={index} />
                                                         </div>
                                                     ))
                                                     :
-                                                    <NoDataFound title={'No auction product found'} />
+                                                    <NoDataFound title={'No Data Found'} />
                                             )
                                         }
                                     </div>

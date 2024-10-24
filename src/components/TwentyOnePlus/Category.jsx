@@ -21,7 +21,7 @@ function Category() {
 
     var settings2 = {
         dots: false,
-        infinite: true,
+        infinite: false,
         arrows: true,
         speed: 500,
         slidesToShow: 4,
@@ -56,7 +56,6 @@ function Category() {
     const fetchCategoryUnderag = async () => {
         HomeService.fetchCategoryUnderag()
             .then((res) => {
-                console.log(res, 'fetchCategoryUnderag');
                 setCategoryData(res);
                 setLoading(false);
             }).catch(error => {
@@ -115,7 +114,7 @@ function Category() {
                                 <div className="row">
                                     <div className="col-lg-12">
                                         {loading ?
-                                            <Slider {...settings}>
+                                            <Slider {...settings2}>
                                                 <div className='h-c-s-slider'>
                                                     <Link>
                                                         <div className='h-c-s-slider-w' style={{ backgroundColor: 'transparent' }}>
@@ -161,9 +160,6 @@ function Category() {
                                                                 </div>
                                                             )
                                                         })}
-                                                        <div className='h-c-s-slider'></div>
-                                                        <div className='h-c-s-slider'></div>
-                                                        <div className='h-c-s-slider'></div>
                                                     </Slider>
                                                     :
                                                     null
@@ -182,8 +178,6 @@ function Category() {
                                                                 </div>
                                                             )
                                                         })}
-                                                        <div className='h-c-s-slider'></div>
-                                                        <div className='h-c-s-slider'></div>
                                                     </Slider>
                                                     :
                                                     null
@@ -202,7 +196,6 @@ function Category() {
                                                                 </div>
                                                             )
                                                         })}
-                                                        <div className='h-c-s-slider'></div>
                                                     </Slider>
                                                     :
                                                     null

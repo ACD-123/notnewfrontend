@@ -51,7 +51,7 @@ const MyProducts = () => {
                     </div>
                     <br />
                     <div className='row'>
-                      {products.length > 0 ? (
+                      {products?.length > 0 ? (
                         <>
                           {products.map((item, index) => {
                             const attributes = JSON.parse(item.attributes);
@@ -68,7 +68,7 @@ const MyProducts = () => {
                                       <p>Price: $ {item.price}</p>
                                       <br />
                                       <h4>Attributes:</h4>
-                                      {attributes.length > 0 ? (
+                                      {attributes?.length > 0 ? (
                                         <>
 
                                           {attributes.map((attribute , index) => {

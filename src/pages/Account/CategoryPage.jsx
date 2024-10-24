@@ -29,7 +29,7 @@ const CategoryPage = ({cartFullResponse, notificationCount}) => {
               <div className='all-ct'>
                 <h3>All Categories</h3>
                 <ul>
-                  {categories.length > 0 ? (
+                  {categories?.length > 0 ? (
                     <>
                       {categories?.map((category , index) => (
                         <Link to={`/notFound`} key={index}><li>{category.name}</li></Link>
@@ -50,31 +50,31 @@ const CategoryPage = ({cartFullResponse, notificationCount}) => {
                   ) : (
                     <>
 
-                      {categories.length > 0 ? (
+                      {categories?.length > 0 ? (
                         <>
                           {categories?.map((product) => (
                             <div className='col' key={product.id}>
                               <div className='productlist gradient'>
                                 <h3>{product.name}</h3>
                                 {/* <hr /> */}
-                                {product.media.length > 0 ? (
+                                {product?.media?.length > 0 ? (
                                   <>
-                                    {product.media?.map((media , index) => {
+                                    {product?.media?.map((media , index) => {
                                       return (
                                         <>
-                                          <img src={`${BASE_URL}/image/category/${media.name}`} alt={media.name} key={index} />
+                                          <img src={`${BASE_URL}/image/category/${media?.name}`} alt={media?.name} key={index} />
                                         </>
                                       )
                                     })}
                                   </>
                                 ) : (
-                                  <img src={blank} alt={product.name} />
+                                  <img src={blank} alt={product?.name} />
                                 )
                                 }
                                 <ul>
-                                  {product.children_recursive.map((subcategory, index) => (
+                                  {product?.children_recursive.map((subcategory, index) => (
                                     <li key={index}>
-                                      <a href={subcategory.url}>{subcategory.name}</a>
+                                      <a href={subcategory?.url}>{subcategory?.name}</a>
                                     </li>
                                   ))}
                                 </ul>

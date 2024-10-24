@@ -15,6 +15,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
   const [inputError, setInputError] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const fileInputRef = useRef(null);
   const inputRef = useRef(null);
@@ -49,6 +50,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     termsdescription: "",
     title: "",
     category: null,
+    subCategory: null,
     stockCapacity: "",
     brand_id: null,
     model: "",
@@ -123,6 +125,20 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       });
   };
 
+  const fetchSubCategory = (id) => {
+    Category.getCategorySubCategoryById(id)
+      .then((response) => {
+        const arr = []
+        for (let i = 0; i < response?.data?.sub_categories.length; i++) {
+          arr.push({ label: response?.data?.sub_categories?.[i]?.name, value: response?.data?.sub_categories?.[i]?.id })
+        }
+        setSubCategories(arr);
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.data);
+      });
+  };
+
   const getBrands = () => {
     HomeService.getbrands()
       .then((response) => {
@@ -137,8 +153,74 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       });
   };
 
-  const handelCategoryChange = (data, apiAttributes) => {
-    setProductManagments(prev => ({ ...prev, category: data }));
+  const handelCategoryChange = (data, apiAttributes, parent) => {
+    if (parent) {
+      setProductManagments(prev => ({ ...prev, category: data }));
+      setSubCategories([]);
+      fetchSubCategory(data.value);
+    } else {
+      setProductManagments(prev => ({ ...prev, category: data }));
+      setSubCategories([]);
+      fetchSubCategory(data.value);
+      Category.productAttributes(data.value)
+        .then((res) => {
+          if (res?.data?.length > 0) {
+            const categoryAddons = res?.data?.map(category => ({
+              name: category.key,
+              selected: null,
+              options: category.options.map((option, index) => ({
+                value: index + 1,
+                label: option
+              })),
+              selectToSend: []
+            }));
+            setProductManagments(prev => ({ ...prev, attributes: categoryAddons }));
+
+            if (productId !== '' &&
+              productId !== null &&
+              productId !== undefined &&
+              categoryAddons?.[0]?.selected === null) {
+
+              let updateAddons = []
+              let selectedd = []
+              let selectToSendd = []
+              for (let i = 0; i < categoryAddons?.length; i++) {
+                for (let j = 0; j < categoryAddons[i].options?.length; j++) {
+                  for (let k = 0; k < apiAttributes[i].options?.length; k++) {
+                    if (apiAttributes[i].options[k] === categoryAddons[i].options[j].label) {
+                      selectedd.push({
+                        value: k + 1,
+                        label: apiAttributes[i].options[k]
+                      })
+                      selectToSendd.push(apiAttributes[i].options[k])
+                    }
+                  }
+                }
+                updateAddons.push({
+                  name: categoryAddons[i].name,
+                  selected: selectedd,
+                  options: categoryAddons[i].options,
+                  selectToSend: selectToSendd
+                })
+                selectedd = []
+                selectToSendd = []
+              }
+              setProductManagments(prev => ({ ...prev, attributes: updateAddons, category: data }));
+            }
+          } else {
+            setProductManagments(prev => ({ ...prev, attributes: [] }));
+            setNoAttributeFounded(true)
+          }
+        })
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
+          setIsLoading(false)
+        });
+    }
+  }
+
+  const handelSubCategoryChange = (data, apiAttributes) => {
+    setProductManagments(prev => ({ ...prev, subCategory: data }));
     Category.productAttributes(data.value)
       .then((res) => {
         if (res?.data?.length > 0) {
@@ -182,7 +264,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
               selectedd = []
               selectToSendd = []
             }
-            setProductManagments(prev => ({ ...prev, attributes: updateAddons, category: data }));
+            setProductManagments(prev => ({ ...prev, attributes: updateAddons, subCategory: data }));
           }
         } else {
           setProductManagments(prev => ({ ...prev, attributes: [] }));
@@ -266,7 +348,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     setInputError(true)
     setIsFromLoading(true)
     if (productManagment.file.length === 0 || productManagment.condition === "" ||
-      productManagment.category === null || productManagment.stockCapacity === "" || productManagment.brand_id === null ||
+      productManagment.category === null || productManagment.brand_id === null ||
       productManagment.description === "" || productManagment.address === "" ||
       productManagment.country === "" ||
       productManagment.state === "" || productManagment.city === "" || productManagment.zip === "" ||
@@ -287,7 +369,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       }
     }
 
-    // SellingNow specific validations
     if (productManagment.sellingNow) {
       if (productManagment.saleprice === "" || productManagment.saleprice === 0 || productManagment.saleprice < 0 ||
         productManagment.price === "" || productManagment.price === 0 || productManagment.price < 0 ||
@@ -298,7 +379,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       }
     }
 
-    // Auctioned specific validations
     if (productManagment.auctioned) {
       if (productManagment.bids === "" || productManagment.bids === 0 || productManagment.bids < 0 ||
         productManagment.durations === "" || productManagment.durations === 0 || productManagment.durations < 0 ||
@@ -311,6 +391,13 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
     if (productManagment.condition === "Used") {
       if (productManagment.used_condition === null) {
+        setIsFromLoading(false)
+        return false;
+      }
+    }
+
+    if (productManagment.condition != "Used" && !productManagment.auctioned) {
+      if (productManagment.stockCapacity === "") {
         setIsFromLoading(false)
         return false;
       }
@@ -343,8 +430,12 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     }
     formData.append("termsdescription", productManagment.termsdescription);
     formData.append("title", productManagment.title);
-    formData.append("category", productManagment?.category?.value);
-    if (productManagment.condition === 'Used') {
+    if (productManagment.subCategory != null) {
+      formData.append("category", productManagment?.subCategory?.value);
+    } else {
+      formData.append("category", productManagment?.category?.value);
+    }
+    if (productManagment.condition === 'Used' && !productManagment.auctioned) {
       formData.append("stockCapacity", 1);
     } else {
       formData.append("stockCapacity", productManagment.stockCapacity);
@@ -440,7 +531,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           underage: response?.data?.underage,
           termsdescription: response?.data?.termsdescription,
           title: response?.data?.name,
-          category: { value: response?.data?.category?.id, label: response?.data?.category?.name },
+
           stockCapacity: response?.data?.stockcapacity,
           brand_id: { value: response?.data?.brand?.id, label: response?.data?.brand?.name },
           model: response?.data?.model,
@@ -482,7 +573,22 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           length: response?.data?.length,
           width: response?.data?.width
         }))
-        handelCategoryChange({ value: response?.data?.category?.id, label: response?.data?.category?.name }, response?.data?.attributes)
+        if (response?.data?.category?.parent_id == null) {
+          setProductManagments((prev) => ({
+            ...prev,
+            category: { value: response?.data?.category?.id, label: response?.data?.category?.name },
+            subCategory: null
+          }))
+          handelCategoryChange({ value: response?.data?.category?.id, label: response?.data?.category?.name }, response?.data?.attributes, false)
+        } else {
+          setProductManagments((prev) => ({
+            ...prev,
+            category: { value: response?.data?.category?.parent_id, label: response?.data?.category?.parent_name },
+            subCategory: {value: response?.data?.category?.id, label: response?.data?.category?.name}
+          }))
+          handelCategoryChange({ value: response?.data?.category?.parent_id, label: response?.data?.category?.parent_name }, response?.data?.attributes, true)
+          handelSubCategoryChange({ value: response?.data?.category?.id, label: response?.data?.category?.name }, response?.data?.attributes)
+        }
       })
       .catch((error) => {
         toast.error(error?.response?.data?.message)
@@ -542,7 +648,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                 <div className="p-m-i-u-wrap">
                   <div className="upload-box" onClick={handleUploadClick}>
                     <svg width="96" height="97" viewBox="0 0 96 97" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M29.8004 48.4615H66.1696M47.985 66.6462V30.2769M47.985 93.9231C72.9888 93.9231 93.4465 73.4654 93.4465 48.4615C93.4465 23.4577 72.9888 3 47.985 3C22.9811 3 2.52344 23.4577 2.52344 48.4615C2.52344 73.4654 22.9811 93.9231 47.985 93.9231Z" stroke="#BBBBBB" stroke-width="4.54615" stroke-linecap="round" stroke-linejoin="round" />
+                      <path d="M29.8004 48.4615H66.1696M47.985 66.6462V30.2769M47.985 93.9231C72.9888 93.9231 93.4465 73.4654 93.4465 48.4615C93.4465 23.4577 72.9888 3 47.985 3C22.9811 3 2.52344 23.4577 2.52344 48.4615C2.52344 73.4654 22.9811 93.9231 47.985 93.9231Z" stroke="#BBBBBB" stroke-width="4.54615" strokeLinecap="round" stroke-linejoin="round" />
                     </svg>
                     <span>Click here to upload images</span>
                     <input
@@ -616,6 +722,19 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                       <div className="error-input">Category is required</div>
                     }
                   </div>
+                  {subCategories?.length > 0 &&
+                    <div className="two-field-left">
+                      <label>Sub Category</label>
+                      <Select
+                        defaultValue={subCategories?.find(option => option?.value === productManagment?.subCategory?.value)}
+                        value={subCategories?.find(option => option?.value === productManagment?.subCategory?.value)}
+                        onChange={handelSubCategoryChange}
+                        options={subCategories}
+                        placeholder={'Select sub category'}
+                      />
+                     
+                    </div>
+                  }
                 </div>
                 {productManagment?.attributes?.length > 0 ?
                   <div className="two-field">
@@ -654,7 +773,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                       <div className="error-input">Brand is required</div>
                     }
                   </div>
-                  {productManagment.condition === "Used" ? null :
+                  {productManagment.condition === "Used" || productManagment.auctioned ? null :
                     <div className="two-field-left">
                       <label>Stock capacity (Quantity)</label>
                       <input type="number" name="stockCapacity" value={productManagment?.stockCapacity} onChange={handleChange} placeholder="Enter quantity" />
@@ -1058,7 +1177,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
         <div className="modal-body">
           <svg width="133" height="133" viewBox="0 0 133 133" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="1.60825" y="1.25669" width="129.789" height="129.789" rx="64.8947" stroke="url(#paint0_linear_14_3937)" stroke-width="1.96651" />
-            <path d="M36.0234 65.3982L55.9177 85.2925L95.7767 45.5039" stroke="url(#paint1_linear_14_3937)" stroke-width="7.86603" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M36.0234 65.3982L55.9177 85.2925L95.7767 45.5039" stroke="url(#paint1_linear_14_3937)" stroke-width="7.86603" strokeLinecap="round" stroke-linejoin="round" />
             <defs>
               <linearGradient id="paint0_linear_14_3937" x1="145.163" y1="-2.67632" x2="-62.3032" y2="132.029" gradientUnits="userSpaceOnUse">
                 <stop stop-color="#8B2CA0" />

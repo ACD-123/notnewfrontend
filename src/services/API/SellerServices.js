@@ -180,6 +180,14 @@ function setBank(data) {
     })
   }
 
+  function createSellerWithdraw(seller_guid , data) {
+    return request({
+      url: `${baseUrl}seller/witdraw/${seller_guid}`,
+      data,
+      method: 'POST',
+    })
+  }
+
   function changePassword(data) {
     return request({
       url: `${baseUrl}user/updatePassword`,
@@ -251,6 +259,7 @@ const SellerServices = {
   getTopSellers,
   getShopDetail,
   createSellerReport,
+  createSellerWithdraw,
   changePassword,
   updateVideo,
   getNotificationSetting,

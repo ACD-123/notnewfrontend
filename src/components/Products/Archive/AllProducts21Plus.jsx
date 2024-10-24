@@ -394,7 +394,7 @@ const AllProducts21Plus = ({ cartFullResponse, notificationCount }) => {
                     />
                   </div>
                 </div>
-                {categoryAttributes.length > 0 ?
+                {categoryAttributes?.length > 0 ?
                   (categoryAttributes?.map((data, index) => {
                     return (
                       <div className="p-p" key={index}>
@@ -498,7 +498,7 @@ const AllProducts21Plus = ({ cartFullResponse, notificationCount }) => {
                       </li>
                       <li>
                         <svg width="18" height="2" viewBox="0 0 18 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M1 1H17" stroke="#767676" stroke-linecap="round" />
+                          <path d="M1 1H17" stroke="#767676" strokeLinecap="round" />
                         </svg>
                       </li>
                       <li>$
@@ -540,38 +540,32 @@ const AllProducts21Plus = ({ cartFullResponse, notificationCount }) => {
                         products?.products?.length > 0 ?
                           (products?.products?.map((data, index) => {
                             return (
-                              <div className="col-lg-4 col-md-4" key={index}>
+                              <div className="col-lg-4 col-md-6 col-sm-12" key={index}>
                                 <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
                               </div>
                             )
                           }))
                           :
-                          <NoDataFound title={'No products found'} />
+                          <NoDataFound title={'No Data Found'} />
                       )
                       :
                       <>
-                        <div className="col-lg-3 mb-4">
+                        <div className="col-lg-4 col-md-6 col-sm-12 mb-4">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-4">
+                        <div className="col-lg-4 col-md-6 col-sm-12 mb-4" id='hide-on-mobile-768'>
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-4">
+                        <div className="col-lg-4 col-md-6 col-sm-12 mb-4" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3 mb-4">
+                        <div className="col-lg-4 col-md-6 col-sm-12 mb-4" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-4 col-md-6 col-sm-12" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
-                        <div className="col-lg-3">
-                          <ProductSkeletonLoader />
-                        </div>
-                        <div className="col-lg-3">
-                          <ProductSkeletonLoader />
-                        </div>
-                        <div className="col-lg-3">
+                        <div className="col-lg-4 col-md-6 col-sm-12" id="hide-on-mobile-991">
                           <ProductSkeletonLoader />
                         </div>
                       </>
@@ -740,7 +734,7 @@ const AllProducts21Plus = ({ cartFullResponse, notificationCount }) => {
               />
             </div>
           </div>
-          {categoryAttributes.length > 0 ?
+          {categoryAttributes?.length > 0 ?
             (categoryAttributes?.map((data, index) => {
               return (
                 <div className="p-p" key={index}>
@@ -844,7 +838,7 @@ const AllProducts21Plus = ({ cartFullResponse, notificationCount }) => {
                 </li>
                 <li>
                   <svg width="18" height="2" viewBox="0 0 18 2" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1H17" stroke="#767676" stroke-linecap="round" />
+                    <path d="M1 1H17" stroke="#767676" strokeLinecap="round" />
                   </svg>
                 </li>
                 <li>$

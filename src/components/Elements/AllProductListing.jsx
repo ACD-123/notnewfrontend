@@ -80,10 +80,10 @@ const AllProductListing = (props) => {
           {product?.auctioned ? (
             // <Link to={`/auctionproduct/${product.id}`}>
             <Link to={`/auctionproduct/${product?.guid}`}>
-              {product.media.length > 0 ? (
+              {product?.media?.length > 0 ? (
                 <>
                   {/* <img src={`${BASE_URL}/image/product/${product.media[0].name}`} alt={ProductImage1} /> */}
-                  <img src={product.media[0].name} alt={product.media[0].name} />
+                  <img src={product?.media?.[0]?.name} alt={product?.media?.[0]?.name} />
                 </>
               ):(
                 <>
@@ -94,7 +94,7 @@ const AllProductListing = (props) => {
           ) : (
             // <Link to={`/singleproduct/${product.id}`}>
             <Link to={`/singleproduct/${product?.guid}`}>
-              {product.media.length > 0 ? (
+              {product.media?.length > 0 ? (
                 <>
                   {/* <img src={`${BASE_URL}/image/product/${product.media[0].name}`} alt={ProductImage1} /> */}
                   <img src={product.media[0].name} alt={product.media[0].name} />

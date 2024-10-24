@@ -15,7 +15,7 @@ const Dashboard = () => {
           <>
             <div className="title">My Orders</div>
             <div className="seller-new-transaction-four">
-              <div className="s-n-t-f-tabs">
+              <div className="s-n-t-f-tabs" style={{minWidth:'520px'}}>
                 <ul>
                   <li onClick={() => { setTab(0) }} className={`${tab === 0 ? 'active' : ''}`}>Pending Orders</li>
                   <li onClick={() => { setTab(1) }} className={`${tab === 1 ? 'active' : ''}`}>Active Orders</li>

@@ -54,6 +54,12 @@ function getSearchProducts(search) {
   })
 }
 
+function getSearchProductsUnderAge(search) {
+  return request({
+    url: `${baseUrl}searchHistory/getUnderAge?search_key=${search}`
+  })
+}
+
 function getFilterProducts(
   user_id,
   category,
@@ -212,7 +218,8 @@ const HomeService = {
   getTopSellingUnderAge,
   getHotUnderAge,
   getNotificationCount,
-  updateFcmToken
+  updateFcmToken,
+  getSearchProductsUnderAge
 }
 
 export default HomeService

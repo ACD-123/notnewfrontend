@@ -48,10 +48,10 @@ const SearchHistory = () => {
         <div className='title-buton'>
           <div>
             <h3>Search History</h3>
-            <p>{searchHistory.length} Searches</p>
+            <p>{searchHistory?.length} Searches</p>
           </div>
           <div>
-            <button onClick={clearSelected} disabled={selectedItems.length === 0}>
+            <button onClick={clearSelected} disabled={selectedItems?.length === 0}>
               Delete selected
             </button>
             <button onClick={clearHistory}>Clear history</button>

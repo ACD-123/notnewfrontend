@@ -49,7 +49,7 @@ const RefundProductCart = (props) => {
                   <div className="order-details">
                     <div className="row">
                       <div className="product-detail">
-                        {orderitems.length > 0 ? (
+                        {orderitems?.length > 0 ? (
                           <>
                             {orderitems.map((orderitem, index) => {
                               let attributes = JSON.parse(orderitem.attributes);
@@ -63,7 +63,7 @@ const RefundProductCart = (props) => {
                                       value={orderitem.id}
                                     />
                                   </div>
-                                  {media.length > 0 ? (
+                                  {media?.length > 0 ? (
                                     <>
                                       {orderitems.map((orderitem, index) => {
                                         return (
@@ -89,7 +89,7 @@ const RefundProductCart = (props) => {
                                   )}
                                   <div className="product-order-details">
                                     <h5>{orderitem.name}</h5>
-                                    {attributes.length > 0 ? (
+                                    {attributes?.length > 0 ? (
                                       <>
                                         {attributes.map((attribute, index) => {
                                           return (
