@@ -108,11 +108,11 @@ export const ImportentNotification = ({ getNotificationCount }) => {
                       </>)
                       :
                       <div className="col-lg-6 col-md-6 col-12" key={index}>
-                        <div className="n-l-d">
+                        <div className="n-l-d" onClick={() =>{ window.location.href=`${data.url}`}}>
                           <div className="n-l-d-w">
                             <div className="n-l-d-w-l">
                               <div className="n-l-d-w-l-l">
-                                <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                              <img src={data?.image} />
                               </div>
                               <div className="n-l-d-w-l-r">
                                 <h2>{data?.title}</h2>

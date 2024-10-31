@@ -1,21 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import Avatarprofile from "../../../assets/Images/avatarsignup.png";
 import ConnectBank from "./ConnectBank";
 import { toast } from "react-toastify";
-import CountryServices from "../../../services/API/CountryServices"; //~/services/API/CountryServices
-import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
-import State from "../../../services/API/State"; //~/services/API/State
-import City from "../../../services/API/City"; //~/services/API/City
+import SellerServices from "../../../services/API/SellerServices";
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
-import { GOOGLE_LOCATION_KEY } from '../../../services/Constant'
 import { BASE_URL } from "../../../services/Constant"
 import { IoCamera } from "react-icons/io5";
-import { MdDelete } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
 const libraries = ['places'];
 const SetupSellerAccount = () => {
   const inputRef = useRef();
   const [profilePic, setProfilePic] = useState(null);
-  const [formSubmitted, setFormSubmitted] = useState(false); // State to track form submission
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     guid: "",
     fullname: "",
@@ -30,9 +25,10 @@ const SetupSellerAccount = () => {
     longitude: "",
     description: "",
     video: "",
-    editVideo: false
+    editVideo: false,
+    main_image: "",
+    editMainImage: false
   });
-  const [user, setUser] = useState([]);
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
@@ -40,20 +36,17 @@ const SetupSellerAccount = () => {
   const [states, setState] = useState("State");
   const [address, setAddress] = useState("");
   const [countries, setCountry] = useState("Country");
-  const [shopData, setShopData] = useState([]);
   const [coverimage, setCoverImage] = useState("");
   const [guid, setGuid] = useState("")
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [zip, setZip] = useState("Zip");
-  const [editaddress, setEditAddress] = useState(false);
-  const [addresses, setAddresses] = useState("");
   const videoInputRef = useRef(null);
+  const mainImageInputRef = useRef(null);
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
     libraries
   });
-  let token = localStorage.getItem("access_token");
 
   const handlePlaceChanged = () => {
     const places = inputRef.current.getPlaces();
@@ -90,7 +83,6 @@ const SetupSellerAccount = () => {
 
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    // Perform validations or modifications if needed
     setProfilePic(selectedFile);
   };
 
@@ -131,6 +123,7 @@ const SetupSellerAccount = () => {
     if (!cities) { newErrors.city = "City is required"; }
     if (!zip) { newErrors.zip = "Zip is required"; }
     if (!formData.description) { newErrors.description = "Description is required"; }
+    if (!formData.main_image) { newErrors.main_image = "Main image is required"; }
 
     setErrors(newErrors);
 
@@ -161,6 +154,7 @@ const SetupSellerAccount = () => {
           fd.append("latitude", formData.latitude);
           fd.append("longitude", formData.longitude);
           fd.append("description", formData.description);
+          fd.append("main_image", formData.main_image);
           fd.append("guid", guid);
           if (profilePic) { fd.append("file", profilePic); }
           setIsLoading(true);
@@ -171,7 +165,6 @@ const SetupSellerAccount = () => {
                 setFormSubmitted(true);
                 if (response.status) {
                   toast.success(response.data);
-                  setEditAddress(false)
                 } else {
                   toast.error(response.data);
                 }
@@ -189,7 +182,6 @@ const SetupSellerAccount = () => {
               .then((response) => {
                 toast.success(response);
                 setFormSubmitted(true);
-                setEditAddress(false)
               })
               .catch((error) => {
                 toast.error(error?.response?.data?.message)
@@ -219,7 +211,6 @@ const SetupSellerAccount = () => {
     let loggedInUser = localStorage.getItem("user_details");
     if (loggedInUser) {
       const loggedInUsers = JSON.parse(loggedInUser);
-      setUser(loggedInUsers);
       formData.fullname = loggedInUsers.name
       formData.email = loggedInUsers.email
       formData.phone = loggedInUsers.phone
@@ -245,14 +236,27 @@ const SetupSellerAccount = () => {
 
   const deleteSelectedVideo = () => {
     setFormData({ ...formData, video: "", editVideo: false });
-  }
+  };
+
+  const deleteSelectedMainImage = () => {
+    setFormData({ ...formData, main_image: "", editMainImage: false });
+  };
+
+  const handleMainImageUploadClick = () => {
+    mainImageInputRef.current.click();
+  };
+
+  const handleMainImageChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({ ...formData, main_image: file, editMainImage: true });
+    e.target.value = null;
+  };
 
   if (formSubmitted) {
     return <ConnectBank />;
   } else {
     return (
       <>
-        {shopData}
         <section id="seller-account-creating" className="seller-not-created">
           <div className="container">
             <div className="row align-items-center">
@@ -344,6 +348,8 @@ const SetupSellerAccount = () => {
                           <input
                             type="text"
                             className="form-control"
+                            name="address"
+                            onChange={handleChange}
                             placeholder={address ? address : "Enter your address"}
                           />
                         </StandaloneSearchBox>
@@ -385,7 +391,7 @@ const SetupSellerAccount = () => {
                       </div>
                       {errors.zip && <p className="error">{errors.zip}</p>}
                     </div>
-                    <div className="col-lg-6 mb-3">
+                    <div className="col-lg-12 mb-3">
                       <textarea
                         className="form-control"
                         id="description"
@@ -396,6 +402,45 @@ const SetupSellerAccount = () => {
                         {formData.description}
                       </textarea>
                       {errors.description && <p className="error">{errors.description}</p>}
+                    </div>
+                    <div className="col-lg-6 mb-3">
+                      <div className="p-m-i-u" >
+                        {!formData?.editMainImage && formData?.main_image == '' &&
+                          <div className="p-m-i-u-wrap">
+                            <div className="upload-box" onClick={handleMainImageUploadClick}>
+                              <svg width="96" height="97" viewBox="0 0 96 97" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M29.8004 48.4615H66.1696M47.985 66.6462V30.2769M47.985 93.9231C72.9888 93.9231 93.4465 73.4654 93.4465 48.4615C93.4465 23.4577 72.9888 3 47.985 3C22.9811 3 2.52344 23.4577 2.52344 48.4615C2.52344 73.4654 22.9811 93.9231 47.985 93.9231Z" stroke="#BBBBBB" stroke-width="4.54615" strokeLinecap="round" stroke-linejoin="round" />
+                              </svg>
+                              <span>Click here to cover image Video</span>
+                              <input
+                                type="file"
+                                ref={mainImageInputRef}
+                                accept="image/*"
+                                style={{ display: 'none' }}
+                                onChange={handleMainImageChange}
+                              />
+                            </div>
+                          </div>
+                        }
+                        <div className="selected-images">
+                          {formData?.main_image != '' ?
+                            (!formData?.editMainImage && formData?.main_image?.includes('image') ?
+                              <div className="selected-videos-box" style={{display:'flex',justifyContent : 'center'}}>
+                                <img src={`${BASE_URL}/public/${formData?.video}`} alt="" style={{ height: '200px', width: '100%', objectFit: 'contain', borderRadius:'22px' }} />
+                                <span onClick={() => deleteSelectedMainImage()}><CiEdit /></span>
+                              </div>
+                              :
+                              <div className="selected-videos-box" style={{display:'flex',justifyContent : 'center'}}>
+                                <img src={URL.createObjectURL(formData?.main_image)} alt="" style={{ height: '200px', width: '100%', objectFit: 'contain' , borderRadius:'22px' }} />
+                                <span onClick={() => deleteSelectedMainImage()}><CiEdit /></span>
+                              </div>
+                            )
+                            :
+                            null
+                          }
+                        </div>
+                        {errors.main_image && <p className="error">{errors.main_image}</p>}
+                      </div>
                     </div>
                     <div className="col-lg-6 mb-3">
                       <div className="p-m-i-u">
@@ -424,7 +469,7 @@ const SetupSellerAccount = () => {
                                   <source src={`${BASE_URL}/public/${formData?.video}`} />
                                   Your browser does not support the video tag.
                                 </video>
-                                <span onClick={() => deleteSelectedVideo()}><MdDelete /></span>
+                                <span onClick={() => deleteSelectedVideo()}><CiEdit /></span>
                               </div>
                               :
                               <div className="selected-videos-box">
@@ -432,7 +477,7 @@ const SetupSellerAccount = () => {
                                   <source src={URL.createObjectURL(formData?.video)} />
                                   Your browser does not support the video tag.
                                 </video>
-                                <span onClick={() => { deleteSelectedVideo() }}><MdDelete /></span>
+                                <span onClick={() => { deleteSelectedVideo() }}><CiEdit /></span>
                               </div>
                             )
 

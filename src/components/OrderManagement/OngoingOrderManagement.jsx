@@ -106,7 +106,7 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
           </div>
           :
           <div className="seller-oder-managment-detail">
-            <div className="title"><span onClick={() => { setDetail(false) }}><IoIosArrowBack /></span>Active Order Details</div>
+            <div className="title"><span onClick={() => { setDetail(false) }}><IoIosArrowBack /></span>Active Order Detailss</div>
             <div className="s-o-m-d-1">
               <div className="s-o-m-d-1-l">
                 <span>Seller : </span>{pendingOdrDetail?.products?.[0]?.seller}
@@ -268,14 +268,18 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
                       <li>Subtotal ( {pendingOdrDetail?.products?.[0]?.quantity} item )</li>
                       <li>${pendingOdrDetail?.subtotal}</li>
                     </ul>
-                    <ul>
+                    {/* <ul>
                       <li>Shipping</li>
                       <li>${pendingOdrDetail?.shippingcost}</li>
-                    </ul>
-                    <ul>
-                      <li>Discount</li>
-                      <li>-$5.00</li>
-                    </ul>
+                    </ul> */}
+                     {pendingOdrDetail?.voucher_discount > 0 ?
+                      <ul>
+                        <li>Voucher Discount</li>
+                        <li>-${pendingOdrDetail?.voucher_discount}</li>
+                      </ul>
+                      :
+                      null
+                      }
                   </li>
                 </ul>
               </div>

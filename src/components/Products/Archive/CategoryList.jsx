@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Categoryimage1 from "../../../assets/Images/MainCategories/Category1.png"
-import Categoryimage2 from "../../../assets/Images/MainCategories/Category2.png"
-import Categoryimage3 from "../../../assets/Images/MainCategories/Category3.png"
-import Categoryimage4 from "../../../assets/Images/MainCategories/Category4.png"
-import Categoryimage5 from "../../../assets/Images/MainCategories/Category5.png"
-import Categoryimage6 from "../../../assets/Images/MainCategories/Category6.png"
-import Categoryimage7 from "../../../assets/Images/MainCategories/Category7.png"
 import blank from "../../../assets/Images/Productcard/blank.jpg";
 import { Link } from "react-router-dom";
 import { BASE_URL } from "../../../services/Constant";
-import LoadingComponents from '../../Shared/LoadingComponents';
 import HomeService from '../../../services/API/HomeService';
 import Skeleton from 'react-skeleton-loader';
 const CategoryList = () => {
   const [categoryData, setCategoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [loadingDots, setLoadingDots] = useState('...'); // State to control loading dots
 
   const fetchCategoryData = async () => {
     HomeService.recursiveCategories()
@@ -100,9 +91,7 @@ const CategoryList = () => {
                                     <>
                                       {category?.media?.map((media, index) => {
                                         return (
-                                          <>
                                             <img src={`${BASE_URL}/image/category/${media?.name}`} alt={media?.name} key={index} />
-                                          </>
                                         )
                                       })}
                                     </>

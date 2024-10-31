@@ -1532,9 +1532,9 @@ span.auction-badge {
   color: #fff;
   width: 70px;
   height: 19px;
-  left: 10px;
-  top: 19px;
-  border-radius: 0 5px 5px 0px;
+  left: 0px;
+  bottom: 20px;
+  border-radius: 0 5px 5px 12px;
   font-family: "Lato", sans-serif;
   font-size: 10.94px;
   font-weight: 400;
@@ -1712,6 +1712,8 @@ footer {
 .productlist a {
   text-decoration: unset;
   color: #000;
+  display: inline-block;
+  position: relative;
 }
 
 
@@ -5549,7 +5551,7 @@ th {
 }
 
 .loader-container {
-  height: 418px;
+  height: 418px !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -5560,7 +5562,7 @@ th {
 }
 
 .no-data-found {
-  height: 250px;
+  height: 300px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -7994,6 +7996,11 @@ input::-webkit-inner-spin-button {
 }
 
 .seller-edit-profile .seller-profile {}
+.seller-edit-profile .seller-profile .s-p-i-w{
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+}
 
 .seller-edit-profile .seller-profile .s-p-i {
   text-align: center;
@@ -10633,7 +10640,7 @@ input::-webkit-inner-spin-button {
   font-weight: 700;
   line-height: 24px;
   text-align: left;
-  color: #707070;
+  color: #000;
   margin-top: 0px;
   padding: 0;
   text-transform: capitalize;
@@ -10645,7 +10652,7 @@ input::-webkit-inner-spin-button {
 #cart-details .product-detail .product-order-details .attribute span,
 #cart-details .product-detail .product-order-details .quantity span,
 #cart-details .product-detail .product-order-details .price span {
-  color: #000;
+  color: #707070;
 }
 
 #cart-details .product-detail .product-order-details .attribute span ul {
@@ -14933,6 +14940,20 @@ line-height: 22px;
 }
 
 @media (max-width: 500px) {
+
+  .bids-skeleton-loader span {
+    height: 155px !important;
+}
+
+  .no-data-found img {
+    width: 20%;
+  }
+
+.no-data-found p {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 700;
+}
 
   .seller-shop-details .user-data .user-data-right ul {
     gap: 10px;

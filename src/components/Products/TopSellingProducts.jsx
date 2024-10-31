@@ -59,7 +59,7 @@ const TopSellingProducts = ({ data, setTopSellingProducts, title, loading }) => 
                       (
                         data?.length > 0 ?
                           data?.map((product, index) => (
-                            <div className="col-lg-3 col-md-6 col-sm-12" key={product?.product?.guid}>
+                            <div className="col-lg-3 col-md-6 col-sm-12" key={index}>
                               <ProductCard data={product} handleToggleFavourite={handleToggleFavourite} index={index} />
                             </div>
                           ))

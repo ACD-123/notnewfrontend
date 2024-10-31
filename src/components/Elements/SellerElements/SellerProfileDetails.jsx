@@ -64,7 +64,11 @@ const SellerProfileDetails = ({ id }) => {
                 :
                 <div className='seller-shop-details'>
                     <div className="cover-image">
-                        <img src={`${BASE_URL}/${shopData?.cover_image}`} alt="Shop Main Image" />
+                    {shopData?.main_image ?
+                        <img src={`${BASE_URL}/${shopData?.main_image}`} alt="Shop Main Image" />
+                            :
+                            <img src={`${BASE_URL}/${shopData?.cover_image}`} alt="Shop Main Image" />
+                        }
                     </div>
                     <div className="user-data">
                         <div className="user-data-left">

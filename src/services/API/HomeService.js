@@ -5,7 +5,7 @@ const baseUrl = `${BASE_API}`
 
 function recursiveCategories(params = {}) {
   return request({
-    url: `${baseUrl}recursiveCategories`,
+    url: `${baseUrl}category`,
     params,
   })
 }
@@ -88,6 +88,7 @@ function getFilterProducts(
     &page=${page}
     &used_condition=${usedCondition}
     &auctioned=${auctioned}
+    &underage=${1}
     `
   })
 }
@@ -122,6 +123,7 @@ function getFilterProducts21Plus(
     &page=${page}
     &used_condition=${usedCondition}
     &auctioned=${auctioned}
+    &underage=${0}
     `
   })
 }

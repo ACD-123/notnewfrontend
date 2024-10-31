@@ -142,43 +142,17 @@ const handleAddAddress =()=>{
       <section id='addresses-personal'>
         <div className='row'>
           <div className='addadrs'>
-            <div>
-              <h3>Addresses</h3>
-            </div>
-            {/* <div>
-              <button onClick={togglePopup}>+ Add Another</button>
-            </div> */}
+            <div><h3>Addresses</h3></div>
           </div>
         </div>
         <div className='addresselected'>
           <img style={{ width: '100%' }} src={map} alt="Map" />
-          {/* <ul>
-            <li>
-              <span>Street Location</span>{' '}
-              <em>14500 Juanita Drive NEKenmore WA 98028-4966USA</em>
-            </li>
-            <li>
-              <span>City</span> <em>Kenmore</em>
-            </li>
-            <li>
-              <span>Label</span> <em>Home</em>
-            </li>
-          </ul> */}
           <table style={{ width: "100%"}}>
             <thead>
                 <tr>
-                  {/* <th>
-                    SNo
-                  </th> */}
-                  <th>
-                    Street Location
-                  </th>
-                  <th>
-                    City
-                  </th>
-                  <th>
-                    State
-                  </th>
+                  <th>Street Location</th>
+                  <th>City</th>
+                  <th>State</th>
                   <th>
                     Actions
                   </th>

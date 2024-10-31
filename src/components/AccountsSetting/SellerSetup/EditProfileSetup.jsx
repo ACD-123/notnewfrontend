@@ -6,7 +6,7 @@ import { BASE_URL } from "../../../services/Constant"
 import { Spinner } from "react-bootstrap";
 import { IoCameraReverseOutline } from "react-icons/io5";
 import LoadingComponents from "../../Shared/LoadingComponents";
-import { MdDelete } from "react-icons/md";
+import { CiEdit } from "react-icons/ci";
 
 const libraries = ['places'];
 const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
@@ -30,10 +30,13 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
     file: "",
     video: "",
     editImage: false,
-    editVideo: false
+    editVideo: false,
+    main_image: "",
+    editMainImage: false
   });
   const fileInputRef = useRef(null);
   const videoInputRef = useRef(null);
+  const mainImageInputRef = useRef(null);
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
     libraries
@@ -83,51 +86,53 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setInputErrors(true)
-    if (editprofile?.fullname === "" && editprofile?.file === "" && editprofile?.address === "" &&
-      editprofile?.city_id === "" && editprofile?.country_id === "" && editprofile?.zip === "" &&
-      editprofile?.description === "" && editprofile?.video === ""
-    ) { return }
-    setIsLoading(true);
-    setEnabled(true);
-    // if (editprofile.editVideo) {
-    const fd = new FormData();
-    fd.append("video", editprofile.video);
-    fd.append("deleted", editprofile.video ? 0 : 1);
-    SellerServices.updateVideo(fd)
-      .then((response) => {
-        const fd = new FormData();
-        fd.append("fullname", editprofile.fullname);
-        fd.append("email", editprofile.email);
-        fd.append("address", editprofile?.address);
-        fd.append("phone", editprofile.phone);
-        fd.append("country_id", editprofile.country_id);
-        fd.append("state_id", editprofile.state_id);
-        fd.append("city_id", editprofile.city_id);
-        fd.append("zip", editprofile.zip);
-        fd.append("latitude", editprofile.latitude);
-        fd.append("longitude", editprofile.longitude);
-        fd.append("description", editprofile.description);
+    if (editprofile?.fullname != "" && editprofile?.file != "" && editprofile?.address != "" &&
+      editprofile?.city_id != "" && editprofile?.country_id != "" && editprofile?.zip != "" &&
+      editprofile?.description != "" && editprofile?.video != "" && editprofile?.main_image != ""
+    ) { 
 
-        if (editprofile.editImage) {
-          fd.append("file", editprofile?.file);
-        }
-        fd.append("guid", editprofile?.guid);
-        SellerServices.update(fd)
-          .then((response) => {
-            toast.success(response.data);
-            getShopDetaill()
-          })
-          .catch((error) => {
-            toast.error(error?.response?.data?.message)
-            setIsLoading(false);
-            setEnabled(false);
-          })
-      })
-      .catch((error) => {
-        toast.error(error?.response?.data?.message)
-        setIsLoading(false);
-        setEnabled(false);
-      })
+      setIsLoading(true);
+      setEnabled(true);
+      const fd = new FormData();
+      fd.append("video", editprofile.video);
+      fd.append("deleted", editprofile.video ? 0 : 1);
+      SellerServices.updateVideo(fd)
+        .then((response) => {
+          const fd = new FormData();
+          fd.append("fullname", editprofile.fullname);
+          fd.append("email", editprofile.email);
+          fd.append("address", editprofile?.address);
+          fd.append("phone", editprofile.phone);
+          fd.append("country_id", editprofile.country_id);
+          fd.append("state_id", editprofile.state_id);
+          fd.append("city_id", editprofile.city_id);
+          fd.append("zip", editprofile.zip);
+          fd.append("latitude", editprofile.latitude);
+          fd.append("longitude", editprofile.longitude);
+          fd.append("description", editprofile.description);
+          fd.append("main_image", editprofile.main_image);
+
+          if (editprofile.editImage) {
+            fd.append("file", editprofile?.file);
+          }
+          fd.append("guid", editprofile?.guid);
+          SellerServices.update(fd)
+            .then((response) => {
+              toast.success(response.data);
+              getShopDetaill()
+            })
+            .catch((error) => {
+              toast.error(error?.response?.data?.message)
+              setIsLoading(false);
+              setEnabled(false);
+            })
+        })
+        .catch((error) => {
+          toast.error(error?.response?.data?.message)
+          setIsLoading(false);
+          setEnabled(false);
+        })
+     }
   }
 
   const handleChange = (e) => {
@@ -157,7 +162,9 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
           file: response?.data?.cover_image,
           video: response?.data?.video,
           editImage: false,
-          editVideo: false
+          editVideo: false,
+          main_image: response?.data?.main_image,
+          editMainImage: false
 
         })
         setIsLoading(false);
@@ -193,13 +200,19 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
     setEditprofile({ ...editprofile, video: "", editVideo: false });
   }
 
-  const updateSellerVideo = () => {
-    if (editprofile.editVideo) {
+  const deleteSelectedMainImage = () => {
+    setEditprofile({ ...editprofile, main_image: "", editMainImage: false });
+  };
 
-    } else {
-      handleSubmit()
-    }
-  }
+  const handleMainImageUploadClick = () => {
+    mainImageInputRef.current.click();
+  };
+
+  const handleMainImageChange = (e) => {
+    const file = e.target.files[0];
+    setEditprofile({ ...editprofile, main_image: file, editMainImage: true });
+    e.target.value = null;
+  };
 
   return (
 
@@ -253,7 +266,6 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
                           className="form-control"
                           defaultValue={editprofile?.email}
                           name="email"
-                          onChange={handleChange}
                           placeholder="Enter your email"
                           readOnly
                         />
@@ -282,7 +294,7 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
                             <input
                               type="text"
                               className="form-control"
-                              placeholder={`${editprofile?.address}`}
+                              defaultValue={`${editprofile?.address}`}
                             />
                           </StandaloneSearchBox>}
                         {editprofile.address === '' && inputErrors && <p className="error">Address is required</p>}
@@ -341,7 +353,46 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
                       </div>
                     </div>
                     <div className="p-m-i-u">
-                      {!editprofile?.editVideo && editprofile?.video == null &&
+                      {!editprofile?.editMainImage && editprofile?.main_image == null || editprofile?.main_image == "" &&
+                        <div className="p-m-i-u-wrap">
+                          <div className="upload-box" onClick={handleMainImageUploadClick}>
+                            <svg width="96" height="97" viewBox="0 0 96 97" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M29.8004 48.4615H66.1696M47.985 66.6462V30.2769M47.985 93.9231C72.9888 93.9231 93.4465 73.4654 93.4465 48.4615C93.4465 23.4577 72.9888 3 47.985 3C22.9811 3 2.52344 23.4577 2.52344 48.4615C2.52344 73.4654 22.9811 93.9231 47.985 93.9231Z" stroke="#BBBBBB" stroke-width="4.54615" strokeLinecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span>Click here to upload cover image</span>
+                            <input
+                              type="file"
+                              ref={mainImageInputRef}
+                              accept="image/*"
+                              style={{ display: 'none' }}
+                              onChange={handleMainImageChange}
+                            />
+                          </div>
+                        </div>
+                      }
+                      <div className="selected-images">
+                        {editprofile?.main_image != '' && editprofile?.main_image != null && editprofile?.main_image != "" ?
+                          (!editprofile?.editMainImage && editprofile?.main_image?.includes('image') ?
+                            <div className="selected-videos-box" style={{ display: 'flex', justifyContent: 'center' }}>
+                              <img src={`${BASE_URL}/${editprofile?.main_image}`} alt="" style={{ maxHeight: '200px', width: '100%', objectFit: 'cover', borderRadius: '22px' }} />
+                              <span onClick={() => deleteSelectedMainImage()}><CiEdit /></span>
+                            </div>
+                            :
+                            <div className="selected-videos-box" style={{ display: 'flex', justifyContent: 'center' }}>
+                              <img src={URL.createObjectURL(editprofile?.main_image)} alt="" style={{ maxHeight: '200px', width: '100%', objectFit: 'cover', borderRadius: '22px' }} />
+                              <span onClick={() => { deleteSelectedMainImage() }}><CiEdit /></span>
+                            </div>
+                          )
+
+                          :
+                          null
+                        }
+                      </div>
+                      {editprofile.main_image === '' && inputErrors &&
+                        <p className="error">Cover image is required</p>}
+                    </div>
+                    <div className="p-m-i-u">
+                      {!editprofile?.editVideo && editprofile?.video == null || editprofile?.video == "" &&
                         <div className="p-m-i-u-wrap">
                           <div className="upload-box" onClick={handleVideoUploadClick}>
                             <svg width="96" height="97" viewBox="0 0 96 97" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -366,7 +417,7 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
                                 <source src={`${BASE_URL}/public/${editprofile?.video}`} />
                                 Your browser does not support the video tag.
                               </video>
-                              <span onClick={() => deleteSelectedVideo()}><MdDelete /></span>
+                              <span onClick={() => deleteSelectedVideo()}><CiEdit /></span>
                             </div>
                             :
                             <div className="selected-videos-box">
@@ -374,7 +425,7 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
                                 <source src={URL.createObjectURL(editprofile?.video)} />
                                 Your browser does not support the video tag.
                               </video>
-                              <span onClick={() => { deleteSelectedVideo() }}><MdDelete /></span>
+                              <span onClick={() => { deleteSelectedVideo() }}><CiEdit /></span>
                             </div>
                           )
 

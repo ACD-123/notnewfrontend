@@ -240,7 +240,7 @@ const BidsNoffers = () => {
                               <li>
                                 <div className="bid-user">
                                   <div className="b-s-l">
-                                  <img src={`${BASE_URL}/${data?.media?.[0]?.url}`}  />
+                                  <img src={`${auctionDetail?.product?.media?.[0]?.name}`}  />
                                   </div>
                                   <div className="b-s-r">
                                     <h2>{data?.name} {data?.last_name}</h2>

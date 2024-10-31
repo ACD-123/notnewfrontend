@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import SellerServices from '../../services/API/SellerServices';
 import LoadingComponents from '../Shared/LoadingComponents';
+import NoDataFound from '../Shared/NoDataFound';
 
 const PrivacyPolicy = () => {
 
@@ -34,6 +35,7 @@ const PrivacyPolicy = () => {
                     <div className="title">Privacy Policy</div>
                     <div className="h-a-s">
                         <div className="h-a-s-p-p">
+                            {privacys?.length > 0 ?
                             <ul>
                                 {privacys.map((privacy, index) => {
                                     return (
@@ -52,6 +54,9 @@ const PrivacyPolicy = () => {
                                     )
                                 })}
                             </ul>
+                            :
+                            <NoDataFound title={'No Data Found'}/>
+                            }
                         </div>
 
                     </div>

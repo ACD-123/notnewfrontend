@@ -457,10 +457,14 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                           <li>Shipping</li>
                           <li>${pendingOrderDetail?.shippingcost}</li>
                         </ul>
-                        <ul>
-                          <li>Discount</li>
-                          <li>-$5.00</li>
-                        </ul>
+                        {pendingOrderDetail?.voucher_discount > 0 ?
+                      <ul>
+                        <li>Voucher Discount</li>
+                        <li>-${pendingOrderDetail?.voucher_discount}</li>
+                      </ul>
+                      :
+                      null
+                      }
                       </li>
                     </ul>
                   </div>

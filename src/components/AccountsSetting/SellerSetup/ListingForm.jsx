@@ -440,21 +440,41 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     } else {
       formData.append("stockCapacity", productManagment.stockCapacity);
     }
+
+
+    if (productManagment?.sellingNow === true) {
+      formData.append("price", productManagment.price);
+      formData.append("saleprice", productManagment.saleprice);
+      formData.append("minpurchase", productManagment.minpurchase);
+      formData.append("listing", productManagment.listing);
+    } else {
+      formData.append("price", null);
+      formData.append("saleprice", null);
+      formData.append("minpurchase", 0);
+      formData.append("listing", null);
+    }
+
+    if (productManagment?.auctioned === true) {
+      formData.append("bids", productManagment.bids);
+      formData.append("durations", productManagment.durations);
+      formData.append("hours", productManagment.hours);
+      formData.append("auctionListing", productManagment.auctionListing);
+      formData.append("end_listing", productManagment.end_listing);
+
+    } else {
+      formData.append("bids", null);
+      formData.append("durations", 0);
+      formData.append("hours", null);
+      formData.append("auctionListing", null);
+      formData.append("end_listing", null);
+    }
+
     formData.append("brand_id", productManagment.brand_id?.value);
     formData.append("model", productManagment.model);
     formData.append("description", productManagment.description);
     formData.append("tags", JSON.stringify(productManagment.tags));
-    formData.append("saleprice", productManagment.saleprice);
     formData.append("sellingNow", productManagment.sellingNow);
-    formData.append("listing", productManagment.listing);
-    formData.append("price", productManagment.price);
-    formData.append("minpurchase", productManagment.minpurchase);
     formData.append("auctioned", productManagment.auctioned);
-    formData.append("bids", productManagment.bids);
-    formData.append("durations", productManagment.durations);
-    formData.append("hours", productManagment.hours);
-    formData.append("auctionListing", productManagment.auctionListing);
-    formData.append("end_listing", productManagment.end_listing);
     formData.append("deliverddomestic", productManagment.deliverddomestic);
     formData.append("deliverdinternational", productManagment.deliverdinternational);
     formData.append("deliverycompany", productManagment.deliverycompany);
@@ -500,9 +520,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
         .then((res) => {
           setSuccess(true)
           setPopupText('Product Listed Sucessfully')
-          setTimeout(() => {
-            setSubmitted(false)
-          }, 3000);
+          // setTimeout(() => {
+          //   setSubmitted(false)
+          // }, 3000);
           setIsFromLoading(false)
         })
         .catch((error) => {
@@ -516,8 +536,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
   const getProductDetail = (guid) => {
     ProductServices.get(guid)
-      .then((response) => {
-        setProductManagments((prev) => ({
+    
+    .then((response) => {
+      setProductManagments((prev) => ({
           ...prev,
           file: [...response?.data?.media],
           condition: response?.data?.condition,
@@ -546,8 +567,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           bids: response?.data?.bids,
           durations: response?.data?.durations,
           hours: response?.data?.hours,
-          auctionListing: response?.data?.auctionListing,
-          end_listing: response?.data?.end_listing,
+          auctionListing: response?.data?.auction_listing,
+          end_listing: response?.data?.auction_End_listing ? response?.data?.auction_End_listing.slice(0,10) : '',
+          // end_listing: response?.data?.end_listing ? `${response?.data?.end_listing.slice()}` : '',
           deliverddomestic: response?.data?.deliverd_domestic,
           deliverdinternational: response?.data?.deliverd_international,
           deliverycompany: "asd",
@@ -584,7 +606,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           setProductManagments((prev) => ({
             ...prev,
             category: { value: response?.data?.category?.parent_id, label: response?.data?.category?.parent_name },
-            subCategory: {value: response?.data?.category?.id, label: response?.data?.category?.name}
+            subCategory: { value: response?.data?.category?.id, label: response?.data?.category?.name }
           }))
           handelCategoryChange({ value: response?.data?.category?.parent_id, label: response?.data?.category?.parent_name }, response?.data?.attributes, true)
           handelSubCategoryChange({ value: response?.data?.category?.id, label: response?.data?.category?.name }, response?.data?.attributes)
@@ -732,7 +754,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                         options={subCategories}
                         placeholder={'Select sub category'}
                       />
-                     
+
                     </div>
                   }
                 </div>
@@ -979,13 +1001,13 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                       </div>
                     </div>
                     <div className="two-field">
-                      <div className="two-field-left">
+                      {/* <div className="two-field-left">
                         <label>Hours</label>
                         <input type="number" name="hours" value={productManagment?.hours} onChange={handleChange} placeholder="min hours" />
                         {(productManagment.hours === "" && inputError && productManagment.auctioned) &&
                           <div className="error-input">Hours is required</div>
                         }
-                      </div>
+                      </div> */}
                       <div className="two-field-left">
                         <label>Schedule Your Listing</label>
                         <input type="date" name="auctionListing" value={productManagment?.auctionListing} onChange={handleChange} />
@@ -993,8 +1015,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                           <div className="error-input">Schedule your listing is required</div>
                         }
                       </div>
-                    </div>
-                    <div className="two-field">
                       <div className="two-field-left">
                         <label>Schedule End Listing</label>
                         <input type="date" name="end_listing" value={productManagment?.end_listing} onChange={handleChange} />
@@ -1002,6 +1022,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                           <div className="error-input">Schedule end listing is required</div>
                         }
                       </div>
+                    </div>
+                    <div className="two-field">
+                     
                       <div className="two-field-left">
                       </div>
                     </div>
@@ -1062,7 +1085,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                       <>
                         {isLoaded && (
                           <StandaloneSearchBox onPlacesChanged={handlePlaceChanged} style={{ width: '100%' }}>
-                            <input type="text" defaultValue={productManagment.address} placeholder={productManagment.address} />
+                            <input type="text" name="address" onChange={handleChange} defaultValue={productManagment.address} placeholder={productManagment.address} />
                           </StandaloneSearchBox>
                         )}
                       </>
@@ -1074,7 +1097,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                             onLoad={(ref) => (inputRef.current = ref)}
                             onPlacesChanged={handlePlaceChanged}
                           >
-                            <input type="text" placeholder="Enter your street Address" />
+                            <input type="text" name="address" onChange={handleChange} placeholder="Enter your street Address" />
                           </StandaloneSearchBox>
                         )}
                       </>
@@ -1087,7 +1110,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                   </div>
                   <div className="two-field-left">
                     <label>Country</label>
-                    <input type="text" name="stockCapacity" value={productManagment?.country} onChange={handleChange} placeholder="Enter country" />
+                    <input type="text" name="country" value={productManagment?.country} onChange={handleChange} placeholder="Enter country" />
                     {productManagment.country === "" && inputError &&
                       <div className="error-input">Country is required</div>
                     }
@@ -1096,14 +1119,14 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                 <div className="two-field">
                   <div className="two-field-left">
                     <label>State</label>
-                    <input type="text" name="stockCapacity" value={productManagment?.state} onChange={handleChange} placeholder="Enter state" />
+                    <input type="text" name="state" value={productManagment?.state} onChange={handleChange} placeholder="Enter state" />
                     {productManagment.state === "" && inputError &&
                       <div className="error-input">State is required</div>
                     }
                   </div>
                   <div className="two-field-left">
                     <label>City</label>
-                    <input type="text" name="stockCapacity" value={productManagment?.city} onChange={handleChange} placeholder="Enter city" />
+                    <input type="text" name="city" value={productManagment?.city} onChange={handleChange} placeholder="Enter city" />
                     {productManagment.city === "" && inputError &&
                       <div className="error-input">City is required</div>
                     }

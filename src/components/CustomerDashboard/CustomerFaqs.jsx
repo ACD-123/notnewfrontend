@@ -3,6 +3,7 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import SellerServices from '../../services/API/SellerServices';
 import { toast } from 'react-toastify';
 import LoadingComponents from '../Shared/LoadingComponents';
+import NoDataFound from '../Shared/NoDataFound';
 
 const CustomerFaqs = () => {
     const [isLoading, setIsLoading] = useState(true)
@@ -42,6 +43,7 @@ const CustomerFaqs = () => {
                     <div className="title">Faqs</div>
                     <div className="h-a-s">
                         <div className="h-a-s-f-a-q">
+                            {faqs?.length > 0 ?
                             <ul>
                                 {faqs.map((faq, index) => {
                                     return (
@@ -63,6 +65,9 @@ const CustomerFaqs = () => {
                                     )
                                 })}
                             </ul>
+                            :
+                            <NoDataFound title={'No Data Found'}/>
+                            }
                         </div>
                         {/* {isLoading ?
                                 <LoadingComponents />

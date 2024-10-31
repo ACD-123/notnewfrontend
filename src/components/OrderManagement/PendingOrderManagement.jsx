@@ -249,14 +249,18 @@ const PendingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
                         <li>Subtotal ( {pendingOdrDetail?.products?.[0]?.quantity} item )</li>
                         <li>${pendingOdrDetail?.subtotal}</li>
                       </ul>
-                      <ul>
+                      {/* <ul>
                         <li>Shipping</li>
                         <li>${pendingOdrDetail?.shippingcost}</li>
-                      </ul>
+                      </ul> */}
+                      {pendingOdrDetail?.voucher_discount > 0 ?
                       <ul>
-                        <li>Discount</li>
-                        <li>-$5.00</li>
+                        <li>Voucher Discount</li>
+                        <li>-${pendingOdrDetail?.voucher_discount}</li>
                       </ul>
+                      :
+                      null
+                      }
                     </li>
                   </ul>
                 </div>

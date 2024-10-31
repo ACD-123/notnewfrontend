@@ -343,6 +343,8 @@ const SignUp = () => {
                           <input
                             type="text"
                             className="form-control"
+                            name="address"
+                            onChange={handleChange}
                             placeholder={address ? address : "Enter your address"}
                           />
                         </StandaloneSearchBox>

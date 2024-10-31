@@ -256,14 +256,18 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                           <li>Subtotal ( {pendingOrderDetail?.products?.[0]?.quantity} item )</li>
                           <li>${pendingOrderDetail?.subtotal}</li>
                         </ul>
-                        <ul>
+                        {/* <ul>
                           <li>Shipping</li>
                           <li>${pendingOrderDetail?.shippingcost}</li>
-                        </ul>
-                        <ul>
-                          <li>Discount</li>
-                          <li>-$5.00</li>
-                        </ul>
+                        </ul> */}
+                         {pendingOrderDetail?.voucher_discount > 0 ?
+                      <ul>
+                        <li>Voucher Discount</li>
+                        <li>-${pendingOrderDetail?.voucher_discount}</li>
+                      </ul>
+                      :
+                      null
+                      }
                       </li>
                     </ul>
                   </div>

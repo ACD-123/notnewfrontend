@@ -12,7 +12,6 @@ const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }
   const [isLoading, setIsLoading] = useState(true);
   const [refundedDetail, setRefundedDetail] = useState([]);
   const [refundedFullResponse, setRefundedFullResponse] = useState([]);
-  const [rejectedOrderAttributes, setRejectedOrderAttributes] = useState([]);
 
   const getRejectedOders = () => {
     OrderServices.customerRefundOrders()
@@ -36,8 +35,6 @@ const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }
         setIsLoading(false);
         const attributes = response?.data?.products?.[0]?.attributes
         const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
-        const normalArray = JSON.parse(validJsonString);
-        setRejectedOrderAttributes(normalArray)
       })
       .catch((error) => {
         toast.error(error?.response?.data?.message)
@@ -221,29 +218,6 @@ const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }
                         <NoDataFound title={'No Data Found'} />
                       }
                     </div>
-                    {/* <div className="s-o-m-d-7-i">
-                      <div className="s-o-m-d-7-i-w">
-                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                      </div>
-                      <div className="s-o-m-d-7-i-w">
-                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                      </div>
-                      <div className="s-o-m-d-7-i-w">
-                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                      </div>
-                      <div className="s-o-m-d-7-i-w">
-                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                      </div>
-                      <div className="s-o-m-d-7-i-w">
-                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                      </div>
-                      <div className="s-o-m-d-7-i-w">
-                        <img src={refundedDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                        <div className="s-o-m-d-7-i-w-l-m">
-                          View More
-                        </div>
-                      </div>
-                    </div> */}
                   </div>
                   <div className="s-o-m-d-6">
                     <h4>Reason reasons</h4>
@@ -251,37 +225,6 @@ const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }
                       {product?.refund?.reason}
                     </div>
                   </div>
-                  {/* <div className="s-o-m-d-8">
-              <h4>Refund Amount</h4>
-              <div className="d-4-2">
-                <ul>
-                  <li>
-                    <ul>
-                      <li>Subtotal ( {refundedDetail?.products?.[0]?.quantity} item )</li>
-                      <li>${refundedDetail?.subtotal}</li>
-                    </ul>
-                    <ul>
-                      <li>Shipping</li>
-                      <li>${refundedDetail?.shippingcost}</li>
-                    </ul>
-                    <ul>
-                      <li>Discount</li>
-                      <li>-$5.00</li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-              <div className="d-4-3">
-                <ul>
-                  <li>
-                    <ul>
-                      <li>Order Total</li>
-                      <li>${refundedDetail?.products?.[0]?.ordertotal}</li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-            </div> */}
                   <div className="s-o-m-d-3">
                     <div className="s-o-m-d-3-l">
                       <h3>Refund Approval</h3>
