@@ -114,7 +114,7 @@ const SellerDetails = () => {
               <div className='profile-record'>
                 <h4>{shopData.sellerName}</h4>
                 <ul>
-                  <li>{shopData.positivefeedback}% Positive feedbackss</li>
+                  <li>{shopData.positivefeedback}% Positive feedbacks</li>
                   <li>{productData.is_sold} Items Sold</li>
                 </ul>
               </div>

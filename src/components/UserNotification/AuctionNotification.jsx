@@ -5,7 +5,7 @@ import NoDataFound from '../Shared/NoDataFound';
 import LoadingComponents from '../Shared/LoadingComponents';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-
+import logo from '../../assets/Images/logo.png'
 const PageNumbers = ({
   totalPages,
   pageSize,
@@ -73,7 +73,7 @@ export const AuctionNotification = ({ getNotificationCount }) => {
                         <div className="n-l-d-w">
                           <div className="n-l-d-w-l">
                             <div className="n-l-d-w-l-l">
-                              <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                              <img src={logo} />
                             </div>
                             <div className="n-l-d-w-l-r">
                               <h2>{data?.title}</h2>
@@ -90,7 +90,7 @@ export const AuctionNotification = ({ getNotificationCount }) => {
                         <div className="n-l-d-w">
                           <div className="n-l-d-w-l">
                             <div className="n-l-d-w-l-l">
-                              <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                              <img src={logo} />
                             </div>
                             <div className="n-l-d-w-l-r">
                               <h2>{data?.title}</h2>

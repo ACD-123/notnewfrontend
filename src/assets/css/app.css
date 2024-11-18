@@ -1528,13 +1528,13 @@ section#product-recents-viewed .headings h3 span {
 
 span.auction-badge {
   position: absolute;
-  background: #FFA149;
+  background: linear-gradient(93.63deg, #8B2CA0 -20.62%, #00C3C9 106.1%);
   color: #fff;
   width: 70px;
   height: 19px;
-  left: 0px;
-  bottom: 20px;
-  border-radius: 0 5px 5px 12px;
+  right: 10px;
+  top: 10px;
+  border-radius: 5px;
   font-family: "Lato", sans-serif;
   font-size: 10.94px;
   font-weight: 400;
@@ -1547,7 +1547,7 @@ span.auction-badge {
 
 span.auction-badge-21 {
   position: absolute;
-  background: #FFA149;
+  background: linear-gradient(93.63deg, #8B2CA0 -20.62%, #00C3C9 106.1%);
   color: #fff;
   width: 70px;
   height: 19px;
@@ -1568,7 +1568,7 @@ span.plus21 {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: #f34335;
+  background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   border-radius: 12px 0px 12px 0px;
   font-family: "Lato", sans-serif;
   font-size: 14px;
@@ -1714,6 +1714,7 @@ footer {
   color: #000;
   display: inline-block;
   position: relative;
+  width: 100%;
 }
 
 
@@ -5962,7 +5963,7 @@ th {
   font-weight: 600;
   line-height: 44.98px;
   text-align: left;
-  color: #373737;
+  color: #000;
   margin: 0;
 }
 
@@ -5972,7 +5973,7 @@ th {
 }
 
 #listing-creating-form .p-m-f .p-m-p-c ul li .check {
-  border: 3px solid #969696;
+  border: 3px solid #000;
   width: 27px;
   min-width: 27px;
   height: 27px;
@@ -6085,13 +6086,13 @@ th {
   font-weight: 700;
   line-height: 59.97px;
   text-align: left;
-  color: #696969;
+  color: #000;
   white-space: nowrap;
   margin: 0;
 }
 
 #listing-creating-form .p-m-f .p-m-i-s .title-line div {
-  background: #707070;
+  background: #000;
   height: 2px;
   width: 100%;
 }
@@ -6099,6 +6100,10 @@ th {
 #listing-creating-form .p-m-f .p-m-i-s .two-field {
   display: flex;
   gap: 20px;
+}
+
+#listing-creating-form .p-m-f .p-m-i-s .two-field .two-field-left .css-1jqq78o-placeholder{
+  color: gray;
 }
 
 #listing-creating-form .p-m-f .p-m-i-s .two-field .two-field-left {
@@ -6115,7 +6120,7 @@ th {
   font-weight: 600;
   line-height: 26px;
   text-align: left;
-  color: #696969;
+  color: #000;
   margin: 0;
   margin-bottom: 5px;
   text-transform: capitalize;
@@ -6127,7 +6132,7 @@ th {
   font-weight: 500;
   line-height: 24px;
   text-align: left;
-  color: #292929;
+  color: #000;
   margin: 0;
   padding: 17px 25px;
   border-radius: 13px;
@@ -6139,7 +6144,7 @@ th {
   font-weight: 500;
   line-height: 24px;
   text-align: left;
-  color: #292929 !important;
+  color: gray !important;
   margin: 0;
   border-radius: 13px;
 }
@@ -6156,13 +6161,17 @@ th {
   border-radius: 13px;
 }
 
+#listing-creating-form .p-m-f .p-m-i-s .two-field .two-field-left textarea::placeholder{
+  color: gray !important;
+}
+
 #listing-creating-form .p-m-f .p-m-i-s .two-field .two-field-left input::placeholder {
   font-family: 'Cairo';
   font-size: 16px;
   font-weight: 500;
   line-height: 24px;
   text-align: left;
-  color: #292929;
+  color: gray !important;
 }
 
 #listing-creating-form .p-m-f .p-m-i-s .two-field .css-1jqq78o-placeholder {
@@ -9635,7 +9644,7 @@ input::-webkit-inner-spin-button {
   flex: 2;
   font-family: 'Cairo';
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 22px;
   text-align: left;
   color: #000;
@@ -10094,7 +10103,7 @@ input::-webkit-inner-spin-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 600px;
+  max-width: 700px;
 }
 
 .place-a-bid-modal .c-c-body {
@@ -10135,6 +10144,7 @@ input::-webkit-inner-spin-button {
   gap: 15px;
   margin: 0;
   padding: 0;
+  flex-wrap: wrap;
 }
 
 .place-a-bid-modal .c-c-body .options ul li {
@@ -10787,8 +10797,8 @@ input::-webkit-inner-spin-button {
 .notification-Page .notification-Page-wrap .notification-listing .n-l-d .n-l-d-w .n-l-d-w-l .n-l-d-w-l-l {}
 
 .notification-Page .notification-Page-wrap .notification-listing .n-l-d .n-l-d-w .n-l-d-w-l .n-l-d-w-l-l img {
-  width: 70px;
-  height: 70px;
+  width: 55px;
+  height: 55px;
   object-fit: cover;
   border-radius: 100%;
 }
@@ -11586,6 +11596,10 @@ input::-webkit-inner-spin-button {
   height: 140px;
   width: 100%;
   margin-top: 20px;
+}
+
+.refund-product textarea::placeholder{
+  color: gray !important;
 }
 
 .refund-product .button {
@@ -13717,6 +13731,11 @@ line-height: 22px;
   margin-bottom: 10px;
 }
 
+.user-notification-setting {
+  margin: 0px 0px;
+  height: 100%;
+}
+
 }
 
 @media (max-width: 800px) {
@@ -13738,6 +13757,49 @@ line-height: 22px;
 }
 
 @media (max-width: 768px) {
+
+  .seller-new-transaction .peronsinfo-form .pranker {
+    margin-bottom: 5px;
+}
+
+  .seller-new-transaction .peronsinfo-form form .input-wrap {
+    flex-direction: column;
+}
+
+  .prnform button {
+    font-size: 16px;
+    line-height: 16px;
+    padding: 16px 40px;
+    border-radius: 6px;
+    width: 100%;
+    text-align: center;
+}
+
+  .pic-holder {
+    border-radius: 6px;
+    width: 70px;
+    height: 70px;
+}
+
+  .peronsinfo-form h2 {
+    font-size: 22px;
+    line-height: 22.13px;
+}
+
+.peronsinfo-form h6 a {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+  .place-a-bid-modal .c-c-body .options ul {
+    justify-content: center;
+}
+  .place-a-bid-modal .c-c-body .options ul li .s-b-pp {
+    font-size: 14px;
+    line-height: 14px;
+    padding: 10px 15px;
+    border-radius: 6px;
+}
 
   .category-page .category-page-wrap .breadcrem a {
     font-size: 12px;
@@ -14941,6 +15003,34 @@ line-height: 22px;
 
 @media (max-width: 500px) {
 
+  .user-notification-setting .user-notification-setting-wrap ul li .title p {
+    font-size: 14px;
+    line-height: 22px;
+}
+
+  .user-notification-setting .user-notification-setting-wrap ul li .title h3 {
+    font-size: 16px;
+}
+
+  .user-notification-setting .user-notification-setting-wrap ul li {
+    gap: 20px;
+}
+  .place-a-bid-modal .c-c-body .title {
+    font-size: 24px;
+    line-height: 24px;
+    margin-bottom: 20px;
+}
+
+  .place-a-bid-modal .c-c-body {
+    padding: 15px;
+}
+
+  .place-a-bid-modal .c-c-body form button {
+    width: 100%;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
   .bids-skeleton-loader span {
     height: 155px !important;
 }
@@ -15664,11 +15754,6 @@ section#singup .signup-form-fields.register .form-control::placeholder{
   section#addresses-personal {
     padding-top: 50px;
   }
-
-  section#prsnlinfo {
-    padding-top: 50px;
-  }
-
   .popup-address {
     z-index: 99999999 !important;
   }

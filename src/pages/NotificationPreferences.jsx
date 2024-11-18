@@ -5,6 +5,10 @@ import Header from '../components/Header';
 import SellerServices from '../services/API/SellerServices';
 import { toast } from 'react-toastify';
 import LoadingComponents from '../components/Shared/LoadingComponents';
+import { GiHamburgerMenu } from "react-icons/gi";
+import Drawer from 'react-modern-drawer'
+import 'react-modern-drawer/dist/index.css'
+import { RxCross2 } from "react-icons/rx";
 
 const NotificationPreferences = ({ cartFullResponse, notificationCount }) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('notification-settings');
@@ -56,6 +60,11 @@ const NotificationPreferences = ({ cartFullResponse, notificationCount }) => {
       });
   };
 
+  const [isOpen, setIsOpen] = React.useState(false)
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState)
+  }
+
   return (
     <>
       <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount} />
@@ -77,8 +86,11 @@ const NotificationPreferences = ({ cartFullResponse, notificationCount }) => {
                   <div className="row">
                     <div>
                       <section id='activity-main-dashboard'>
+                        <div id="hide-on-desktop-991" onClick={toggleDrawer}>
+                          <GiHamburgerMenu />
+                        </div>
                         <div className='row'>
-                          <div className='col-lg-3'>
+                          <div className='col-lg-3' id='hide-on-mobile-991'>
                             <div className={`left-menu`}>
                               <div className="title-customer-side">Notification</div>
                               <div className="personal-info">
@@ -225,6 +237,28 @@ const NotificationPreferences = ({ cartFullResponse, notificationCount }) => {
           </div>
         </div>
       </section>
+      <Drawer
+        open={isOpen}
+        onClose={toggleDrawer}
+        direction='left'
+        className='mobile-product-filter'
+        size={'90%'}
+      >
+
+        <div className='left-menu'>
+          <div className="title-selling-hub">Selling Hub <span onClick={toggleDrawer}><RxCross2 /></span></div>
+          <div className="personal-info">
+            <ul>
+              <li className={selectedMenuItem === 'notification-settings' ? 'active' : ''} onClick={() =>{toggleDrawer();}}>
+                Notification Settings
+              </li>
+            </ul>
+            <div className="button">
+              <button onClick={() => { navigate('/customerdashboard?tab=account'); toggleDrawer() }}>Go Back</button>
+            </div>
+          </div>
+        </div>
+      </Drawer>
     </>
   );
 };

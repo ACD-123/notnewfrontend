@@ -13,8 +13,8 @@ const ProductCard = ({ setSubmitted, setProductId }) => {
   const activeProductData = async () => {
     try {
       const res = await ProductServices.sellerActiveProducts();
-        setActiveProducts(res.data);
-        setIsLoading(false)
+      setActiveProducts(res.data);
+      setIsLoading(false)
     } catch (error) {
       setIsLoading(false)
       toast.error(error?.response?.data?.message)
@@ -24,11 +24,11 @@ const ProductCard = ({ setSubmitted, setProductId }) => {
   const deleteSellerProduct = async (id) => {
     setIsLoading(true)
     ProductServices.deleteSellerProduct(id).then((res) => {
-        setActiveProducts(res.data);
-        activeProductData();
-      }).catch((error) => {
-        setIsLoading(false)
-      })
+      setActiveProducts(res.data);
+      activeProductData();
+    }).catch((error) => {
+      setIsLoading(false)
+    })
   }
   useEffect(() => {
     activeProductData();
@@ -39,11 +39,11 @@ const ProductCard = ({ setSubmitted, setProductId }) => {
       <div className='container'>
         <div className='row'>
           {isLoading ? (
-            <LoadingComponents/>
+            <LoadingComponents />
           ) : (
             <>
               {activeProducts?.length === 0 ? (
-                <NoDataFound title={'No data Products'}/>
+                <NoDataFound title={'No data Products'} />
               ) : (
                 <>
                   {activeProducts.map((product) => (

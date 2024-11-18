@@ -71,13 +71,6 @@ const AccountInfo = () => {
                 <ul><li onClick={() => { navigate('/notification-setting') }}>Notification Settings</li></ul>
               </div>
             </div>
-            {/* <div className='col-lg-12'>
-              <div className='personal-info-links four'>
-                <div className="button">
-                  <button onClick={() => { navigate('/customerdashboard?tab=account') }}>Go Back</button>
-                </div>
-              </div>
-            </div> */}
           </div>
         );
     }

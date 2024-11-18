@@ -210,10 +210,17 @@ function Chat() {
                                     style={{ borderRadius: "40px" }} width="40" height="40"
                                   />
                                   :
-                                  <img
-                                    src={chat?.sender_profile_image ? "https://notnewbackendv2.testingwebsitelink.com/" + chat?.sender_profile_image : blank}
-                                    style={{ borderRadius: "40px" }} width="40" height="40"
-                                  />
+                                  chat?.sender_profile_image ?
+                                    <img
+                                      src={chat?.sender_profile_image ? "https://notnewbackendv2.testingwebsitelink.com/" + chat?.sender_profile_image : blank}
+                                      style={{ borderRadius: "40px" }} width="40" height="40"
+                                    />
+                                    :
+                                    <img
+                                      src={blank}
+                                      style={{ borderRadius: "40px" }} width="40" height="40"
+                                    />
+
                                 }
                               </div>
                               <div className="name-mgs">
@@ -278,26 +285,12 @@ function Chat() {
                                 return (
                                   <div key={msg?.from_id} className="sent-message">
                                     <div className="sent-message-wrap">
-                                      {/* {msg?.user ? ( */}
-                                      {/* <> */}
-                                      {/* {msg?.user?.profile_image?.includes('google') ? */}
-                                      {/* <img src={msg?.user?.profile_image} /> */}
-                                      {/* : */}
-                                      <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.seller?.cover_image} />
-                                      {/* } */}
-                                      {/* </> */}
-                                      {/* ) : (
-                                <>
-                                  <img src={blank} alt="blank" />
-                                </>
-                              )} */}
+                                      {msg?.seller?.cover_image ?
+                                        <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.seller?.cover_image} />
+                                        :
+                                        <img src={blank} />
+                                      }
                                       <p className="message">{msg?.message}</p>
-                                      {/* <div className="message">
-                                <div className="time">
-                                  {chat?.date?.slice(0, 5)}{" "}
-                                  {chat?.date?.slice(9, 20)}
-                                </div>
-                              </div> */}
                                     </div>
                                   </div>
                                 );
@@ -310,8 +303,10 @@ function Chat() {
                                           {msg?.testuser?.profile_image?.includes("http") ?
                                             <img src={msg?.testuser?.profile_image} />
                                             :
-                                            // <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.participants?.profile_image} />
-                                            <img src={`${BASE_URL}/${msg?.testuser?.profile_image}`} />
+                                            msg?.testuser?.profile_image ?
+                                              <img src={`${BASE_URL}/${msg?.testuser?.profile_image}`} />
+                                              :
+                                              <img src={blank} />
                                           }
                                         </>
                                       ) : (
@@ -402,10 +397,16 @@ function Chat() {
                                       style={{ borderRadius: "40px" }} width="40" height="40"
                                     />
                                     :
-                                    <img
-                                      src={chat?.sender_profile_image ? "https://notnewbackendv2.testingwebsitelink.com/" + chat?.sender_profile_image : blank}
-                                      style={{ borderRadius: "40px" }} width="40" height="40"
-                                    />
+                                    chat?.sender_profile_image ?
+                                      <img
+                                        src={chat?.sender_profile_image ? "https://notnewbackendv2.testingwebsitelink.com/" + chat?.sender_profile_image : blank}
+                                        style={{ borderRadius: "40px" }} width="40" height="40"
+                                      />
+                                      :
+                                      <img
+                                        src={blank}
+                                        style={{ borderRadius: "40px" }} width="40" height="40"
+                                      />
                                   }
                                 </div>
                                 <div className="name-mgs">
@@ -474,7 +475,11 @@ function Chat() {
                                   return (
                                     <div key={msg?.from_id} className="sent-message">
                                       <div className="sent-message-wrap">
+                                        {msg?.seller?.cover_image ?
                                         <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.seller?.cover_image} />
+                                        :
+                                        <img src={blank} />
+                                        }
                                         <p className="message">{msg?.message}</p>
                                       </div>
                                     </div>

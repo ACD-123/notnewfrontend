@@ -347,14 +347,14 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     e.preventDefault();
     setInputError(true)
     setIsFromLoading(true)
-    if (productManagment.file.length === 0 || productManagment.condition === "" ||
-      productManagment.category === null || productManagment.brand_id === null ||
-      productManagment.description === "" || productManagment.address === "" ||
-      productManagment.country === "" ||
-      productManagment.state === "" || productManagment.city === "" || productManagment.zip === "" ||
-      productManagment.weight === "" || productManagment.weight === 0 || productManagment.width === "" ||
-      productManagment.width === 0 || productManagment.height === "" || productManagment.height === 0 ||
-      productManagment.length === "" || productManagment.length === 0
+    if (productManagment.file.length == 0 || productManagment.condition == "" ||
+      productManagment.category == null || productManagment.brand_id == null ||
+      productManagment.description == "" || productManagment.address == "" ||
+      productManagment.country == "" ||
+      productManagment.state == "" || productManagment.city == "" || productManagment.zip == "" ||
+      productManagment.weight == "" || productManagment.weight == 0 || productManagment.width == "" ||
+      productManagment.width == 0 || productManagment.height == "" || productManagment.height == 0 ||
+      productManagment.length == "" || productManagment.length == 0 || productManagment.title == ''
     ) {
       setIsFromLoading(false)
       return false;
@@ -536,9 +536,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
   const getProductDetail = (guid) => {
     ProductServices.get(guid)
-    
-    .then((response) => {
-      setProductManagments((prev) => ({
+
+      .then((response) => {
+        setProductManagments((prev) => ({
           ...prev,
           file: [...response?.data?.media],
           condition: response?.data?.condition,
@@ -568,7 +568,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
           durations: response?.data?.durations,
           hours: response?.data?.hours,
           auctionListing: response?.data?.auction_listing,
-          end_listing: response?.data?.auction_End_listing ? response?.data?.auction_End_listing.slice(0,10) : '',
+          end_listing: response?.data?.auction_End_listing ? response?.data?.auction_End_listing.slice(0, 10) : '',
           // end_listing: response?.data?.end_listing ? `${response?.data?.end_listing.slice()}` : '',
           deliverddomestic: response?.data?.deliverd_domestic,
           deliverdinternational: response?.data?.deliverd_international,
@@ -808,14 +808,14 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                 <div className="two-field">
                   <div className="two-field-left">
                     <label>Weight</label>
-                    <input type="text" name="weight" value={productManagment?.weight} onChange={handleChange} placeholder="Enter weight" />
+                    <input type="number" name="weight" value={productManagment?.weight} onChange={handleChange} placeholder="Enter weight" />
                     {productManagment.weight === "" && inputError &&
                       <div className="error-input">Weight is required</div>
                     }
                   </div>
                   <div className="two-field-left">
                     <label>Height</label>
-                    <input type="text" name="height" value={productManagment?.height} onChange={handleChange} placeholder="Enter height" />
+                    <input type="number" name="height" value={productManagment?.height} onChange={handleChange} placeholder="Enter height" />
                     {productManagment.height === "" && inputError &&
                       <div className="error-input">Height is required</div>
                     }
@@ -824,14 +824,14 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                 <div className="two-field">
                   <div className="two-field-left">
                     <label>Length</label>
-                    <input type="text" name="length" value={productManagment?.length} onChange={handleChange} placeholder="Enter length" />
+                    <input type="number" name="length" value={productManagment?.length} onChange={handleChange} placeholder="Enter length" />
                     {productManagment?.length === "" && inputError &&
                       <div className="error-input">Length is required</div>
                     }
                   </div>
                   <div className="two-field-left">
                     <label>Width</label>
-                    <input type="text" name="width" value={productManagment?.width} onChange={handleChange} placeholder="Enter width" />
+                    <input type="number" name="width" value={productManagment?.width} onChange={handleChange} placeholder="Enter width" />
                     {productManagment.width === "" && inputError &&
                       <div className="error-input">Width is required</div>
                     }
@@ -853,17 +853,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                       }
                     </div>
                   }
-                  {/* <div className="two-field-left">
-                    <label>Item model</label>
-                    <input type="text" name="model" value={productManagment?.model} onChange={handleChange} placeholder="Enter item model" />
-                    {productManagment.model === "" && inputError &&
-                      <div className="error-input">Item model is required</div>
-                    }
-                  </div>
-                  {productManagment?.condition != "Used" &&
-                    <div className="two-field-left">
-                    </div>
-                  } */}
                 </div>
                 <div className="two-field">
                   <div className="two-field-left">
@@ -1010,21 +999,29 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
                       </div> */}
                       <div className="two-field-left">
                         <label>Schedule Your Listing</label>
-                        <input type="date" name="auctionListing" value={productManagment?.auctionListing} onChange={handleChange} />
+                        <input
+                          type="date"
+                          name="auctionListing"
+                          value={productManagment?.auctionListing}
+                          onChange={handleChange}
+                          min={new Date().toISOString().split('T')[0]}
+                        />
                         {(productManagment.auctionListing === "" && inputError && productManagment.auctioned) &&
                           <div className="error-input">Schedule your listing is required</div>
                         }
                       </div>
-                      <div className="two-field-left">
-                        <label>Schedule End Listing</label>
-                        <input type="date" name="end_listing" value={productManagment?.end_listing} onChange={handleChange} />
-                        {(productManagment.end_listing === "" && inputError && productManagment.auctioned) &&
-                          <div className="error-input">Schedule end listing is required</div>
-                        }
-                      </div>
+                      {productManagment.auctionListing === "" ? null :
+                        <div className="two-field-left">
+                          <label>Schedule End Listing</label>
+                          <input type="date" min={productManagment?.auctionListing} name="end_listing" value={productManagment?.end_listing} onChange={handleChange} />
+                          {(productManagment.end_listing === "" && inputError && productManagment.auctioned) &&
+                            <div className="error-input">Schedule end listing is required</div>
+                          }
+                        </div>
+                      }
                     </div>
                     <div className="two-field">
-                     
+
                       <div className="two-field-left">
                       </div>
                     </div>

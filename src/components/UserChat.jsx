@@ -293,7 +293,11 @@ function UserChat() {
                                                                             key={msg?.id}
                                                                             className="sent-message">
                                                                             <div className="sent-message-wrap">
-                                                                                <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.testuser?.profile_image} />
+                                                                                {msg?.testuser?.profile_image ?
+                                                                                    <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.testuser?.profile_image} />
+                                                                                    :
+                                                                                    <img src={blank} />
+                                                                                }
                                                                                 <p className="message">{msg?.message}</p>
                                                                             </div>
                                                                         </div>
@@ -309,8 +313,10 @@ function UserChat() {
                                                                                         {msg?.testuser?.profile_image?.includes("http") ?
                                                                                             <img src={msg?.testuser?.profile_image} />
                                                                                             :
-                                                                                            // <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.participants?.profile_image} />
-                                                                                            <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.seller?.cover_image} />
+                                                                                            msg?.seller?.cover_image ?
+                                                                                                <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.seller?.cover_image} />
+                                                                                                :
+                                                                                                <img src={blank} />
                                                                                         }
                                                                                     </>
                                                                                 ) : (
@@ -476,7 +482,12 @@ function UserChat() {
                                                                                 key={msg?.id}
                                                                                 className="sent-message">
                                                                                 <div className="sent-message-wrap">
-                                                                                    <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.testuser?.profile_image} />
+                                                                                    {
+                                                                                        msg?.testuser?.profile_image ?
+                                                                                            <img src={"https://notnewbackendv2.testingwebsitelink.com/" + msg?.testuser?.profile_image} />
+                                                                                            :
+                                                                                            <img src={blank} />
+                                                                                    }
                                                                                     <p className="message">{msg?.message}</p>
                                                                                 </div>
                                                                             </div>
@@ -556,7 +567,11 @@ function UserChat() {
                                     {chatUsers?.map((data) => {
                                         return (
                                             <li onClick={() => { createChatRooms(data) }}>
-                                                <img src={`${BASE_URL}/${data?.cover_image}`} alt="" />
+                                                {data?.cover_image ?
+                                                    <img src={`${BASE_URL}/${data?.cover_image}`} alt="" />
+                                                    :
+                                                    <img src={blank} alt="" />
+                                                }
                                                 <p>{data?.fullname}</p>
                                             </li>
                                         )

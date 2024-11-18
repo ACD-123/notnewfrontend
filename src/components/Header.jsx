@@ -211,7 +211,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                     </div>
                     <div className="header-right">
                       {path.includes('21-plus') ?
-                        <div className="search-bar" id="hide-on-mobile-768" ref={searchRef}>
+                        <div className="search-bar" id="hide-on-mobile-768" ref={searchRef} onMouseDown={(e) => e.stopPropagation()}>
                           <div className="search-bar-t" style={{
                             borderBottomLeftRadius: inputSearch !== "" ? '0px' : '24px',
                             borderBottomRightRadius: inputSearch !== "" ? '0px' : '24px',
@@ -223,7 +223,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                             <div className="input">
                               <input type="text" value={inputSearch} placeholder="Search Here Anything....." onChange={handelUnderAgeInputChange} />
                             </div>
-                            <div ref={categoryDropdownRef} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
+                            <div ref={categoryDropdownRef} onMouseDown={(e) => e.stopPropagation()} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
                               <div className="value">
                                 <div className="value-wrap">
                                   {seletedCategory === "" ? "Categories" : seletedCategory}
@@ -319,7 +319,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                           }
                         </div>
                         :
-                        <div className="search-bar" id="hide-on-mobile-768" ref={searchRef}>
+                        <div className="search-bar" id="hide-on-mobile-768" ref={searchRef} onMouseDown={(e) => e.stopPropagation()}>
                           <div className="search-bar-t" style={{
                             borderBottomLeftRadius: inputSearch !== "" ? '0px' : '24px',
                             borderBottomRightRadius: inputSearch !== "" ? '0px' : '24px',
@@ -331,7 +331,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                             <div className="input">
                               <input type="text" value={inputSearch} placeholder="Search Here Anything....." onChange={handelInputChange} />
                             </div>
-                            <div ref={categoryDropdownRef} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
+                            <div ref={categoryDropdownRef} onMouseDown={(e) => e.stopPropagation()} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
                               <div className="value">
                                 <div className="value-wrap">
                                   {seletedCategory === "" ? "Categories" : seletedCategory}
@@ -471,7 +471,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
 
                       {isLoggedin() ? (
                         <>
-                          <div ref={userDropdownRef} className="user" onClick={() => { setUserDropdown(!userDropdown) }}>
+                          <div ref={userDropdownRef} onMouseDown={(e) => e.stopPropagation()} className="user" onClick={() => { setUserDropdown(!userDropdown) }}>
                             {user?.profile_image ? (
                               <>
                                 {user?.profile_image.includes("http") ?
@@ -599,7 +599,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
           </div>
           <div className="mobile-header-body">
           {path.includes('21-plus') ?
-            <div className="search-bar" ref={searchRef}>
+            <div className="search-bar" ref={searchRef} onMouseDown={(e) => e.stopPropagation()}>
               <div className="search-bar-t" style={{
                 borderBottomLeftRadius: inputSearch !== "" ? '0px' : '6px',
                 borderBottomRightRadius: inputSearch !== "" ? '0px' : '6px',
@@ -611,7 +611,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                 <div className="input">
                   <input type="text" value={inputSearch} placeholder="Search Here Anything....." onChange={handelUnderAgeInputChange} />
                 </div>
-                <div ref={categoryDropdownRef} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
+                <div ref={categoryDropdownRef} onMouseDown={(e) => e.stopPropagation()} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
                   <div className="value">
                     <div className="value-wrap">
                       {seletedCategory === "" ? "Categories" : seletedCategory}
@@ -708,7 +708,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
               }
             </div>
             :
-            <div className="search-bar" ref={searchRef}>
+            <div className="search-bar" ref={searchRef} onMouseDown={(e) => e.stopPropagation()}>
               <div className="search-bar-t" style={{
                 borderBottomLeftRadius: inputSearch !== "" ? '0px' : '6px',
                 borderBottomRightRadius: inputSearch !== "" ? '0px' : '6px',
@@ -720,7 +720,7 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                 <div className="input">
                   <input type="text" value={inputSearch} placeholder="Search Here Anything....." onChange={handelInputChange} />
                 </div>
-                <div ref={categoryDropdownRef} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
+                <div ref={categoryDropdownRef} onMouseDown={(e) => e.stopPropagation()} className="category-drop-down" onClick={() => { setCategoryDropdown(!categoryDropdown) }}>
                   <div className="value">
                     <div className="value-wrap">
                       {seletedCategory === "" ? "Categories" : seletedCategory}

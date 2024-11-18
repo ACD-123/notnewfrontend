@@ -7,6 +7,10 @@ import SignSecurity from '../components/AccountsSetting/PersonalInfoAllPages/Sig
 import Addresses from '../components/AccountsSetting/PersonalInfoAllPages/Addresses';
 import NotFound_ from './NotFound_';
 import Header from '../components/Header';
+import { GiHamburgerMenu } from "react-icons/gi";
+import Drawer from 'react-modern-drawer'
+import 'react-modern-drawer/dist/index.css'
+import { RxCross2 } from "react-icons/rx";
 
 const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
     const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
@@ -40,6 +44,11 @@ const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
         setIsMenuOpen(!isMenuOpen);
     };
 
+    const [isOpen, setIsOpen] = React.useState(false)
+    const toggleDrawer = () => {
+        setIsOpen((prevState) => !prevState)
+    }
+
 
     const renderComponent = () => {
         switch (selectedMenuItem) {
@@ -67,7 +76,7 @@ const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
                 <div className="container">
                     <div className="row">
                         <div className="main-dasboard-tabs">
-                            <div className="tab-buttons">
+                            <div className="tab-buttons" >
                                 <div className="t-b-b">
                                     <button onClick={() => { navigate('/customerdashboard?tab=activity&component=my-orders') }}>Activity</button>
                                     <button onClick={() => { navigate('/customerdashboard?tab=messages') }}>Messages</button>
@@ -81,11 +90,11 @@ const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
                                     <div className="row">
                                         <div>
                                             <section id='activity-main-dashboard'>
-                                                <button className="mobile-menu-toggle" onClick={toggleMenu}>
-                                                    <img src={Leftmenuimage} />
-                                                </button>
+                                                <div id="hide-on-desktop-991" onClick={toggleDrawer}>
+                                                    <GiHamburgerMenu />
+                                                </div>
                                                 <div className='row'>
-                                                    <div className='col-lg-3'>
+                                                    <div className='col-lg-3' id="hide-on-mobile-991">
                                                         <div className={`left-menu ${isMenuOpen ? 'open' : ''}`}>
                                                             <div className="title-customer-side">Profile Info</div>
                                                             <div className='personal-info'>
@@ -121,6 +130,39 @@ const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
                     </div>
                 </div>
             </section>
+            <Drawer
+                open={isOpen}
+                onClose={toggleDrawer}
+                direction='left'
+                className='mobile-product-filter'
+                size={'90%'}
+            >
+
+                <div className='left-menu'>
+                    <div className="title-selling-hub">Profile Info<span onClick={toggleDrawer}><RxCross2 /></span></div>
+                    <div className="personal-info">
+                        <ul>
+                            <li 
+                            className={selectedMenuItem === 'profile-information' ? 'active' : ''} 
+                            onClick={() => {handleMenuItemClick('profile-information'); toggleDrawer();}}>
+                                Profile information
+                            </li>
+                            <li 
+                            className={selectedMenuItem === 'addresses' ? 'active' : ''} 
+                            onClick={() => {handleMenuItemClick('addresses'); toggleDrawer();}}>
+                                Addresses
+                            </li>
+                            <li 
+                            onClick={() => window.location.href = '/customerdashboard?component=recently-searched-items'}>
+                                Search History
+                            </li>
+                        </ul>
+                        <div className="button">
+                            <button onClick={() => { navigate('/customerdashboard?tab=account'); toggleDrawer() }}>Go Back</button>
+                        </div>
+                    </div>
+                </div>
+            </Drawer>
         </>
     );
 };

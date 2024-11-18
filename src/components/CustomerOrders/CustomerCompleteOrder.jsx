@@ -428,7 +428,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                                     </div>}
 
                                 </div>
-                                <textarea defaultValue={formStructure[index][k]?.reason} onChange={(e) => { onReasonChnage(e.target.value, index, k) }}></textarea>
+                                <textarea placeholder="Mention your reason for a refund" defaultValue={formStructure[index][k]?.reason} onChange={(e) => { onReasonChnage(e.target.value, index, k) }}></textarea>
                                 {
                                   formStructure?.[index]?.[k]?.reason === "" &&
                                   selectedRefundIndex == data?.id &&

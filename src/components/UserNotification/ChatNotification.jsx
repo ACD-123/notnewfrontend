@@ -5,6 +5,7 @@ import NoDataFound from '../Shared/NoDataFound';
 import LoadingComponents from '../Shared/LoadingComponents';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import dummyImage from '../../assets/Images/User/blankuser.jpg'
 
 const PageNumbers = ({
   totalPages,
@@ -76,7 +77,11 @@ export const ChatNotification = ({ getNotificationCount }) => {
                               <div className="n-l-d-w">
                                 <div className="n-l-d-w-l">
                                   <div className="n-l-d-w-l-l">
-                                    <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                                    {data?.sender?.profile_image ?
+                                      <img src={`${BASE_URL}/${data?.sender?.profile_image}`} />
+                                      :
+                                      <img src={dummyImage} />
+                                    }
                                   </div>
                                   <div className="n-l-d-w-l-r">
                                     <h2>{data?.title}</h2>
@@ -93,7 +98,11 @@ export const ChatNotification = ({ getNotificationCount }) => {
                               <div className="n-l-d-w">
                                 <div className="n-l-d-w-l">
                                   <div className="n-l-d-w-l-l">
-                                    <img src={`${BASE_URL}/${data?.user?.profile_image}`} />
+                                    {data?.sender?.profile_image ?
+                                      <img src={`${BASE_URL}/${data?.sender?.profile_image}`} />
+                                      :
+                                      <img src={dummyImage} />
+                                    }
                                   </div>
                                   <div className="n-l-d-w-l-r">
                                     <h2>{data?.title}</h2>
