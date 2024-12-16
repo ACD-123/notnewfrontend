@@ -359,6 +359,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       setIsFromLoading(false)
       return false;
     }
+console.log('one working');
 
     if (productManagment.attributes.length > 0) {
       for (let i = 0; i < productManagment.attributes.length; i++) {
@@ -368,6 +369,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
         }
       }
     }
+
+    console.log('two working');
 
     if (productManagment.sellingNow) {
       if (productManagment.saleprice === "" || productManagment.saleprice === 0 || productManagment.saleprice < 0 ||
@@ -379,15 +382,19 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       }
     }
 
+    console.log('three working');
+
     if (productManagment.auctioned) {
       if (productManagment.bids === "" || productManagment.bids === 0 || productManagment.bids < 0 ||
         productManagment.durations === "" || productManagment.durations === 0 || productManagment.durations < 0 ||
-        productManagment.hours === "" || productManagment.hours === 0 || productManagment.hours < 0 ||
+        // productManagment.hours === "" || productManagment.hours === 0 || productManagment.hours < 0 ||
         productManagment.auctionListing === "" || productManagment.end_listing === "") {
         setIsFromLoading(false)
         return false;
       }
     }
+
+    console.log('four working');
 
     if (productManagment.condition === "Used") {
       if (productManagment.used_condition === null) {
@@ -520,9 +527,9 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
         .then((res) => {
           setSuccess(true)
           setPopupText('Product Listed Sucessfully')
-          // setTimeout(() => {
-          //   setSubmitted(false)
-          // }, 3000);
+          setTimeout(() => {
+            setSubmitted(false)
+          }, 3000);
           setIsFromLoading(false)
         })
         .catch((error) => {

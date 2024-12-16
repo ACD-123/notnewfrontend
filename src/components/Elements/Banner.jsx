@@ -9,7 +9,7 @@ const Banner = ({ data, loading }) => {
     <>
       {loading ?
         <div id="carouselExampleIndicators">
-          <Skeleton />
+          <Skeleton  />
         </div>
         :
         data?.length > 0 ?
