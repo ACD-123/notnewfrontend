@@ -144,7 +144,7 @@ function HomeCategorySlider() {
                                             </Slider>
                                             :
                                             <Slider {...settings}>
-                                                <div className='h-c-s-slider active'>
+                                                {/* <div className='h-c-s-slider active'>
                                                     <Link to={'/auctions'}>
                                                         <div className='h-c-s-slider-w'>
                                                             <img src={auctionImage} alt="" />
@@ -159,7 +159,7 @@ function HomeCategorySlider() {
                                                             <h3>Top Sellers</h3>
                                                         </div>
                                                     </Link>
-                                                </div>
+                                                </div> */}
                                                 {categoryData?.length > 0 &&
                                                     (categoryData?.map((data, index) => {
                                                         return (
