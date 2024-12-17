@@ -557,8 +557,8 @@ const Header = ({ cartFullResponse, notificationCount }) => {
                         <li className={`${path === '/' ? 'active' : ''}`}><Link className='nav-link' to="/">Home</Link></li>
                         <li className={`${path === '/top-category' ? 'active' : ''}`}><Link className='nav-link' to="/top-category">Top Categories</Link></li>
                         <li className={`${path === '/auctions' ? 'active' : ''}`}><Link className='nav-link' to="/auctions">Auctions</Link></li>
-                        <li className={`${path === '/hot-deals' ? 'active' : ''}`}><Link className='nav-link' to="/hot-deals">Hot Deals</Link></li>
-                        <li className={`${path === '/top-sellers' ? 'active' : ''}`}><Link className='nav-link' to="/top-sellers">Top Sellers</Link></li>
+                        {/* <li className={`${path === '/hot-deals' ? 'active' : ''}`}><Link className='nav-link' to="/hot-deals">Hot Deals</Link></li>
+                        <li className={`${path === '/top-sellers' ? 'active' : ''}`}><Link className='nav-link' to="/top-sellers">Top Sellers</Link></li> */}
                       </ul>
                     </div>
                   </div>
