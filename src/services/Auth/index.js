@@ -26,10 +26,6 @@ export const getUserDetails = () =>
 
 export const isLoggedin = () => {
   return localStorage.getItem('access_token');
-  // if (localStorage.getItem('access_token')) {
-  //   return !isEmpty(getUserDetails())
-  // }
-  // return false
 }
 export const setCondition = (condition) =>
     localStorage.setItem('condition', JSON.stringify(condition))

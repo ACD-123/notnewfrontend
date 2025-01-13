@@ -48,6 +48,7 @@ const SignUp = () => {
     googleMapsApiKey: "AIzaSyDg6Ci3L6yS5YvtKAkWQjnodGUtlNYHw9Y",
     libraries
   });
+
   const handlePlaceChanged = () => {
     const places = inputRef.current.getPlaces();
     if (places && places.length > 0) {
@@ -76,7 +77,7 @@ const SignUp = () => {
         }
       });
     } else {
-      
+
     }
   };
 
@@ -92,6 +93,7 @@ const SignUp = () => {
       [name]: value,
     });
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const newErrors = {};
@@ -187,7 +189,7 @@ const SignUp = () => {
           if (error.response.status == "409") {
             toast.error("Email Already Exist");
           } else {
-          
+
           }
           setIsLoading(false);
           setEnabled(false);
@@ -198,6 +200,7 @@ const SignUp = () => {
         });
     }
   };
+  
   useEffect(() => {
     //
   }, []);
@@ -237,15 +240,8 @@ const SignUp = () => {
                   <div className="mb-3">
                     <div className="profile-pic-wrapper">
                       <div className="pic-holder">
-
-                        <img
-                          id="profilePic"
-                          className="pic"
-                          src={
-                            profilePic
-                              ? URL.createObjectURL(profilePic)
-                              : Avatarprofile
-                          }
+                        <img id="profilePic" className="pic"
+                          src={profilePic ? URL.createObjectURL(profilePic) : Avatarprofile}
                           alt="Profile"
                         />
                         <input
@@ -254,7 +250,7 @@ const SignUp = () => {
                           name="profile_pic"
                           id="newProfilePhoto"
                           onChange={handleFileChange}
-                          style={{display:'none'}}
+                          style={{ display: 'none' }}
                         />
                         <label
                           htmlFor="newProfilePhoto"

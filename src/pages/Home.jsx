@@ -47,7 +47,7 @@ const Home = ({ cartFullResponse, notificationCount }) => {
 	return (
 		<>
 			<Header cartFullResponse={cartFullResponse} notificationCount={notificationCount} />
-			<Banner data={banners} loading={loading} />
+			{/* <Banner data={banners} loading={loading} /> */}
 			<HomeCategorySlider />
 			<Items title={'New Arrivals '} />
 			<UsedProducts />
