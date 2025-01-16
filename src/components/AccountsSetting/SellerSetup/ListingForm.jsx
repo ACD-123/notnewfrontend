@@ -29,7 +29,6 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     libraries,
   });
   const productCondition = [
-    { id: "BrandNew", name: "BrandNew" },
     { id: "Used", name: "Used" }
   ];
 
@@ -42,7 +41,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
 
   const [productManagment, setProductManagments] = useState({
     file: [],
-    condition: "",
+    condition: "Used",
     used_condition: null,
     underage: 0,
     attributes: [],
@@ -661,7 +660,7 @@ console.log('one working');
                 <ul>
                   {productCondition?.map((data, index) => {
                     return (
-                      <li key={index} onClick={() => { setProductManagments((prev) => ({ ...prev, condition: data.id })) }}>
+                      <li key={index}>
                         <div className={`check ${productManagment?.condition === data.name ? 'active' : ''}`}>
                           <div className="check-wrap"></div>
                         </div>
@@ -845,7 +844,6 @@ console.log('one working');
                   </div>
                 </div>
                 <div className="two-field">
-                  {productManagment?.condition === "Used" &&
                     <div className="two-field-left">
                       <label>Used Condition</label>
                       <Select
@@ -859,7 +857,6 @@ console.log('one working');
                         <div className="error-input">User condition is required</div>
                       }
                     </div>
-                  }
                 </div>
                 <div className="two-field">
                   <div className="two-field-left">
