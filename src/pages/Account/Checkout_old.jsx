@@ -3,21 +3,14 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import Stripe from "./Stripe";
 import Productimage from "../../assets/Images/Categorylisting/1.png";
-import ShippingServices from "../../services/API/ShippingServices"; //~/services/API/ShippingServices
-import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
-import CartServices from "../../services/API/CartServices"; //~/services/API/CartServices
-import PriceServices from "../../services/API/PriceServices"; //~/services/API/PriceServices
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
-import CheckoutServices from "../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
-import Payment from "../../assets/Images/Shoppingcart/payment.png";
-import { BASE_URL } from "../../services/Constant";
-import { STRIPE_PUBLISHABLE_KEY } from "../../services/Constant";
+import ShippingServices from "../../services/API/ShippingServices";
+import UserServices from "../../services/API/UserServices";
+import CartServices from "../../services/API/CartServices";
+import PriceServices from "../../services/API/PriceServices";
+import CheckoutServices from "../../services/API/CheckoutServices";
 import { loadStripe } from "@stripe/stripe-js";
 import {
-  PaymentElement,
   Elements,
-  useStripe,
-  useElements,
 } from "@stripe/react-stripe-js";
 import { setUserId } from "../../services/Auth";
 
@@ -29,9 +22,7 @@ const Checkout_old = () => {
   const [bidcart, setBidCart] = useState({});
   const [bidquantity, setQuantity] = useState(0);
   const [bidcartimage, setBidCartImage] = useState([]);
-  const [bidcartattributes, setBidCartAttributes] = useState([]);
   const [checkout, setCheckout] = useState({});
-  const [cartitem, setCartItems] = useState(0);
   const [prices, setPrices] = useState({});
   const [subTotal, setsubTotal] = useState(0);
   const [shippingprice, setShippingPrice] = useState(0);
@@ -53,13 +44,9 @@ const Checkout_old = () => {
     mode: "payment",
     amount: 1099,
     currency: "usd",
-    // Fully customizable with appearance API.
     appearance: {
-      /*...*/
     },
   };
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
   const getSelf = () => {
     ShippingServices.self().then((response) => {
       setUserDetails(response);
@@ -114,7 +101,6 @@ const Checkout_old = () => {
           setAdminPrices(adminPric);
           var amountAfterDiscount = subttal - discountPrice;
           var amountbyaddingprices = amountAfterDiscount + adminPric + shippingprice;
-          // var amountbyaddingprices = subttal + shippingprice;
           setAmountAddingPrices(amountbyaddingprices);
       });
     }
@@ -132,38 +118,7 @@ const Checkout_old = () => {
   const handleCallback = (childData) => {
     setOtherAddress(childData);
   };
-  const handlePrices = () => {
-    var cartPrice = [];
-    var shippingPrice = [];
-    var allPrices = [];
-    if (bidcart) {
-        cartPrice.push(bidcart.bids);
-        shippingPrice.push(bidcart.shipping_price);
-      
-    }
 
-    if (cart.length > 0) {
-      cart.map((cat) => {
-        cartPrice.push(cat.price);
-        shippingPrice.push(cat.products.shipping_price);
-      });
-    }
-    if (prices.length > 0) {
-      prices.map((price) => {
-        if (price.name !== "Discount") {
-          allPrices.push(price.value);
-        } else if (price.name === "Discount") {
-          setDiscountPrices(price.value);
-        }
-      });
-    }
-    setsubTotal(cartPrice.reduce((a, v) => (a = a + v), 0));
-    setShippingPrice(shippingPrice.reduce((a, v) => (a = a + v), 0));
-    setAdminPrices(allPrices.reduce((a, v) => (a = a + v), 0));
-    var amountAfterDiscount = subTotal - discountPrices;
-    var amountbyaddingprices = amountAfterDiscount + adminprices;
-    // setAmountAddingPrices(amountbyaddingprices);
-  };
   const changeAddress = (e, change) => {
     e.preventDefault();
     setchangeAdds(change);
@@ -182,7 +137,6 @@ const Checkout_old = () => {
     getUser();
     getCart();
     getPrices();
-    // handlePrices();
     getCheckout();
     if (lastSegment != "") {
       setOrderTyp('single');
@@ -218,46 +172,6 @@ const Checkout_old = () => {
                                     )}
                                     <div className="product-order-details">
                                       <h5>{bidcart?.name}</h5>
-                                      {/* <span>Size : 9.5 , Color: Red</span> */}
-                                      {/* {attributes.length > 0 ? (
-                                        <>
-                                          {attributes.map(
-                                            (attribute, index) => {
-                                              return (
-                                                <>
-                                                  {attribute.color}
-                                                  <span>
-                                                    {attribute.size ? (
-                                                      <>
-                                                        Size : {attribute.size}
-                                                      </>
-                                                    ) : (
-                                                      ""
-                                                    )}{" "}
-                                                    {attribute.color ? (
-                                                      <>
-                                                        Color:{" "}
-                                                        <div
-                                                          style={{
-                                                            background:
-                                                              attribute.color,
-                                                          }}
-                                                        >
-                                                          &nbsp;
-                                                        </div>
-                                                      </>
-                                                    ) : (
-                                                      ""
-                                                    )}
-                                                  </span>
-                                                </>
-                                              );
-                                            }
-                                          )}
-                                        </>
-                                      ) : (
-                                        ""
-                                      )} */}
                                       <div className="quantitypadding">
                                         <p>
                                           <b>
@@ -320,7 +234,6 @@ const Checkout_old = () => {
                                     )}
                                     <div className="product-order-details">
                                       <h5>{cat.products?.name}</h5>
-                                      {/* <span>Size : 9.5 , Color: Red</span> */}
                                       {attributes?.length > 0 ? (
                                         <>
                                           {attributes.map(
@@ -417,7 +330,6 @@ const Checkout_old = () => {
                                     </div>
                                     <div className="product-order-details">
                                       <h5>{cat.products?.name}</h5>
-                                      {/* <span>Size : 9.5 , Color: Red</span> */}
                                       {attributes?.length > 0 ? (
                                         <>
                                           {attributes.map(
@@ -595,88 +507,12 @@ const Checkout_old = () => {
                 <span>
                   Your payements are secured, Your Details are confedentials
                 </span>
-                {/* <input
-                  type="text"
-                  placeholder="Card Number"
-                  className="form-control"
-                  id="card-number"
-                /> */}
-                {/* <div className="rowcol">
-                  <input
-                    type="text"
-                    placeholder="Expiration Date"
-                    className="form-control"
-                    id="card-number"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Security Code"
-                    className="form-control"
-                    id="card-number"
-                  />
-                </div> */}
-                {/* <div className="rowcol">
-                  <input
-                    type="text"
-                    placeholder="First Name"
-                    className="form-control"
-                    id="card-number"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Last Name"
-                    className="form-control"
-                    id="card-number"
-                  />
-                </div> */}
-                {/* <div id="flexCheckDefault">
-                  <input
-                    className="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="coloring"
-                  />
-                  <p>&nbsp; Remember this card for the future</p>
-                </div> */}
                 {userdetails?.street_address ? (<>
                   <p>Billing Address</p>
                 <span className="tabstop">{userdetails?.street_address}</span>
 
                 </>):(<></>)}
                 <div className="tabs-check">
-                  {/* <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckDefault"
-                    />
-                    <label className="form-check-label" for="flexCheckDefault">
-                      Paypal
-                    </label>
-                  </div> */}
-                  {/* <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckChecked"
-                    />
-                    <label className="form-check-label" for="flexCheckChecked">
-                      Google pay
-                    </label>
-                  </div> */}
-                  {/* <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="flexCheckChecked"
-                    />
-                    <label className="form-check-label" for="flexCheckChecked">
-                      Stripe Pay
-                    </label>
-                  </div> */}
                   <Elements stripe={stripePromise} options={options}>
                     <Stripe
                       changeAdds={changeAdds}
@@ -715,11 +551,6 @@ const Checkout_old = () => {
                         <th>Shipping</th>
                         <td>$ {bidcart?.shipping_price}</td>
                       </tr>
-                      {/* <tr>
-                            <th>Income Tax</th>
-                            <td>$ 4.0</td>
-                          </tr> */}
-
                       {prices?.length > 0 ? (
                         <>
                           {prices.map((price, index) => {
@@ -769,11 +600,6 @@ const Checkout_old = () => {
                         <th>Shipping</th>
                         <td>$ {shippingprice}</td>
                       </tr>
-                      {/* <tr>
-                            <th>Income Tax</th>
-                            <td>$ 4.0</td>
-                          </tr> */}
-
                       {prices?.length > 0 ? (
                         <>
                           {prices.map((price, index) => {
@@ -821,10 +647,6 @@ const Checkout_old = () => {
               )}
                 </>
               )}
-              
-              {/* <button className="btn btn-info btn-lg gradientbtncolor" onClick={handleShow} type="button">
-            Confirm & Pay
-          </button> */}
             </div>
           </div>
         </div>

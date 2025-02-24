@@ -823,8 +823,6 @@ const AllProducts = ({ cartFullResponse, notificationCount }) => {
                 range
                 min={priceRange.min}
                 max={priceRange.max}
-                // defaultValue={[priceRange.min, priceRange.max]}
-                // step={20}
                 value={selectedRange}
                 onChange={handleSliderChange}
               />

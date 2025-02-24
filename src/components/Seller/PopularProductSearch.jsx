@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { toast } from "react-toastify";
-import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
-import HomeService from '../../services/API/HomeService'; //~/services/API/Home
+import ProductServices from '../../services/API/ProductServices';
+import HomeService from '../../services/API/HomeService';
 
-// storeProduct
 const PopularProductSearch = (props) => {
   const [categoryList, setCategoryList] = useState([]);
   

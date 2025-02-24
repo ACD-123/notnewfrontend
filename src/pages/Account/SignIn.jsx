@@ -1,4 +1,3 @@
-/*global FB*/
 import React, { useState, useEffect } from "react";
 import Signinbgs from "../../assets/Images/Accountimages/signinbg.png";
 import Logo from "../../assets/Images/logo.png";
@@ -9,13 +8,9 @@ import { useGoogleOneTapLogin } from "@react-oauth/google";
 import FacebookLogin from 'react-facebook-login';
 import {
   setAccessToken,
-  setRefreshToken,
-  setUserId,
-  setfcmToken,
-} from "../../services/Auth"; // ~/services/Auth
-import { setUserDetails } from "../../services/Auth"; // ~/services/Auth
-import AuthServices from "../../services/API/AuthService"; //~/services/API/AuthService
-import { isEmpty } from "../../services/Utilities";
+} from "../../services/Auth";
+import { setUserDetails } from "../../services/Auth";
+import AuthServices from "../../services/API/AuthService";
 
 var Signinbg = {
   backgroundImage: `url(${Signinbgs})`,
@@ -31,10 +26,6 @@ const SignIn = () => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
-  const [user, setUser] = useState([]);
-  const [logins, setLogin] = useState(false);
-  const [data, setData] = useState({});
-  const [picture, setPicture] = useState('');
   const navigate = useNavigate()
   const guest_user_id = localStorage.getItem('guest_user_id');
   const redirectionPage = localStorage.getItem('redirectionPage');
@@ -48,13 +39,6 @@ const SignIn = () => {
         .catch(error => {
           toast.error(error?.response?.data?.message)
         });
-      setData(response);
-      setPicture(response.picture.data.url);
-      if (response.accessToken) {
-        setLogin(true);
-      } else {
-        setLogin(false);
-      }
     }
   }
 
@@ -103,40 +87,6 @@ const SignIn = () => {
     setRememberMe(!remember);
   };
 
-  const getUserData = () => {
-    const loggedInUser = localStorage.getItem("user_details");
-    if (loggedInUser) {
-      const loggedInUsers = JSON.parse(loggedInUser);
-      setUser(loggedInUsers);
-    }
-  };
-
-  const fbInit = (response) => {
-    window.fbAsyncInit = function () {
-      FB.init({
-        appId: "855777062581776",
-        cookie: true,
-        xfbml: true,
-        status: true,
-        oauth: true,
-        channelUrl: 'https://notnew.testingwebsitelink.com/',
-        version: "v17.0",
-      });
-      FB.AppEvents.logPageView();
-    };
-
-    (function (d, s, id) {
-      var js,
-        fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) {
-        return;
-      }
-      js = d.createElement(s);
-      js.id = id;
-      js.src = "https://connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    })(document, "script", "facebook-jssdk");
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -148,7 +98,6 @@ const SignIn = () => {
       newErrors.password = "Password is required";
     }
     formData.remember_me = remember;
-    // formData.guest_user_id = guest_user_id;
 
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
@@ -156,16 +105,15 @@ const SignIn = () => {
       setEnabled(true);
       await AuthServices.login({ ...formData, guest_user_id: guest_user_id })
         .then((response) => {
-          if (response == "NotExits") {
+          if (response === "NotExits") {
             toast.error("User Does not Exits!");
           } else if (response.status === "fail") {
             toast.error(response.message[0]);
             return;
           } else {
             toast.success(response.message);
-            if (response.rememberme == true) {
+            if (response.rememberme === true) {
               setUserDetails(response.data);
-              setUserId(response?.data?.id)
             } else {
               localStorage.removeItem("user_details");
             }
@@ -194,10 +142,8 @@ const SignIn = () => {
     const access_token = localStorage.getItem('access_token')
     if (access_token) {
       navigate('/')
-    } else {
-      getUserData();
     }
-  }, [])
+  })
 
   return (
     <>
@@ -207,7 +153,7 @@ const SignIn = () => {
             <div className="col-lg-6">
               <div className="welcome-registration">
                 <Link to="/">
-                  <img src={Logo} width="auto" height="100%" />
+                  <img src={Logo} width="auto" height="100%" alt="logo"/>
                 </Link>
                 <h1>Welcome to account registration</h1>
                 <p>
@@ -266,11 +212,9 @@ const SignIn = () => {
                           autoLoad={false}
                           fields="id,name,email,picture"
                           textButton="Sign in with Facebook"
-                          // scope="public_profile,email,user_friends"
                           scope={['email']}
                           callback={responseFacebook}
                           icon="fa-facebook" />
-                        {/* <img src={Facebook} /> */}
                       </li>
                     </ul>
                   </div>
@@ -313,7 +257,6 @@ const SignIn = () => {
                       <Link to="/forget-password">Forgot Password</Link>
                     </div>
                   </div>
-                  {/* <input type="submit" value="Sign In" /> */}
                   <button type="submit" disabled={enabled}>
                     {isLoading ? "loading.." : "Sign In"}
                   </button>

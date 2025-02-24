@@ -41,7 +41,6 @@ const ExploreAll21Plus = ({ cartFullResponse, notificationCount }) => {
     const [topSellingProducts, setTopSellingProducts] = useState([]);
     const [pagination, setPagination] = useState({});
     const [loading, setLoading] = useState(true);
-    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
     const user_id = localStorage.getItem('user_id');
     const pageSize = 12;
 

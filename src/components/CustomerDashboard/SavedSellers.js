@@ -1,17 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Profileimage1 from '../../assets/Images/Profilesimage/1.png'
-import Profileimage2 from '../../assets/Images/Profilesimage/2.png'
-import Profileimage3 from '../../assets/Images/Profilesimage/3.png'
-import Heart from '../../assets/Images/Heart.png'
 import { Link } from 'react-router-dom';
-import UserServices from "../../services/API/UserServices.js"; //~/services/API/AuthService
+import UserServices from "../../services/API/UserServices.js";
 import {
   setUserDetails,
   isLoggedin,
-  getUserDetails,
   setUserId,
 } from "../../services/Auth/index.js";
-import SellerServices from "../../services/API/SellerServices.js"; //~/services/API/SellerServices
 import { Spinner } from 'react-bootstrap';
 import { BASE_URL } from "../../services/Constant"
 import ProductServices from '../../services/API/ProductServices.js';
@@ -20,9 +14,9 @@ import { FaHeart } from 'react-icons/fa';
 
 const SavedSellers = () => {
   const [user, setUser] = useState();
-  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
-  const [saveSeller, setSaveSeller] = useState([]); // Initialize isLoading state as true
-  const [sellerShop, setSellerShop] = useState([]); // Initialize isLoading state as true
+  const [isLoading, setIsLoading] = useState(true);
+  const [saveSeller, setSaveSeller] = useState([]);
+  const [sellerShop, setSellerShop] = useState([]);
   const [shopData, setShopData] = useState([]);
   const [favData, setFavData] = useState([]);
 

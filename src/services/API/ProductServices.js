@@ -1,6 +1,5 @@
 import request from '../request'
 import { BASE_API } from '../Constant'
-// @todo this file name should be product service
 const baseUrl = `${BASE_API}products`
 const baseApi = `${BASE_API}`
 
@@ -30,11 +29,6 @@ function sellerInActiveProducts(params = {}) {
     params,
   })
 }
-// function getAuctionsProducts(id) {
-//   return request({
-//     url: `${baseUrl}/auctioned?user_id=${id};`,
-//   })
-// }
 
 function save(data) {
   return request({
@@ -125,12 +119,7 @@ function get(id, params = {}) {
     params,
   })
 }
-// function get(id, params = {}) {
-//   return request({
-//     url: `${baseUrl}/shows/${id}`,
-//     params,
-//   })
-// }
+
 function destroy(id) {
   return request({
     url: `${baseUrl}/${id}`,
@@ -206,11 +195,10 @@ function selfValue(value) {
   })
 }
 
-// function search(params = {}) {
   function search(data) {
   return request({
     url: `${baseUrl}/search`,
-    data, //this.$route.query,
+    data, 
     method: 'POST',
   })
 }
@@ -231,7 +219,6 @@ function offer(id, data) {
   })
 }
 
-// function getSaved(params = {}) {
 function getSaved(params = {}) {
   return request({
     url: `${baseUrl}/saved`,
@@ -429,9 +416,9 @@ function getProductManagmentOderCount() {
 
 function createSellerProduct(body){
   return request({
-    url: `${baseUrl}/add`, // Assuming saveseller endpoint with seller id in the URL
+    url: `${baseUrl}/add`,
     method: 'POST',
-    data: body, // Data containing seller details to be sent in the request body
+    data: body,
   });
 }
 

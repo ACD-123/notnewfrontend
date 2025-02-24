@@ -5,9 +5,6 @@ import { ImportentNotification } from '../components/UserNotification/ImportentN
 import { SellingNotification } from '../components/UserNotification/SellingNotification'
 import { AuctionNotification } from '../components/UserNotification/AuctionNotification'
 import { BuyingNotification } from '../components/UserNotification/BuyingNotification'
-import laravelEcho from '../socket'
-import HomeService from '../services/API/HomeService'
-import { toast } from 'react-toastify'
 import { ChatNotification } from '../components/UserNotification/ChatNotification'
 import { useNavigate } from 'react-router-dom'
 

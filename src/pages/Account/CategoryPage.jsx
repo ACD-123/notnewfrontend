@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom'
 import Header from '../../components/Header'
 import blank from "../../assets/Images/Productcard/blank.jpg";
 import Footer from '../../components/Footer'
-import HomeService from "../../services/API/HomeService"; //~/services/API/Home
+import HomeService from "../../services/API/HomeService";
 import { BASE_URL } from "../../services/Constant";
 import { Spinner } from 'react-bootstrap';
 const CategoryPage = ({cartFullResponse, notificationCount}) => {
   const [categories, setCategoryData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Set initial value to true
+  const [isLoading, setIsLoading] = useState(true);
   const getCategory = () => {
     HomeService.getrecursive()
       .then((res) => {
@@ -56,7 +56,6 @@ const CategoryPage = ({cartFullResponse, notificationCount}) => {
                             <div className='col' key={product.id}>
                               <div className='productlist gradient'>
                                 <h3>{product.name}</h3>
-                                {/* <hr /> */}
                                 {product?.media?.length > 0 ? (
                                   <>
                                     {product?.media?.map((media , index) => {

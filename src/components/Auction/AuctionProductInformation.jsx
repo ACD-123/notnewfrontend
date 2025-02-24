@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import ReviewBid from "../Elements/ReviewBid";
 import PlaceYourBid from "../Elements/PlaceYourBid";
 import BidPlacement from "../Elements/BidPlacement";
-import ShippingPolicyData from "../Products/Archive/SingleProductElements/ShippingPolicyData"; //'./components/Products/Archive/SingleProductElements/ShippingPolicyData'
+import ShippingPolicyData from "../Products/Archive/SingleProductElements/ShippingPolicyData";
 import Confirmation from "./Confirmation";
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
-import SellerServices from "../../services/API/SellerServices"; //~/services/API/SellerServices
-import BidsServices from "../../services/API/BidsServices"; //~/services/API/BidsServices
-import WatchListServices from "../../services/API/WatchListServices"; //~/services/API/WatchListServices
+import ProductServices from "../../services/API/ProductServices";
+import SellerServices from "../../services/API/SellerServices";
+import BidsServices from "../../services/API/BidsServices";
 import { toast } from "react-toastify";
-import moment from "moment";
-import { Modal, Spinner, Toast } from "react-bootstrap";
+import { Modal, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import Select from 'react-select';
 import UserService from "../../services/API/UserServices";
 
 const CountdownTimer = ({ initialTimeMicroseconds }) => {
@@ -74,20 +70,6 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
   const token = localStorage.getItem('access_token');
   const seller_guid = localStorage.getItem('seller_guid');
   const id = pathname.split("/").pop();
-
-
-  const handelAddonsChange = (e, data, index) => {
-    const updatedArray = [...ProductAttribute];
-
-    updatedArray[index] = {
-      name: data.name,
-      selected: e,
-      options: data?.options,
-      selectToSend: e.label
-    };
-
-    SetproductAttribute(updatedArray);
-  }
 
   const saveRecentView = () => {
     let data = {
@@ -202,15 +184,11 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
     BidsServices.confirmBids(data)
       .then((response) => {
         if (response.status) {
-          // toast.success(response.data);
           setRequestSentVisible({
             ...requestSentVisible,
-            element1: false, // Close the requestSentVisible popup for element1
+            element1: false,
           });
-          setAdditionalPopupVisible(true); // Show the additionalPopupVisible popup
-          // setTimeout(() => {
-          //   handleDropdownItemClick
-          // }, 4000);
+          setAdditionalPopupVisible(true);
         }
       }).catch((error) => {
         toast.error(error?.response?.data?.message)
@@ -286,23 +264,6 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
               <div className="p-i-2-w-l">Auction time left</div>
               <div className="p-i-2-w-r"><CountdownTimer initialTimeMicroseconds={productData?.auction_remainig_time} /></div>
             </div>
-
-            {/* {ProductAttribute.map((data, index) => {
-              return (
-                <div className="p-i-2-w" key={index}>
-                  <div className="p-i-2-w-l">{data?.name}</div>
-                  <div className="p-i-2-w-r">
-                    <Select
-                      value={data?.selected}
-                      onChange={(e) => { handelAddonsChange(e, data, index) }}
-                      options={ProductAttribute?.[index]?.options}
-                      placeholder={`Select ${data?.name}`}
-                    />
-                  </div>
-                </div>
-
-              )
-            })} */}
             <hr />
           </div>
           <div className="p-i-4">
@@ -363,62 +324,6 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
         <>
           {productData ? (
             <>
-              {/* <div className="product-info">
-                <h3>{productData.name}</h3>
-                <hr />
-                <div className="auction-time">
-                  <ul>
-                    <li>
-                      <span>Condition</span> <em>{productData.condition}</em>
-                    </li>
-                    <li>
-                      <span>Auction time left</span>{" "}
-                      <em style={{ color: "red" }}>{hour}h {minutes}m | Today {currenttime}</em>
-                    </li>
-                  </ul>
-                </div>
-                <hr />
-                <div className="row auction-info align-items-center">
-                  <div className="col-lg-7">
-                    <div className="price-detail">
-                      <h5>
-                        <span>Starting Bid</span>
-                        <br />$ {productData.bids}
-                      </h5>
-                      {bestoffer > 0 ? (
-                        <>
-                          <hr />
-                          <h5>
-                            <span>Best Offer</span>
-                            <br />$ {bestoffer}
-                            {totalbids > 0 ? (
-                              <>
-                                <em>{totalbids} bids</em>
-                              </>
-                            ) : ('')}
-
-                          </h5>
-                        </>
-                      ) : ('')}
-
-                    </div>
-                  </div>
-                  <div className="col-lg-5">
-                    <div className="pay-buttons">
-                      <Link>
-                        <button onClick={() => handleRefundClick("element1")}>
-                          Place a Bid
-                        </button>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-                <h3>Description</h3>
-                {productData.description}
-                <ShippingPolicyData />
-              </div> */}
-
-              {/* BIDDING POPUP START */}
               <div className="row">
                 <div>
                   {refundDetailsVisible["element1"] && (
@@ -442,7 +347,6 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
                             {errors.bids && (
                               <p className="error">{errors.bids}</p>
                             )}
-                            {/* <p style={{ color: "#DE0023" }}></p> */}
                           </div>
                         </div>
                       </div>
@@ -506,7 +410,6 @@ const AuctionProductInformation = ({ getMoreToLove, setProductId }) => {
                   )}
                 </div>
               </div>
-              {/* BIDDING POPUP END */}
             </>
           ) : (
             ""

@@ -209,10 +209,6 @@ const RejectedOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                       <li>Subtotal ( {rejectedOrderDetail?.products?.[0]?.quantity} item )</li>
                       <li>${rejectedOrderDetail?.subtotal}</li>
                     </ul>
-                    {/* <ul>
-                      <li>Shipping</li>
-                      <li>${rejectedOrderDetail?.shippingcost}</li>
-                    </ul> */}
                     {rejectedOrderDetail?.voucher_discount > 0 ?
                       <ul>
                         <li>Voucher Discount</li>

@@ -25,14 +25,10 @@ export const getTokenn = (setTokenFound , setFcmToken) => {
       if (currentToken) {
         setTokenFound(true);
         setFcmToken(currentToken)
-        // Track the token -> client mapping, by sending to backend server
-        // show on the UI that permission is secured
       } else {
         setTokenFound(false);
-        // shows on the UI that permission is required 
       }
     }).catch((err) => {
-      // catch error while creating client token
     });
   }
 

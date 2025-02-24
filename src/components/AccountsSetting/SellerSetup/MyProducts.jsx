@@ -1,25 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import Leftmenuimage from '../../../assets/Images/leftmenu.png';
-import { useLocation } from 'react-router-dom';
-import Chat from '../../CustomerDashboard/Chat';
-import Selling from './SellingDashboard';
-import ProductManagement from './ProductManagement';
-import SellingNotifications from '../NotificationPreferences/SellingNotifications';
-import BidsNoffers from './BidsNoffers';
-import OngoingOrderManagement from '../../OrderManagement/OngoingOrderManagement';
-import CompleteOrderManagement from '../../OrderManagement/CompleteOrderManagement';
-import RefundManagement from '../../OrderManagement/RefundManagement';
-import EditBankDetails from './EditBankDetails';
-import EditProfileSetup from './EditProfileSetup';
-import SetupSellerAccount from './SetupSellerAccount';
-import Backimage from '../../../assets/Images/back-icon.png'
-import ProductServices from "../../../services/API/ProductServices"; //~/services/API/OrderServices
-import { toast } from "react-toastify";
-import { Link } from 'react-router-dom';
+import ProductServices from "../../../services/API/ProductServices";
 import Prdimage1 from '../../../assets/Images/Singleproduct/Product1.png';
 
 const MyProducts = () => {
-  const [selectedLink, setSelectedLink] = useState(null);
   const [products, setProducts] = useState({});
   const [trustedseller, setTrustedSeller] = useState(0);
 
@@ -63,8 +46,6 @@ const MyProducts = () => {
                                     </div>
                                     <div className="detaildashbritemdetail">
                                       <h4>Name: {item.name}</h4>
-                                      {/* <Link to='/category'>
-                              </Link> */}
                                       <p>Price: $ {item.price}</p>
                                       <br />
                                       <h4>Attributes:</h4>
@@ -88,10 +69,8 @@ const MyProducts = () => {
                                         href={`singleproduct/${item.guid}`}
                                         target='_blank'
                                       >
-                                        {/* <Link to={`/completedorder/${summary.order.orderid}`}> */}
                                         View Detail
                                       </a>
-                                      {/* </Link> */}
                                     </div>
                                   </div>
                                   <hr />
@@ -102,7 +81,6 @@ const MyProducts = () => {
                       ) : ('No items')}
                     </div>
                   </section>
-                  {/* <button className='backbutton-account' onClick={() => setSelectedLink(null)}><img src={Backimage} /> Back</button> */}
                 </div>
               </div>
             </div>

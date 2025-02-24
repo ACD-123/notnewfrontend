@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import SellerServices from '../services/API/SellerServices';
@@ -244,7 +243,6 @@ const NotificationPreferences = ({ cartFullResponse, notificationCount }) => {
         className='mobile-product-filter'
         size={'90%'}
       >
-
         <div className='left-menu'>
           <div className="title-selling-hub">Selling Hub <span onClick={toggleDrawer}><RxCross2 /></span></div>
           <div className="personal-info">

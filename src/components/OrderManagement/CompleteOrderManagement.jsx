@@ -219,34 +219,6 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                   )
                 })}
               </div>
-              {/* <div className="d-4-1">
-                <div className="d-4-1-l">
-                  <img src={pendingOrderDetail?.products?.[0]?.media?.[0]?.name} alt="Product"/>
-                </div>
-                <div className="d-4-1-r">
-                  <h4>{pendingOrderDetail?.products?.[0]?.name}</h4>
-                  <div className="d-4-1-r-1">
-                    <div className="d-4-1-r-1-l">
-                      <h5>${pendingOrderDetail?.products?.[0]?.producttotal}</h5>
-                      <p>Quantity :<span>{pendingOrderDetail?.products?.[0]?.quantity}</span></p>
-                    </div>
-                    <div className="d-4-1-r-1-r">
-                      <ul>
-                        {pendingOrderAttributes.map((data, index) => {
-                          return (
-                            <li key={index}>
-                              <p>{data?.key} : </p>
-                              <ul>
-                                <li>{data?.value}</li>
-                              </ul>
-                            </li>
-                          )
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
               {!review &&
                 <>
                   <div className="d-4-2">
@@ -256,10 +228,6 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                           <li>Subtotal ( {pendingOrderDetail?.products?.[0]?.quantity} item )</li>
                           <li>${pendingOrderDetail?.subtotal}</li>
                         </ul>
-                        {/* <ul>
-                          <li>Shipping</li>
-                          <li>${pendingOrderDetail?.shippingcost}</li>
-                        </ul> */}
                          {pendingOrderDetail?.voucher_discount > 0 ?
                       <ul>
                         <li>Voucher Discount</li>
@@ -289,7 +257,6 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                 <div className="s-o-m-d-5">
                   <h4>Ratings</h4>
                   <div className="s-o-m-d-5-r">
-                    {/* <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><span>4.5</span> */}
                     {pendingOrderDetail?.products?.[0]?.rating === 5 &&
                       <>
                         <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
@@ -350,7 +317,7 @@ const CompleteOrderManagement = ({ detail, setDetail, getProductManagmentOderCou
                 </div>
                 <div className="s-o-m-d-6">
                   <div className="customer-feedback" style={{margin : '0px'}}>
-                    <h2 style={{fontSize : '22px' , lineHeight : '30px'}}>Feedbacks</h2>
+                    <h2 style={{fontSize : '22px' , lineHeight : '30px'}}>Feedback</h2>
                     <div className="feedback-container">
                       {pendingOrderDetail?.products?.[0]?.feedback?.length === 0 ? (
                         <NoDataFound title={'No Data Found'} />

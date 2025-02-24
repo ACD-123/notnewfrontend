@@ -38,9 +38,6 @@ const SellerProfileDetails = ({ id }) => {
             const res = await ProductServices.isFavorite(data);
             toast.success(res.message);
             getShopData()
-            // if (res.status) {
-            //     setFavData(res.data);
-            // }
         } catch (error) {
             toast.error(error?.response?.data?.message)
         }

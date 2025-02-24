@@ -144,22 +144,6 @@ function HomeCategorySlider() {
                                             </Slider>
                                             :
                                             <Slider {...settings}>
-                                                {/* <div className='h-c-s-slider active'>
-                                                    <Link to={'/auctions'}>
-                                                        <div className='h-c-s-slider-w'>
-                                                            <img src={auctionImage} alt="" />
-                                                            <h3>Auction Products</h3>
-                                                        </div>
-                                                    </Link>
-                                                </div>
-                                                <div className='h-c-s-slider'>
-                                                    <Link to={'/top-sellers'}>
-                                                        <div className='h-c-s-slider-w'>
-                                                            <img src={topSellerImage} alt="" />
-                                                            <h3>Top Sellers</h3>
-                                                        </div>
-                                                    </Link>
-                                                </div> */}
                                                 {categoryData?.length > 0 &&
                                                     (categoryData?.map((data, index) => {
                                                         return (

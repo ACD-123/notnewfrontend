@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Prdimage from "../assets/Images/Winningproduct/prdimge.png";
-import UserServices from "../services/API/UserServices"; //~/services/API/UserServices
-import ProductServices from "../services/API/ProductServices"; //~/services/API/ProductServices
+import UserServices from "../services/API/UserServices";
+import ProductServices from "../services/API/ProductServices";
 import {BASE_URL} from "../services/Constant"
 import blank from "../assets/Images/Productcard/blank.jpg";
 import { toast } from "react-toastify";
-import moment from "moment";
 
 const WinningBidProduct = (props) => {
   const [bidata, setBidData] = useState({});
@@ -14,7 +13,7 @@ const WinningBidProduct = (props) => {
   const id = pathname.split("/").pop();
 
   const renderOrderBlock = (orderData) => {
-    const { orderNumber, productName, images, condition, ended, winningbid, shipping, location, seller } = orderData;
+    const { orderNumber} = orderData;
     return (
       <div className="row align-items-center" key={orderNumber}
       style={{padding: "40px 0px"}}

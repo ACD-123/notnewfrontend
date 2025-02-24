@@ -95,26 +95,26 @@ function setBank(data) {
 
   function getShopHeader(guid) {
     return request({
-      url: `${baseUrl}seller/getShopDetailHeader/${guid}`, // Modify the endpoint to include the GUID
+      url: `${baseUrl}seller/getShopDetailHeader/${guid}`,
       method: 'GET',
     })
   }
   function getShopDetailProducts(guid , search) {
     return request({
-      url: `${baseUrl}seller/getShopDetailProducts/${guid}?search_key=${search}`, // Modify the endpoint to include the GUID
+      url: `${baseUrl}seller/getShopDetailProducts/${guid}?search_key=${search}`,
       method: 'GET',
     })
   }
   function getShopDetailAbout(guid) {
     return request({
-      url: `${baseUrl}seller/getShopDetailAbout/${guid}`, // Modify the endpoint to include the GUID
+      url: `${baseUrl}seller/getShopDetailAbout/${guid}`,
       method: 'GET',
     })
   }
 
   function getFaqs(type) {
     return request({
-      url: `${baseUrl}additional_pages/get?type=${type}`, // Modify the endpoint to include the GUID
+      url: `${baseUrl}additional_pages/get?type=${type}`,
       method: 'GET',
     })
   }

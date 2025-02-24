@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Activity from './Activity'
-// import Chat from './Chat';
 import AccountInfo from '../AccountsSetting/AccountInfo';
-import NotFound_ from '../../pages/NotFound_'
 import UserChat from '../UserChat';
 const Tabs = () => {
   const [selectedTab, setSelectedTab] = useState('activity');
@@ -25,10 +23,8 @@ const Tabs = () => {
       case 'activity':
         return <Activity />;
       case 'messages':
-        // return <RecentlyViewed />;
         return <UserChat/>
       case 'account':
-        // return <BidsOffer /> ;
         return <AccountInfo />
       default:
         return;

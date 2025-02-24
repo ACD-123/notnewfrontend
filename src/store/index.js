@@ -5,7 +5,6 @@ import cupon from './slices/cupon'
 const reducer = combineReducers({
     user,
     cupon,
-  // here we will be adding reducers
 })
 const store = configureStore({
   reducer,

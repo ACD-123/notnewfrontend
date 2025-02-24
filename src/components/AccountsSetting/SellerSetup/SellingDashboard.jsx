@@ -21,7 +21,8 @@ const Selling = () => {
   }, []);
   return (
     <div className='selling-activity'>
-      {trustedseller ? (
+      <SellingDetailsDashBoard />
+      {/* {trustedseller ? (
         <SellingDetailsDashBoard />
       ) : (
         <>
@@ -47,7 +48,7 @@ const Selling = () => {
             </div>
           )}
         </>
-      )}
+      )} */}
     </div>
   );
 };

@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import ProductCard from "../../Elements/ProductCard"
-import { Button } from 'react-bootstrap'
 import { Link } from "react-router-dom";
-import SellerServices from '../../../services/API/SellerServices'; //~/services/API/SellerServices
+import SellerServices from '../../../services/API/SellerServices';
 import { toast } from 'react-toastify';
 
 const FeaturedProducts = () => {
@@ -37,7 +35,6 @@ const FeaturedProducts = () => {
                             </h3>
                         </div>
                         <div className='row render'>
-                            {/* <ProductCard /> */}
                         </div>
                         <div className='row'>
                             <Link to="/notFound" style={{textDecoration: "unset"}}>

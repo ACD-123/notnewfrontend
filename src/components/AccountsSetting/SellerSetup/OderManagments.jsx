@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import UserServices from "../../../services/API/UserServices";
-import { isLoggedin, setUserDetails } from '../../../services/Auth';
 import LoadingComponents from '../../Shared/LoadingComponents';
 import PendingOrderManagement from '../../OrderManagement/PendingOrderManagement';
 import OngoingOrderManagement from '../../OrderManagement/OngoingOrderManagement';

@@ -52,7 +52,6 @@ const SingleCategory = ({cartFullResponse , notificationCount}) => {
       .then((response) => {
         setCategoryProducts(response?.data);
         getCategorySubCategoryById(category_id)
-        // getBrands()
       })
       .catch((error) => {
         toast.error(error?.response?.data?.data);
@@ -73,7 +72,6 @@ const SingleCategory = ({cartFullResponse , notificationCount}) => {
         setSubCategories([{ label: response?.data?.category?.name, value: response?.data?.category?.id }, ...arr]);
         setSelectedSubCategories({ label: response?.data?.category?.name, value: response?.data?.category?.id })
         setLoading(false)
-        // getCategoryAttributes(category_id)
       })
       .catch((error) => {
         toast.error(error?.response?.data?.data);

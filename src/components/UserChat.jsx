@@ -142,7 +142,6 @@ function UserChat() {
                 setNewChat(false)
                 getChatUsers()
                 navigator(`/customerdashboard?tab=messages&room-id=${response?.data?.id}`)
-                // getUserChat(response?.data);
             })
             .catch((error) => {
                 setLoading(false)

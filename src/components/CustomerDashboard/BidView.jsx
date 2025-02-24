@@ -8,9 +8,9 @@ import BidPlacement from "../Elements/BidPlacement";
 import ReviewBid from "../Elements/ReviewBid";
 import PlaceYourBid from "../Elements/PlaceYourBid";
 import Checkimg from "../../assets/Images/Auction/check.png";
-import BidsServices from "../../services/API/BidsServices"; //~/services/API/BidsServices
-import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
+import BidsServices from "../../services/API/BidsServices";
+import UserServices from "../../services/API/UserServices";
+import ProductServices from "../../services/API/ProductServices";
 import moment from "moment";
 import { toast } from "react-toastify";
 
@@ -18,7 +18,6 @@ const BidView = ({cartFullResponse , notificationCount}) => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
   const [requestSentVisible, setRequestSentVisible] = useState({});
   const [editBidVisible, setEditBidVisible] = useState({});
-  const [confirmBidVisible, setConfirmBidVisible] = useState(false);
   const [additionalPopupVisible, setAdditionalPopupVisible] = useState(false);
   const [totalbid, setTotalBid] = useState(0);
   const [totalbids, setTotalBids] = useState(0);
@@ -45,7 +44,6 @@ const BidView = ({cartFullResponse , notificationCount}) => {
       setProductData(response);
       setShippingPrice(response.shipping_price);
       setProductBids(response.bids);
-      // {response.shipping_price}
       var date = new Date();
       var date1 = moment(date, "MM/DD/YYYY");
       var date2 = moment(
@@ -57,27 +55,16 @@ const BidView = ({cartFullResponse , notificationCount}) => {
       var minutes = hours.toFixed(2);
       setHour(hours.toString().split(".")[0]);
       setMinutes(minutes.toString().split(".")[1]);
-      const currDate = new Date(); //.toLocaleTimeString;
+      const currDate = new Date();
       setCurrentTime(moment(currDate).format("hh:mm A"));
       ProductServices.getbycategory(response.category?.id).then((response) => {
         setCategoryProduct(response);
       });
     });
 
-    // ProductServices.get(id).then((response) => {
-    //   setProduct(response)
-    //   ProductServices.getbycategory(response.category?.id)
-    //   .then((response) => {
-    //     setCategoryProduct(response)
-    //   });
-    // });
   };
   const getProductTotalBids = () => {
-
     BidsServices.getProductBids(id).then((response) => {
-      // if (response.status) {
-      //   setTotalBid(response.data);
-      // }
     });
   };
 
@@ -126,9 +113,6 @@ const BidView = ({cartFullResponse , notificationCount}) => {
         BidsServices.save(data)
           .then((response) => {
             if (response.status) {
-              // if(response.status === "prohibited"){
-              //   newErrors.bids = response.data;
-              // }else{
               setBids(response.data);
               setPlacedBids(true);
               setRefundDetailsVisible({
@@ -139,45 +123,21 @@ const BidView = ({cartFullResponse , notificationCount}) => {
                 ...requestSentVisible,
                 [elementId]: true,
               });
-              // handleDropdownItemClick("componentC")
-              // }
             }
           })
           .catch((error) => {
             toast.error(error?.response?.data?.message)
           });
-        // setRefundDetailsVisible({
-        //   ...refundDetailsVisible,
-        //   [elementId]: false,
-        // });
       }
     }
-
-    // setRefundDetailsVisible({
-    //   ...refundDetailsVisible,
-    //   [elementId]: false,
-    // });
-    // setRequestSentVisible({
-    //   ...requestSentVisible,
-    //   [elementId]: true,
-    // });
-  };
-
-  const handleCloseRequestSent = (elementId) => {
-    setRequestSentVisible({
-      ...requestSentVisible,
-      [elementId]: false,
-    });
   };
 
   const handleCloseAdditionalPopup = () => {
-    setAdditionalPopupVisible(false); // Close additional popup
+    setAdditionalPopupVisible(false);
   };
   const handleConfirmBidClick = () => {
   };
-  const handleDropdownItemClick = (componentName) => {
-    navigate(`/customerdashboard?component=${componentName}`)
-  };
+
   const getUserProductBids = () => {
     UserServices.getBid(id).then((response) => {
       if (response.status) {
@@ -208,7 +168,6 @@ const BidView = ({cartFullResponse , notificationCount}) => {
   }, []);
   return (
     <>
-      {/* Header */}
       <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id="product-recents-viewed">
         <div className="container">
@@ -245,7 +204,6 @@ const BidView = ({cartFullResponse , notificationCount}) => {
               </h3>
             </div>
           </div>
-          {/* BIDDING POPUP START */}
           <div className="row">
             <div>
               {refundDetailsVisible["element1"] && (
@@ -344,7 +302,6 @@ const BidView = ({cartFullResponse , notificationCount}) => {
               )}
             </div>
           </div>
-          {/* BIDDING POPUP END */}
         </div>
         {categoryproduct ? (
           <>
@@ -354,7 +311,6 @@ const BidView = ({cartFullResponse , notificationCount}) => {
           ""
         )}
       </section>
-      {/* Footer */}
       <Footer />
     </>
   );

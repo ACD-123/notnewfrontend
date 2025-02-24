@@ -233,34 +233,6 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
                   )
                 })}
               </div>
-              {/* <div className="d-4-1">
-                <div className="d-4-1-l">
-                  <img src={pendingOdrDetail?.products?.[0]?.media?.[0]?.name} alt="Product" />
-                </div>
-                <div className="d-4-1-r">
-                  <h4>{pendingOdrDetail?.products?.[0]?.name}</h4>
-                  <div className="d-4-1-r-1">
-                    <div className="d-4-1-r-1-l">
-                      <h5>${pendingOdrDetail?.products?.[0]?.producttotal}</h5>
-                      <p>Quantity :<span>{pendingOdrDetail?.products?.[0]?.quantity}</span></p>
-                    </div>
-                    <div className="d-4-1-r-1-r">
-                      <ul>
-                        {pendingOrderAttributes.map((data, index) => {
-                          return (
-                            <li key={index}>
-                              <p>{data?.key} : </p>
-                              <ul>
-                                <li>{data?.value}</li>
-                              </ul>
-                            </li>
-                          )
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
               <div className="d-4-2">
                 <ul>
                   <li>
@@ -268,10 +240,6 @@ const OngoingOrderManagement = ({ detail, setDetail, getProductManagmentOderCoun
                       <li>Subtotal ( {pendingOdrDetail?.products?.[0]?.quantity} item )</li>
                       <li>${pendingOdrDetail?.subtotal}</li>
                     </ul>
-                    {/* <ul>
-                      <li>Shipping</li>
-                      <li>${pendingOdrDetail?.shippingcost}</li>
-                    </ul> */}
                      {pendingOdrDetail?.voucher_discount > 0 ?
                       <ul>
                         <li>Voucher Discount</li>

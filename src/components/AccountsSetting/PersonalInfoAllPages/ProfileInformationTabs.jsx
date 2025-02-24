@@ -9,7 +9,6 @@ const ProfileInformationTabs = (props) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('component1');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (props.selectedMenuItem) {
@@ -21,6 +20,7 @@ const ProfileInformationTabs = (props) => {
       setSelectedMenuItem(componentName);
     }
   }, [location.search]);
+  
   const handleMenuItemClick = (menu) => {
     setSelectedMenuItem(menu);
     setIsMenuOpen(false);

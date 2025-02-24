@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Location from "../../assets/Images/deliveryimage.png";
-import OrderServices from "../../services/API/OrderServices"; //~/services/API/OrderServices
+import OrderServices from "../../services/API/OrderServices";
 import { toast } from "react-toastify";
 import LoadingComponents from "../Shared/LoadingComponents";
 import NoDataFound from "../Shared/NoDataFound";
-import { IoIosArrowBack, IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
 
 
 const CustomerActiveOrder = ({ detail, setDetail, getProductManagmentOderCount }) => {
@@ -38,7 +38,6 @@ const CustomerActiveOrder = ({ detail, setDetail, getProductManagmentOderCount }
         for (let i = 0; i < response?.data?.products.length; i++) {
           const attributes = response?.data?.products?.[i]?.attributes;
           const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
-          // const validJsonString = attributes.replace(/([{,]\s*)(\w+|\w+\s+\w+)(\s*:)/g, '$1"$2"$3').replace(/(:\s*)(\w+|\w+\s+\w+)(\s*[},])/g, '$1"$2"$3');
           const normalArray = JSON.parse(validJsonString);
           tempArr.push(normalArray)
         }

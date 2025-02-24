@@ -34,6 +34,7 @@ const BidsNoffers = () => {
         setIsLoading(false)
       })
   }
+
   useEffect(() => {
     getSellerBid();
   }, []);
@@ -43,7 +44,6 @@ const BidsNoffers = () => {
     getAuctionDetails(data.id)
     setAuctionId(data.id)
   };
-
 
   const formatTime = (totalSeconds) => {
     if (isNaN(totalSeconds) || totalSeconds < 0) {
@@ -121,6 +121,7 @@ const BidsNoffers = () => {
       channel.stopListening(".bid-channel");
     };
   }, []);
+
   return (
     <>
       {isLoading ?
@@ -172,8 +173,7 @@ const BidsNoffers = () => {
                         return (
                           <li key={index}>
                             <div className="s-n-t-s-l">
-                              <img src={`${BASE_URL}/${data?.media?.[0]?.url}`}  />
-                              {/* <img src={data?.media?.[0]?.url} /> */}
+                              <img src={`${BASE_URL}/${data?.media?.[0]?.url}`} />
                             </div>
                             <div className="s-n-t-s-c">
                               <h2>{data?.name}</h2>
@@ -210,7 +210,6 @@ const BidsNoffers = () => {
                     <li>
                       <h2>Ends in</h2>
                       <p>{countdown}</p>
-                      {/* <p>{auctionDetail?.product?.auction_remainig_time}</p> */}
                     </li>
                     <li>
                       <h2>Bid</h2>
@@ -240,7 +239,7 @@ const BidsNoffers = () => {
                               <li>
                                 <div className="bid-user">
                                   <div className="b-s-l">
-                                  <img src={`${auctionDetail?.product?.media?.[0]?.name}`}  />
+                                    <img src={`${auctionDetail?.product?.media?.[0]?.name}`} />
                                   </div>
                                   <div className="b-s-r">
                                     <h2>{data?.name} {data?.last_name}</h2>

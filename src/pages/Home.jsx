@@ -5,14 +5,13 @@ import Banner from "../components/Elements/Banner"
 import Items from "../components/Products/Items"
 import CategoryList from "../components/Products/Archive/CategoryList"
 import GetSurprisedBanner from "../components/Elements/GetSurprisedBanner"
-import HomeService from "../services/API/HomeService"; //~/services/API/AuthService
+import HomeService from "../services/API/HomeService";
 import TopSellingProducts from "../components/Products/TopSellingProducts";
 import HotSellingProducts from "../components/Products/HotSellingProducts";
 import HomeCategorySlider from "../components/Shared/Sliders/HomeCategorySlider";
 import { toast } from "react-toastify";
 import Auction from "../components/TwentyOnePlus/Auction";
 import UsedProducts from "../components/Products/UsedProducts";
-import BrandNewProducts from "../components/Products/BrandNewProducts";
 
 
 const Home = ({ cartFullResponse, notificationCount }) => {
@@ -20,7 +19,6 @@ const Home = ({ cartFullResponse, notificationCount }) => {
 	const [featureBanners, setFeatureBanners] = useState([]);
 	const [topSellingProducts, setTopSellingProducts] = useState([]);
 	const [hotProducts, setHotProducts] = useState([]);
-	const [topSelling, setTopSelling] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const user_id = localStorage.getItem('user_id');
 
@@ -47,11 +45,9 @@ const Home = ({ cartFullResponse, notificationCount }) => {
 	return (
 		<>
 			<Header cartFullResponse={cartFullResponse} notificationCount={notificationCount} />
-			{/* <Banner data={banners} loading={loading} /> */}
 			<HomeCategorySlider />
 			<Items title={'New Arrivals '} />
 			<UsedProducts />
-			<BrandNewProducts />
 			<TopSellingProducts loading={loading} data={topSellingProducts} setTopSellingProducts={setTopSellingProducts} title={'Top Selling Products'} />
 			<HotSellingProducts loading={loading} data={hotProducts} setHotProducts={setHotProducts} title={'Hot Selling Products'} />
 			<Auction type={1} title={'Latest Auctions'} />

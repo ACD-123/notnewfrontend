@@ -1,15 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import ProductCard from '../Elements/ProductCard';
-import UserService from "../../services/API/UserServices"; //~/services/API/UserService
+import UserService from "../../services/API/UserServices";
 import { toast } from "react-toastify";
 
 const RecentlyViewed = () => {
-  // const [products, setProducts] = useState([
-  //   // Initial list of products (you can add your products here)
-  //   { id: 1, name: 'Product 1' },
-  //   { id: 2, name: 'Product 2' },
-  //   // Add more products as needed
-  // ]);
   const [products, setProducts] = useState([]);
   const getRecent = () =>{
     UserService.recentUserView()
@@ -25,7 +18,6 @@ const RecentlyViewed = () => {
       setProducts([]);
     });
   }
-  // Function to clear all products
   const clearAllProducts = () => {
     UserService.deleteRecentUser()
     .then((error) => {
@@ -35,7 +27,6 @@ const RecentlyViewed = () => {
     .catch((error) => {
       toast.error(error?.response?.data?.message)
     });
-    // setProducts([]); // Set the products array to an empty array
   };
   useEffect(() => {
     getRecent();

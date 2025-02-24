@@ -6,18 +6,14 @@ import { useNavigate } from "react-router-dom";
 import CartServices from "../../services/API/CartServices"; //~/services/API/CartServices
 import { toast } from "react-toastify";
 import blank from "../../assets/Images/Productcard/blank.jpg";
-import ProductServices from "../../services/API/ProductServices";
 import LoadingComponents from "../../components/Shared/LoadingComponents";
 import NoDataFound from "../../components/Shared/NoDataFound";
 
 const ShoppingCart = ({ getCartCount, cartFullResponses, getCartCountGuest, notificationCount }) => {
-  const [showDiscountField, setShowDiscountField] = useState(false);
   const [cart, setCart] = useState([]);
   const [cartFullResponse, setCartFullResponse] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [inputError, setInputError] = useState(false);
   const [couponeCode, setCouponeCode] = useState('');
-  const user_id = localStorage.getItem('user_id');
   const token = localStorage.getItem('access_token');
   const { pathname } = window.location;
 

@@ -2,8 +2,8 @@ import React, { useRef, useState, useEffect } from "react";
 import Emailverifyimagebg from "../../assets/Images/Accountimages/signup.png";
 import Logo from "../../assets/Images/logo.png";
 import Line from "../../assets/Images/Accountimages/line.png";
-import AuthServices from "../../services/API/AuthService"; //~/services/API/AuthService
-import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
+import AuthServices from "../../services/API/AuthService";
+import UserServices from "../../services/API/UserServices";
 
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -15,23 +15,21 @@ var Emailverifybg = {
 
 const ForgotVerification = () => {
   const navigate = useNavigate()
-  const [resendCountdown, setResendCountdown] = useState(60); // Initial countdown value
+  const [resendCountdown, setResendCountdown] = useState(60);
 
   useEffect(() => {
     let countdownInterval;
 
     if (resendCountdown > 0) {
-      // Start the countdown timer if the countdown value is greater than 0
       countdownInterval = setInterval(() => {
-        setResendCountdown((prevCountdown) => prevCountdown - 1); // Decrement countdown value every second
+        setResendCountdown((prevCountdown) => prevCountdown - 1);
       }, 1000);
     }
 
     return () => {
-      // Cleanup function to clear the interval when component unmounts or countdown reaches 0
       clearInterval(countdownInterval);
     };
-  }, [resendCountdown]); // Run the effect whenever the resendCountdown state changes
+  }, [resendCountdown]);
 
   const inputRefs = [useRef(null), useRef(null), useRef(null), useRef(null)];
   const [isLoading, setIsLoading] = useState(false);
@@ -40,11 +38,10 @@ const ForgotVerification = () => {
   const email = pathname.split("/").pop();
   const handleInputChange = (index, value) => {
     if (value.length > 1) {
-      value = value.slice(0, 1); // Limit input to one character
+      value = value.slice(0, 1);
     }
 
     if (value !== "") {
-      // Move focus to the next input field if there's input
       if (index < inputRefs.length - 1 && inputRefs[index + 1].current) {
         inputRefs[index + 1].current.focus();
       }
@@ -53,7 +50,6 @@ const ForgotVerification = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Get the values from each input field for further processing
     const code = inputRefs.map((ref) => ref.current.value).join("");
     setIsLoading(true);
     setEnabled(true);
@@ -100,7 +96,6 @@ const ForgotVerification = () => {
         setEnabled(false);
       });
   }
-  // Helper function to format countdown time in minutes and seconds
   const formatCountdownTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -161,15 +156,9 @@ const ForgotVerification = () => {
                         />
                       ))}
                     </div>
-                    {/* <input
-                      className="btn btn-primary"
-                      type="submit"
-                      value="Send Code"
-                    /> */}
                     <div className="emailresend-recieve py-4">
                       <ul style={{ alignItems: 'center' }}>
                         <li className="code">
-                          {/* Display the countdown timer */}
                           <a href=''>
                             {resendCountdown > 0
                               ? `Resend code in ${formatCountdownTime(resendCountdown)}`
@@ -177,7 +166,6 @@ const ForgotVerification = () => {
                           </a>
                         </li>
                         <li className="resend">
-                          {/* Disable the resend button during countdown */}
                           <button disabled={resendCountdown > 0} onClick={handleResend}>
                             Resend
                           </button>

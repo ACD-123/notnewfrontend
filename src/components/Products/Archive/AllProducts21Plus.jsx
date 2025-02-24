@@ -485,8 +485,6 @@ const AllProducts21Plus = ({ cartFullResponse, notificationCount }) => {
                       range
                       min={priceRange.min}
                       max={priceRange.max}
-                      // defaultValue={[priceRange.min, priceRange.max]}
-                      // step={20}
                       value={selectedRange}
                       onChange={handleSliderChange}
                     />
@@ -825,8 +823,6 @@ const AllProducts21Plus = ({ cartFullResponse, notificationCount }) => {
                 range
                 min={priceRange.min}
                 max={priceRange.max}
-                // defaultValue={[priceRange.min, priceRange.max]}
-                // step={20}
                 value={selectedRange}
                 onChange={handleSliderChange}
               />

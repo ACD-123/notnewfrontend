@@ -3,8 +3,6 @@ import OrderServices from "../../services/API/OrderServices";
 import { toast } from "react-toastify";
 import LoadingComponents from "../Shared/LoadingComponents";
 import NoDataFound from "../Shared/NoDataFound";
-import { BASE_URL } from "../../services/Constant";
-import DefaultImage from "../../assets/Images/default-image.jpg"
 import { useNavigate } from "react-router-dom";
 import ProductCard from "../Shared/Cards/ProductCard";
 
@@ -12,7 +10,6 @@ const CustomerActiveProducts = () => {
     const [activeFavProductList, setActiveFavProductList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const user_id = localStorage.getItem('user_id');
-    const navigate = useNavigate();
 
     const getActiveFavProducts = () => {
         OrderServices.customerActiveFavProducts(user_id)
@@ -28,9 +25,6 @@ const CustomerActiveProducts = () => {
     };
 
     const handleToggleFavourite = (index) => {
-        // const updatedProducts = [...activeFavProductList];
-        // updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
-        // setActiveFavProductList(updatedProducts);
         getActiveFavProducts()
     };
 

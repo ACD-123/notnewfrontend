@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom';
 import Chat from '../../CustomerDashboard/Chat';
 import Selling from './SellingDashboard';
 import ProductManagement from './ProductManagement';
-import SellingNotifications from '../NotificationPreferences/SellingNotifications';
 import BidsNoffers from './BidsNoffers';
 import OngoingOrderManagement from '../../OrderManagement/OngoingOrderManagement';
 import CompleteOrderManagement from '../../OrderManagement/CompleteOrderManagement';
@@ -13,11 +12,10 @@ import EditBankDetails from './EditBankDetails';
 import EditProfileSetup from './EditProfileSetup';
 import SetupSellerAccount from './SetupSellerAccount';
 import MyTransactions from '../SellerSetup/MyTransactions';
-import NotFound from "../../../pages/NotFound_"
+import NotFound from "../../../pages/NotFound"
 import DiscountAndCoupens from './DiscountAndCoupens';
 import SellerFeedback from '../../Seller/SellerFeedback';
 import PendingOrderManagement from '../../OrderManagement/PendingOrderManagement';
-import Backimage from '../../../assets/Images/back-icon.png'
 
 const SellerAllTabs = (props) => {
   const [selectedMenuItem, setSelectedMenuItem] = useState('selling1');
@@ -46,7 +44,7 @@ const SellerAllTabs = (props) => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-  }, []); // Empty dependency array ensures this effect runs only once on mount
+  }, []);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -59,7 +57,7 @@ const SellerAllTabs = (props) => {
 
   const handleMenuItemClick = (menu) => {
     setSelectedMenuItem(menu);
-    setIsOrderManagementOpen(false); // Close order management dropdown on menu change
+    setIsOrderManagementOpen(false);
   };
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -76,7 +74,6 @@ const SellerAllTabs = (props) => {
   const [submitted, setSubmitted] = useState(false);
   const [productId, setProductId] = useState('');
   const renderComponent = () => {
-    // setProductId('')
     switch (selectedMenuItem) {
       case 'selling1':
         return <Selling orderid={props.orderid} parentCallback={handleCallbacks} />;
@@ -87,27 +84,21 @@ const SellerAllTabs = (props) => {
       case 'pending':
         return <PendingOrderManagement />;
       case 'sellings1':
-        // return <OngoingOrderManagement />;
         return <OngoingOrderManagement />
       case 'sellings2':
         return <CompleteOrderManagement />
-      // return <CompleteOrderManagement />;
       case 'sellings3':
         return <RefundManagement />;
-      // return <NotFound/> 
       case 'selling4':
         return <BidsNoffers />;
-      // return <NotFound/> 
       case 'selling5':
         return <Chat />;
-        // return <NotFound />
       case 'selling6':
-        return <SellerFeedback />  // You can add the component for Feedbacks here
+        return <SellerFeedback /> 
       case 'selling7':
-        return <DiscountAndCoupens /> // You can add the component for Discounts & coupons here
+        return <DiscountAndCoupens />
       case 'selling8':
-        return <MyTransactions/>; // You can add the component for Transactions here
-        // return <NotFound />
+        return <MyTransactions/>;
       case 'sellingss1':
         return <EditProfileSetup />;
       case 'sellingss1b':
@@ -116,8 +107,6 @@ const SellerAllTabs = (props) => {
         return <EditBankDetails />;
       case 'sellingss3':
         return <NotFound />
-        // return <SellingNotifications />;
-        return <SellingNotifications />;
       default:
         return null;
     }
@@ -181,7 +170,7 @@ const SellerAllTabs = (props) => {
                       </li>
                     }
                     <li onClick={() => { togglePositionOfMessage(5) }}>
-                      Feedbacks
+                      Feedback
                     </li>
                     {showMessage === 5 &&
                       <li className='no-access-for-nonseller'>
@@ -246,7 +235,7 @@ const SellerAllTabs = (props) => {
                       Chats
                     </li>
                     <li className={selectedMenuItem === 'selling6' ? 'active' : ''} onClick={() => {handleMenuItemClick('selling6'); setProductId('')}}>
-                      Feedbacks
+                      Feedback
                     </li>
                     <li className={selectedMenuItem === 'selling7' ? 'active' : ''} onClick={() => {handleMenuItemClick('selling7'); setProductId('')}}>
                       Discounts & coupons
@@ -285,7 +274,6 @@ const SellerAllTabs = (props) => {
                   </>
                 }
               </ul>
-              {/* <button className='backbutton-account' onClick={() => {props?.setSelectedLink(null); setProductId('')}}><img src={Backimage} /> Back</button> */}
             </div>
           </div>
           <div className='col-lg-9'>

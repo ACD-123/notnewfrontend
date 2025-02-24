@@ -12,11 +12,8 @@ const ProductManagementPopup = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setCondition(selectedOption);
-    // setSubmitted(true);
-    
   };
 
-  // Function to render the selected component based on the option
   const renderSelectedComponent = () => {
     switch (selectedOption) {
       case 'BrandNew':

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import SellerServices from '../services/API/SellerServices';
 import Footer from '../components/Footer';
 import Header from "../components/Header";
 import ProductSkeletonLoader from '../components/Shared/ProductSkeletonLoader';
@@ -13,7 +12,6 @@ const HotDeals = ({cartFullResponse , notificationCount}) => {
     const [hotProducts, setHotProducts] = useState([]);
     const [Loader, setLoader] = useState(true)
     const getTopSellers = () => {
-        const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
         const user_id = localStorage.getItem('user_id');
         HomeService.getTopSelling(user_id)
             .then((response) => {

@@ -3,16 +3,15 @@ import SellerServices from "../../../services/API/SellerServices";
 import { toast } from "react-toastify";
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
 import { BASE_URL } from "../../../services/Constant"
-import { Spinner } from "react-bootstrap";
 import { IoCameraReverseOutline } from "react-icons/io5";
 import LoadingComponents from "../../Shared/LoadingComponents";
 import { CiEdit } from "react-icons/ci";
+import blankUser from "../../../assets/Images/User/blankuser.jpg"
 
 const libraries = ['places'];
 const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
   const inputRef = useRef();
   const [inputErrors, setInputErrors] = useState(false);
-  // const [isLoading, setIsLoading] = useState(true);
   const [enabled, setEnabled] = useState(false);
   const [editprofile, setEditprofile] = useState({
     country_id: "",
@@ -89,7 +88,7 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
     if (editprofile?.fullname != "" && editprofile?.file != "" && editprofile?.address != "" &&
       editprofile?.city_id != "" && editprofile?.country_id != "" && editprofile?.zip != "" &&
       editprofile?.description != "" && editprofile?.video != "" && editprofile?.main_image != ""
-    ) { 
+    ) {
 
       setIsLoading(true);
       setEnabled(true);
@@ -132,7 +131,7 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
           setIsLoading(false);
           setEnabled(false);
         })
-     }
+    }
   }
 
   const handleChange = (e) => {
@@ -160,7 +159,7 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
           longitude: response?.data?.longitude,
           description: response?.data?.description,
           file: response?.data?.cover_image,
-          video: response?.data?.video,
+          video: response?.data?.video ? response?.data?.video : "",
           editImage: false,
           editVideo: false,
           main_image: response?.data?.main_image,
@@ -231,7 +230,10 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
                       <div className="s-p-i">
                         <div className="s-p-i-w" onClick={handleUploadClick}>
                           {!editprofile?.editImage ?
-                            <img src={`${BASE_URL}/${editprofile?.file}`} />
+                            editprofile?.file ?
+                              <img src={`${BASE_URL}/${editprofile?.file}`} />
+                              :
+                              <img src={blankUser} />
                             :
                             <img src={URL.createObjectURL(editprofile?.file)} />
                           }
@@ -333,7 +335,6 @@ const EditProfileSetup = ({ getShopDetaill, isLoading, setIsLoading }) => {
                           name="zip"
                           onChange={handleChange}
                           placeholder="Enter your state"
-                        // readOnly
                         />
                         {editprofile.zip === '' && inputErrors && <p className="error">Postal code is required</p>}
                       </div>

@@ -3,7 +3,6 @@ import SearchIcon from '../../../assets/Images/searchicon.png';
 import { Link } from 'react-router-dom';
 
 const SearchHistory = () => {
-  // Example search history data (replace this with your actual data)
   const initialSearchHistory = [
     { term: 'SportsShoes', alert: 'Email Alerts on' },
     { term: 'Running Gear', alert: 'Email Alerts off' },

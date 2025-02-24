@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import SellerFeedback from '../SellerFeedback'
-import CustomerReviews from '../../Elements/SellerElements/CustomerReviews'
-import ReviewSection from '../ReviewSection'
 import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa'
 import SellerServices from '../../../services/API/SellerServices'
-import OrderServices from '../../../services/API/OrderServices'
 import blankuser from '../../../assets/Images/User/blankuser.jpg'
 import { BASE_URL } from '../../../services/Constant'
 import NoDataFound from '../../Shared/NoDataFound'
@@ -199,7 +195,6 @@ const SellerFeedbackNew = () => {
                 </div>
               </div>
             </div>
-            {/* <SellerFeedback /> */}
           </div>
         </div>
       }

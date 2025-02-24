@@ -1,6 +1,5 @@
 import request from '../request'
 import { BASE_API } from '../Constant'
-// @todo this file name should be product service
 const baseUrl = `${BASE_API}order`
 const baseApi = `${BASE_API}`
 const ordersApi = `${BASE_API}orders`
@@ -292,12 +291,7 @@ function customerOngoingOrders() {
     method: 'GET',
   })
 }
-// function customerOngoingOrders() {
-//   return request({
-//     url: `${ordersApi}/active`,
-//     method: 'GET',
-//   })
-// }
+
 function customerCompletedOrders() {
   return request({
     url: `${ordersApi}/completedcustomer`,

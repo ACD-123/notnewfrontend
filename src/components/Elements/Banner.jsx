@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Arrow from '../../assets/Images/Elements/arrow.png'
 import { Link } from 'react-router-dom'
 import Skeleton from 'react-skeleton-loader';

@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Assuming you're using React Router
-import Footerlogo from "../assets/Images/footerlogo.png";
+import { Link } from "react-router-dom";
+import Footerlogo from "../assets/Images/logo.png";
 
 const Footer = () => {
 	const token = localStorage.getItem('access_token')

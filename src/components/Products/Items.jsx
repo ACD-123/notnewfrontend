@@ -1,28 +1,14 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "../../components/Shared/Cards/ProductCard";
-import ProductImage1 from "../../assets/Images/Productcard/1.png";
-import blank from "../../assets/Images/Productcard/blank.jpg";
 import { Link } from "react-router-dom";
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
+import ProductServices from "../../services/API/ProductServices";
 import { toast } from "react-toastify";
-import { BASE_URL } from "../../services/Constant";
-import {
-  setUserDetails,
-  isLoggedin,
-  getUserDetails,
-} from "../../services/Auth"; // ~/services/Auth
-import UserServices from "../../services/API/UserServices"; //~/services/API/AuthService
-import { CiHeart } from "react-icons/ci";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
 import NoDataFound from "../Shared/NoDataFound";
 
 const RecentViewedItems = ({ title }) => {
   const [productData, setProductData] = useState([]);
-  const [favData, setFavData] = useState([]);
-  const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
   const user_id = localStorage.getItem('user_id');
-  const isLoggedin = localStorage.getItem("access_token");
   const [loading, setLoading] = useState(true);
 
   const handleToggleFavourite = (index) => {
@@ -42,24 +28,6 @@ const RecentViewedItems = ({ title }) => {
       }
     } catch (error) {
       toast.error(error?.response?.data?.message)
-    }
-  };
-
-
-  const addToFavorites = async (productId, index) => {
-    handleToggleFavourite(index)
-    try {
-      const data = {
-        favourite_against_id: productId,
-        user_id: user_id,
-        type: "1",
-      };
-      const res = await ProductServices.isFavorite(data);
-      if (res.success) {
-        toast.success("Product added to favorites!");
-      }
-    } catch (error) {
-      toast.error("Failed to add product to favorites.");
     }
   };
 

@@ -9,7 +9,7 @@ import SellerServices from "../../../services/API/SellerServices";
 
 const MyTransactions = () => {
   const [transactions, setTransactions] = useState({});
-  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
+  const [isLoading, setIsLoading] = useState(true);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [inputError, setInputError] = useState(false);
   const [formLoading, setFormLoading] = useState(false);

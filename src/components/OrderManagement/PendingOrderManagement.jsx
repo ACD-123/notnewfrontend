@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Location from "../../assets/Images/deliveryimage.png";
-import OrderServices from "../../services/API/OrderServices"; //~/services/API/OrderServices
+import OrderServices from "../../services/API/OrderServices";
 import { toast } from "react-toastify";
 import LoadingComponents from "../Shared/LoadingComponents";
 import NoDataFound from "../Shared/NoDataFound";

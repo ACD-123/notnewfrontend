@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ProfileInformationTabs from './PersonalInfoAllPages/ProfileInformationTabs';
-import Backimage from '../../assets/Images/back-icon.png'
-import NotificationPreferencesTabs from './NotificationPreferences/NotificationPreferencesTabs';
 import SellerAllTabs from './SellerSetup/SellerAllTabs';
 import MyProducts from './SellerSetup/MyProducts'
-import NotFound_ from '../../pages/NotFound_'
 import { useNavigate } from 'react-router-dom';
 
 const AccountInfo = () => {
@@ -13,14 +10,6 @@ const AccountInfo = () => {
   const [value, setValue] = useState("");
   const navigate = useNavigate()
 
-  const handleLinkClick = (link, val) => {
-    setSelectedLink(link);
-    setValue(val);
-  };
-
-  const handleGeneralNotifications = () => {
-    setSelectedLink('NotificationPreferences');
-  };
   const renderContent = () => {
     switch (selectedLink) {
       case 'PersonalInfo':

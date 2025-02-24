@@ -15,18 +15,20 @@ const SignSecurity = () => {
   const [secquestion, setSecQuestion] = useState("");
   const [secans, setSecAns] = useState("");
   const [errors, setErrors] = useState({});
-  
+
   const handleNewPasswordChange = (event) => {
     setNewPassword(event.target.value);
   };
 
-  const handleSecretQuestion=(e)=>{
+  const handleSecretQuestion = (e) => {
     setSecQuest(e.target.value)
   };
-  const handleSecretAnswer=(e)=>{
+
+  const handleSecretAnswer = (e) => {
     setSecAns(e.target.value)
   };
-  const handleSaveSecret = (e) =>{
+
+  const handleSaveSecret = (e) => {
     e.preventDefault();
     const newErrors = {};
     if (!secquest) {
@@ -37,19 +39,19 @@ const SignSecurity = () => {
     }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-      let data={
-        "secret_question" : secquest,
-        "secret_answer" : secans
-    }
+      let data = {
+        "secret_question": secquest,
+        "secret_answer": secans
+      }
       UserServices.secretQuestion(data)
-      .then((response) => {
-          if(response.status){
+        .then((response) => {
+          if (response.status) {
             toast.success(response.message);
             setSecQuest('')
             setSecAns('')
             setSecretQuestion(false)
             getUserInfo()
-          }else{
+          } else {
             setSecretQuestion(true)
           }
         }).catch((error) => {
@@ -57,9 +59,11 @@ const SignSecurity = () => {
         });
     }
   }
+
   const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value);
   };
+
   const handleSave = (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -74,106 +78,114 @@ const SignSecurity = () => {
     }
     setErrors(newErrors);
     if (Object.keys(newErrors).length === 0) {
-      let data={
-        "password" : newPassword,
-        "confirm_password" : confirmPassword
-    }
+      let data = {
+        "password": newPassword,
+        "confirm_password": confirmPassword
+      }
       UserServices.changePassword(data)
-      .then((response) => {
-        if(response.status){
-          toast.success(response.message);
-          setShowPasswordFields(false);
-          setNewPassword('');
-          setConfirmPassword('');
-        }else{
-          setShowPasswordFields(true)
-        }
-      }).catch((error) => {
-        toast.error(error?.response?.data?.message)
-      });
+        .then((response) => {
+          if (response.status) {
+            toast.success(response.message);
+            setShowPasswordFields(false);
+            setNewPassword('');
+            setConfirmPassword('');
+          } else {
+            setShowPasswordFields(true)
+          }
+        }).catch((error) => {
+          toast.error(error?.response?.data?.message)
+        });
     }
   };
+
   const secretQuest = [
     { id: "what is your Pet Name", name: "what is your Pet Name" },
     { id: "what is your Favoirite Color", name: "what is your Favoirite Color" },
-    // Add more states as needed
   ];
 
   const handleCancel = () => {
     setShowPasswordFields(false);
     setNewPassword('');
-    setConfirmPassword(''); 
+    setConfirmPassword('');
   };
+
   const handleSecretCancel = () => {
     setSecQuest('')
     setSecAns('')
     setSecretQuestion(false)
   };
-  const handleTwoStep = (e) =>{
+
+  const handleTwoStep = (e) => {
     setStepVerification(!stepVerification)
-    let data ={
-      "twosteps" : stepVerification
+    let data = {
+      "twosteps": stepVerification
     }
     UserServices.twoSteps(data)
-    .then((response) => {
-      if(response.status){
-        toast.success(response.message);
-      }
-    }).catch((error) => {
-      toast.error(error?.response?.data?.message)
-    });
+      .then((response) => {
+        if (response.status) {
+          toast.success(response.message);
+        }
+      }).catch((error) => {
+        toast.error(error?.response?.data?.message)
+      });
   }
-  const handleThirdParty = () =>{
-    setThirdPartyAccess(!thirdPartyAccess) 
-    let data ={
-      "thirdparty" : thirdPartyAccess
+
+  const handleThirdParty = () => {
+    setThirdPartyAccess(!thirdPartyAccess)
+    let data = {
+      "thirdparty": thirdPartyAccess
     }
     UserServices.thirdParty(data)
-    .then((response) => {
-      if(response.status){
-        toast.success(response.message);
-      }
-    }).catch((error) => {
-      toast.error(error?.response?.data?.message)
-    });
+      .then((response) => {
+        if (response.status) {
+          toast.success(response.message);
+        }
+      }).catch((error) => {
+        toast.error(error?.response?.data?.message)
+      });
   }
-  const hanleFbAccount=()=>{
+
+  const hanleFbAccount = () => {
     setFacebookAccount(!facebookAccount)
-    let data ={
-      "fbaccount" : facebookAccount
+    let data = {
+      "fbaccount": facebookAccount
     }
     UserServices.fbAccount(data)
-    .then((response) => {
-      if(response.status){
-        toast.success(response.message);
-      }
-    }).catch((error) => {
-      toast.error(error?.response?.data?.message)
-    });
+      .then((response) => {
+        if (response.status) {
+          toast.success(response.message);
+        }
+      }).catch((error) => {
+        toast.error(error?.response?.data?.message)
+      });
 
   }
-  const secretQuestion=(e)=>{
+
+  const secretQuestion = (e) => {
     setSecretQuestion(true);
   }
 
   const togglePasswordFields = () => {
     setShowPasswordFields(!showPasswordFields);
   };
-  const getUserInfo =()=>{
+
+  const getUserInfo = () => {
     UserServices.self()
-    .then((res) => {
-      setStepVerification(res.twosteps)   
-      setThirdPartyAccess(res.thirdparty)   
-      setFacebookAccount(res.fbaccount)   
-      setSecQuestion(res.secret_question)   
-      setSecAns(res.secret_answer)  
-    }).catch((error) => {
-      toast.error(error?.response?.data?.message)
-    });
+      .then((res) => {
+        setStepVerification(res.twosteps)
+        setThirdPartyAccess(res.thirdparty)
+        setFacebookAccount(res.fbaccount)
+        setSecQuestion(res.secret_question)
+        setSecAns(res.secret_answer)
+      }).catch((error) => {
+        toast.error(error?.response?.data?.message)
+      });
   }
+
   useEffect(() => {
     getUserInfo()
   }, []);
+
   return (
     <>
       <h3>Sign & Security</h3>
@@ -226,33 +238,33 @@ const SignSecurity = () => {
           </div>
           {secretquestion ? (<>
             <div className='chngepaswrd'>
-          <form onSubmit={handleSaveSecret}>
+              <form onSubmit={handleSaveSecret}>
                 <p>Set Secret Question for your Profile!</p>
                 <div>
                   <select onChange={handleSecretQuestion}>
-                  <option value="">Select Secret Question</option>
+                    <option value="">Select Secret Question</option>
                     {secretQuest ? (
                       <>
-                      {secretQuest.map((question , index) => {
-                        return(
-                          <>
-                          {(() => {
-                          if (question.id === secquestion) {
-                            return (
-                              <option selected="true" value={question.id} key={index}>{question.name}</option>
-                            )
-                          } else {
-                            return (
-                              <option value={question.id} key={index}>{question.name}</option>
-                            )
-                          }
-                        })()}
-                            
-                          </>
-                        )
-                      })}
+                        {secretQuest.map((question, index) => {
+                          return (
+                            <>
+                              {(() => {
+                                if (question.id === secquestion) {
+                                  return (
+                                    <option selected="true" value={question.id} key={index}>{question.name}</option>
+                                  )
+                                } else {
+                                  return (
+                                    <option value={question.id} key={index}>{question.name}</option>
+                                  )
+                                }
+                              })()}
+
+                            </>
+                          )
+                        })}
                       </>
-                    ):('')}
+                    ) : ('')}
                   </select>
                 </div>
                 {errors.password && (
@@ -278,7 +290,7 @@ const SignSecurity = () => {
                   </button>
                 </div>
               </form>
-              </div></>):('')}
+            </div></>) : ('')}
         </div>
         <hr />
         <div className='row'>
@@ -307,9 +319,9 @@ const SignSecurity = () => {
             <div>
               <label className="switch">
                 <input
-                  type="checkbox"  
+                  type="checkbox"
                   checked={thirdPartyAccess}
-                  onChange={() => handleThirdParty() }
+                  onChange={() => handleThirdParty()}
                 />
                 <span className="slider round"></span>
               </label>
@@ -327,7 +339,7 @@ const SignSecurity = () => {
                 <input
                   type="checkbox"
                   checked={facebookAccount}
-                  onChange={() => hanleFbAccount()} 
+                  onChange={() => hanleFbAccount()}
                 />
                 <span className="slider round"></span>
               </label>

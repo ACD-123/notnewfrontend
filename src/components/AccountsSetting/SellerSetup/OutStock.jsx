@@ -5,7 +5,7 @@ import icon2 from "../../../assets/Images/icons/2.png";
 import icon3 from "../../../assets/Images/icons/3.png";
 import Backimage from '../../../assets/Images/back-icon.png'
 import Location from "../../../assets/Images/map.png";
-import StockServices from "../../../services/API/StockServices"; //~/services/API/StockServices
+import StockServices from "../../../services/API/StockServices";
 import { toast } from "react-toastify";
 import { Link } from 'react-router-dom';
 import Prdimage1 from '../../../assets/Images/Singleproduct/Product1.png';
@@ -51,8 +51,6 @@ const OutStock = () => {
                           </div>
                           <div  className="detaildashbritemdetail">
                           <h4>Name: {item.name}</h4>
-                              {/* <Link to='/category'>
-                            </Link> */}
                           <p>Price: $ {item.price}</p>
                           <br />
                           <h4>Attributes:</h4>
@@ -78,10 +76,8 @@ const OutStock = () => {
                                 href={`singleproduct/${item.guid}`}
                                 target='_blank'
                               >
-                                {/* <Link to={`/completedorder/${summary.order.orderid}`}> */}
                                 View Detail
                               </a>
-                              {/* </Link> */}
                             </div>
                         </div>
                         <hr />
@@ -92,7 +88,6 @@ const OutStock = () => {
                    </>):('No Stock')}
                 </div>
               </section>
-            {/* <button className='backbutton-account' onClick={() => window.history.back()}><img src={Backimage} /> Back</button> */}
             </div>
           </div>
         </div>

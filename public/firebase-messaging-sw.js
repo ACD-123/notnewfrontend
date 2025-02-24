@@ -29,7 +29,6 @@ messaging.onBackgroundMessage(function (payload) {
         self.registration.showNotification(notificationTitle, notificationOptions);
         self.addEventListener('notificationclick', function (event) {
             const clickedNotification = event.notification
-            console.log(payload.data , 'payload.data');
             
             clickedNotification.close();
             event.waitUntil(

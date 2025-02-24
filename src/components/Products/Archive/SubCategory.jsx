@@ -24,21 +24,14 @@ const SubCategory = ({cartFullResponse , notificationCount}) => {
             <div className="col-lg-2">
               <SingleProductSidebar />
             </div>
-            {/* row end */}
           </div>
-          {/* SECOND ROW */}
           <div className="row">
             <ProductTabs />
           </div>
-          {/* SECOND ROW */}
-          {/* Third ROW */}
           <SellerDetails />
-          {/* Third ROW */}
-          {/* Four ROW */}
           <div className="row">
             <RecentViewedItems />
           </div>
-          {/* Four ROW */}
         </div>
       </section>
       <Footer />

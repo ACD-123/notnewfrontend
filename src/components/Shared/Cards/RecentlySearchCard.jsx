@@ -1,14 +1,9 @@
 import React from "react";
 import blank from "../../../assets/Images/Productcard/blank.jpg";
 import { Link } from "react-router-dom";
-import ProductServices from "../../../services/API/ProductServices";
-import { toast } from "react-toastify";
 import { MdDeleteOutline } from "react-icons/md";
 
 const RecentlySearchCard = ({ data, removeProductFromSearchList, index }) => {
-    const isLoggedin = localStorage.getItem("access_token");
-    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
-
 
     const removeProduct = async (productId) => {
         removeProductFromSearchList(productId)

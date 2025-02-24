@@ -5,7 +5,7 @@ import ShippingPolicyData from './ShippingPolicyData';
 const ProductTabs = () => {
   const [selectedTab, setSelectedTab] = useState('aboutProduct');
   const [productData, setProductData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // State variable for loading state
+  const [isLoading, setIsLoading] = useState(true);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
 
@@ -14,10 +14,10 @@ const ProductTabs = () => {
   };
 
   const getProduct = () => {
-    setIsLoading(true); // Set loading state to true
+    setIsLoading(true);
     ProductServices.get(id).then((response) => {
       setProductData(response.data);
-      setIsLoading(false); // Set loading state to false once data is fetched
+      setIsLoading(false);
     });
   };  
 
@@ -42,13 +42,12 @@ const ProductTabs = () => {
         </button>
       </div>
       <div className="tab-content">
-      {isLoading ? ( // Show loader if data is loading
+      {isLoading ? (
           <div>Loading...</div>
         ) : (
         <>
         {selectedTab === 'aboutProduct' && (
           <div className="about-product">
-            {/* Content for About the Product tab */}
             <h3>Product Information</h3>
             <p>Description, specifications, etc.</p>
             <table width="100%">

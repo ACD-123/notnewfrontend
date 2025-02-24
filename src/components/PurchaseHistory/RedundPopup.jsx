@@ -60,32 +60,26 @@ const RefundPopup = (props) => {
       setSelectedProducts(selectedProducts.filter((id) => id !== productId));
     }
   };
-  const handleDescriptions = (e) => {
-    props.parentDescription(e.target.value, props.orderId);
-  };
+
   const handleReasonChange = (e) => {
     setReason(e.target.value);
   };
   const handleSubmit = () => {
-    // Check if there are selected products, images, and reasons
     if (selectedProducts.length === 0 || images.length === 0 || !reason) {
       return;
     }
   
-    // Prepare the data for the API request
     const formData = new FormData();
     formData.append('order_id', order.id);
     formData.append('product_id', JSON.stringify(selectedProducts));
     formData.append('reason', reason);
     images.forEach((image, index) => {
-      formData.append(`file${index}`, image); // Append each image to the form data
+      formData.append(`file${index}`, image);
     });
   
-    // Call the API to submit the refund request
     OrderServices.orderRefund(formData)
       .then((response) => {
         window.location.reload()
-        // Reset states or perform any other necessary actions after successful submission
       })
       .catch((error) => {
         toast.error(error?.response?.data?.message)
@@ -176,7 +170,6 @@ const RefundPopup = (props) => {
           <button className='sendrefunddetails' onClick={handleSubmit}>
         Send
       </button>
-          {/* <button onClick={handleSubmit}>Submit Refund Request</button> */}
         </>
       )}
     </div>

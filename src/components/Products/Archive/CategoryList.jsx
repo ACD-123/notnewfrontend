@@ -12,7 +12,7 @@ const CategoryList = () => {
   const fetchCategoryData = async () => {
     HomeService.recursiveCategories()
       .then((res) => {
-        setCategoryData(res.slice(0, 6)); // Limit to the first 6 products
+        setCategoryData(res.slice(0, 6));
       }).catch(error => {
         setError('Error fetching product data:', error);
       }).finally(() => {
@@ -33,7 +33,7 @@ const CategoryList = () => {
             <div className='container'>
               <div className='row'>
                 <div className='headings'>
-                  <h3>Explore Known Categories <span><Link to="/top-category">View More</Link></span></h3>
+                  <h3>Explore Categories <span><Link to="/top-category">View More</Link></span></h3>
                 </div>
               </div>
             </div>

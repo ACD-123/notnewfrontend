@@ -107,7 +107,6 @@ function getFilterProducts21Plus(
   auctioned) {
   let attributes = [];
   for (let i = 0; i < attribute?.length; i++) {
-    // for (let j = 0; j < attribute[i].selectToSend.length; j++) {
     attributes.push({ key: attribute[i].name, value: attribute[i].selectToSend })
     // }
   }

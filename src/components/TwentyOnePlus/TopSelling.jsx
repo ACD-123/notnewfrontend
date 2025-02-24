@@ -5,12 +5,10 @@ import { Link } from "react-router-dom";
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
 import HomeService from "../../services/API/HomeService";
 import { toast } from "react-toastify";
-import NoDataFound from "../Shared/NoDataFound";
 
 const TopSelling = ({ title }) => {
     const [topSellingProducts, setTopSellingProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
     const user_id = localStorage.getItem('user_id');
 
     const getTopSellingUnderAge = (id) => {

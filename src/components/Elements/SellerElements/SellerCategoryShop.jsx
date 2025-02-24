@@ -1,21 +1,16 @@
 import React, { useState } from 'react';
 import ProductCard from "../../Elements/CategoryProductListing";
-import Header from "../../Header";
-import Footer from "../../Footer";
-import GetSurprisedBanner from "../../Elements/GetSurprisedBanner"
 import SubcategoriesList from "../../Elements/FilterAttributes/SubcategoriesList"
 import Search from "../../Elements/FilterAttributes/Search"
 import PriceRange from "../../Elements/FilterAttributes/PriceRange"
 import SizeToggle from "../../Elements/FilterAttributes/Size"
-import context from 'react-bootstrap/esm/AccordionContext';
-import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
+import ProductServices from "../../../services/API/ProductServices";
 
 const SellerCategoryShop = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [cardsPerPage] = useState(6); // Change this value to adjust items per page
+  const [cardsPerPage] = useState(6);
   const [productData, setProductData] = useState([]);
 
-  // Mock data for products (replace this with your actual data)
   const products = [
     { id: 1, name: 'Product 1', description: 'Description for Product 1', price: 10.99 },
     { id: 2, name: 'Product 2', description: 'Description for Product 2', price: 19.99 },
@@ -26,10 +21,8 @@ const SellerCategoryShop = () => {
     { id: 7, name: 'Product 7', description: 'Description for Product 7', price: 12.99 },
     { id: 8, name: 'Product 8', description: 'Description for Product 8', price: 17.99 },
     { id: 9, name: 'Product 9', description: 'Description for Product 9', price: 21.99 },
-    // Add more mock products as needed
   ];
 
-  // Logic to paginate product cards
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = products.slice(indexOfFirstCard, indexOfLastCard);
@@ -63,10 +56,8 @@ const SellerCategoryShop = () => {
       })
     }
   }
-  // Logic to handle page changes
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Calculate total number of pages
   const totalPages = Math.ceil(products.length / cardsPerPage);
 
   return (
@@ -88,7 +79,6 @@ const SellerCategoryShop = () => {
             </div>
             <div className='col-lg-9'>
               {renderProductCards()}
-              {/* Pagination */}
               <ul className="pagination">
                 {Array.from({ length: totalPages }, (_, index) => (
                   <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
@@ -98,7 +88,6 @@ const SellerCategoryShop = () => {
                   </li>
                 ))}
               </ul>
-              {/* Pagination */}
             </div>
           </div>
         </div>

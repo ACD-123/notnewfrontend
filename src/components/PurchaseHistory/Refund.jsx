@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import RightArrow from "../../assets/Images/rightarrow.png";
 import Prdimage from "../../assets/Images/Singleproduct/prdimage.png";
-import Prdimage1 from "../../assets/Images/Singleproduct/Product1.png";
-import Prdimage2 from "../../assets/Images/Singleproduct/Product2.png";
 import Checkpay from "../../assets/Images/check-pay.png";
 import RefundPopup from "./RedundPopup";
 import OrderServices from "../../services/API/OrderServices";
@@ -16,17 +13,17 @@ const Refunds = () => {
   const [requestSentVisible, setRequestSentVisible] = useState({});
   const [customerOrders, setCustomerOrders] = useState([]);
   const [refundOrders, setRefundOrders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Initialize isLoading state as true
+  const [isLoading, setIsLoading] = useState(true);
 
   const getCustomerOrder = () => {
     OrderServices.sellerRefundOrders()
       .then((response) => {
-        setCustomerOrders(response.data); // Assuming response.data contains the array of orders
-        setIsLoading(false); // Set isLoading to false when data is fetched
+        setCustomerOrders(response.data);
+        setIsLoading(false);
       })
       .catch((error) => {
         toast.error(error?.response?.data?.message)
-        setIsLoading(false); // Set isLoading to false even if there's an error
+        setIsLoading(false);
       });
   };
   const renderOrderBlock = (order) => {
@@ -40,23 +37,11 @@ const Refunds = () => {
           toast.error(error?.response?.data?.message)
         });
     };
-    // const { orderNumber, productName, images } = orderData;
 
     const handleRefundClick = (orderId) => {
       setRefundDetailsVisible({
         ...refundDetailsVisible,
         [orderId]: true,
-      });
-    };
-
-    const handleSubmitDetails = (orderIndex) => {
-      setRefundDetailsVisible({
-        ...refundDetailsVisible,
-        [orderIndex]: false,
-      });
-      setRequestSentVisible({
-        ...requestSentVisible,
-        [orderIndex]: true,
       });
     };
 
@@ -112,9 +97,6 @@ const Refunds = () => {
               <div className="refunddetailss">
                 <RefundPopup orderId={order.id} />
               </div>
-              {/* <button className='sendrefunddetails' onClick={() => handleSubmitDetails(order.id)}>
-        Send
-      </button> */}
             </div>
           </div>
         )}
@@ -122,7 +104,6 @@ const Refunds = () => {
         {requestSentVisible[order.id] && (
           <div className="request-sent-popup">
             <div className="request-sent-inner">
-              {/* Request Sent Popup */}
               <img src={Checkpay} />
               <h2>Request Sent</h2>
               <p>Your Refund request send sucessfully</p>
@@ -143,15 +124,14 @@ const Refunds = () => {
   return (
     <>
       <div className="ongoing">
-        {isLoading ? ( // Render loader if isLoading is true
+        {isLoading ? (
           <div className="loader-container text-center">
             <Spinner animation="border" role="status">
-              {/* <span className="sr-only">Loading...</span> */}
             </Spinner>
           </div>
         ) : (
           <>
-          {customerOrders.length === 0 ? ( // Check if customerOrders array is empty
+          {customerOrders.length === 0 ? (
             <div className='no-data-found'>
             <img src={NoDataFound} alt="" />
             <p>Orders Not  Found</p>

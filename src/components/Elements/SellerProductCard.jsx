@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ProductServices from '../../services/API/ProductServices';
-import { Spinner } from 'react-bootstrap';
 import SellerProductCard from '../Shared/Cards/SellerProductCard';
 import NoDataFound from '../Shared/NoDataFound';
 import LoadingComponents from '../Shared/LoadingComponents';

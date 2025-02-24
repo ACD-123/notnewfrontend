@@ -3,7 +3,7 @@ import Emailverifyimagebg from "../../assets/Images/Accountimages/signup.png";
 import Logo from "../../assets/Images/logo.png";
 import Line from "../../assets/Images/Accountimages/line.png";
 import { toast } from "react-toastify";
-import AuthServices from "../../services/API/AuthService"; //~/services/API/AuthService
+import AuthServices from "../../services/API/AuthService";
 import { useNavigate } from "react-router-dom";
 var Emailverifybg = {
   backgroundImage: `url(${Emailverifyimagebg})`,
@@ -125,14 +125,6 @@ const ResetPassword = () => {
                     <button className="btn btn-primary" disabled={enabled} type="submit">
                       {isLoading ? "loading.." : "Submit"}
                     </button>
-
-                    {/* <input
-                      disabled={enabled}
-                      className="btn btn-primary"
-                      type="submit"
-                      value="Submit"
-                    />
-                    {isLoading ? "loading.." : "Submit"} */}
                   </form>
                 </div>
               </div>

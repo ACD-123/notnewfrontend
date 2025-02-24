@@ -1,5 +1,4 @@
 import React,{useState, useEffect} from 'react'
-import ProductCard from "../../Elements/ProductListing";
 import Header from "../../Header";
 import Footer from "../../Footer";
 import GetSurprisedBanner from "../../Elements/GetSurprisedBanner"
@@ -7,23 +6,20 @@ import SubcategoriesList from "../../Elements/FilterAttributes/SubcategoriesList
 import Search from "../../Elements/FilterAttributes/Search"
 import PriceRange from "../../Elements/FilterAttributes/PriceRange"
 import SizeToggle from "../../Elements/FilterAttributes/Size"
-import ProductServices from '../../../services/API/ProductServices'; //~/services/API/ProductServices
+import ProductServices from '../../../services/API/ProductServices';
 import AllProductListing from '../../Elements/AllProductListing';
 import { toast } from 'react-toastify';
 
 const AllNewProducts = ({cartFullResponse , notificationCount}) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [cardsPerPage] = useState(6); // Change this value to adjust items per page
+  const [cardsPerPage] = useState(6);
   const [products, setProductData] = useState([]);
-  const [categories, setCategoryData] = useState([]);
 
-  // Logic to paginate product cards
   const indexOfLastCard = currentPage * cardsPerPage;
-  const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const getProduct = () => {
     ProductServices.all()
       .then((response) => {
-        setProductData(response); // Make sure response is an array
+        setProductData(response);
       })
       .catch((error) => {
         toast.error(error?.response?.data?.message)
@@ -31,17 +27,13 @@ const AllNewProducts = ({cartFullResponse , notificationCount}) => {
   };
   
   const renderProductCards = () => {
-    // return currentCards.map((product) => {
       return(
         <>
         <AllProductListing  />
         </>
       )
-    // }
-    // );
   };
 
-  // Logic to handle page changes
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const  handleCetegoryCallback = (childData) => {
@@ -71,13 +63,6 @@ const AllNewProducts = ({cartFullResponse , notificationCount}) => {
   const handleSizeCallback =(childData) => {
     ProductServices.getProductbySize(childData)
     .then((response) => {
-      // if(response.status){
-      //     if(response.data.length > 0){
-      //       setProductData(response.data);
-      //     }else{
-      //       setProductData([]);
-      //     }
-      // }
     })
   }
   const handleSearchCallback = (childData) => {
@@ -98,7 +83,6 @@ const AllNewProducts = ({cartFullResponse , notificationCount}) => {
       })
     }
   }
-  // Calculate total number of pages
   const totalPages = Math.ceil(products.length / cardsPerPage);
   useEffect(() => {
     getProduct();
@@ -122,7 +106,6 @@ const AllNewProducts = ({cartFullResponse , notificationCount}) => {
             </div>
             <div className='col-lg-9'>
               {renderProductCards()}
-              {/* Pagination */}
               <ul className="pagination">
                 {Array.from({ length: totalPages }, (_, index) => (
                   <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
@@ -132,17 +115,12 @@ const AllNewProducts = ({cartFullResponse , notificationCount}) => {
                   </li>
                 ))}
               </ul>
-              {/* Pagination */}
             </div>
           </div>
         </div>
       </section>
-      {/* GetSurprisedBanner */}
       <GetSurprisedBanner />
-      {/* GetSurprisedBanner */}
-      {/* Footer */}
       <Footer />
-      {/* Footer */}
     </>
   );
 };

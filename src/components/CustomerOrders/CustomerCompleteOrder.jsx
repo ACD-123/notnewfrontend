@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import LoadingComponents from "../Shared/LoadingComponents";
 import NoDataFound from "../Shared/NoDataFound";
 import { IoIosArrowBack } from "react-icons/io";
-import { FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
+import { FaRegStar, FaStar } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
 
@@ -268,7 +268,6 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
               <div className="title"><span onClick={() => { setDetail(false); setReview(false); setShowRefund(false) }}><IoIosArrowBack /></span>Completed Order Details</div>
               <div className="s-o-m-d-1">
                 <div className="s-o-m-d-1-l">
-                  {/* <span>Seller : </span>{pendingOrderDetail?.products?.[0]?.seller} */}
                 </div>
                 <div className="s-o-m-d-1-r">
                   <span>ORDER # :</span> {pendingOrderDetail?.orderid}
@@ -401,7 +400,7 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                                         accept="image/*"
                                         style={{ display: 'none' }}
                                         onChange={handleImageFileChange}
-                                        multiple  // Enable multiple file selection
+                                        multiple
                                       />
                                     </div>
                                   </div>
@@ -480,11 +479,6 @@ const CustomerCompleteOrder = ({ detail, setDetail, getProductManagmentOderCount
                   </div>
                 </>
               </div>
-              {/* <div className="s-o-m-d-11">
-                <form onSubmit={reOrder}>
-                  <button>Confirm Re-Order</button>
-                </form>
-              </div> */}
             </div>
             :
             <div className="seller-oder-managment-detail">

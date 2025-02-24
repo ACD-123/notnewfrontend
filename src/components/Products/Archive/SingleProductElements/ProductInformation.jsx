@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Attribute from "./Attributes";
 import ShippingPolicyData from "./ShippingPolicyData";
-import { Link, useLocation } from "react-router-dom";
-import ProductServices from "../../../../services/API/ProductServices"; //~/services/API/ProductServices
-import SellerServices from "../../../../services/API/SellerServices"; //~/services/API/SellerServices
-import CheckoutServices from "../../../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
-import CartServices from "../../../../services/API/CartServices"; //~/services/API/CartServices
+import ProductServices from "../../../../services/API/ProductServices";
+import SellerServices from "../../../../services/API/SellerServices";
+import CheckoutServices from "../../../../services/API/CheckoutServices";
+import CartServices from "../../../../services/API/CartServices";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { saveCupon, deleteCupon } from "../../../../store/slices/cupon";
-import EditListingForm from "../../../AccountsSetting/SellerSetup/EditListingForm";
+import { useDispatch,  } from "react-redux";
 import { Spinner } from "react-bootstrap";
 import Select from 'react-select';
 import { useNavigate } from "react-router-dom";
@@ -20,19 +16,16 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
   const [productData, setProductData] = useState([]);
   const [gettags, setTags] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [isLoading, setIsLoading] = useState(true); // Set initial value to true
+  const [isLoading, setIsLoading] = useState(true);
   const [enabled, setEnabled] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
   let loggedInUser = localStorage.getItem("user_details");
-  const user_id = localStorage.getItem('user_id');
   const seller_guid = localStorage.getItem('seller_guid');
   const [inputError, setInputError] = useState(false);
   const loggedInUsers = JSON.parse(loggedInUser);
   const navigate = useNavigate();
 
-  // ali monis
   const [ProductAttribute, SetproductAttribute] = useState([])
 
   const handelAddonsChange = (e, data, index) => {
@@ -67,6 +60,7 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
   };
 
   const getProduct = () => {
+    setIsLoading(true)
     ProductServices.get(id)
       .then((res) => {
         setProductData(res.data);
@@ -215,13 +209,12 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
   useEffect(() => {
     saveRecentView();
     getProduct();
-  }, []);
+  }, [id]);
   return (
     <>
       {isLoading ? (
         <div className="loader-container">
-          <Spinner animation="border" role="status">
-          </Spinner>
+          <Spinner animation="border" role="status"></Spinner>
         </div>
       ) : (
         <div className="p-i">
@@ -281,7 +274,6 @@ const ProductInformation = ({ getCartCount, getMoreToLove, setProductId, getCart
                             className="form-control"
                             value={quantity}
                             readOnly
-                          // onChange={handleQuantity}
                           />
                           <div className="input-group-prepend">
                             <button className="btn" type="button" onClick={incNum}>

@@ -41,7 +41,6 @@ const App = () => {
 
 	useEffect(() => {
 		const unsubscribe = onMessage(messaging, (payload) => {
-			// Handle the message as needed, e.g., show a notification or update state
 		});
 	
 		return () => unsubscribe();

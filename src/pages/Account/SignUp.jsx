@@ -3,7 +3,7 @@ import Signupimage from "../../assets/Images/Accountimages/signup.png";
 import Logo from "../../assets/Images/logo.png";
 import Avatarprofile from "../../assets/Images/avatarsignup.png";
 import { Link } from "react-router-dom";
-import AuthService from "../../services/API/AuthService"; //~/services/API/CountryServices
+import AuthService from "../../services/API/AuthService";
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";

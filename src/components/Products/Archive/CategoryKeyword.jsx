@@ -16,15 +16,13 @@ const CategoryKeyword = ({cartFullResponse , notificationCount}) => {
 
   
   const [currentPage, setCurrentPage] = useState(1);
-  const [cardsPerPage] = useState(6); // Change this value to adjust items per page
+  const [cardsPerPage] = useState(6);
   const [showLocationModal, setShowLocationModal] = useState(false);
 
-   // Function to toggle the display of the location modal
    const toggleLocationModal = () => {
     setShowLocationModal(!showLocationModal);
   };
 
-  // Mock data for products (replace this with your actual data)
   const products = [
     { id: 1, name: 'Product 1', description: 'Description for Product 1', price: 10.99 },
     { id: 2, name: 'Product 2', description: 'Description for Product 2', price: 19.99 },
@@ -35,10 +33,8 @@ const CategoryKeyword = ({cartFullResponse , notificationCount}) => {
     { id: 7, name: 'Product 7', description: 'Description for Product 7', price: 12.99 },
     { id: 8, name: 'Product 8', description: 'Description for Product 8', price: 17.99 },
     { id: 9, name: 'Product 9', description: 'Description for Product 9', price: 21.99 },
-    // Add more mock products as needed
   ];
 
-  // Logic to paginate product cards
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = products.slice(indexOfFirstCard, indexOfLastCard);
@@ -49,17 +45,13 @@ const CategoryKeyword = ({cartFullResponse , notificationCount}) => {
     ));
   };
 
-  // Logic to handle page changes
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Calculate total number of pages
   const totalPages = Math.ceil(products.length / cardsPerPage);
 
   return (
     <>
-      {/* Header */}
       <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
-      {/* Header */}
 
       <section id='singlecategory'>
         <div className='container'>
@@ -93,7 +85,6 @@ const CategoryKeyword = ({cartFullResponse , notificationCount}) => {
                     <p>3,400+ results for mj shoes <Link to="#"><span onClick={toggleLocationModal}><img src={Heart} /> Save this Search</span></Link></p>
                 </div>
               {renderProductCards()}
-              {/* Pagination */}
               <ul className="pagination">
                 {Array.from({ length: totalPages }, (_, index) => (
                   <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
@@ -103,20 +94,14 @@ const CategoryKeyword = ({cartFullResponse , notificationCount}) => {
                   </li>
                 ))}
               </ul>
-              {/* Pagination */}
             </div>
           </div>
         </div>
       </section>
-{/* Modal for location selection */}
 <Modal
         show={showLocationModal}
         onClose={toggleLocationModal}
-        // Other props to customize your modal, such as title, content, etc.
       >
-        {/* Content for the location selection modal */}
-        {/* Add input fields, dropdowns, or any UI for selecting location */}
-        {/* Example: */}
        <form>
         <div className='searchkeywordpopup'>
           <img src={Checkimage} />
@@ -138,10 +123,7 @@ const CategoryKeyword = ({cartFullResponse , notificationCount}) => {
         </div>
         </form>
       </Modal>
-      {/* Modal for location selection */}
-      {/* Footer */}
       <Footer />
-      {/* Footer */}
     </>
   );
 };

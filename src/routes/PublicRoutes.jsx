@@ -147,8 +147,6 @@ const PublicRoutes = () => {
 
 					<Route path="/notification-setting" element={<ProtectedRoute element={<NotificationPreferences cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />} />
 
-					{/* <Route path="/notification-setting" element={<NotificationPreferences cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} /> */}
-
 					<Route path="/21-plus" element={<TwentyOnePlus cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 
 					<Route path="/explore-all-21-plus" element={<ExploreAll21Plus cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
@@ -180,7 +178,6 @@ const PublicRoutes = () => {
 					<Route path="/product-filter-21-plus" element={<AllProducts21Plus cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 
 					<Route path="/personal-info" element={<ProtectedRoute element={<PersonalInformation cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />} />
-					{/* <Route path="/personal-info" element={<PersonalInformation cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} /> */}
 
 					<Route path="/AllNewProducts" element={<AllNewProducts cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 
@@ -195,18 +192,12 @@ const PublicRoutes = () => {
 					<Route path="/categorykeyword/:guid" element={<CategoryKeyword cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 
 					<Route path="/checkout" element={<ProtectedRoute element={<Checkout cartFullResponse={cartFullResponse} getCartCount={getCartCount} notificationCount={notificationCount} />} />} />
-					{/* <Route path="/checkout" element={<Checkout cartFullResponse={cartFullResponse} getCartCount={getCartCount} notificationCount={notificationCount} />} /> */}
 
 					<Route path="/checkout-buynow" element={<ProtectedRoute element={<CheckoutBuyNow cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />} />
-					{/* <Route path="/checkout-buynow" element={<CheckoutBuyNow cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} /> */}
 
-
-					{/* <Route path="/checkouts/:guid" element={<Checkout cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} /> */}
 					<Route path="/singleproduct/:guid" element={<SingleProduct getCartCount={getCartCount} getCartCountGuest={getCartCountGuest} cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 
 					<Route path="/customerdashboard" element={<ProtectedRoute element={<MainDashboard cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />} />
-					{/* <Route path="/customerdashboard" element={<MainDashboard cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} /> */}
-
 
 					<Route path="/bidView/:guid" element={<BidView cartFullResponse={cartFullResponse} />} notificationCount={notificationCount} />
 
@@ -219,37 +210,26 @@ const PublicRoutes = () => {
 					<Route path="/bidwin/:guid" element={<BidWin cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 
 					<Route path="/searchhistory" element={<ProtectedRoute element={<SearchHistory />} />} />
-					{/* <Route path="/searchhistory" element={<SearchHistory />} /> */}
-
 
 					<Route path="/notification" element={<ProtectedRoute element={<UserNotification cartFullResponse={cartFullResponse} getNotificationCount={getNotificationCount} notificationCount={notificationCount} />} />} />
-					{/* <Route path="/notification" element={<UserNotification cartFullResponse={cartFullResponse} getNotificationCount={getNotificationCount} notificationCount={notificationCount} />} /> */}
-
 
 					<Route path="/ongoingorder/:guid" element={<ProtectedRoute element={<OngoingOrderManagement />} />} />
-					{/* <Route path="/ongoingorder/:guid" element={<OngoingOrderManagement />} /> */}
 
 					<Route path="/completedorder/:guid" element={<ProtectedRoute element={<CompleteOrderManagement />} />} />
-					{/* <Route path="/completedorder/:guid" element={<CompleteOrderManagement />} /> */}
 
 					<Route path="/refund/:guid" element={<ProtectedRoute element={<Refund />} />} />
-					{/* <Route path="/refund/:guid" element={<Refund />} /> */}
 
 					<Route path="/transactions" element={<ProtectedRoute element={<MyTransactions />} />} />
-					{/* <Route path="/transactions" element={<MyTransactions />} /> */}
 
 					<Route path="/instock" element={<ProtectedRoute element={<InStock />} />} />
+					
 					<Route path="/instock" element={<InStock />} />
 
 					<Route path="/outstock" element={<ProtectedRoute element={<OutStock />} />} />
-					{/* <Route path="/outstock" element={<OutStock />} /> */}
 
 					<Route path="/productupload" element={<ProtectedRoute element={<ProductUpload />} />} />
-					{/* <Route path="/productupload" element={<ProductUpload />} /> */}
 
 					<Route path="/my-seller-account" element={<ProtectedRoute element={<MySellerAccount cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />} />
-					{/* <Route path="/my-seller-account" element={<MySellerAccount cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} /> */}
-
 
 					<Route path="/search-product" element={<SearchProduct cartFullResponse={cartFullResponse} notificationCount={notificationCount} />} />
 

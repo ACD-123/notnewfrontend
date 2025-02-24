@@ -1,37 +1,25 @@
-import React from 'react'
-import Sellerprofile from '../../assets/Images/Seller/profileimage.png'
-import { Link, useNavigate } from 'react-router-dom'
-import ReviewSection from './ReviewSection'
-import PopularProductSearch from './PopularProductSearch'
-import SellerFeedback from './SellerFeedback'
-import { useState, useEffect } from 'react'
-import HomeService from "../../services/API/HomeService"; //~/services/API/Home
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import ProductServices from "../../services/API/ProductServices";
 import { toast } from "react-toastify";
-import { BASE_URL } from "../../services/Constant";
-import UserServices from "../../services/API/UserServices"; //~/services/API/AuthService
-import { setUserDetails, isLoggedin, getUserDetails, setUserId } from "../../services/Auth"; // ~/services/Auth
-import SellerServices from '../../services/API/SellerServices'
-import { Spinner } from 'react-bootstrap'
-import LoadingComponents from '../Shared/LoadingComponents'
-import NoDataFound from '../Shared/NoDataFound'
-import { FaRegStar, FaStar, FaStarHalfAlt } from 'react-icons/fa'
+import UserServices from "../../services/API/UserServices";
+import { setUserDetails, isLoggedin, setUserId } from "../../services/Auth";
+import LoadingComponents from '../Shared/LoadingComponents';
+import blankUser from '../../assets/Images/User/blankuser.jpg'
+import { BASE_URL } from '../../services/Constant';
 
 const SellerDetails = () => {
   const [shopData, setShopData] = useState([]);
   const [productData, setProductData] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
   const [favData, setFavData] = useState([]);
-  const [trendingProduct, setTrendingProduct] = useState(0);
-  const [savedSeller, setSavedSeller] = useState(0);
   const [user, setUser] = useState({});
   const token = localStorage.getItem('access_token');
 
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
-  const handleDropdownItemClick = (componentName) => {
-    navigate(`/customerdashboard?component=${componentName}`)
-  };
+
   const getProduct = () => {
     ProductServices.get(id).then((res) => {
       setProductData(res);
@@ -93,7 +81,7 @@ const SellerDetails = () => {
 
   useEffect(() => {
     getProduct();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (isLoggedin()) {
@@ -107,9 +95,13 @@ const SellerDetails = () => {
       ) : (
         <>
           <div className="sellerdetails-wrap">
-            <div className='profile-details-seller' onClick={() =>{navigate(`/sellershop/${shopGuid.guid}`)}}>
+            <div className='profile-details-seller' onClick={() => { navigate(`/sellershop/${shopGuid.guid}`) }}>
               <div className='image'>
-                <img src={`${shopData.sellerImage}`} width="100" height="100" />
+                {shopData?.sellerImage == BASE_URL+'/' ?
+                  <img src={blankUser} width="100" height="100" />
+                  :
+                  <img src={`${shopData.sellerImage}`} width="100" height="100" />
+                }
               </div>
               <div className='profile-record'>
                 <h4>{shopData.sellerName}</h4>
@@ -146,102 +138,6 @@ const SellerDetails = () => {
               }
             </div>
           </div>
-
-          {/* <div className='col-lg-6 review'>
-              <h2>Detailed Seller Ratings</h2>
-              <p className='monthtext'>Last 12 months</p>
-              <ReviewSection />
-              <PopularProductSearch shopId={shopData.id} />
-            </div> */}
-          {/* <div className="customer-feedback">
-            <h2>Feedbacks</h2>
-            <div className="feedback-container">
-              {currentItems.length === 0 ? (
-                <NoDataFound title={'No Feedbacks Available'} />
-              ) : (
-                <>
-                  <div className="row">
-                    {currentItems.map((feedback , index) => (
-                      <div className="col-lg-6" key={index}>
-                        <div key={feedback.id} className="feedback-item">
-                          <div className="feedback-item-left">
-                            <div className="feedback-item-left-left">
-                              <img src={`${BASE_URL}/${feedback.user.image}`} alt='user image' />
-                            </div>
-                            <div className="feedback-item-left-right">
-                              <h3>{feedback.user.name}</h3>
-                              <p>{feedback.comments}</p>
-                            </div>
-                          </div>
-                          <div className="feedback-item-right">
-                            <h3>{feedback.user.period}</h3>
-                            <p>
-                              {+feedback.ratings === 5 &&
-                                <>
-                                  <FaStar /><FaStar /><FaStar /><FaStar /><FaStar />
-                                </>
-                              }
-                              {+feedback.ratings === 4 &&
-                                <>
-                                  <FaStar /><FaStar /><FaStar /><FaStar /><FaRegStar />
-                                </>
-                              }
-                              {+feedback.ratings === 3 &&
-                                <>
-                                  <FaStar /><FaStar /><FaStar /><FaRegStar /><FaRegStar />
-                                </>
-                              }
-                              {+feedback.ratings === 2 &&
-                                <>
-                                  <FaStar /><FaStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                                </>
-                              }
-                              {+feedback.ratings === 1 &&
-                                <>
-                                  <FaStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                                </>
-                              }
-                              {+feedback.ratings === 0 &&
-                                <>
-                                  <FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                                </>
-                              }
-                              {+feedback.ratings > 0 && +feedback.ratings < 1 &&
-                                <>
-                                  <FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar /><FaRegStar />
-                                </>
-                              }
-                              {+feedback.ratings > 1 && +feedback.ratings < 2 &&
-                                <>
-                                  <FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar /><FaRegStar />
-                                </>
-                              }
-                              {+feedback.ratings > 2 && +feedback.ratings < 3 &&
-                                <>
-                                  <FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar /><FaRegStar />
-                                </>
-                              }
-                              {+feedback.ratings > 3 && +feedback.ratings < 4 &&
-                                <>
-                                  <FaStar /><FaStar /><FaStar /><FaStarHalfAlt /><FaRegStar />
-                                </>
-                              }
-                              {+feedback.ratings > 4 && +feedback.ratings < 5 &&
-                                <>
-                                  <FaStar /><FaStar /><FaStar /><FaStar /><FaStarHalfAlt />
-                                </>
-                              }
-                              <span>({feedback.ratings})</span>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-            </div>
-          </div> */}
         </>
       )}
     </div >

@@ -40,9 +40,7 @@ const PageNumbers = ({
 const NewArrivals21Plus = ({ cartFullResponse, notificationCount }) => {
     const [productData, setProductData] = useState([]);
     const [pagination, setPagination] = useState({});
-    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
     const user_id = localStorage.getItem('user_id');
-    const isLoggedin = localStorage.getItem("access_token");
     const [loading, setLoading] = useState(true);
     const pageSize = 12;
 

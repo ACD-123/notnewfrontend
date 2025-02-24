@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Profileimage from '../../assets/Images/Seller/profileimage.png'
-import Profileimage1 from '../../assets/Images/Seller/1.png'
-import Profileimage2 from '../../assets/Images/Seller/2.png'
 import blankuser from '../../assets/Images/User/blankuser.jpg'
 import SellerServices from '../../services/API/SellerServices';
 import { BASE_URL } from '../../services/Constant';
@@ -14,9 +11,7 @@ import { toast } from 'react-toastify';
 const SellerFeedback = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [sellerShopId, setSellerShopId] = useState(null); // Changed initial state to null
-  const { pathname } = window.location;
-  const shopId = pathname.split("/").pop();
+  const [sellerShopId, setSellerShopId] = useState(null);
 
   const getUserOffersCount = () => {
     OrderServices.getuserbidscount()

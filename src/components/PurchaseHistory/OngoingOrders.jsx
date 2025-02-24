@@ -27,7 +27,7 @@ const OngoingOrders = ({ isLoading, setIsLoading }) => {
 
   return (
     <>
-      {isLoading ? ( // Render loader if isLoading is true
+      {isLoading ? (
         <div className="loader-container text-center">
           <Spinner animation="border" role="status"></Spinner>
         </div>
@@ -62,9 +62,7 @@ const OngoingOrders = ({ isLoading, setIsLoading }) => {
                     </div>
                     <div className='col-lg-2'>
                       <div className='rightarrow'>
-                        {/* <Link to='/singleproduct'> */}
                         <img src={RightArrow} alt='Right Arrow' />
-                        {/* </Link> */}
                       </div>
                     </div>
                   </div>

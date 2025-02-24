@@ -1,62 +1,7 @@
 import React,{useState, useEffect} from 'react';
 import ProductImage1 from "../../assets/Images/Categorylisting/1.png"
-import ProductImage2 from "../../assets/Images/Categorylisting/2.png";
-import ProductImage3 from "../../assets/Images/Categorylisting/3.png";
-import ProductImage4 from "../../assets/Images/Categorylisting/4.png";
-import ProductImage5 from "../../assets/Images/Categorylisting/5.png";
 import {Link} from 'react-router-dom'
-import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
-import { toast } from "react-toastify";
-// const productData = [
-//   {
-//     id: 1,
-//     title: 'Zapatillas De Baloncesto Unisex Soft Sole ',
-//     price: 50,
-//     salePrice: 40,
-//     image: ProductImage1,
-//     discount: 50,
-//     auction: true,
-//   },
-
-//   {
-//     id: 2,
-//     title: 'Zapatillas De Baloncesto Unisex Soft Sole ',
-//     price: 50,
-//     salePrice: 40,
-//     image: ProductImage2,
-//     discount: 50,
-//   },
-
-//   {
-//     id: 3,
-//     title: 'Zapatillas De Baloncesto Unisex Soft Sole ',
-//     price: 50,
-//     salePrice: 40,
-//     image: ProductImage3,
-//     discount: 50,
-//     auction: false,
-//   },
-
-//   {
-//     id: 4,
-//     title: 'Zapatillas De Baloncesto Unisex Soft Sole ',
-//     price: 50,
-//     salePrice: 40,
-//     image: ProductImage4,
-//     discount: 50,
-//     auction: true,
-//   },
-//   {
-//     id: 5,
-//     title: 'Zapatillas De Baloncesto Unisex Soft Sole ',
-//     price: 50,
-//     salePrice: 40,
-//     image: ProductImage5,
-//     discount: 50,
-//     auction: true,
-//   },
-  
-// ];
+import ProductServices from '../../services/API/ProductServices';
 
 const CategoryProductListing = () => {
   const categoryFilter = 'Cell Phones & Smart';
@@ -68,7 +13,7 @@ const CategoryProductListing = () => {
         .then((response) => {
           if(response.status){
             const filteredProducts = response.data.filter(product => product.category === categoryFilter);
-            setProductData(filteredProducts.slice(0, 5)); // Limit to the first 5 products
+            setProductData(filteredProducts.slice(0, 5));
           }
         }).catch(error => setError('Error fetching product data. Please try again later.'))
         .finally( setLoading(false));

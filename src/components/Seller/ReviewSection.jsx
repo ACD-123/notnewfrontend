@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ReviewSection = () => {
-  // Assuming the ratings are fetched from an API or stored in state
   const ratings = [
     { name: 'Description Accuracy', rating: 4.9 },
     { name: 'Shipping Cost', rating: 4.8 },

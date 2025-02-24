@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "../../components/Shared/Cards/ProductCard";
 import { Link } from "react-router-dom";
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
-import NoDataFound from "../Shared/NoDataFound";
 import HomeService from "../../services/API/HomeService";
 import { toast } from "react-toastify";
 

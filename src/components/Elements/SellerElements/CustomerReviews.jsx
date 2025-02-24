@@ -1,7 +1,6 @@
 import React from 'react';
 
 const CustomerReviews = () => {
-  // Assuming the ratings are fetched from an API or stored in state
   const ratings = [
     { name: 'Positive reviews', rating: 3.9 },
     { name: 'Negative reviews', rating: 0.8 },

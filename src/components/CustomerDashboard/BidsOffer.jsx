@@ -3,19 +3,15 @@ import { Link } from "react-router-dom";
 import Prdimage from "../../assets/Images/Singleproduct/prdimage.png";
 import Prdimage1 from "../../assets/Images/Singleproduct/Product1.png";
 import Prdimage2 from "../../assets/Images/Singleproduct/Product2.png";
-import Checkpay from "../../assets/Images/check-pay.png";
 import blank from "../../assets/Images/Productcard/blank.jpg";
-import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
-import { toast } from "react-toastify";
-import moment from "moment";
-import { BASE_URL } from '../../services/Constant'
+import UserServices from "../../services/API/UserServices";
 
 const BidsOffer = () => {
   const [refundDetailsVisible, setRefundDetailsVisible] = useState({});
   const [requestSentVisible, setRequestSentVisible] = useState({});
   
   const renderOrderBlock = (orderData, index) => {
-    const { orderNumber, productNames, imagess, bid, max_bids, result } = "";
+    const { orderNumber } = "";
     const productName = orderData.product.name;
     const productGuid = orderData.product.guid;
 
@@ -25,30 +21,6 @@ const BidsOffer = () => {
         images.push(item.name)
       })
     }
-    const handleRefundClick = (orderIndex) => {
-      setRefundDetailsVisible({
-        ...refundDetailsVisible,
-        [orderIndex]: true,
-      });
-    };
-
-    const handleSubmitDetails = (orderIndex) => {
-      setRefundDetailsVisible({
-        ...refundDetailsVisible,
-        [orderIndex]: false,
-      });
-      setRequestSentVisible({
-        ...requestSentVisible,
-        [orderIndex]: true,
-      });
-    };
-
-    const handleCloseRequestSent = (orderIndex) => {
-      setRequestSentVisible({
-        ...requestSentVisible,
-        [orderIndex]: false,
-      });
-    };
 
     return (
       <div className="row bid-product align-items-center" key={orderNumber}>
@@ -75,7 +47,6 @@ const BidsOffer = () => {
             </div>
             <div className="prd-details">
               <h5>
-                {/* Order # : <b>{orderNumber}</b> */}
               </h5>
               <h3><a href={`/auctionproduct/${productGuid}`} target="_blank">{productName}</a></h3>
             </div>
@@ -145,37 +116,6 @@ const BidsOffer = () => {
     );
   };
 
-  const ordersData = [
-    {
-      orderNumber: "15s5d8e1",
-      productName:
-        "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
-      images: [Prdimage],
-      bid: "17.00",
-      maxBid: "20.30",
-      result: "hold",
-    },
-    {
-      orderNumber: "15s5d8e2",
-      productName:
-        "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
-      images: [Prdimage1],
-      bid: "16.22",
-      maxBid: "34.223",
-      result: "processed",
-    },
-    {
-      orderNumber: "15s5d8e2",
-      productName:
-        "Adidas Originals Men's Stan Smith Kris Andrew Pride Sneaker Cream US 7 #GX6394",
-      images: [
-        Prdimage2, 
-    ],
-    bid: "23.00",
-    maxBid: "40.22",
-    result: "pending",
-    },
-  ];
   const [bids, setBids] = useState([]);
 
   const getBids = () =>{
@@ -194,14 +134,11 @@ const BidsOffer = () => {
     <>
       <h3>Bids Offer</h3>
       <div className="ongoing">
-        {/* {bids.length} */}
-        {/* {ordersData.map((order, index) => ( */}
         {bids?.length > 0 ?(
           <>
             {bids.map((order, index) => (
                 <React.Fragment key={index}>
                   {renderOrderBlock(order, index)}
-                  {/* {index !== ordersData.length - 1 && <hr />} */}
                 </React.Fragment>
               ))}
           </>

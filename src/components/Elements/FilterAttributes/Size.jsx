@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
+import ProductServices from "../../../services/API/ProductServices";
 import { toast } from "react-toastify";
 
 const SizeToggle = (props) => {
@@ -9,7 +9,7 @@ const SizeToggle = (props) => {
 
   const toggleSizes = () => {
     setShowSizes(!showSizes);
-    setSelectedSize(''); // Reset selected size when toggling the sizes
+    setSelectedSize('');
   };
   const getSizes = () =>{
     ProductServices.getSizes()
@@ -26,7 +26,6 @@ const SizeToggle = (props) => {
   useEffect(() => {
     getSizes();
   }, []);
-  // ['Small', 'Medium', 'Large', 'Extra Large']
   return (
     <div className='main-size'>
       <label htmlFor="size-dropdown"><h4>Size</h4></label>

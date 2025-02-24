@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ProductGallery from './SingleProductElements/ProductGallery'
 import Header from '../../Header'
 import Footer from '../../Footer'
@@ -18,6 +18,9 @@ const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse 
   const [productId, setProductId] = useState('')
   const [loading, setLoading] = useState(true)
 
+  const { pathname } = window.location;
+  const id = pathname.split("/").pop();
+
   const getMoreToLove = (product_id) => {
     ProductServices.getMoreToLove(product_id)
       .then((response) => {
@@ -35,6 +38,10 @@ const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse 
     updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
     setMoreToLove(updatedProducts);
   };
+
+  useEffect(() =>{
+// window.location.reload()
+  }, [id])
 
 
   return (
@@ -59,7 +66,7 @@ const SingleProduct_old = ({getCartCount , getCartCountGuest , cartFullResponse 
               <div className="row">
                 {moreToLove?.slice(0, 4)?.map((data, index) => {
                   return (
-                    <div className="col-lg-4 col-md-6 col-sm-12" key={index}>
+                    <div className="col-lg-3 col-md-6 col-sm-12" key={index}>
                       <ProductCard data={data} handleToggleFavourite={handleToggleFavourite} index={index} />
                     </div>
                   )

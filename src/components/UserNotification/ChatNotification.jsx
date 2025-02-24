@@ -34,7 +34,6 @@ const PageNumbers = ({
 };
 
 export const ChatNotification = ({ getNotificationCount }) => {
-  let user_details = JSON.parse(localStorage.getItem('user_details'));
   const user_id = localStorage.getItem('user_id');
   const [notification, setNotification] = useState([])
   const [loading, setLoading] = useState(true)

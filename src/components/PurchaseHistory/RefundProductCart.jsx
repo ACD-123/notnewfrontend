@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Productimage from "../../assets/Images/Productcard/1.png";
-import OrderServices from "../../services/API/OrderServices"; //~/services/API/OrderServices
+import OrderServices from "../../services/API/OrderServices";
 import blank from "../../assets/Images/Productcard/blank.jpg";
 import { toast } from "react-toastify";
 
 const RefundProductCart = (props) => {
-  const [images, setImages] = useState([]);
   const [orders, setOrders] = useState([]);
   const [orderitems, setOrderItems] = useState([]);
-  // const [products, setProducts] = useState([]);
   let orderId = localStorage.getItem("orderid");
-  let imgFiles = props.images;
-  // const orderItems = orders.orderItems
   const getOrders = () => {
     OrderServices.getbyid(orderId)
       .then((response) => {
@@ -154,10 +149,6 @@ const RefundProductCart = (props) => {
                         <th>Shipping</th>
                         <td>${orders.shipping_cost}</td>
                       </tr>
-                      {/* <tr>
-                    <th>Import Tax</th>
-                    <td>$5.00</td>
-                  </tr> */}
                       <tr>
                         <th className="totalthtextbold">Refund amount</th>
                         <td className="totalthtextbold">

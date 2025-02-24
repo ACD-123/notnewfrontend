@@ -1,6 +1,5 @@
 import request from '../request'
 import { BASE_API } from '../Constant'
-// @todo this file name should be product service
 const baseUrlTransaction = `${BASE_API}transaction`
 const baseUrl = `${BASE_API}`
 

@@ -102,7 +102,7 @@ const HelpAndSupport = () => {
                                             accept="image/*"
                                             style={{ display: 'none' }}
                                             onChange={handleImageFileChange}
-                                            multiple  // Enable multiple file selection
+                                            multiple
                                         />
                                     </div>
                                 </div>

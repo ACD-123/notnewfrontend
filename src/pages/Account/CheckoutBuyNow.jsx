@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
-import CheckoutServices from "../../services/API/CheckoutServices"; //~/services/API/CheckoutServices
+import ProductServices from "../../services/API/ProductServices";
+import CheckoutServices from "../../services/API/CheckoutServices";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { json, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Payment from "../../assets/Images/Shoppingcart/payment.png"
 import blank from "../../assets/Images/Productcard/blank.jpg";
-import applyPay from "../../assets/Images/paymentCard/apply-pay.png"
-import Visa from "../../assets/Images/paymentCard/Visa.png"
-import Mastercard from "../../assets/Images/paymentCard/Mastercard.png"
-import Arrowright from "../../assets/Images/Shoppingcart/arrowright.png";
 import Select from 'react-select';
 import { loadStripe } from "@stripe/stripe-js";
 import { CardElement, Elements, useElements, useStripe } from "@stripe/react-stripe-js";
@@ -27,32 +23,20 @@ const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
   const [error, setError] = useState(null);
   const [cardError, setCardError] = useState('');
   const [loading, setLoading] = useState(false);
-  const userId = sessionStorage.getItem("userId");
   const [formData, setFormData] = useState({
     name: "",
     companey_name: "",
     street_address: "",
     aparment: "",
     town: "",
-    // state: "",
     phone_number: "",
     email: "",
   });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
 
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // setLoading(true);
-
     const cardElement = elements.getElement(CardElement);
     setLoading(true);
     const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -144,19 +128,14 @@ const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
 
 const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
   const dispatch = useDispatch();
-  const [userDetails, setUserDetails] = useState(null);
   const [butItNowData, setButItNowData] = useState([]);
   const [shippingData, setShippingData] = useState({ postalCode: "", country: null });
   const [shipping, setShipping] = useState([]);
-  const [country, setCountry] = useState(null);
   const countrys = [{ value: 1, label: 'US' }]
-  const [paymentMethod, setPaymentMethod] = useState(0);
   const [couponeCode, setCouponeCode] = useState('');
-  const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
   const user_id = localStorage.getItem('user_id');
   const [inputError, setInputError] = useState(false);
   const { pathname } = window.location;
-  const id = pathname.split("/").pop();
   const [shippingLoader, setShippingLoader] = useState(false)
   const navigate = useNavigate();
 
@@ -190,44 +169,6 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
     }
   }, [shippingData.postalCode, shippingData.country])
 
-  const checkoutButItNow = async () => {
-
-    const orderItems = {
-      product_id: butItNowData?.data?.[0]?.products?.[0]?.id,
-      price: butItNowData?.data?.[0]?.products?.[0]?.buynowprice,
-      quantity: butItNowData?.data?.[0]?.products?.[0]?.buynowquantity,
-      attributes: JSON.stringify(butItNowData?.data?.[0]?.products?.[0]?.attributes),
-    }
-    const formData = {
-      payment_type: "Card",
-      discountcode: "discount",
-      subtotal_cost: "10",
-      service_code: shipping.service_code,
-      weight: butItNowData?.weight,
-      shipping_cost: shipping.shipping_amount?.amount,
-      order_total: butItNowData.total,
-      payment_intents: "pi_3Oj5IqBL2ne1CK3D0hkRy72C",
-      Currency: "2",
-      order_type: "BuyNow",
-      orderItems: JSON.stringify([orderItems]),
-      other_address: "false",
-      secondaddress: ""
-    }
-    try {
-      const response = await CheckoutServices.checkoutButItNow(formData);
-      navigate('/')
-    } catch (error) {
-      toast.error(error?.response?.data?.message)
-    }
-  }
-
-  const [showDiscountField, setShowDiscountField] = useState(false);
-
-  const toggleDiscountField = () => {
-    setShowDiscountField(!showDiscountField);
-  };
-
-
   useEffect(() => {
     const access_token = localStorage.getItem('access_token')
     if (access_token) {
@@ -236,27 +177,6 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
       navigate('/')
     }
   }, [])
-
-  const handleDiscountSubmit = async (e) => {
-    e.preventDefault();
-    setInputError(true)
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    if (couponeCode != "") {
-      try {
-        const data = {
-          coupon_code: couponeCode,
-          user_id: user_id,
-          date: `${year}-${month}-${day}`
-        };
-        const res = await ProductServices.addCouponeCode(data);
-      } catch (error) {
-        toast.error(error?.response?.data?.message);
-      }
-    }
-  };
 
   return (
     <>
@@ -316,69 +236,6 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                   </div>
                 </div>
               </div>
-              {/* <div className="order-details" id="border-order-details">
-                <div><h3 id="storetitle">Pay with</h3></div>
-                <div className="b-w-p-w">
-                  <div className="b-w-p-w-l">SELECT A PAYMENT OPTION</div>
-                  <div className="b-w-p-w-r">ADD NEW CARD</div>
-                </div>
-                <div className="b-w-c-o">
-                  <ul>
-                    <li>
-                      <div className="b-w-c-o-l" onClick={() => { setPaymentMethod(0) }}>
-                        <div className={`b-w-c-o-l-c ${paymentMethod === 0 ? 'active' : ''}`}></div>
-                      </div>
-                      <div className="b-w-c-o-r">
-                        <div className="b-w-c-o-r-l">
-                          <img src={applyPay} alt="" />
-                        </div>
-                        <div className="b-w-c-o-r-r">APPLE PAY</div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="b-w-c-o-l" onClick={() => { setPaymentMethod(1) }}>
-                        <div className={`b-w-c-o-l-c ${paymentMethod === 1 ? 'active' : ''}`}></div>
-                      </div>
-                      <div className="b-w-c-o-r">
-                        <div className="b-w-c-o-r-l">
-                          <img src={Visa} alt="" />
-                        </div>
-                        <div className="b-w-c-o-r-r">VISE PREMIUM</div>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="b-w-c-o-l" onClick={() => { setPaymentMethod(2) }}>
-                        <div className={`b-w-c-o-l-c ${paymentMethod === 2 ? 'active' : ''}`}></div>
-                      </div>
-                      <div className="b-w-c-o-r">
-                        <div className="b-w-c-o-r-l">
-                          <img src={Mastercard} alt="" />
-                        </div>
-                        <div className="b-w-c-o-r-r">MASTER CARD</div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div> */}
-              {/* <div className="order-details" id="border-order-details">
-                <h5 onClick={toggleDiscountField}>
-                  Coupons, Vouchers, Discount Codes
-                  <div id="iconrightaligin">
-                    <img src={Arrowright} />
-                  </div>
-                </h5>
-                {showDiscountField && (
-                  <div className="discountfields">
-                    <input
-                      type="text"
-                      placeholder="Enter discount code"
-                      value={couponeCode}
-                      onChange={(e) => setCouponeCode(e.target.value)}
-                    />
-                    <button onClick={handleDiscountSubmit}>Apply</button>
-                  </div>
-                )}
-              </div> */}
               <div className="order-details" id="border-order-details">
                 <div><h3 id="storetitle">Shipping</h3></div>
                 <div className="b-w-s-i-f">
@@ -410,10 +267,6 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="b-w-p-w">
-                  <div className="b-w-p-w-l"></div>
-                  <div className="b-w-p-w-r" onClick={() => { getShippingData() }}>Shipping</div>
-                </div> */}
               </div>
               {shipping?.shipping_amount?.amount ?
                 <div className="stripe-payment-card">
@@ -425,7 +278,6 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                 :
                 null
               }
-
             </div>
             <div className="col-lg-4">
               <div className="order-details" id="totalordervalue">
@@ -459,18 +311,11 @@ const CheckoutBuyNow = ({ cartFullResponse, notificationCount }) => {
                 </table>
                 <div className="imgtoop">
                   <img src={Payment} alt="" />
-                  {/* <button className="btn btn-info btn-lg gradientbtncolor" type="button" onClick={() => { checkoutButItNow() }}>
-                    Confirm & Pay
-                  </button> */}
                 </div>
               </div>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
       <Footer />
     </>

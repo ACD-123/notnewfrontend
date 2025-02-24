@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
-import ProductServices from "../../../services/API/ProductServices"; //~/services/API/ProductServices
-import Category from "../../../services/API/Category"; //~/services/API/Category
-import HomeService from "../../../services/API/HomeService"; //~/services/API/Home
+import ProductServices from "../../../services/API/ProductServices";
+import Category from "../../../services/API/Category";
+import HomeService from "../../../services/API/HomeService";
 import { StandaloneSearchBox, useJsApiLoader } from "@react-google-maps/api";
 import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
@@ -51,13 +51,13 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     category: null,
     subCategory: null,
     stockCapacity: "",
-    brand_id: null,
+    brands: null,
     model: "",
     description: "",
     tags: "",
     saleprice: "",
     sellingNow: false,
-    listing: "",
+    // listing: "",
     price: "",
     minpurchase: 0,
     auctioned: false,
@@ -66,7 +66,7 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     hours: "",
     auctionListing: "",
     end_listing: "",
-    deliverddomestic: false,
+    deliverddomestic: true,
     deliverdinternational: false,
     deliverycompany: "asd",
     address: "",
@@ -87,10 +87,10 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     returnstate: "returnstate",
     returncity: "dsasd",
     returnzip: "000",
-    weight: "",
-    height: "",
-    length: "",
-    width: ""
+    weight: 1,
+    height: 1,
+    length: 1,
+    width: 1
   })
 
   const handleUploadClick = () => {
@@ -347,9 +347,8 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
     setInputError(true)
     setIsFromLoading(true)
     if (productManagment.file.length == 0 || productManagment.condition == "" ||
-      productManagment.category == null || productManagment.brand_id == null ||
-      productManagment.description == "" || productManagment.address == "" ||
-      productManagment.country == "" ||
+      productManagment.category == null || productManagment.description == "" ||
+      productManagment.address == "" || productManagment.country == "" ||
       productManagment.state == "" || productManagment.city == "" || productManagment.zip == "" ||
       productManagment.weight == "" || productManagment.weight == 0 || productManagment.width == "" ||
       productManagment.width == 0 || productManagment.height == "" || productManagment.height == 0 ||
@@ -358,30 +357,24 @@ const ListingForm = ({ setSubmitted, productId, setProductId }) => {
       setIsFromLoading(false)
       return false;
     }
-console.log('one working');
-
     if (productManagment.attributes.length > 0) {
       for (let i = 0; i < productManagment.attributes.length; i++) {
         if (productManagment.attributes[i].selected === null) {
+          console.log('enter 2');
           setIsFromLoading(false)
           return false;
         }
       }
     }
 
-    console.log('two working');
-
     if (productManagment.sellingNow) {
       if (productManagment.saleprice === "" || productManagment.saleprice === 0 || productManagment.saleprice < 0 ||
         productManagment.price === "" || productManagment.price === 0 || productManagment.price < 0 ||
-        productManagment.minpurchase === "" || productManagment.minpurchase === 0 || productManagment.minpurchase < 0 ||
-        productManagment.listing === "") {
+        productManagment.minpurchase === "" || productManagment.minpurchase === 0 || productManagment.minpurchase < 0) {
         setIsFromLoading(false)
         return false;
       }
     }
-
-    console.log('three working');
 
     if (productManagment.auctioned) {
       if (productManagment.bids === "" || productManagment.bids === 0 || productManagment.bids < 0 ||
@@ -392,8 +385,6 @@ console.log('one working');
         return false;
       }
     }
-
-    console.log('four working');
 
     if (productManagment.condition === "Used") {
       if (productManagment.used_condition === null) {
@@ -452,7 +443,7 @@ console.log('one working');
       formData.append("price", productManagment.price);
       formData.append("saleprice", productManagment.saleprice);
       formData.append("minpurchase", productManagment.minpurchase);
-      formData.append("listing", productManagment.listing);
+      // formData.append("listing", productManagment.listing);
     } else {
       formData.append("price", null);
       formData.append("saleprice", null);
@@ -474,8 +465,7 @@ console.log('one working');
       formData.append("auctionListing", null);
       formData.append("end_listing", null);
     }
-
-    formData.append("brand_id", productManagment.brand_id?.value);
+    formData.append("brands", productManagment.brands);
     formData.append("model", productManagment.model);
     formData.append("description", productManagment.description);
     formData.append("tags", JSON.stringify(productManagment.tags));
@@ -560,13 +550,13 @@ console.log('one working');
           title: response?.data?.name,
 
           stockCapacity: response?.data?.stockcapacity,
-          brand_id: { value: response?.data?.brand?.id, label: response?.data?.brand?.name },
+          brands: response?.data?.brand?.name ? response?.data?.brand?.name : "",
           model: response?.data?.model,
           description: response?.data?.description,
           tags: ['girls', 'boys'],
           saleprice: response?.data?.sale_price,
           sellingNow: response?.data?.selling_now === 0 ? false : true,
-          listing: response?.data?.listing,
+          // listing: response?.data?.listing,
           price: response?.data?.price,
           minpurchase: response?.data?.min_purchase,
           auctioned: response?.data?.auctioned === 0 ? false : true,
@@ -576,8 +566,8 @@ console.log('one working');
           auctionListing: response?.data?.auction_listing,
           end_listing: response?.data?.auction_End_listing ? response?.data?.auction_End_listing.slice(0, 10) : '',
           // end_listing: response?.data?.end_listing ? `${response?.data?.end_listing.slice()}` : '',
-          deliverddomestic: response?.data?.deliverd_domestic,
-          deliverdinternational: response?.data?.deliverd_international,
+          deliverddomestic: true,
+          deliverdinternational: false,
           deliverycompany: "asd",
           address: response?.data?.user?.address,
           latitude: response?.data?.latitude,
@@ -685,7 +675,7 @@ console.log('one working');
                       accept="image/*"
                       style={{ display: 'none' }}
                       onChange={handleImageFileChange}
-                      multiple  // Enable multiple file selection
+                      multiple
                     />
                   </div>
                 </div>
@@ -791,15 +781,16 @@ console.log('one working');
                 <div className="two-field">
                   <div className="two-field-left">
                     <label>Brand</label>
-                    <Select
-                      value={brands?.find(option => option?.value === productManagment?.brand_id?.value)}
-                      onChange={(e) => { setProductManagments({ ...productManagment, brand_id: e }) }}
-                      options={brands}
-                      placeholder={'Select brand'}
-                    />
-                    {productManagment.brand_id === null && inputError &&
+                    <input type="text" name="brands" value={productManagment?.brands} onChange={handleChange} placeholder="Enter product brand" />
+                    {productManagment.brands === '' && inputError &&
                       <div className="error-input">Brand is required</div>
                     }
+                    {/* <Select
+                      value={brands?.find(option => option?.value === productManagment?.brands?.value)}
+                      onChange={(e) => { setProductManagments({ ...productManagment, brands: e }) }}
+                      options={brands}
+                      placeholder={'Select brand'}
+                    /> */}
                   </div>
                   {productManagment.condition === "Used" || productManagment.auctioned ? null :
                     <div className="two-field-left">
@@ -811,7 +802,7 @@ console.log('one working');
                     </div>
                   }
                 </div>
-                <div className="two-field">
+                {/* <div className="two-field">
                   <div className="two-field-left">
                     <label>Weight</label>
                     <input type="number" name="weight" value={productManagment?.weight} onChange={handleChange} placeholder="Enter weight" />
@@ -842,21 +833,21 @@ console.log('one working');
                       <div className="error-input">Width is required</div>
                     }
                   </div>
-                </div>
+                </div> */}
                 <div className="two-field">
-                    <div className="two-field-left">
-                      <label>Used Condition</label>
-                      <Select
-                        defaultValue={productUserCondition?.find(option => option?.value === productManagment?.used_condition?.value)}
-                        value={productUserCondition?.find(option => option?.value === productManagment?.used_condition?.value)}
-                        onChange={handelUsedConsitionChange}
-                        options={productUserCondition}
-                        placeholder={'Select used condition'}
-                      />
-                      {productManagment.condition === "Used" && productManagment.used_condition === null && inputError &&
-                        <div className="error-input">User condition is required</div>
-                      }
-                    </div>
+                  <div className="two-field-left">
+                    <label>Used Condition</label>
+                    <Select
+                      defaultValue={productUserCondition?.find(option => option?.value === productManagment?.used_condition?.value)}
+                      value={productUserCondition?.find(option => option?.value === productManagment?.used_condition?.value)}
+                      onChange={handelUsedConsitionChange}
+                      options={productUserCondition}
+                      placeholder={'Select used condition'}
+                    />
+                    {productManagment.condition === "Used" && productManagment.used_condition === null && inputError &&
+                      <div className="error-input">User condition is required</div>
+                    }
+                  </div>
                 </div>
                 <div className="two-field">
                   <div className="two-field-left">
@@ -867,21 +858,25 @@ console.log('one working');
                     }
                   </div>
                 </div>
-                <div className="two-field">
-                  <div className="two-field-left">
-                    <label>Underage</label>
-                    <div className="p-m-p-c">
-                      <ul>
-                        <li onClick={() => { setProductManagments((prev) => ({ ...prev, underage: productManagment?.underage === 0 ? 1 : 0 })) }}>
-                          <div className={`check ${productManagment?.underage === 1 ? 'active' : ''}`}>
-                            <div className="check-wrap"></div>
-                          </div>
-                          <p className={`${productManagment?.underage === 1 ? 'active' : ''}`}>Underage</p>
-                        </li>
-                      </ul>
+                {productManagment?.category?.label == 'Guns' ?
+                  null :
+                  <div className="two-field">
+                    <div className="two-field-left">
+                      <label>Underage</label>
+                      <div className="p-m-p-c">
+                        <ul>
+                          <li onClick={() => { setProductManagments((prev) => ({ ...prev, underage: productManagment?.underage === 0 ? 1 : 0 })) }}>
+                            <div className={`check ${productManagment?.underage === 1 ? 'active' : ''}`}>
+                              <div className="check-wrap"></div>
+                            </div>
+                            <p className={`${productManagment?.underage === 1 ? 'active' : ''}`}>Underage</p>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
+                }
+
               </div>
               <div className="p-m-i-s">
                 <div className="title-line"><h2>Product pricings</h2><div></div></div>
@@ -965,13 +960,13 @@ console.log('one working');
                           <div className="error-input">Min purchase is required</div>
                         }
                       </div>
-                      <div className="two-field-left">
+                      {/* <div className="two-field-left">
                         <label>Schedule Your Listing</label>
                         <input type="date" name="listing" value={productManagment?.listing} onChange={handleChange} />
                         {(productManagment.listing === "" && inputError && productManagment.sellingNow) &&
                           <div className="error-input">Schedule your listing is required</div>
                         }
-                      </div>
+                      </div> */}
                     </div>
                   </>
                 }
@@ -994,13 +989,6 @@ console.log('one working');
                       </div>
                     </div>
                     <div className="two-field">
-                      {/* <div className="two-field-left">
-                        <label>Hours</label>
-                        <input type="number" name="hours" value={productManagment?.hours} onChange={handleChange} placeholder="min hours" />
-                        {(productManagment.hours === "" && inputError && productManagment.auctioned) &&
-                          <div className="error-input">Hours is required</div>
-                        }
-                      </div> */}
                       <div className="two-field-left">
                         <label>Schedule Your Listing</label>
                         <input
@@ -1046,33 +1034,6 @@ console.log('one working');
                           type="radio"
                           value={productManagment.deliverddomestic}
                           checked={productManagment.deliverddomestic}
-                          onClick={() => {
-                            if (productManagment.deliverddomestic) {
-                              setProductManagments(prev => ({ ...prev, deliverddomestic: false }))
-                            } else {
-                              setProductManagments(prev => ({ ...prev, deliverddomestic: true }))
-                            }
-                          }}
-                        />
-                        <span className="slider3 round3"></span>
-                      </label>
-                    </div>
-                  </div>
-                  <div className="two-field-left" style={{ display: 'flex', alignItems: 'center', gap: '20px', flex: '1' }}>
-                    <label style={{ margin: '0px' }}>Deliver International</label>
-                    <div className="custom-switch">
-                      <label className="switch3">
-                        <input
-                          type="radio"
-                          value={productManagment.deliverdinternational}
-                          checked={productManagment.deliverdinternational}
-                          onClick={() => {
-                            if (productManagment.deliverdinternational) {
-                              setProductManagments(prev => ({ ...prev, deliverdinternational: false }))
-                            } else {
-                              setProductManagments(prev => ({ ...prev, deliverdinternational: true }))
-                            }
-                          }}
                         />
                         <span className="slider3 round3"></span>
                       </label>
@@ -1107,7 +1068,6 @@ console.log('one working');
                     {productManagment.address === "" && inputError &&
                       <div className="error-input">Address is required</div>
                     }
-                    {/* <input type="text" name="stockCapacity" value={productManagment?.returnshippingpaidby} onChange={handleChange} placeholder="Enter address" /> */}
                   </div>
                   <div className="two-field-left">
                     <label>Country</label>
@@ -1133,48 +1093,15 @@ console.log('one working');
                     }
                   </div>
                 </div>
-                {/* <div className="two-field">
+                <div className="two-field">
                   <div className="two-field-left">
-                    <label>Shipping price</label>
-                    <input type="number" name="shippingprice" value={productManagment?.shippingprice} onChange={handleChange} placeholder="Enter shipping price" />
-                    {productManagment.shippingprice === "" && inputError &&
-                      <div className="error-input">Shipping price is required</div>
-                    }
-                  </div>
-                  <div className="two-field-left">
-                    <label>Shipping duration</label>
-                    <input type="number" name="shipingdurations" value={productManagment?.shipingdurations} onChange={handleChange} placeholder="Enter shipping duration" />
-                    {productManagment.shipingdurations === "" && inputError &&
-                      <div className="error-input">Shipping duration is required</div>
+                    <label>Zip Code</label>
+                    <input type="text" name="zip" value={productManagment?.zip} onChange={handleChange} placeholder="Enter zip code" />
+                    {productManagment.zip === "" && inputError &&
+                      <div className="error-input">Zip code is required</div>
                     }
                   </div>
                 </div>
-                <div className="two-field">
-                  <div className="two-field-left">
-                    <label >Return shipping price</label>
-                    <input type="number" name="returnshippingprice" value={productManagment?.returnshippingprice} onChange={handleChange} placeholder="Enter return shipping price" />
-                    {productManagment.returnshippingprice === "" && inputError &&
-                      <div className="error-input">Return shipping price is required</div>
-                    }
-
-                  </div>
-                  <div className="two-field-left">
-                    <label>Return duration limit</label>
-                    <input type="number" name="returndurationlimit" value={productManagment?.returndurationlimit} onChange={handleChange} placeholder="Enter return duration limit" />
-                    {(productManagment.returndurationlimit === "" && inputError) &&
-                      <div className="error-input">Return duration limit paid by is required</div>}
-                  </div>
-                </div>
-                <div className="two-field">
-                  <div className="two-field-left">
-                    <label>Return shipping price paid by</label>
-                    <input type="number" name="returnshippingpaidby" value={productManagment?.returnshippingpaidby} onChange={handleChange} placeholder="Enter return shipping price paid by" />
-                    {(productManagment.returnshippingpaidby === "" && inputError) &&
-                      <div className="error-input">Return shipping price paid by is required</div>}
-                  </div>
-                  <div className="two-field-left">
-                  </div>
-                </div> */}
               </div>
               <div className="p-m-s-b">
                 <button
@@ -1183,7 +1110,7 @@ console.log('one working');
                   disabled={isFromLoading}
                   type="submit"
                 >
-                  {isFromLoading ? "loading.." : "Preview Product"}
+                  {isFromLoading ? "loading.." : `${(productId !== '' && productId !== null && productId !== undefined) ? "Update Product" : "Submit Product"}`}
                 </button>
               </div>
             </form>

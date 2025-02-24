@@ -1,7 +1,6 @@
 import request from '../request'
 import { BASE_URL, BASE_API } from '../Constant'
 
-const baseUrl = `${BASE_URL}`
 const baseApi = `${BASE_API}`
 
 function register(data) {
@@ -27,14 +26,6 @@ function onsuccessFullLogin(token,data) {
     method: 'POST',
   })
 }
-
-// function loginWithSocial(token)
-// {
-//   return request({
-//   url: `${baseApi}login?token=${token}`,
-//   method:'POST'
-//   });
-// }
 
 function logout(data = {}) {
   return request({

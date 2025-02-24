@@ -4,9 +4,8 @@ import ProductCard from '../ProductCard';
 
 const SellerProductListing = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [cardsPerPage] = useState(6); // Change this value to adjust items per page
+  const [cardsPerPage] = useState(6);
 
-  // Mock data for products (replace this with your actual data)
   const products = [
     { id: 1, name: 'Product 1', description: 'Description for Product 1', price: 10.99 },
     { id: 2, name: 'Product 2', description: 'Description for Product 2', price: 19.99 },
@@ -17,10 +16,8 @@ const SellerProductListing = () => {
     { id: 7, name: 'Product 7', description: 'Description for Product 7', price: 12.99 },
     { id: 8, name: 'Product 8', description: 'Description for Product 8', price: 17.99 },
     { id: 9, name: 'Product 9', description: 'Description for Product 9', price: 21.99 },
-    // Add more mock products as needed
   ];
 
-  // Logic to paginate product cards
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
   const currentCards = products.slice(indexOfFirstCard, indexOfLastCard);
@@ -31,10 +28,8 @@ const SellerProductListing = () => {
     ));
   };
 
-  // Logic to handle page changes
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Calculate total number of pages
   const totalPages = Math.ceil(products.length / cardsPerPage);
 
   return (
@@ -67,7 +62,6 @@ const SellerProductListing = () => {
 
           <div className='row'>
               {renderProductCards()}
-              {/* Pagination */}
               <ul className="pagination">
                 {Array.from({ length: totalPages }, (_, index) => (
                   <li key={index} className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}>
@@ -77,7 +71,6 @@ const SellerProductListing = () => {
                   </li>
                 ))}
               </ul>
-              {/* Pagination */}
             
           </div>
         </div>

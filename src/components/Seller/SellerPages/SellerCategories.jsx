@@ -11,8 +11,6 @@ import { toast } from 'react-toastify';
 
 
 const SellerCategories = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [cardsPerPage] = useState(6);
   const [productData, setProductData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("")

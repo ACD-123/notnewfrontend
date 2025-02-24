@@ -43,11 +43,9 @@ const TwentyOnePlus = ({ cartFullResponse, notificationCount }) => {
   return (
     <>
       <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount} />
-      <Banners />
       <Category />
       <NewArrival title={'New Arrivals'} />
       <UsedProducts />
-      <BrandNewProducts />
       <TopSelling title={'Top Selling'} />
       <ExploreAll title={'Explore All'} />
       <Auction type={0} title={'Latest Auctions'} />

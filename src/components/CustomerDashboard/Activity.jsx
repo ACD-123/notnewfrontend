@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../Header';
-import SavedSellers from './SavedSellers'
-import RecentlyViewed from './RecentlyViewed'
-import Leftmenuimage from '../../assets/Images/leftmenu.png'
-import MainPurchase from '../PurchaseHistory/MainPurchase'
-import SavedSearches from './SavedSearches'
 import { useLocation } from 'react-router-dom';
 import Dashboard from './Dashboard'
-import BuyAgain from './BuyAgain';
-import BidsOffer from './BidsOffer';
-import NotFound_ from '../../pages/NotFound_'
 import { useNavigate } from 'react-router-dom';
 import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
@@ -26,8 +17,8 @@ import PrivacyPolicy from './PrivacyPolicy';
 import EditProfileSetup from '../AccountsSetting/SellerSetup/EditProfileSetup';
 import ChangePassword from './ChangePassword';
 const Activity = () => {
-  const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard'); // Initial menu selection
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for menu visibility
+  const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -45,17 +36,11 @@ const Activity = () => {
     setIsMenuOpen(false);
   };
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-
   const [isOpen, setIsOpen] = React.useState(false)
   const toggleDrawer = () => {
     setIsOpen((prevState) => !prevState)
   }
 
-  // Render the component based on the selected menu item
   const renderComponent = () => {
     switch (selectedMenuItem) {
       case 'my-orders':

@@ -69,10 +69,6 @@ const CustomerFaqs = () => {
                             <NoDataFound title={'No Data Found'}/>
                             }
                         </div>
-                        {/* {isLoading ?
-                                <LoadingComponents />
-                                : */}
-                        {/* } */}
                     </div>
                 </div>
             }

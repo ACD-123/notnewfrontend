@@ -25,24 +25,16 @@ const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
   const [error, setError] = useState(null);
   const [cardError, setCardError] = useState('');
   const [loading, setLoading] = useState(false);
-  const userId = sessionStorage.getItem("userId");
   const [formData, setFormData] = useState({
     name: "",
     companey_name: "",
     street_address: "",
     aparment: "",
     town: "",
-    // state: "",
     phone_number: "",
     email: "",
   });
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -57,14 +49,11 @@ const PaymentForm = ({ butItNowData, shipping, getCartCount }) => {
       billing_details: { email },
     });
 
-
-
     if (error) {
       setError(error.message);
       setLoading(false);
       return;
     }
-    const token = sessionStorage.getItem("userToken");
 
     let orders = [];
     for (let i = 0; i < butItNowData.data.length; i++) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Searchicon from "../../assets/Images/Elements/search.png"
-import Category from "../../services/API/Category"; //~/services/API/Category
+import Category from "../../services/API/Category";
 var Searchbg = {
     backgroundImage: `url(${Searchicon})`,
     backgroundSize: "100% 100%"

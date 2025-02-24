@@ -1,4 +1,3 @@
-/* eslint-disable valid-typeof */
 export function isEmpty(obj) {
   if (typeof obj === undefined || obj == null || obj === false || obj === 'NaN')
     return true

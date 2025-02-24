@@ -17,16 +17,13 @@ import { RxCross2 } from "react-icons/rx";
 
 const MySellerAccount = ({ cartFullResponse, notificationCount }) => {
     const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const [showMessage, setShowMessage] = useState(0);
 
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const componentName = searchParams.get('tab');
-
         if (componentName) {
             setSelectedMenuItem(componentName);
         }
@@ -114,9 +111,9 @@ const MySellerAccount = ({ cartFullResponse, notificationCount }) => {
                                                                     <li className={selectedMenuItem === 'dashboard' ? 'active' : ''} onClick={() => { handleMenuItemClick('dashboard'); setProductId('') }}>
                                                                         Dashboard
                                                                     </li>
-                                                                    {user?.isTrustedSeller === 0 ?
+                                                                    {/* {user?.isTrustedSeller === 0 ?
                                                                         null
-                                                                        :
+                                                                        : */}
                                                                         <>
                                                                             <li
                                                                                 className={selectedMenuItem === 'product-management' ? 'active' : ''}
@@ -158,7 +155,7 @@ const MySellerAccount = ({ cartFullResponse, notificationCount }) => {
                                                                                     setSubmitted(false);
                                                                                     setProductId('')
                                                                                 }}>
-                                                                                Feedbacks
+                                                                                Feedback
                                                                             </li>
                                                                             <li className={selectedMenuItem === 'discount-coupens' ? 'active' : ''}
                                                                                 onClick={() => {
@@ -185,7 +182,7 @@ const MySellerAccount = ({ cartFullResponse, notificationCount }) => {
                                                                                 Shop Settings
                                                                             </li>
                                                                         </>
-                                                                    }
+                                                                    {/* // } */}
                                                                 </ul>
                                                                 <div className="button">
                                                                     <button onClick={() => { navigate('/customerdashboard?tab=account') }}>Go Back</button>
@@ -223,9 +220,9 @@ const MySellerAccount = ({ cartFullResponse, notificationCount }) => {
                             <li className={selectedMenuItem === 'dashboard' ? 'active' : ''} onClick={() => { handleMenuItemClick('dashboard'); setProductId(''); toggleDrawer() }}>
                                 Dashboard
                             </li>
-                            {user?.isTrustedSeller === 0 ?
+                            {/* {user?.isTrustedSeller === 0 ?
                                 null
-                                :
+                                : */}
                                 <>
                                     <li
                                         className={selectedMenuItem === 'product-management' ? 'active' : ''}
@@ -272,7 +269,7 @@ const MySellerAccount = ({ cartFullResponse, notificationCount }) => {
                                             setProductId('');
                                             toggleDrawer();
                                         }}>
-                                        Feedbacks
+                                        Feedback
                                     </li>
                                     <li className={selectedMenuItem === 'discount-coupens' ? 'active' : ''}
                                         onClick={() => {
@@ -305,7 +302,7 @@ const MySellerAccount = ({ cartFullResponse, notificationCount }) => {
                                         Shop Settings
                                     </li>
                                 </>
-                            }
+                            {/* } */}
                         </ul>
                         <div className="button">
                             <button onClick={() => { navigate('/customerdashboard?tab=account'); toggleDrawer() }}>Go Back</button>

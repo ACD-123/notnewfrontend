@@ -42,7 +42,6 @@ const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }
       });
   };
 
-
   useEffect(() => {
     getRejectedOders();
   }, []);
@@ -103,7 +102,6 @@ const CustomerRefundOrder = ({ detail, setDetail, getProductManagmentOderCount }
               </div>
             </div>
             <div className="s-o-m-d-2" style={{ borderTop: '1px solid #EBEBEB', borderBottom: 'none', borderLeft: 'none', borderRight: 'none', backgroundColor: 'transparent' }}>
-              {/* <h2>Ship to</h2> */}
               <div className="s-o-m-d-2-1">
                 <div className="s-o-m-d-2-1-l">
                   <img src={Location} alt="location" />

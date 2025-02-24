@@ -1,6 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import { Link } from 'react-router-dom';
-import ProductServices from '../../../services/API/ProductServices'; //~/services/API/ProductServices
+import ProductServices from '../../../services/API/ProductServices';
 import { toast } from 'react-toastify';
 
 const SubcategoriesList = (props) => {
@@ -29,8 +28,6 @@ const SubcategoriesList = (props) => {
   return (
     <>
       <div className='subcategory-list'>
-        {/* <h4>Antiques</h4> */}
-
         {categories?.length > 0 ? (<>
           <ul>
           {categories.map((category, index) => {
@@ -51,18 +48,6 @@ const SubcategoriesList = (props) => {
           </li>
           </ul>
         </>):('')}
-
-        <ul>
-          {/* <li><Link to="#">Basketball Shoes</Link></li>
-          <li><Link to="#">Boots</Link></li>
-          <li><Link to="#">Football Shoes</Link></li>
-          <li><Link to="#">Gym & Training Shoes</Link></li>
-          <li><Link to="#">Heels & Pumps</Link></li>
-          <li><Link to="#">Lace Boots</Link></li>
-          <li><Link to="#">Low Shoes</Link></li>
-          <li><Link to="#">Outdoor Slippers</Link></li>
-          <li><Link to="#">Running Shoes</Link></li> */}
-        </ul>
       </div>
     </>
   );

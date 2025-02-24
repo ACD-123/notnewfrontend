@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import blank from "../../../assets/Images/Productcard/blank.jpg";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 
 const ProductCard = ({ data, handleToggleFavourite, index }) => {
     const isLoggedin = localStorage.getItem("access_token");
-    const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
     const user_id = localStorage.getItem('user_id');
     const { pathname } = window.location;
     const navigate = useNavigate()
@@ -72,18 +71,6 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                         (<>
                                             <h2>${data?.product?.price}</h2>
                                         </>)
-
-
-                                    //         < h2 > ${data?.product?.price}
-                                    //     {data?.product?.sale_price > 0 ?
-                                    //         <>
-                                    //             <div className="circle"></div>
-                                    //             <div className="sale-price">${data?.product?.sale_price}</div>
-                                    //         </>
-                                    //         :
-                                    //         null
-                                    //     }
-                                    // </h2>
                                 }
 
                             </Link>
@@ -143,16 +130,6 @@ const ProductCard = ({ data, handleToggleFavourite, index }) => {
                                         <h2>${data?.bid_price}</h2>
                                     )
                                     :
-                                    // <h2>${data?.price}
-                                    //     {data?.sale_price > 0 ?
-                                    //         <>
-                                    //             <div className="circle"></div>
-                                    //             <div className="sale-price">${data?.sale_price}</div>
-                                    //         </>
-                                    //         :
-                                    //         null
-                                    //     }
-                                    // </h2>
                                     data?.sale_price > 0 ?
                                         (<>
                                             <h2>${data?.sale_price}

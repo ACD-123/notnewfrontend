@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import ProductServices from '../../services/API/ProductServices';
-import { BASE_URL } from '../../services/Constant';
 import NoDataFound from '../Shared/NoDataFound';
 import LoadingComponents from '../Shared/LoadingComponents';
 import { toast } from 'react-toastify';
@@ -33,7 +32,6 @@ const PageNumbers = ({
 };
 
 export const AuctionNotification = ({ getNotificationCount }) => {
-  let user_details = JSON.parse(localStorage.getItem('user_details'));
   const user_id = localStorage.getItem('user_id');
   const [notification, setNotification] = useState([])
   const [loading, setLoading] = useState(true)

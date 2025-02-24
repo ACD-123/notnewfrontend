@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
-import { toast } from "react-toastify";
+import ProductServices from "../../services/API/ProductServices";
 import moment from "moment";
 
 const ReviewBid = (props) => {
-  const [currentbid, setCurrentBid] = useState(props.bids);
   const [productDatas, setProductData] = useState([]);
   const [shippingprice, setShippingPrice] = useState(0);
   const [shippingaddress, setShippingAddress] = useState("");
@@ -12,7 +10,7 @@ const ReviewBid = (props) => {
   const [minute, setMinutes] = useState("");
   const [currenttime, setCurrentTime] = useState("");
   const [productData, setProduct] = useState({
-    CurrentBid: "00.00", //'89.00',
+    CurrentBid: "00.00",
     YourMaxBid: "00.00",
     Timeleft: "",
     ShippingPrice: "$ 00.00",
@@ -29,24 +27,19 @@ const ReviewBid = (props) => {
       setShippingPrice(response.shipping_price);
       var date = new Date();
       var date1 = moment(date).format('MM/DD/YYYY');
-      var date2 = moment(response.auction_listing).format('MM/DD/YYYY');//moment(moment(response.auction_listing).toDate(), 'MM/DD/YYYY'); 
+      var date2 = moment(response.auction_listing).format('MM/DD/YYYY');
       if(date1 === date2){
         var startTime = moment(response.auction_listing).format("hh:mm:ss a");
         var endTime =  moment(response.auction_End_listing).format("hh:mm:ss a");
         var startTime1 = moment(startTime, 'HH:mm:ss a');
         var endTime1 = moment(endTime, 'HH:mm:ss a');
         var duration = moment.duration(endTime1.diff(startTime1));
-        // duration in hours
         var hours = parseInt(duration.asHours());
-
-        // duration in minutes
         var minutes = parseInt(duration.asMinutes()) % 60;
         setHour(hours);
-        // setMinutes(minutes.toString().split(".")[1]);
         setMinutes(minutes);    
       }
-      // const currDate = hour + " hrs :" + minute + " mins";
-      const currDate = new Date();//.toLocaleTimeString;
+      const currDate = new Date();
       setCurrentTime(moment(currDate).format('hh:mm A'))
       let user = JSON.parse(localStorage.getItem("user_details"));
       setShippingAddress(user.address);
@@ -55,19 +48,18 @@ const ReviewBid = (props) => {
   const getBids = () => {
     if (props.bids) {
       let data = {
-        CurrentBid: "$ " + props.bids.max_bids, //'89.00',
+        CurrentBid: "$ " + props.bids.max_bids,
         YourMaxBid: "$ " + props.bids.max_bids,
         Timeleft: hour + "h " + minute +" m | Today " +currenttime,
         ShippingPrice: "$ " + props.shippingprice,
         ShippingLocation: shippingaddress ? shippingaddress : "No Address",
-        // ImportCharges: "$ 89.00",
         EstimatedTotal: "$ " + props.bids.estimated_total,
         note: "*This item may be subject to duties and taxes upon delivery. *Applicable tax and other charges may be added at checkout.",
       };
       setProduct(data);
     } else {
       let datab = {
-        CurrentBid: "$ 00.00", //'89.00',
+        CurrentBid: "$ 00.00",
         YourMaxBid: "$ 00.00",
         Timeleft: "",
         ShippingPrice: "$ 00.00",
@@ -91,7 +83,6 @@ const ReviewBid = (props) => {
           <div className="row">
             {productData ? (
               <>
-                {/* {productData.map((product) => ( */}
                 <div className="col">
                   <div className="review-bids-list">
                     <ul>
@@ -179,7 +170,6 @@ const ReviewBid = (props) => {
                     </ul>
                   </div>
                 </div>
-                {/* ))} */}
               </>
             ) : (
               ""

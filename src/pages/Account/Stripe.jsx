@@ -1,25 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import { BASE_API } from "../../services/Constant";
-import StripeService from "../../services/API/StripeService"; //~/services/API/StripeService
-import OrderServices from "../../services/API/OrderServices"; //~/services/API/OrderServices
+import React, { useState } from "react";
+import OrderServices from "../../services/API/OrderServices";
 import { Modal, Button } from "react-bootstrap";
-import Payment from "../../assets/Images/Shoppingcart/payment.png";
 import Checkpay from "../../assets/Images/check-pay.png";
 import { Link } from "react-router-dom";
 import {
   PaymentElement,
-  Elements,
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
  
 const Stripe = (props) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
 
@@ -30,17 +24,12 @@ const Stripe = (props) => {
     setIsLoading(true);
     setEnabled(true);
     event.preventDefault();
-    // if(!props.changeAdds){
-    //     props.parentCallback(false) 
-    //     return;  
-    // }
+
     if (elements == null) {
       return;
     }
-    // Trigger form validation and wallet collection
     const { error: submitError } = await elements.submit();
     if (submitError) {
-      // Show error to your customer
       setErrorMessage(submitError.message);
       return;
     }
@@ -118,24 +107,10 @@ const Stripe = (props) => {
       <form onSubmit={handleStripeSubmit}>
         <PaymentElement />
         <div className="confirm-paybutton">
-          {/* <button type="submit" className="btn" disabled={!stripes || !elements}>
-            Pay
-          </button> */}
             <div className="imgtoop">
-                {/* <img src={Payment} alt="" /> */}
-                {/* <Link to="/checkout"> */}
-                {/* <button
-                    disabled={!stripes || !elements}
-                    type="submit"
-                    className="btn btn-info btn-lg gradientbtncolor"
-                    // onClick={handleShow}
-                >
-                    Confirm & Pay
-                </button> */}
                 <button type="submit" className="btn btn-info btn-lg gradientbtncolor"  disabled={enabled || !stripes || !elements}>
                 {isLoading ? "loading.." : "Confirm & Pay"}
               </button>
-                {/* </Link> */}
             </div>
         </div>
       </form>
@@ -160,7 +135,6 @@ const Stripe = (props) => {
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
-            {/* Add your payment processing logic or redirection here */}
           </Modal.Footer>
         </Modal>
     </>

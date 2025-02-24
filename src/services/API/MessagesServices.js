@@ -1,6 +1,5 @@
 import request from '../request'
 import { BASE_API } from './../Constant'
-// @todo this file name should be product service
 const baseUrl = `${BASE_API}message`;
 const baseUrlChat = `${BASE_API}`
 
@@ -43,7 +42,6 @@ function get(recipientId, productId, params = {}) {
 
 function conversations(productId, params = {}) {
   return request({
-    // url: `${baseUrl}/conversations/${productId}`,
     url: `${baseUrl}/conversations/`,
     params,
   })

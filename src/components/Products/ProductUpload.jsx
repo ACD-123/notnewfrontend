@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import ProductImage1 from "../../assets/Images/Productcard/1.png";
-import { Link } from "react-router-dom";
-import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
 import { toast } from "react-toastify";
 import axios from 'axios'
 const ProductUpload = () => {
-    const [productData, setProductData] = useState([]);
     const [image, setImage] = useState('');
-    const [sucess, setSucess] = useState(false);
-    const [error, setError] = useState(false);
     const [imagePreviewUrl, setimagePreviewUrl] = useState(false);
     
     const onChange =(e) =>{

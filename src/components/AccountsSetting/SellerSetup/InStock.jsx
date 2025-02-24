@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import SellerProductImage2 from "../../../assets/Images/Categorylisting/2.png";
-import icon1 from "../../../assets/Images/icons/1.png";
-import icon2 from "../../../assets/Images/icons/2.png";
-import icon3 from "../../../assets/Images/icons/3.png";
-import Backimage from '../../../assets/Images/back-icon.png'
-import Location from "../../../assets/Images/map.png";
-import StockServices from "../../../services/API/StockServices"; //~/services/API/StockServices
-import { toast } from "react-toastify";
-import { Link } from 'react-router-dom';
+import StockServices from "../../../services/API/StockServices";
 import Prdimage1 from '../../../assets/Images/Singleproduct/Product1.png';
-import moment from "moment";
-import SellerAllTabs from '../SellerSetup/SellerAllTabs';
 
 const InStock = () => {
   const [stock, setStock] = useState("");
@@ -51,8 +41,6 @@ const InStock = () => {
                           </div>
                           <div  className="detaildashbritemdetail">
                           <h4>Name: {item.name}</h4>
-                              {/* <Link to='/category'>
-                            </Link> */}
                           <p>Price: $ {item.price}</p>
                           <br />
                           <h4>Attributes:</h4>
@@ -78,10 +66,8 @@ const InStock = () => {
                                 href={`singleproduct/${item.guid}`}
                                 target='_blank'
                               >
-                                {/* <Link to={`/completedorder/${summary.order.orderid}`}> */}
                                 View Detail
                               </a>
-                              {/* </Link> */}
                             </div>
                         </div>
                         <hr />
@@ -92,7 +78,6 @@ const InStock = () => {
                    </>):('No Stock')}
                 </div>
               </section>
-            {/* <button className='backbutton-account' onClick={() => window.history.back()}><img src={Backimage} /> Back</button> */}
             </div>
           </div>
         </div>

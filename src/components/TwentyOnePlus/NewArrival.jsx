@@ -1,29 +1,15 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "../../components/Shared/Cards/ProductCard";
-import ProductImage1 from "../../assets/Images/Productcard/1.png";
-import blank from "../../assets/Images/Productcard/blank.jpg";
 import { Link } from "react-router-dom";
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
+import ProductServices from "../../services/API/ProductServices";
 import { toast } from "react-toastify";
-import { BASE_URL } from "../../services/Constant";
-import {
-  setUserDetails,
-  isLoggedin,
-  getUserDetails,
-} from "../../services/Auth"; // ~/services/Auth
-import UserServices from "../../services/API/UserServices"; //~/services/API/AuthService
-import { CiHeart } from "react-icons/ci";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 import ProductSkeletonLoader from "../Shared/ProductSkeletonLoader";
 import NoDataFound from "../Shared/NoDataFound";
 
 const NewArrival = ({ title }) => {
   const [productData, setProductData] = useState([]);
   const [pagination, setPagination] = useState({});
-  const [favData, setFavData] = useState([]);
-  const loggedInUser = JSON.parse(localStorage.getItem("user_details"));
   const user_id = localStorage.getItem('user_id');
-  const isLoggedin = localStorage.getItem("access_token");
   const [loading, setLoading] = useState(true);
 
   const handleToggleFavourite = (index) => {

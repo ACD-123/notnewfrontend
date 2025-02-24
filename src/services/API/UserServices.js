@@ -148,11 +148,7 @@ function fbAccount(data){
     method: 'POST',
   })
 }
-// function depositfund(){
-//   return request({
-//     url: baseUrl + 'depositfund'
-//   })
-// }
+
 function updateAddress(data) {
   return request({
     url: `${baseUrl}updateaddress`,
@@ -305,7 +301,6 @@ const UserService = {
   getSellerActiveDetails,
   acceptSellerActiveBid,
   placeABid
-  // depositfund,
 }
 
 export default UserService

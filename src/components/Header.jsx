@@ -543,29 +543,6 @@ const Header = ({ cartFullResponse, notificationCount }) => {
               </div>
             </div>
           </div>
-          {/* {(search.includes('tab') ||
-            search.includes('component') ||
-            path.includes('notification') ||
-            path.includes('category') &&
-            !path.includes('top-category')) ? null :
-            <div className="header-wrap-bottom">
-              <div className="container">
-                <div className="row">
-                  <div className="col-lg-12">
-                    <div className="bottom">
-                      <ul>
-                        <li className={`${path === '/' ? 'active' : ''}`}><Link className='nav-link' to="/">Home</Link></li>
-                        <li className={`${path === '/top-category' ? 'active' : ''}`}><Link className='nav-link' to="/top-category">Top Categories</Link></li>
-                        <li className={`${path === '/auctions' ? 'active' : ''}`}><Link className='nav-link' to="/auctions">Auctions</Link></li>
-                        <li className={`${path === '/hot-deals' ? 'active' : ''}`}><Link className='nav-link' to="/hot-deals">Hot Deals</Link></li>
-                        <li className={`${path === '/top-sellers' ? 'active' : ''}`}><Link className='nav-link' to="/top-sellers">Top Sellers</Link></li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          } */}
         </div>
       </header>
       <Modal show={show21PlusDropdown} size="lg" className="plus-modal-wrap" onHide={setShow21PlusDropdown}>

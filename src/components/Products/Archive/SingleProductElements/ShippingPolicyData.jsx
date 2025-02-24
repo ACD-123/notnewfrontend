@@ -7,17 +7,17 @@ const ShippingPolicyData = () => {
   const [days, setDays] = useState(0);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
-  const [isLoading, setIsLoading] = useState(true); // State variable for loading state
+  const [isLoading, setIsLoading] = useState(true);
   let now,end,duration;
   const getProduct = () => {
-    setIsLoading(true); // Set loading state to true
+    setIsLoading(true);
 
     ProductServices.get(id).then((response) => {
       setProductData(response.data);
       now = moment(response.data.shipping_end); 
       end = moment(response.data.shipping_start); 
       duration = moment.duration(now.diff(end));
-      setIsLoading(false); // Set loading state to false once data is fetched
+      setIsLoading(false);
 
       setDays(Math.round(duration.asDays()));
     });
@@ -27,7 +27,7 @@ const ShippingPolicyData = () => {
   }, []);
   return (
     <>
-    {isLoading ? ( // Show loader if data is loading
+    {isLoading ? (
           <div>Loading...</div>
         ) : (
       <div className="shippingpolicy">

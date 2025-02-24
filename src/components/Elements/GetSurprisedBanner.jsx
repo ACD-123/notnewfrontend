@@ -1,5 +1,4 @@
 import React from 'react'
-import Banner from "../../assets/Images/Getsurprisedbanner/getsurprisedbanner.png"
 import Arrow from '../../assets/Images/Getsurprisedbanner/arrowblue.png'
 import Slider from "react-slick";
 

@@ -141,7 +141,6 @@ const PersonalInfo = () => {
   };
 
   const handleFileChange = (event) => {
-    const selectedFile = event.target.files[0];
     setUserFormData((prev) => ({ ...prev, file: event.target.files[0] }))
     setEditImage(true)
   };
@@ -243,7 +242,7 @@ const PersonalInfo = () => {
                         </div>
                         <div className="input-wrap">
                           <div className="input">
-                            <input name="email"  onChange={handleChange} value={userFormData.email} placeholder="Enter email" />
+                            <input name="email" onChange={handleChange} value={userFormData.email} placeholder="Enter email" />
                             {userFormData.email === "" && inputError && <div className="error-input">Email is required</div>}
                           </div>
 

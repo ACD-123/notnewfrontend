@@ -36,8 +36,8 @@ const DiscountAndCoupens = () => {
 
     const getSellerBid = () => {
         if (user && user.id) {
-            const currentDate = new Date().toISOString().split('T')[0]; // Get current date in YYYY-MM-DD format
-            UserServices.couponsDiscount(user.id, currentDate) // Pass user.id and current date to the function
+            const currentDate = new Date().toISOString().split('T')[0];
+            UserServices.couponsDiscount(user.id, currentDate)
                 .then((response) => {
                     setIsLoading(false);
                     if (response) {
@@ -144,6 +144,7 @@ const DiscountAndCoupens = () => {
                 toast.error(error?.response?.data?.message)
             });
     };
+    
     const getCouponsById = (id) => {
         UserServices.getCouponsById(id)
             .then((response) => {

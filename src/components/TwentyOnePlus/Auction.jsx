@@ -11,7 +11,6 @@ const Auction = ({ type, title }) => {
     const [auctionProducts, setAuctionProducts] = useState([]);
     const [latestProducts, setLatestProducts] = useState([]);
     const [Loader, setLoader] = useState(true)
-    const user_details = JSON.parse(localStorage.getItem('user_details'));
     const user_id = localStorage.getItem('user_id');
     const getAuctionProducts = (user_id, type, page, page_size) => {
         HomeService.getAuctionProducts(user_id, type, page, page_size)
@@ -30,11 +29,6 @@ const Auction = ({ type, title }) => {
         getAuctionProducts(user_id, type, 1, 4)
     }, [])
 
-    const handleToggleFavouriteAuction = (index) => {
-        const updatedProducts = [...auctionProducts];
-        updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;
-        setAuctionProducts(updatedProducts);
-    };
     const handleToggleFavouriteLatest = (index) => {
         const updatedProducts = [...auctionProducts];
         updatedProducts[index].is_favourite = !updatedProducts[index].is_favourite;

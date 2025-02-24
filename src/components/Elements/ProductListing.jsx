@@ -1,13 +1,7 @@
 import React,{useState, useEffect} from 'react';
-import ProductImage1 from "../../assets/Images/Categorylisting/1.png"
-import ProductImage2 from "../../assets/Images/Categorylisting/2.png";
-import ProductImage3 from "../../assets/Images/Categorylisting/3.png";
-import ProductImage4 from "../../assets/Images/Categorylisting/4.png";
-import ProductImage5 from "../../assets/Images/Categorylisting/5.png";
 import {Link} from 'react-router-dom'
-import ProductServices from '../../services/API/ProductServices'; //~/services/API/ProductServices
+import ProductServices from '../../services/API/ProductServices';
 import { toast } from "react-toastify";
-import { BASE_URL } from "../../services/Constant";
 
 const ProductListing = (props) => {
  
@@ -15,7 +9,7 @@ const ProductListing = (props) => {
   const fetchProductData = async () => {      
     ProductServices.recent()
     .then((res) => {
-      setProductData(res); // Limit to the first 5 products
+      setProductData(res);
     }).catch(error => {
       toast.error(error?.response?.data?.message)
     });
@@ -33,7 +27,6 @@ const ProductListing = (props) => {
                 <div className='productlist'>
                   {product?.auctioned ? (
                     <>
-                      {/* {product.products?.name} */}
                       <Link to={`/auctionproduct/${product.products?.guid}`}>
                       {product.products?.media[0].name? (
                         <>
@@ -44,7 +37,6 @@ const ProductListing = (props) => {
                           <h1>null</h1>
                         </>
                       ) }
-                        {/* <img src={product.cover_image} alt={product.name} /> */}
                       </Link>
                     </>
                   ) : (
@@ -59,7 +51,6 @@ const ProductListing = (props) => {
                          <h2>null</h2>
                         </>
                       ) }
-                        {/* <img src={product.cover_image} alt={product.name} /> */}
                       </Link>
                     </>
                   )}
@@ -139,30 +130,6 @@ const ProductListing = (props) => {
                                   </ul>
                                 </>
                               )}
-                      {/* {product.products?.auctioned ? (
-                      <ul>
-                      {product.products?.bids !== null && (
-                        <li className='price'> Maximum Bid: ${product.products?.bids}</li>
-                      )}
-                    </ul>
-                    ) : (
-                      <ul>
-                          {product.products?.price !== null && (
-                            <li className='price'>${product.products?.price}</li>
-                          )}
-                          {product.products?.price !== null && product.products?.sale_price !== null && (
-                            <li className='sale'>
-                              <del>${product.products?.price}</del>
-                            </li>
-                          )}
-                          {product.products?.price !== null && product.products?.sale_price !== null && (
-                            <li className='discount'>
-                              {((product.products?.price - product.products?.sale_price) / product.products?.price * 100).toFixed(2)}% OFF
-                            </li>
-                          )}
-                        </ul>
-                    )} */}
-                        
                       </p>
                     </p>
                   </div>

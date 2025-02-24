@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import Emailverifyimagebg from "../../assets/Images/Accountimages/signup.png";
 import Logo from "../../assets/Images/logo.png";
 import Line from "../../assets/Images/Accountimages/line.png"
-import AuthServices from "../../services/API/AuthService"; //~/services/API/AuthService
-import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
+import AuthServices from "../../services/API/AuthService";
+import UserServices from "../../services/API/UserServices";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -17,8 +17,8 @@ const EmailVerification = () => {
   const [email, setEmail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [enabled, setEnabled] = useState(false);
-  const params = useParams(); // Initialize the useParams hook
-  const [resendCountdown, setResendCountdown] = useState(60); // Initial countdown value
+  const params = useParams();
+  const [resendCountdown, setResendCountdown] = useState(60);
   const navigate = useNavigate()
   useEffect(() => {
     let countdownInterval;
@@ -75,29 +75,29 @@ const EmailVerification = () => {
       });
   };
 
-  const handleResend = (e) =>{
+  const handleResend = (e) => {
     e.preventDefault();
     setIsLoading(true);
     setEnabled(true);
     setResendCountdown(60);
-    let data={
+    let data = {
       'email': email
     }
     UserServices.resendOtp(data)
-     .then((response) => {
-      if(response.status){
-        toast.success(response.data)
-      }
-    })
-    .catch((error) => {
-      toast.error(error?.response?.data?.message)
-      setIsLoading(false);
-      setEnabled(false);
-    }).then(() => {
-      setIsLoading(false);
-      setEnabled(false);
-    });
-}
+      .then((response) => {
+        if (response.status) {
+          toast.success(response.data)
+        }
+      })
+      .catch((error) => {
+        toast.error(error?.response?.data?.message)
+        setIsLoading(false);
+        setEnabled(false);
+      }).then(() => {
+        setIsLoading(false);
+        setEnabled(false);
+      });
+  }
 
   useEffect(() => {
     const access_token = localStorage.getItem('access_token')
@@ -140,9 +140,9 @@ const EmailVerification = () => {
                 <p>
                   Please enter 4 digit numeric Code sent to
                   <br />
-                  Your Email 
+                  Your Email
                   <br />
-                  {email} 
+                  {email}
                   <br />
                   to verify.
                 </p>
@@ -165,14 +165,14 @@ const EmailVerification = () => {
                     <div className="emailresend-recieve py-4">
                       <ul>
                         <li className="code"><a href=''>
-              {resendCountdown > 0
-              ? `Resend code in ${formatCountdownTime(resendCountdown)}`
-              : "Didn't receive the code?"}
-              </a></li>
+                          {resendCountdown > 0
+                            ? `Resend code in ${formatCountdownTime(resendCountdown)}`
+                            : "Didn't receive the code?"}
+                        </a></li>
                         <li className="resend">
-                        <button disabled={resendCountdown > 0} onClick={handleResend}>
-              Resend
-            </button>
+                          <button disabled={resendCountdown > 0} onClick={handleResend}>
+                            Resend
+                          </button>
                         </li>
                       </ul>
                     </div>

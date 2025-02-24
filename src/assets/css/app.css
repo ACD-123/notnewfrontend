@@ -81,12 +81,12 @@ button.dark {
   background: linear-gradient(93.48deg, #141414 -12.34%, #383838 98.05%);
   padding: 20px 20px;
   font-family: "Cairo", sans-serif;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
-  line-height: 25px;
+  line-height: 22px;
   letter-spacing: 0em;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 0px;
 }
 
@@ -94,7 +94,7 @@ a {
   font-family: "Cairo", sans-serif;
   font-size: 18px;
   font-weight: 700;
-  line-height: 28px;
+  line-height: 26px;
   letter-spacing: 0em;
   text-align: left;
   text-decoration: auto;
@@ -144,7 +144,7 @@ section#singup .signup-form-fields.register .form-control {
   border: 0;
   color: #fff;
   padding: 10px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 0;
   box-shadow: unset;
 }
@@ -162,8 +162,8 @@ section#singup .statesfield .form-select {
   background: #4D4D4D91;
   border: 0;
   color: #fff;
-  padding: 11px 20px;
-  border-radius: 10px;
+  padding: 10px 20px;
+  border-radius: 6px;
   border: 0;
   box-shadow: unset;
 }
@@ -175,8 +175,8 @@ section#singup .statesfield .form-select {
 section#singup .register form button.btn.btn-primary {
   width: 100%;
   border: 0;
-  padding: 11px 10px;
-  border-radius: 8px;
+  padding: 10px 10px;
+  border-radius: 6px;
 }
 
 .signup-form-fields.register .App img.dp-register {
@@ -192,7 +192,7 @@ section#singup .register form button.btn.btn-primary {
   color: #fff;
   width: 100%;
   padding: 14px 10px;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .profile-pic-wrapper {
@@ -219,7 +219,7 @@ section#singup .register form button.btn.btn-primary {
   font-family: 'Cairo';
   font-size: 32px;
   font-weight: 700;
-  line-height: 32.13px;
+  line-height: 40px;
   text-align: left;
   color: #000;
   text-transform: capitalize;
@@ -235,7 +235,7 @@ section#singup .register form button.btn.btn-primary {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
   width: 100%;
@@ -250,7 +250,7 @@ section#singup .register form button.btn.btn-primary {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
   width: 100%;
@@ -272,7 +272,7 @@ section#singup .register form button.btn.btn-primary {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
   height: 200px;
@@ -289,7 +289,7 @@ section#singup .register form button.btn.btn-primary {
   text-align: left;
   color: #fff;
   padding: 15px 35px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   margin-top: 20px;
 }
@@ -306,7 +306,7 @@ section#singup .register form button.btn.btn-primary {
 .pic-holder {
   text-align: center;
   position: relative;
-  border-radius: 12px;
+  border-radius: 6px;
   width: 100px;
   height: 100px;
   overflow: hidden;
@@ -360,7 +360,7 @@ section#singup .register form button.btn.btn-primary {
   background-color: #333;
   color: #fff;
   text-align: center;
-  border-radius: 2px;
+  border-radius: 6px;
   padding: 16px;
   position: fixed;
   z-index: 1;
@@ -441,7 +441,7 @@ section#emailverification .email-verifyfields h1 {
   color: #fff;
   text-align: center;
   font-size: 28px;
-  line-height: 38px;
+  line-height: 36px;
 }
 
 section#emailverification .email-verifyfields img {
@@ -453,13 +453,13 @@ section#emailverification .email-verifyfields p {
   text-align: center;
   color: #fff;
   font-size: 20px;
-  line-height: 30px;
+  line-height: 28px;
   margin: 30px 0;
 }
 
 section#emailverification .email-verifyfields .emailfields .myemailfields .myinputfields {
   width: 12%;
-  border-radius: 15px;
+  border-radius: 6px;
   border: 0 !important;
   box-shadow: unset !important;
   background: #E6E6E66B;
@@ -510,7 +510,7 @@ section#emailverification .email-verifyfields .emailfields button {
   width: 100%;
   margin: 0px 0;
   font-size: 16px;
-  border-radius: 12px;
+  border-radius: 6px;
   color: #fff;
 }
 
@@ -557,7 +557,7 @@ form#loginForm input#password {
   background: #4D4D4D91;
   color: #fff;
   padding: 11px 20px;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 0;
   box-shadow: unset;
   margin-bottom: 10px;
@@ -567,7 +567,7 @@ form#loginForm input#password {
   color: #fff;
   padding-left: 20px;
   font-size: 20px;
-  line-height: 30px;
+  line-height: 28px;
 }
 
 .remember-password {
@@ -623,13 +623,13 @@ section#signin form#loginForm button {
   box-shadow: 0px 5px 11px 0px #0000003B;
   padding: 11px 20px;
   font-family: "Cairo", sans-serif;
-  line-height: 25px;
+  line-height: 28px;
   letter-spacing: 0em;
   border: 0;
   width: 100%;
   margin: 17px 0;
   font-size: 20px;
-  border-radius: 14px;
+  border-radius: 6px;
   color: #fff;
 }
 
@@ -644,7 +644,7 @@ section#signin form#loginForm button {
   text-decoration: unset;
   color: #000;
   font-size: 18px;
-  line-height: 28px;
+  line-height: 26px;
   text-transform: capitalize;
   font-weight: 600;
 }
@@ -678,7 +678,7 @@ section#signin form#loginForm button {
   padding: 20px 20px;
   width: 320px;
   right: 0;
-  border-radius: 10px;
+  border-radius: 6px;
   box-shadow: 0px 0px 11px #ccc;
 }
 
@@ -695,7 +695,7 @@ header .header-top input[type="text"],
 header .header-top select {
   width: 100%;
   padding: 8px;
-  border-radius: 3px;
+  border-radius: 6px;
   border: 1px solid #ccc;
 }
 
@@ -863,7 +863,7 @@ header .header-wrap .header-top .header-right .search-bar .input input {
   font-family: 'Cairo';
   font-size: 16px;
   font-weight: 500;
-  line-height: 29.98px;
+  line-height: 24px;
   text-align: left;
   color: #585858;
   background: transparent;
@@ -896,7 +896,7 @@ header .header-wrap .header-top .header-right .search-bar .category-drop-down .v
   font-family: 'Cairo';
   font-size: 16px;
   font-weight: 500;
-  line-height: 29.98px;
+  line-height: 24px;
   text-align: left;
   color: #585858;
   cursor: pointer;
@@ -949,10 +949,10 @@ header .header-wrap .header-top .header-right .search-bar .category-drop-down .o
 }
 
 header .header-wrap .header-top .header-right .search-bar .category-drop-down .options .options-wrap ul li a {
-  font-family: Roboto;
+  font-family: 'Roboto';
   font-size: 12px;
   font-weight: 500;
-  line-height: 30.08px;
+  line-height: 30px;
   text-align: left;
   color: #515151;
 }
@@ -981,7 +981,7 @@ header .header-wrap .header-top .header-right .sign-in-button a {
   display: inline-flex;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   color: #fff;
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 10px 33px;
   text-decoration: none;
   justify-content: center;
@@ -989,7 +989,7 @@ header .header-wrap .header-top .header-right .sign-in-button a {
   font-family: "Cairo", sans-serif;
   font-size: 18px;
   font-weight: 700;
-  line-height: 28px;
+  line-height: 26px;
   white-space: nowrap;
 }
 
@@ -1002,9 +1002,9 @@ header .header-wrap .header-top .header-right .cart .cart-count {}
 
 header .header-wrap .header-top .header-right .cart .cart-count .cart-count-wrap {
   font-family: 'Cairo';
-  font-size: 11.94px;
+  font-size: 12px;
   font-weight: 700;
-  line-height: 22.38px;
+  line-height: 20px;
   text-align: left;
   color: #fff;
   border: 1px solid #8B2CA0;
@@ -1045,7 +1045,7 @@ header .header-wrap .header-top .header-right .notification .notification-wrap p
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 18px;
-  line-height: 28px;
+  line-height: 26px;
   text-decoration: underline;
   margin: 0;
   font-weight: 700;
@@ -1059,9 +1059,9 @@ header .header-wrap .header-top .header-right .notification .notification-wrap .
 
 header .header-wrap .header-top .header-right .notification .notification-wrap .notification-count .notification-count-wrap {
   font-family: 'Cairo';
-  font-size: 11.94px;
+  font-size: 12px;
   font-weight: 700;
-  line-height: 22.38px;
+  line-height: 20px;
   text-align: left;
   color: #fff;
   border: 1px solid #8B2CA0;
@@ -1089,7 +1089,7 @@ header .header-wrap .header-top .header-right .user .user-drop-dropdown {
   padding: 20px 20px;
   width: 320px;
   right: 0;
-  border-radius: 10px;
+  border-radius: 6px;
   box-shadow: 0px 0px 11px #ccc;
   top: 60px;
 }
@@ -1139,7 +1139,7 @@ header .header-wrap .header-wrap-bottom .bottom ul li a {
   font-family: 'Cairo';
   font-size: 20px;
   font-weight: 600;
-  line-height: 29.98px;
+  line-height: 28px;
   text-align: left;
   color: #7E7E7E;
 }
@@ -1160,7 +1160,7 @@ header .header-wrap .header-wrap-bottom .bottom ul li::after {
   height: 3px;
   background: transparent;
   display: block;
-  border-radius: 3px;
+  border-radius:6px;
 }
 
 header .header-wrap .header-wrap-bottom .bottom ul li.active::after {
@@ -1169,7 +1169,7 @@ header .header-wrap .header-wrap-bottom .bottom ul li.active::after {
   height: 3px;
   background: linear-gradient(90.44deg, #8B2CA0 -5.61%, #00C3C9 113.83%);
   display: block;
-  border-radius: 3px;
+  border-radius: 6px;
 }
 
 header .header-wrap .header-wrap-bottom .bottom ul li:hover::after {
@@ -1178,7 +1178,7 @@ header .header-wrap .header-wrap-bottom .bottom ul li:hover::after {
   height: 3px;
   background: linear-gradient(90.44deg, #8B2CA0 -5.61%, #00C3C9 113.83%);
   display: block;
-  border-radius: 3px;
+  border-radius: 6px;
 }
 
 form#searchForm .se {
@@ -1241,8 +1241,8 @@ form#searchForm ::placeholder {
   width: 23px;
   text-align: center;
   height: 23px;
-  line-height: 19px;
-  font-size: 13px;
+  line-height: 20px;
+  font-size: 12px;
   border-radius: 30px;
   right: -3px;
   top: -5px;
@@ -1272,7 +1272,7 @@ section#banners .banner-text-button h1 {
   font-weight: 900;
   letter-spacing: -1px;
   font-size: 74px;
-  line-height: 70px;
+  line-height: 82px;
   margin-bottom: 16px;
 }
 
@@ -1299,12 +1299,12 @@ section#banners .banner-text-button button.dark {
   background: linear-gradient(93.48deg, #141414 -12.34%, #383838 98.05%);
   padding: 20px 20px;
   font-family: "Cairo", sans-serif;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  line-height: 25px;
+  line-height: 20px;
   letter-spacing: 0em;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 0px;
   height: 60px;
   width: 223px;
@@ -1352,7 +1352,7 @@ section#product-recents-viewed .headings h3 span a {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-size: 18px;
-  line-height: 28px;
+  line-height: 26px;
   text-decoration: underline;
   font-weight: 700px;
 }
@@ -1369,7 +1369,7 @@ section#product-recents-viewed .headings h3 span {
   height: 163px;
   width: 100%;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 6px;
   margin-bottom: 20px;
 }
 
@@ -1377,7 +1377,7 @@ section#product-recents-viewed .headings h3 span {
   font-family: 'Cairo';
   font-size: 20px;
   font-weight: 700;
-  line-height: 37.48px;
+  line-height: 28px;
   text-align: left;
   color: #000;
   width: 120px;
@@ -1391,9 +1391,9 @@ section#product-recents-viewed .headings h3 span {
   font-family: 'Cairo';
   text-align: left;
   color: #000;
-  font-size: 19.9px;
+  font-size: 18px;
   font-weight: 700;
-  line-height: 37.29px;
+  line-height: 26px;
   display: flex;
   gap: 10px;
   align-items: center;
@@ -1403,9 +1403,9 @@ section#product-recents-viewed .headings h3 span {
   width: 100%;
   text-align: right;
   font-family: 'Cairo';
-  font-size: 20.04px;
+  font-size: 20px;
   font-weight: 700;
-  line-height: 37.56px;
+  line-height: 28px;
   color: #EF2A2A;
   cursor: pointer;
 }
@@ -1447,7 +1447,7 @@ section#product-recents-viewed .headings h3 span {
   font-family: 'Cairo';
   font-size: 14px;
   font-weight: 400;
-  line-height: 17.21px;
+  line-height: 22px;
   text-align: left;
   color: #000;
   width: 200px;
@@ -1462,7 +1462,7 @@ section#product-recents-viewed .headings h3 span {
 
 .noenCon {
   background: linear-gradient(52deg, #CCC8FF, #6CACBB);
-  border-radius: 10px;
+  border-radius: 6px;
   padding-top: 50px;
   padding-bottom: 10px;
 }
@@ -1508,6 +1508,7 @@ section#product-recents-viewed .headings h3 span {
 
 .productlist {
   position: relative;
+  height: 100%;
 }
 
 .productlist .d-r-s-o-p-i {
@@ -1534,11 +1535,11 @@ span.auction-badge {
   height: 19px;
   right: 10px;
   top: 10px;
-  border-radius: 5px;
+  border-radius: 6px;
   font-family: "Lato", sans-serif;
-  font-size: 10.94px;
+  font-size: 10px;
   font-weight: 400;
-  line-height: 13.13px;
+  line-height: 18px;
   text-align: left;
   display: flex;
   justify-content: center;
@@ -1555,9 +1556,9 @@ span.auction-badge-21 {
   top: 19px;
   border-radius: 5px 0px 0px 5px;
   font-family: "Lato", sans-serif;
-  font-size: 10.94px;
+  font-size: 10px;
   font-weight: 400;
-  line-height: 13.13px;
+  line-height: 18px;
   text-align: left;
   display: flex;
   justify-content: center;
@@ -1569,7 +1570,7 @@ span.plus21 {
   top: 10px;
   left: 10px;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
-  border-radius: 12px 0px 12px 0px;
+  border-radius: 6px 0px 6px 0px;
   font-family: "Lato", sans-serif;
   font-size: 14px;
   font-weight: 700;
@@ -1656,7 +1657,7 @@ section#featuredproduct {
   font-family: "Cairo", sans-serif;
   font-size: 16px;
   font-weight: 600;
-  line-height: 23px;
+  line-height: 24px;
   letter-spacing: 0em;
   text-align: left;
 }
@@ -1676,7 +1677,7 @@ section#featuredproduct {
   font-family: "Cairo", sans-serif;
   font-size: 14px;
   font-weight: 500;
-  line-height: 20px;
+  line-height: 22px;
   letter-spacing: 0em;
   text-align: left;
   color: #707070;
@@ -1688,6 +1689,7 @@ section#featuredproduct {
 footer {
   background: #FAFAFA;
   border-top: 1px solid #D0D0D0;
+  margin-top: 60px;
 }
 
 .copyright {
@@ -1734,7 +1736,7 @@ section#singlecategory ul.pagination li.page-item button {
   background: #ff10;
   border: 0;
   color: #000;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 #all-filters h4 {
@@ -1749,7 +1751,7 @@ section#singlecategory ul.pagination li.page-item button {
   color: #515151;
   font-weight: 500;
   text-decoration: unset;
-  line-height: 24px;
+  line-height: 22px;
 }
 
 .subcategory-list ul {
@@ -1781,7 +1783,7 @@ div#all-filters form#searchForm .se {
 .progress-bar {
   height: 3px;
   background-color: #767676;
-  border-radius: 10px;
+  border-radius: 6px;
   margin-top: 10px;
   overflow: hidden;
 
@@ -1849,7 +1851,7 @@ div#all-filters form#searchForm .se {
 
 #all-filters {
   padding: 20px 20px;
-  border-radius: 10px;
+  border-radius: 6px;
   box-shadow: 0px 0px 4px 0px #00000040;
 }
 
@@ -1881,12 +1883,12 @@ div#all-filters form#searchForm .se {
   background: #8B8B8B91;
   border: 0;
   padding: 11px 20px;
-  border-radius: 12px;
+  border-radius: 6px;
   color: #fff;
 }
 
 div#border-order-details {
-  border-radius: 0px 0px 5px 5px;
+  border-radius: 0px 0px 6px 6px;
   border-top: 0px;
   background-color: #f6f6f6;
 }
@@ -1910,7 +1912,7 @@ div#totalordervalue th {
   border: 0;
   width: 50%;
   padding: 14px 20px;
-  border-radius: 10px;
+  border-radius: 6px;
   color: #000;
   box-shadow: 0px 0px 11px #ccc;
   width: 100%;
@@ -1922,7 +1924,7 @@ div#totalordervalue th {
   box-shadow: unset;
   width: 20%;
   padding: 11px 0;
-  border-radius: 8px;
+  border-radius: 6px;
   color: #fff;
   font-size: 20px;
 }
@@ -2004,7 +2006,7 @@ button.btn.btn-info.btn-lg.black {
 button.btn.btn-info.btn-lg.gradientbtnborder {
   width: 100%;
   margin-top: 10px;
-  border-radius: 5px;
+  border-radius: 6px;
   border: 2px solid transparent;
   background: linear-gradient(white, white) padding-box,
     linear-gradient(90.12deg, #8B2CA0 -2.66%, #00C3C9 103.24%) border-box;
@@ -2032,8 +2034,8 @@ div#totalordervalue {
 
 .prices-order-details h4 {
   text-align: right;
-  font-size: 19px;
-  line-height: 29px;
+  font-size: 18px;
+  line-height: 26px;
   width: 100%;
   font-weight: bold;
 }
@@ -2066,9 +2068,9 @@ hr.dashed {
   background: -webkit-linear-gradient(#7c3da5, #2b94bc);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 15px;
+  font-size: 16px;
   font-family: 'Cairo';
-  line-height: 25px;
+  line-height: 24px;
   padding: 0;
 }
 
@@ -2135,7 +2137,7 @@ div#border-order-details h5 {
   list-style: none;
   border: 1px solid #DBDBDB;
   padding: 11px 40px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .keyword-filter-list ul {
@@ -2165,7 +2167,7 @@ div#border-order-details h5 {
   font-size: 24px;
   font-weight: 500;
   color: #3D3C3C;
-  line-height: 34px;
+  line-height: 32px;
 }
 
 .searchkeywordpopup .fields ::placeholder {
@@ -2192,7 +2194,7 @@ input#flexSwitchCheckDefault {
   color: #fff;
   width: 100%;
   margin: 10px 0;
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 13px 0;
 }
 
@@ -2203,7 +2205,7 @@ input#flexSwitchCheckDefault {
 .searchkeywordpopup .fields input[type="text"] {
   width: 100%;
   border: 2.03px solid #ECECEC;
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 14px 10px;
   color: #000;
   margin-bottom: 20px;
@@ -2236,9 +2238,9 @@ div#order-detailsid ::placeholder {
   border: 0;
   box-shadow: unset;
   color: #fff;
-  font-size: 19px;
-  line-height: 29px;
-  border-radius: 10px;
+  font-size: 18px;
+  line-height: 26px;
+  border-radius: 6px;
 }
 
 .checkpay button.order-detail-btun {
@@ -2263,7 +2265,7 @@ div#order-detailsid ::placeholder {
 
 .form-control::placeholder {
   font-family: 'Cairo';
-  font-size: 18.75px;
+  font-size: 18px;
   font-weight: 400;
   color: #4e4e4e;
 }
@@ -2293,12 +2295,12 @@ div#order-detailsid ::placeholder {
 }
 
 #order-detailsid {
-  border-radius: 5px;
+  border-radius: 6px;
   margin-bottom: 20px;
 }
 
 .gallery-images img {
-  border-radius: 10px;
+  border-radius: 6px;
   width: 100%;
 }
 
@@ -2311,14 +2313,14 @@ div#order-detailsid ::placeholder {
   margin: 5px;
   cursor: pointer;
   object-fit: contain;
-  border-radius: 10px;
+  border-radius: 6px;
   display: block;
   width: 100% !important;
   background: white;
 }
 
 .gallery-images img {
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .gallery-images {
@@ -2336,7 +2338,7 @@ div#order-detailsid ::placeholder {
   border: 1px solid #ccc;
   padding: 9px 10px;
   color: #333;
-  border-radius: 7px;
+  border-radius: 6px;
 }
 
 .product-attributes .inner-attributes {
@@ -2387,7 +2389,7 @@ div#order-detailsid ::placeholder {
   float: right;
   color: #000;
   font-size: 28px;
-  line-height: 38px;
+  line-height: 36px;
 }
 
 .shippingpolicy h4 img {
@@ -2408,7 +2410,7 @@ div#order-detailsid ::placeholder {
 .singleproduct-sidebar h2 {
   width: 100%;
   font-size: 16px;
-  line-height: 25px;
+  line-height: 24px;
 }
 
 .product-details table {
@@ -2424,7 +2426,7 @@ div#order-detailsid ::placeholder {
 .product-details {
   border: 1px solid #ccc;
   padding: 20px 30px;
-  border-radius: 10px;
+  border-radius: 6px;
   margin-bottom: 40px;
 }
 
@@ -2443,13 +2445,13 @@ div#order-detailsid ::placeholder {
   box-shadow: unset;
   padding: 10px 30px;
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .profile-details-seller ul li {
   list-style: none;
   font-size: 18px;
-  line-height: 28px;
+  line-height: 26px;
 }
 
 .profile-details-seller ul {
@@ -2459,7 +2461,7 @@ div#order-detailsid ::placeholder {
 
 .profile-details-seller h4 {
   font-size: 24px;
-  line-height: 34px;
+  line-height: 32px;
   font-weight: 700;
   color: #000000;
 }
@@ -2471,8 +2473,8 @@ div#order-detailsid ::placeholder {
 }
 
 .sellerdetails .review p.monthtext {
-  font-size: 23px;
-  line-height: 33px;
+  font-size: 22px;
+  line-height: 30px;
   color: #757474;
 }
 
@@ -2491,7 +2493,7 @@ div#order-detailsid ::placeholder {
 .progress-bar {
   height: 6px;
   background-color: #C2C2C2;
-  border-radius: 10px;
+  border-radius: 6px;
   margin-top: 10px;
   overflow: hidden;
 }
@@ -2534,7 +2536,7 @@ div#order-detailsid ::placeholder {
 
 .popular-search h4 {
   font-size: 32px;
-  line-height: 42px;
+  line-height: 40px;
   padding-top: 20px;
   font-weight: bold;
 }
@@ -2546,8 +2548,8 @@ div#order-detailsid ::placeholder {
 }
 
 .seller-feedback p {
-  font-size: 23px;
-  line-height: 33px;
+  font-size: 22px;
+  line-height: 30px;
   color: #757474;
 }
 
@@ -2558,12 +2560,12 @@ div#order-detailsid ::placeholder {
 
 .feedback-content p {
   font-size: 14px;
-  line-height: 24px;
+  line-height: 22px;
 }
 
 .feedback-content h3 {
   font-size: 20px;
-  line-height: 30px;
+  line-height: 28px;
   margin: 0;
 }
 
@@ -2583,7 +2585,7 @@ div#order-detailsid ::placeholder {
   border: 1px solid #ccc;
   box-shadow: unset;
   padding: 5px 12px;
-  border-radius: 4px;
+  border-radius: 6px;
 }
 
 .seller-feedback .pagination {
@@ -2615,7 +2617,7 @@ div#order-detailsid ::placeholder {
   left: 0;
   bottom: -3px;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .main-dasboard-tabs .tab-buttons button:hover::after {
@@ -2627,7 +2629,7 @@ div#order-detailsid ::placeholder {
   left: 0;
   bottom: -3px;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .main-dasboard-tabs .tab-buttons {
@@ -2649,9 +2651,9 @@ div#order-detailsid ::placeholder {
 
 .main-dasboard-tabs .tab-buttons .t-b-w a {
   font-family: 'Cairo';
-  font-size: 16.61px;
+  font-size: 16px;
   font-weight: 600;
-  line-height: 31.13px;
+  line-height: 30px;
   text-align: left;
   color: #949494;
 }
@@ -2704,9 +2706,9 @@ div#order-detailsid ::placeholder {
 
 .main-dasboard-tabs .tab-buttons button {
   font-family: 'Cairo';
-  font-size: 22.97px;
+  font-size: 22px;
   font-weight: 600;
-  line-height: 43.04px;
+  line-height: 40px;
   text-align: left;
   color: #757474;
   background-color: transparent;
@@ -2775,7 +2777,7 @@ section#activity-main-dashboard .left-menu .dropp ul {
   font-family: 'Cairo';
   font-size: 24px;
   font-weight: 700;
-  line-height: 15.84px;
+  line-height: 32px;
   text-align: left;
   color: #111111;
   padding-left: 7px;
@@ -2786,7 +2788,7 @@ section#activity-main-dashboard .left-menu .dropp ul {
   font-family: 'Cairo';
   font-size: 24px;
   font-weight: 700;
-  line-height: 15.84px;
+  line-height: 32px;
   text-align: left;
   color: #111111;
   margin: 20px 0px;
@@ -2799,7 +2801,7 @@ section#activity-main-dashboard .left-menu .dropp ul {
   font-family: 'Cairo';
   font-size: 24px;
   font-weight: 700;
-  line-height: 15.84px;
+  line-height: 32px;
   text-align: left;
   color: #111111;
 }
@@ -2851,20 +2853,20 @@ section#activity-main-dashboard .left-menu ul .ordaw:hover {
 .favoriteImg {
   position: absolute;
   z-index: 1;
-  bottom: 50px;
-  right: 23px;
+  bottom: 26px;
+  right: 20px;
 }
 
 .favoriteImg svg {
   cursor: pointer;
   font-size: 26px;
-  color: #5c18c1;
+  color: #8B2CA0;
 }
 
 .productlist.gradient {
   background: linear-gradient(186deg, #0293d140, #965abc4a);
   padding: 5px 18px;
-  border-radius: 9px;
+  border-radius: 6px;
 }
 
 section#activity-main-dashboard .left-menu ul li {
@@ -2873,9 +2875,9 @@ section#activity-main-dashboard .left-menu ul li {
   text-transform: capitalize;
   cursor: pointer;
   padding: 0px 7px;
-  font-size: 21px;
+  font-size: 22px;
   font-weight: 500;
-  line-height: 39.35px;
+  line-height: 38px;
   text-align: left;
   color: #28282866;
 }
@@ -2888,7 +2890,7 @@ section#activity-main-dashboard .left-menu .dropp ul li {
   padding: 0px 7px;
   font-size: 18px;
   font-weight: 500;
-  line-height: 30.35px;
+  line-height: 30px;
   text-align: left;
   color: #fff;
 }
@@ -2942,7 +2944,7 @@ section#purchasehistory .tab-buttons {
   width: 50px;
   height: 50px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .refund-popup-inner,
@@ -2982,13 +2984,13 @@ h6.refundstatus.inprocess {
   color: #fff;
   border: 0;
   font-size: 20px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .refund-approval h4 {
   text-align: center;
   color: #484848;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 34px;
   line-height: 24px;
 }
@@ -3053,14 +3055,14 @@ h6.refundstatus.refunded {
 .refunddetailss #totalordervalue {
   border: 1px solid #ccc;
   padding: 10px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .refunddetailss .product-image img {
   width: 120px;
   height: 120px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .refunddetailss .product-order-details h5 {
@@ -3080,7 +3082,7 @@ h6.refundstatus.refunded {
   padding: 20px 0;
   border: 1px solid #ccc;
   font-size: 17px;
-  border-radius: 5px;
+  border-radius: 6px;
   margin-bottom: 20px;
   background: #ff10;
   color: #000;
@@ -3108,7 +3110,7 @@ h6.refundstatus.refunded {
   margin: 0 auto;
   display: table;
   border: 0;
-  border-radius: 14px;
+  border-radius: 6px;
   color: #fff;
   font-size: 19px;
   padding: 13px 0;
@@ -3122,7 +3124,7 @@ h6.refundstatus.refunded {
 
 .refunddetailss textarea {
   resize: unset;
-  border-radius: 10px;
+  border-radius: 6px;
   border-color: #ccc;
   padding: 10px 10px;
 }
@@ -3152,7 +3154,7 @@ h6.refundstatus.refunded {
   width: 100%;
   gap: 13px;
   padding: 7px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 1px solid #C7C2C2;
   align-items: center;
 }
@@ -3161,7 +3163,7 @@ h6.refundstatus.refunded {
   border: 1px solid #ccc;
   margin: 5px 0px;
   padding: 10px 30px;
-  border-radius: 10px;
+  border-radius: 6px;
   display: flex;
   gap: 20px;
   align-items: center;
@@ -3225,7 +3227,7 @@ select#sort {
   background: #ff10;
   border: 1px solid #B1B1B1;
   box-shadow: unset;
-  border-radius: 10px;
+  border-radius: 6px;
   line-height: 24px;
 }
 
@@ -3266,7 +3268,7 @@ p.shipingname {
   width: 100%;
   padding: 5px 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   color: #000;
   font-size: 12px;
   line-height: 23px;
@@ -3298,7 +3300,7 @@ button.addntee {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   box-shadow: unset;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .wishlist-buttonss button.buynow-wishlist {
@@ -3310,7 +3312,7 @@ button.addntee {
   width: 140px;
   height: 140px;
   object-fit: fill;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .wishlistproduct-detail {
@@ -3343,7 +3345,7 @@ button.addntee {
   color: #AAAAAA;
   border: 1px solid #A9A9A9;
   font-size: 16px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .sort-wishlist {
@@ -3374,7 +3376,7 @@ button.addntee {
   text-align: center;
   padding: 20px 0px;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .buyagin-buttons select {
@@ -3391,7 +3393,7 @@ button.addntee {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   box-shadow: unset;
-  border-radius: 10px;
+  border-radius: 6px;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   color: #fff;
 }
@@ -3416,13 +3418,13 @@ form#searchForm {
 .bid-product {
   border: 1px solid #ccc;
   padding: 10px 0;
-  border-radius: 3px;
+  border-radius: 6px;
 }
 
 .bid-product {
   border: 1px solid #ccc;
   padding: 10px 0;
-  border-radius: 3px;
+  border-radius: 6px;
   margin-bottom: 10px;
 }
 
@@ -3484,7 +3486,7 @@ section#purchaseDate h3 {
   width: 100%;
   padding: 14px 0;
   border: 0;
-  border-radius: 13px;
+  border-radius: 6px;
   color: #fff;
   font-size: 18px;
   line-height: 28px;
@@ -3511,7 +3513,7 @@ section#placeyourbid h5 {
   width: 100%;
   padding: 14px 0;
   border: 0;
-  border-radius: 13px;
+  border-radius: 6px;
   color: #fff;
   font-size: 18px;
   line-height: 28px;
@@ -3525,7 +3527,7 @@ section#placeyourbid h5 {
   font-size: 26px;
   line-height: 36px;
   padding: 9px 20px;
-  border-radius: 13px;
+  border-radius: 6px;
   border: 1px solid #000;
 }
 
@@ -3533,7 +3535,7 @@ section#placeyourbid h5 {
   width: 100%;
   padding: 10px 0px;
   border: 0;
-  border-radius: 13px;
+  border-radius: 6px;
   color: #fff;
   font-size: 18px;
   line-height: 28px;
@@ -3570,7 +3572,7 @@ section#placeyourbid h5 {
   color: #fff;
   padding: 10px 40px;
   font-size: 14px;
-  border-radius: 11px;
+  border-radius: 6px;
 }
 
 .selling-activity p {
@@ -3636,7 +3638,7 @@ section#placeyourbid h5 {
   padding: 14px 0;
   font-size: 17px;
   color: #fff;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .biddnbtns {
@@ -3670,7 +3672,7 @@ section#placeyourbid h5 {
   border: 0;
   color: #fff;
   font-size: 20px;
-  border-radius: 17px;
+  border-radius: 6px;
   padding: 14px 0px;
   background: linear-gradient(92.07deg, #00C3C9 -11.28%, #8B2CA0 128.25%);
 }
@@ -3678,7 +3680,7 @@ section#placeyourbid h5 {
 .message-alert-biddings {
   background: #F0F0F0;
   padding: 13px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .message-alert-biddings p {
@@ -3822,7 +3824,7 @@ section#sellershop .seller-mesge ul li {
   background: linear-gradient(273.37deg, #8B2CA0 -6.38%, #00C3C9 125.88%), linear-gradient(0deg, #E1E1E1, #E1E1E1);
   color: #fff;
   padding: 9px 30px;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .seller-joining-details ul li span {
@@ -3858,7 +3860,7 @@ section#sellershop .sellerdetails .details-seller ul {
   width: 100px;
   height: 80px;
   object-fit: contain;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .singleproduct-sidebar .store img {
@@ -3875,7 +3877,7 @@ section#sellershop .sellerdetails .details-seller ul {
 
 section#sellershop .sellerdetails {
   background: #F5F5F5;
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 20px 30px;
 }
 
@@ -3890,7 +3892,7 @@ section#sellershop .sellerdetails {
 .auction-info .pay-buttons button {
   width: 100%;
   margin-bottom: 10px;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .auction-time ul {
@@ -4131,7 +4133,7 @@ section#sellershop .sellerdetails {
 .messages-container .message-input textarea {
   width: 100%;
   border: 1px solid #ccc;
-  border-radius: 10px;
+  border-radius: 6px;
   color: #000;
   padding: 3px 10px;
   font-size: 12px;
@@ -4144,7 +4146,7 @@ section#sellershop .sellerdetails {
   right: 0;
   width: 100%;
   padding: 18px 27px;
-  border-radius: 7px;
+  border-radius: 6px;
   box-shadow: 0px -9px 13px 0px #0000002B;
   background: #FEFEFE;
   display: flex;
@@ -4196,7 +4198,7 @@ section#sellershop .sellerdetails {
   background: #7246a6a1;
   margin: 10px 0px;
   padding: 10px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
   cursor: pointer;
   color: #fff;
 }
@@ -4248,7 +4250,7 @@ section#sellershop .sellerdetails {
 
 .chat-container .conversation {
   background: #f4f4f482;
-  border-radius: 10px;
+  border-radius: 6px;
   height: 770px;
 }
 
@@ -4269,7 +4271,7 @@ section#sellershop .sellerdetails {
 .chat-container ul li {
   cursor: pointer;
   padding: 10px;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .chat-container ul li.active-chat {
@@ -4373,14 +4375,14 @@ section#sign-security .chngepaswrd form input {
   font-size: 13px;
   color: #fff;
   border: 0;
-  border-radius: 13px;
+  border-radius: 6px;
 }
 
 .securityquest button {
   padding: 7px 40px;
   color: #fff;
   border: 0;
-  border-radius: 11px;
+  border-radius: 6px;
   font-size: 13px;
 }
 
@@ -4438,7 +4440,7 @@ section#sign-security .chngepaswrd {
   text-align: left;
   padding: 16px 70px;
   background: linear-gradient(92.1deg, #00C3C9 6.25%, #8B2CA0 101.18%);
-  border-radius: 12px;
+  border-radius: 6px;
   margin: 0 !important;
   color: #fff;
   border: none;
@@ -4453,7 +4455,7 @@ section#sign-security .chngepaswrd {
   padding: 3px 11px;
   border: 1px solid #ccc;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 6px;
   font-size: 14px;
   box-shadow: unset;
   margin-top: 100px;
@@ -4549,13 +4551,13 @@ section#sign-security .chngepaswrd {
 .addresselected {
   box-shadow: 0px 1px 14px 0px #00000040;
   padding: 20px 20px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .addadrs button {
   border: 0;
   padding: 10px 30px;
-  border-radius: 10px;
+  border-radius: 6px;
   color: #fff;
 }
 
@@ -4595,7 +4597,7 @@ input:checked+.slider:before {
   font-size: 13px;
   line-height: 23px;
   border: 1.5px solid #EEEEEE;
-  border-radius: 19px;
+  border-radius: 6px;
 }
 
 .saved-images .row .col {
@@ -4607,7 +4609,7 @@ input:checked+.slider:before {
 .saved-images .row .col img {
   height: 99px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 1px solid #ccc;
 }
 
@@ -4625,7 +4627,7 @@ input:checked+.slider:before {
   padding: 13px 10px;
   font-size: 13px;
   line-height: 23px;
-  border-radius: 19px;
+  border-radius: 6px;
   border: 0;
   color: #fff;
 }
@@ -4661,7 +4663,7 @@ section#searchhistory .title-buton button {
   color: #fff;
   padding: 3px 16px;
   border: 0;
-  border-radius: 13px;
+  border-radius: 6px;
   margin-left: 10px;
 }
 
@@ -4718,7 +4720,7 @@ section#selleraccountsetup ::placeholder {
   background: #F9F9F9;
   margin: 20px 0;
   padding: 11px 20px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .dabb select,
@@ -4730,7 +4732,7 @@ section#selleraccountsetup ::placeholder {
   box-shadow: unset;
   border: 1px solid #fff;
   line-height: 18px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 section#selleng-dashbaord .product-item .img-title p:last-child {
@@ -4759,7 +4761,7 @@ section#selleng-dashbaord .product-item .img-title p {
 .img-title img {
   width: 160px;
   height: 111px;
-  border-radius: 10px;
+  border-radius: 6px;
   object-fit: cover;
 }
 
@@ -4790,7 +4792,7 @@ section#selleng-dashbaord .product-item .img-title p {
 .dabb {
   background: linear-gradient(115.46deg, #8B2CA0 -11.54%, #03BFC8 137.87%);
   padding: 20px 20px;
-  border-radius: 10px;
+  border-radius: 6px;
   color: #fff;
   height: 220px;
 }
@@ -4800,7 +4802,7 @@ section#selleng-dashbaord .product-item .img-title p {
   color: #fff;
   font-size: 15px;
   padding: 14px 27px;
-  border-radius: 10px;
+  border-radius: 6px;
   margin: 20px 0px;
   border: none;
 }
@@ -4808,7 +4810,7 @@ section#selleng-dashbaord .product-item .img-title p {
 .dabbCoupons {
   background: linear-gradient(115.46deg, #8B2CA0 -11.54%, #03BFC8 137.87%);
   padding: 20px 20px;
-  border-radius: 10px;
+  border-radius: 6px;
   color: #fff;
   height: 120px;
 
@@ -4822,7 +4824,7 @@ span.auction-sold {
   padding: 3px 10px 3px 30px;
   left: 3px;
   top: 4px;
-  border-radius: 0 10px 10px 0px;
+  border-radius: 0 6px 6px 0px;
 }
 
 
@@ -4869,7 +4871,7 @@ ul.active-inactive-schedule li:hover::after {
   background: linear-gradient(269.92deg, #8B2CA0 14.27%, #00C3C9 89.32%);
   left: 0;
   bottom: -11px;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
 .seller-productmngement-popup label {
@@ -4895,7 +4897,7 @@ ul.active-inactive-schedule {
   padding: 7px 30px;
   color: #fff;
   border: 0;
-  border-radius: 10px;
+  border-radius: 6px;
   margin: 20px 0;
 }
 
@@ -4915,7 +4917,7 @@ section#listing-creating-form textarea {
   margin-bottom: 10px;
   background: #F0F0F0;
   border: 0;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 input.newInputUpload {
@@ -5012,7 +5014,7 @@ p.notify-images img {
   margin-top: 10px;
   background: #f0f0f0;
   padding: 16px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
   justify-content: space-between;
 }
 
@@ -5072,7 +5074,7 @@ section#listing-creating-form .dyss {
 .actvtebuttns button {
   width: 70%;
   border: 1px solid #fff;
-  border-radius: 20px;
+  border-radius: 6px;
   color: #fff;
   font-size: 15px;
   padding: 12px 10px;
@@ -5089,7 +5091,7 @@ section#listing-creating-form .shipping-duration {
   margin-top: 10px;
   background: #f0f0f0;
   padding: 16px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .slider1:before,
@@ -5165,7 +5167,7 @@ section#listing-creating-form h4 {
   width: 100%;
   background: #F0F0F0;
   padding: 16px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
   font-family: 'Cairo';
 }
 
@@ -5224,7 +5226,7 @@ button.rviews {
   text-decoration: unset;
   border: 0;
   padding: 16px 0px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .ordmangemnt hr {
@@ -5240,7 +5242,7 @@ button.rviews {
   margin: auto;
   border: 0;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .dropp {
@@ -5277,7 +5279,7 @@ button.rviews {
   margin-bottom: 12px;
   margin-left: 2px;
   padding: 11px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .detailed-product-info .product-image h5 {
@@ -5290,7 +5292,7 @@ button.rviews {
 .detailed-product-info .product-image img {
   width: 130px;
   height: 122px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .detailed-product-info .product-image {
@@ -5303,7 +5305,7 @@ button.bckkkkk {
   padding: 5px 17px;
   float: right;
   color: #fff;
-  border-radius: 10px;
+  border-radius: 6px;
   font-size: 15px;
   background: #ff10;
   border: 1px solid #ccc;
@@ -5319,7 +5321,7 @@ button.bckkkkk {
 h5.qunty span {
   border: 1px solid;
   padding: 0 15px;
-  border-radius: 7px;
+  border-radius: 6px;
   margin-left: 10px;
 }
 
@@ -5345,7 +5347,7 @@ p.order-price-detail-list {
 .ord-note {
   background: #F5F5F5;
   padding: 20px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
   margin-bottom: 20px;
 }
 
@@ -5364,7 +5366,7 @@ h5.qunty {
 .customer-reviews p {
   background: #F5F5F5;
   padding: 19px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .prf-id-name div a {
@@ -5451,7 +5453,7 @@ button.updte-profile {
   padding: 14px 0;
   color: #fff;
   border: 0;
-  border-radius: 13px;
+  border-radius: 6px;
 }
 
 .stars-values div span {
@@ -5510,7 +5512,7 @@ th {
   justify-content: space-between;
   background: linear-gradient(267.47deg, #00C3C9 0%, #8B2CA0 98.98%);
   padding: 20px 20px;
-  border-radius: 10px;
+  border-radius: 6px;
   color: #fff;
   text-align: center;
 }
@@ -5548,7 +5550,7 @@ th {
   font-size: 15px;
   color: #494040;
   padding: 14px 27px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .loader-container {
@@ -5638,7 +5640,7 @@ th {
   line-height: 30px !important;
   position: relative;
   margin-top: 5px;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .no-access-for-nonseller::before {
@@ -5647,7 +5649,7 @@ th {
   height: 30px;
   background: linear-gradient(115.46deg, #8B2CA0 -11.54%, #03BFC8 137.87%);
   display: inline-block;
-  border-radius: 5px;
+  border-radius: 6px;
   transform: rotate(45deg);
   position: absolute;
   top: -5px;
@@ -5667,10 +5669,10 @@ th {
   font-family: 'Cairo';
   font-size: 36px;
   font-weight: 700;
-  line-height: 67.46px;
+  line-height: 44px;
   text-align: left;
   color: #282828;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .explore-category {
@@ -5897,7 +5899,7 @@ th {
   text-align: left;
   color: #fff;
   padding: 20px 35px;
-  border-radius: 12px;
+  border-radius: 6px;
   border: none;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
 }
@@ -6018,7 +6020,7 @@ th {
 #listing-creating-form .p-m-f .p-m-i-u .p-m-i-u-wrap {
   height: 350px;
   border: 2.97px dotted #D4D4D4;
-  border-radius: 16.62px;
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6135,7 +6137,7 @@ th {
   color: #000;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
 }
 
 #listing-creating-form .p-m-f .p-m-i-s .two-field .two-field-left input::placeholder {
@@ -6146,7 +6148,7 @@ th {
   text-align: left;
   color: gray !important;
   margin: 0;
-  border-radius: 13px;
+  border-radius: 6px;
 }
 
 #listing-creating-form .p-m-f .p-m-i-s .two-field .two-field-left textarea {
@@ -6158,7 +6160,7 @@ th {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
 }
 
 #listing-creating-form .p-m-f .p-m-i-s .two-field .two-field-left textarea::placeholder{
@@ -6192,7 +6194,7 @@ th {
   background: #F0F0F0;
   border: none;
   font-family: 'Cairo';
-  border-radius: 13px;
+  border-radius: 6px;
   box-shadow: none !important;
   border: none !important;
 }
@@ -6202,7 +6204,7 @@ th {
   background: #F0F0F0;
   border: none;
   font-family: 'Cairo';
-  border-radius: 13px;
+  border-radius: 6px;
   box-shadow: none !important;
   border: none !important;
 }
@@ -6210,7 +6212,7 @@ th {
 #listing-creating-form .p-m-f .p-m-i-s .two-field .css-1dimb5e-singleValue {
   border: none;
   font-family: 'Cairo';
-  border-radius: 13px;
+  border-radius: 6px;
   box-shadow: none !important;
   border: none !important;
   font-weight: 500;
@@ -6225,7 +6227,7 @@ th {
   background: #F0F0F0;
   border: none;
   font-family: 'Cairo';
-  border-radius: 13px;
+  border-radius: 6px;
   box-shadow: none !important;
   border: none !important;
 }
@@ -6246,7 +6248,7 @@ th {
   margin-bottom: 10px;
   background: #F0F0F0;
   border: 0;
-  border-radius: 10px;
+  border-radius: 6px;
   font-size: 15px;
   font-family: 'Cairo';
 }
@@ -6319,7 +6321,7 @@ th {
 .selected-images .selected-images-box {
   padding: 10px;
   background: #dfdfdf;
-  border-radius: 15px;
+  border-radius: 6px;
   position: relative;
   margin-top: 20px;
 
@@ -6366,7 +6368,7 @@ th {
 
 .top-sellers .top-sellers-wrap .top-seller-card {
   border: 0.4px solid #C6C6C6;
-  border-radius: 4.42px;
+  border-radius: 6px;
   padding: 15px;
   margin-bottom: 25px;
 }
@@ -6473,21 +6475,21 @@ th {
 .seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-o {
   flex: 1;
   background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
-  border-radius: 9.11px;
+  border-radius: 6px;
   padding: 15px;
 }
 
 .seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-t {
   flex: 1;
   background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
-  border-radius: 9.11px;
+  border-radius: 6px;
   padding: 15px;
 }
 
 .seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-th {
   flex: 2;
   background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
-  border-radius: 9.11px;
+  border-radius: 6px;
   padding: 15px;
 }
 
@@ -6525,7 +6527,7 @@ th {
 .seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-t .d-d .css-13cymwt-control {
   background: transparent;
   border: 1px solid #fff;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 
@@ -6533,7 +6535,7 @@ th {
 .seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-t .d-d .css-t3ipsp-control {
   background: transparent !important;
   border: 1px solid #fff !important;
-  border-radius: 8px !important;
+  border-radius: 6px !important;
   box-shadow: none !important;
 }
 
@@ -6541,7 +6543,7 @@ th {
 .seller-new-dashboard .seller-new-dashboard-one .s-n-d-o-t .d-d .css-t3ipsp-control:focus {
   background: transparent !important;
   border: 1px solid #fff !important;
-  border-radius: 8px !important;
+  border-radius: 6px !important;
   box-shadow: none !important;
 }
 
@@ -6646,7 +6648,7 @@ th {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
 }
@@ -6692,14 +6694,14 @@ th {
 .seller-new-transaction .seller-new-transaction-one .s-n-d-o-o {
   flex: 2;
   background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
-  border-radius: 9.11px;
+  border-radius: 6px;
   padding: 20px;
 }
 
 .seller-new-transaction .seller-new-transaction-one .s-n-d-o-t {
   flex: 2;
   background: linear-gradient(180deg, #8B2CA0 0%, #03BFC8 100%);
-  border-radius: 9.11px;
+  border-radius: 6px;
   padding: 20px;
 }
 
@@ -6741,10 +6743,9 @@ th {
 .seller-new-transaction .seller-new-transaction-one .s-n-d-o-th .s-b button {
   border: 1px solid #FFFFFF;
   font-family: 'Cairo';
-  font-size: 11.39px;
+  font-size: 12px;
   font-weight: 600;
-  line-height: 21.34px;
-  letter-spacing: 0.015em;
+  line-height: 22px;
   text-align: left;
   color: #fff;
   background: transparent;
@@ -6851,7 +6852,7 @@ th {
   text-align: left;
   color: #fff;
   padding: 15px 20px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
 }
 
@@ -6882,7 +6883,7 @@ th {
   text-align: left;
   color: #757474;
   padding: 10px 0px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
   position: relative;
@@ -7243,7 +7244,7 @@ th {
   color: #fff;
   font-size: 15px;
   padding: 14px 27px;
-  border-radius: 10px;
+  border-radius: 6px;
   border: none;
   width: max-content;
 }
@@ -7267,7 +7268,7 @@ th {
   background: linear-gradient(97.83deg, #8B2CA0 -1.36%, #00C3C9 107.39%);
   height: 135px;
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 6px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -7359,7 +7360,7 @@ th {
   margin: 0;
   padding: 0;
   background-color: #f7f2f8;
-  border-radius: 12px;
+  border-radius: 6px;
   justify-content: space-between;
   align-items: center;
 }
@@ -7398,7 +7399,7 @@ th {
   text-align: left;
   color: #fff;
   padding: 10px 20px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
 }
@@ -7531,7 +7532,7 @@ th {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 12px;
+  border-radius: 6px;
   cursor: pointer;
   height: 90px;
 }
@@ -7544,7 +7545,7 @@ th {
   width: 90px;
   height: 90px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .seller-new-transaction .h-a-s form .h-a-s-i {
@@ -7576,7 +7577,7 @@ th {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
   height: 100px;
@@ -7591,7 +7592,7 @@ th {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
 }
@@ -7616,7 +7617,7 @@ th {
   text-align: left;
   color: #fff;
   padding: 15px 35px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
 }
 
@@ -7705,7 +7706,7 @@ th {
   gap: 20px;
   align-items: center;
   background-color: #f3f3f8;
-  border-radius: 12px;
+  border-radius: 6px;
   padding: 10px 20px 10px 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   cursor: pointer;
@@ -7715,7 +7716,7 @@ th {
 
 .seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l .h-a-s-b-a-o-l-l img {
   width: 120px;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .seller-new-transaction .h-a-s .h-a-s-b-a-o .h-a-s-b-a-o-l-r {
@@ -7779,11 +7780,11 @@ th {
 
 .create-coupon-modal .c-c-body {
   padding: 30px;
-  border-radius: 9.11px;
+  border-radius: 6px;
 }
 
 .create-coupon-modal .modal-content {
-  border-radius: 9.11px;
+  border-radius: 6px;
 }
 
 .create-coupon-modal .c-c-body form {
@@ -7817,7 +7818,7 @@ th {
   color: #7d7b7b;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
   width: 50%;
@@ -7835,7 +7836,7 @@ th {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
   height: 58px;
@@ -7862,7 +7863,7 @@ th {
   text-align: left;
   color: #fff;
   padding: 15px 35px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
 }
 
@@ -7944,7 +7945,7 @@ input::-webkit-inner-spin-button {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   height: 58px;
   background: #F0F0F0;
   text-transform: capitalize;
@@ -7959,7 +7960,7 @@ input::-webkit-inner-spin-button {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   text-transform: capitalize;
   height: 120px;
@@ -7994,7 +7995,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 20px 35px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   width: 200px;
 }
@@ -8073,7 +8074,7 @@ input::-webkit-inner-spin-button {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   height: 58px;
   text-transform: capitalize;
@@ -8101,13 +8102,13 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 20px 35px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   width: 200px;
 }
 
 .seller-bank-detail .css-13cymwt-control {
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   margin-bottom: 20px;
 }
@@ -8120,7 +8121,7 @@ input::-webkit-inner-spin-button {
 
 .seller-bank-detail .css-t3ipsp-control {
   box-shadow: none !important;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   margin-bottom: 20px;
   border: 1px solid #CFCFCF !important;
@@ -8171,7 +8172,7 @@ input::-webkit-inner-spin-button {
 .pending-oder-managment .p-o-m-w .p-o-m-w-l ul li .p-o-m-w-l-l .p-o-m-w-l-l-l img {
   width: 100px;
   height: 100px;
-  border-radius: 4px;
+  border-radius: 6px;
   object-fit: cover;
 }
 
@@ -8228,7 +8229,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 15px 20px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   min-width: 140px;
 }
@@ -8244,7 +8245,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 1px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   min-width: 140px;
 }
@@ -8255,7 +8256,7 @@ input::-webkit-inner-spin-button {
   height: 100%;
   display: block;
   background-color: #fff;
-  border-radius: 9px;
+  border-radius: 6px;
   color: #8B2CA0;
 }
 
@@ -8566,7 +8567,7 @@ input::-webkit-inner-spin-button {
 
 .seller-oder-managment-detail .s-o-m-d-4 .d-4-1 .d-4-1-r .d-4-1-r-1 .d-4-1-r-1-l p span {
   border: 1px solid #757474;
-  border-radius: 2px;
+  border-radius: 6px;
   display: inline-block;
   width: 20px;
   line-height: 20px;
@@ -8945,7 +8946,7 @@ input::-webkit-inner-spin-button {
   color: #292929;
   margin: 0;
   padding: 15px 15px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
   width: 100%;
@@ -8971,7 +8972,7 @@ input::-webkit-inner-spin-button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 12px;
+  border-radius: 6px;
   padding: 9px 30px;
   font-family: 'Cairo';
   font-size: 16px;
@@ -9069,7 +9070,7 @@ input::-webkit-inner-spin-button {
   min-width: 25%;
   box-shadow: 0px 0px 4px 0px #00000040;
   margin: 5px;
-  border-radius: 9px;
+  border-radius: 6px;
   padding: 20px;
   height: fit-content;
 }
@@ -9139,7 +9140,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 15px 20px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   min-width: 100%;
 }
@@ -9233,7 +9234,7 @@ input::-webkit-inner-spin-button {
   box-shadow: 0px 4px 7px 0px #0000001A inset;
   background-color: #f7f7f7;
   padding: 5px 10px 2px 10px;
-  border-radius: 5px;
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9274,7 +9275,7 @@ input::-webkit-inner-spin-button {
   box-shadow: 0px 4px 7px 0px #0000001A inset;
   background-color: #f7f7f7;
   padding: 5px 15px 2px 15px;
-  border-radius: 5px;
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9330,7 +9331,7 @@ input::-webkit-inner-spin-button {
   line-height: 14.06px;
   text-align: left;
   color: #696969B8 !important;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
 .category-page .category-page-wrap .filter-product .d-p-l .p-p .p-p-s-b input::placeholder {
@@ -9416,7 +9417,7 @@ input::-webkit-inner-spin-button {
   gap: 10px;
   align-items: center;
   background-color: #f2f2f6;
-  border-radius: 12px;
+  border-radius: 6px;
   padding: 10px;
   margin: 0px 15px;
 }
@@ -9433,7 +9434,7 @@ input::-webkit-inner-spin-button {
 .home-category-slider .home-category-slider-wrap .h-c-s-slider img {
   width: 50px;
   height: 50px;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .home-category-slider .home-category-slider-wrap .h-c-s-slider h3 {
@@ -9483,7 +9484,7 @@ input::-webkit-inner-spin-button {
   list-style: none;
   padding: 5px 10px;
   background-color: transparent;
-  border-radius: 3.17px;
+  border-radius: 6px;
   font-family: 'Cairo';
   font-size: 14.27px;
   font-weight: 600;
@@ -9497,7 +9498,7 @@ input::-webkit-inner-spin-button {
   list-style: none;
   padding: 5px 10px;
   background-color: #8B2CA0;
-  border-radius: 3.17px;
+  border-radius: 6px;
   font-family: 'Cairo';
   font-size: 14.27px;
   font-weight: 600;
@@ -9569,14 +9570,14 @@ input::-webkit-inner-spin-button {
 .single-product-detail .product-detail-wrap .p-d-w-1 .p-d-w-l .p-g .p-g-t div img {
   width: 100%;
   border: 0.4px solid #C6C6C6;
-  border-radius: 4.4px;
+  border-radius: 6px;
   height: 100px;
 }
 
 .single-product-detail .product-detail-wrap .p-d-w-1 .p-d-w-l .p-g .g-i {
   flex: 4;
   border: 0.4px solid #C6C6C6;
-  border-radius: 4.4px;
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9585,7 +9586,7 @@ input::-webkit-inner-spin-button {
 .single-product-detail .product-detail-wrap .p-d-w-1 .p-d-w-l .p-g .g-i img {
   width: 100%;
   max-height: 600px;
-  border-radius: 4.4px;
+  border-radius: 6px;
 }
 
 .single-product-detail .product-detail-wrap .p-d-w-1 .p-d-w-c {
@@ -9688,7 +9689,7 @@ input::-webkit-inner-spin-button {
   text-align: left;
   color: #fff;
   padding: 10px 40px;
-  border-radius: 12px;
+  border-radius: 6px;
   border: none;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   margin-bottom: 0px;
@@ -9713,14 +9714,14 @@ input::-webkit-inner-spin-button {
 .single-product-detail .product-detail-wrap .p-d-w-1 .p-d-w-r .p-d-w-r-s-b {
   background: linear-gradient(93.63deg, #8B2CA0 -20.62%, #00C3C9 106.1%);
   padding: 1px;
-  border-radius: 5px;
+  border-radius: 6px;
   height: 100%;
 }
 
 .single-product-detail .product-detail-wrap .p-d-w-1 .p-d-w-r .p-d-w-r-s-b .p-d-w-r-s-b-w {
   padding: 15px;
   background: #fff;
-  border-radius: 5px;
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -9873,7 +9874,7 @@ input::-webkit-inner-spin-button {
 
 .sellerdetails .sellerdetails-wrap .seller-callto-actions a:nth-child(1) {
   background: linear-gradient(90.32deg, #8B2CA0 -32.5%, #00C3C9 124.2%);
-  border-radius: 21px;
+  border-radius: 22px;
 }
 
 .sellerdetails .sellerdetails-wrap .seller-callto-actions a:nth-child(1) button {
@@ -9885,7 +9886,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 11px 41px;
-  border-radius: 21px;
+  border-radius: 22px;
   border: none;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   width: 250px;
@@ -9893,13 +9894,13 @@ input::-webkit-inner-spin-button {
 
 .sellerdetails .sellerdetails-wrap .seller-callto-actions div:nth-child(2) {
   background: linear-gradient(90.32deg, #8B2CA0 -32.5%, #00C3C9 124.2%);
-  border-radius: 21px;
+  border-radius: 22px;
   padding: 2px;
 }
 
 .sellerdetails .sellerdetails-wrap .seller-callto-actions div:nth-child(3) {
   background: linear-gradient(90.32deg, #8B2CA0 -32.5%, #00C3C9 124.2%);
-  border-radius: 21px;
+  border-radius: 22px;
   padding: 2px;
 }
 
@@ -9911,7 +9912,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #454545;
   padding: 10px 40px;
-  border-radius: 21px;
+  border-radius: 22px;
   border: none;
   background: #fff;
   width: 250px;
@@ -9925,7 +9926,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #454545;
   padding: 9px 40px;
-  border-radius: 21px;
+  border-radius: 22px;
   border: none;
   background: #fff;
   width: 250px;
@@ -9955,7 +9956,7 @@ input::-webkit-inner-spin-button {
   justify-content: space-between;
   margin-bottom: 20px;
   background-color: #f3f3f8;
-  border-radius: 12px;
+  border-radius: 6px;
   padding: 10px 20px 10px 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
@@ -10037,7 +10038,9 @@ input::-webkit-inner-spin-button {
   align-items: center;
 }
 
-.more-to-love h3 span {}
+.more-to-love h3 span {
+  display: flex;
+}
 
 .more-to-love h3 span a {
   background: -webkit-linear-gradient(#8B2CA0, #00C3C9);
@@ -10084,7 +10087,7 @@ input::-webkit-inner-spin-button {
   text-align: left;
   color: #fff;
   padding: 10px 40px;
-  border-radius: 12px;
+  border-radius: 6px;
   border: none;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
 }
@@ -10168,7 +10171,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 15px 20px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   flex: 1;
   cursor: pointer;
@@ -10190,7 +10193,7 @@ input::-webkit-inner-spin-button {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
   width: 100%;
@@ -10234,7 +10237,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 15px 20px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   width: 50%;
 }
@@ -10265,7 +10268,7 @@ input::-webkit-inner-spin-button {
   border: 1px solid #f0f0f0;
   padding: 20px;
   background-color: #fbfbfb;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 #cart-details .stripe-payment-card .stripe-title {
@@ -10289,7 +10292,7 @@ input::-webkit-inner-spin-button {
   border: 1px solid #f0f0f0;
   padding: 20px;
   background-color: #fbfbfb;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 #cart-details .order-details .heading-code {
@@ -10315,7 +10318,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #000;
   padding: 10px 25px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
   margin: 0;
@@ -10365,7 +10368,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 10px 25px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   cursor: pointer;
 }
@@ -10523,7 +10526,7 @@ input::-webkit-inner-spin-button {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
   width: 100%;
@@ -10544,7 +10547,7 @@ input::-webkit-inner-spin-button {
   background: #F0F0F0;
   border: none;
   font-family: 'Cairo';
-  border-radius: 13px;
+  border-radius: 6px;
   box-shadow: none !important;
   border: none !important;
 }
@@ -10595,7 +10598,7 @@ input::-webkit-inner-spin-button {
   height: 19px;
   right: 0px;
   top: 9px;
-  border-radius: 5px 0px 0px 5px;
+  border-radius: 6px 0px 0px 6px;
   font-family: "Lato", sans-serif;
   font-size: 10.94px;
   font-weight: 400;
@@ -10614,7 +10617,7 @@ input::-webkit-inner-spin-button {
   height: 19px;
   left: 0px;
   top: 9px;
-  border-radius: 5px 0px 0px 5px;
+  border-radius: 6px 0px 0px 6px;
   font-family: "Lato", sans-serif;
   font-size: 10.94px;
   font-weight: 400;
@@ -10708,7 +10711,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 15px 35px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   text-transform: capitalize;
 }
@@ -10755,7 +10758,7 @@ input::-webkit-inner-spin-button {
   left: 0;
   bottom: -3px;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .notification-Page .notification-Page-wrap .tab-buttons .t-b-w {
@@ -10775,7 +10778,7 @@ input::-webkit-inner-spin-button {
 .notification-Page .notification-Page-wrap .notification-listing .n-l-d {
   margin-bottom: 20px;
   background-color: #f3f3f8;
-  border-radius: 12px;
+  border-radius: 6px;
   padding: 10px 20px 10px 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   cursor: pointer;
@@ -10859,7 +10862,6 @@ input::-webkit-inner-spin-button {
   align-items: center;
   justify-content: space-between;
   background: #F5F5F5;
-  border-radius: 10px;
   padding: 20px;
   border-radius: 22px;
   width: 95%;
@@ -10882,7 +10884,7 @@ input::-webkit-inner-spin-button {
   width: 160px;
   height: 140px;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .seller-shop-details .user-data .user-data-left .user-data-left-wrap .details-seller {}
@@ -10987,7 +10989,7 @@ input::-webkit-inner-spin-button {
   left: 0;
   bottom: -3px;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
 .sellershop .tab-buttons .t-b-w {}
@@ -11124,7 +11126,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 15px 35px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   text-transform: capitalize;
 }
@@ -11237,7 +11239,7 @@ input::-webkit-inner-spin-button {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
 }
@@ -11251,7 +11253,7 @@ input::-webkit-inner-spin-button {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
 }
@@ -11396,13 +11398,13 @@ input::-webkit-inner-spin-button {
   background: linear-gradient(93.63deg, #8B2CA0 -20.62%, #00C3C9 106.1%);
   border-radius: 24px;
   padding: 1px;
-  border-radius: 9.11px;
+  border-radius: 6px;
 
 }
 
 .plus-modal-wrap .modal-body .buttons .btn-wrap:nth-child(1) button {
   background-color: #fff;
-  border-radius: 9.11px;
+  border-radius: 6px;
   padding: 14px 19px;
   font-family: 'Cairo';
   font-size: 16px;
@@ -11427,7 +11429,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 15px 20px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
 }
 
@@ -11552,7 +11554,7 @@ input::-webkit-inner-spin-button {
 .refund-product .p-m-i-u .p-m-i-u-wrap {
   height: 120px;
   border: 2.97px dotted #D4D4D4;
-  border-radius: 16.62px;
+  border-radius: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11590,7 +11592,7 @@ input::-webkit-inner-spin-button {
   color: #292929;
   margin: 0;
   padding: 17px 25px;
-  border-radius: 13px;
+  border-radius: 6px;
   background: #F0F0F0;
   border: 0;
   height: 140px;
@@ -11614,7 +11616,7 @@ input::-webkit-inner-spin-button {
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 12px;
+  border-radius: 6px;
   padding: 9px 30px;
   font-family: 'Cairo';
   font-size: 16px;
@@ -11672,7 +11674,7 @@ input::-webkit-inner-spin-button {
   text-align: left;
   color: #fff;
   padding: 15px 30px;
-  border-radius: 12px;
+  border-radius: 6px;
   border: none;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
 }
@@ -11702,7 +11704,7 @@ input::-webkit-inner-spin-button {
 .seller-new-transaction .p-m-i-u .p-m-i-u-wrap {
   height: 200px;
   border: 2.97px dotted #D4D4D4;
-  border-radius: 16.62px;
+  border-radius: 16px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11751,7 +11753,7 @@ input::-webkit-inner-spin-button {
 #seller-account-creating .p-m-i-u .p-m-i-u-wrap {
   height: 200px;
   border: 2.97px dotted #D4D4D4;
-  border-radius: 13px;
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11832,7 +11834,7 @@ input::-webkit-inner-spin-button {
   margin-bottom: 10px;
   background: #F0F0F0;
   border: 0;
-  border-radius: 10px;
+  border-radius: 6px;
   font-size: 15px;
   font-family: 'Cairo';
 }
@@ -11877,7 +11879,7 @@ input::-webkit-inner-spin-button {
   color: #fff;
   padding: 5px 28px;
   border: 0;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .rencddl {
@@ -11903,7 +11905,7 @@ input::-webkit-inner-spin-button {
   background: #F0F0F0;
   border: 0;
   padding: 16px 10px;
-  border-radius: 10px;
+  border-radius: 6px;
 }
 
 .kep-login-facebook.metro {
@@ -11913,7 +11915,7 @@ input::-webkit-inner-spin-button {
   color: white;
   padding: 2px 10px 2px 2px;
   display: flex;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
   justify-content: space-between;
   font-size: 13px;
   gap: 7px;
@@ -11940,7 +11942,7 @@ input::-webkit-inner-spin-button {
   display: inline-flex;
   background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
   color: #fff;
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 10px 33px;
   text-decoration: none;
   justify-content: center;
@@ -12020,7 +12022,7 @@ input::-webkit-inner-spin-button {
   min-width: 25%;
   box-shadow: 0px 0px 4px 0px #00000040;
   margin: 5px;
-  border-radius: 9px;
+  border-radius: 6px;
   padding: 20px;
   height: auto;
 }
@@ -12083,7 +12085,7 @@ input::-webkit-inner-spin-button {
   text-align: center;
   color: #fff;
   padding: 15px 20px;
-  border-radius: 9.11px;
+  border-radius: 6px;
   border: none;
   min-width: 100%;
 }
@@ -12177,7 +12179,7 @@ input::-webkit-inner-spin-button {
   box-shadow: 0px 4px 7px 0px #0000001A inset;
   background-color: #f7f7f7;
   padding: 5px 10px 2px 10px;
-  border-radius: 5px;
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12218,7 +12220,7 @@ input::-webkit-inner-spin-button {
   box-shadow: 0px 4px 7px 0px #0000001A inset;
   background-color: #f7f7f7;
   padding: 5px 15px 2px 15px;
-  border-radius: 5px;
+  border-radius: 6px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12274,7 +12276,7 @@ input::-webkit-inner-spin-button {
   line-height: 14.06px;
   text-align: left;
   color: #696969B8 !important;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
 .mobile-product-filter .d-p-l .p-p .p-p-s-b input::placeholder {
@@ -12512,7 +12514,7 @@ input::-webkit-inner-spin-button {
 @media (max-width: 1024px) {
 
   header .header-wrap .header-top .header-right .sign-in-button a {
-    border-radius: 5px;
+    border-radius: 6px;
     padding: 7px 20px;
     font-size: 14px;
     line-height: 24px;
@@ -12733,7 +12735,7 @@ input::-webkit-inner-spin-button {
     font-size: 10px;
     line-height: 15px;
     padding: 5px 15px;
-    border-radius: 21px;
+    border-radius: 22px;
     width: 110px;
 }
 
@@ -12875,7 +12877,7 @@ input::-webkit-inner-spin-button {
 
   .chat-container .conversation {
     background: #f4f4f482;
-    border-radius: 10px;
+    border-radius: 6px;
     height: calc(100vh - 177px);
 }
 
@@ -13159,7 +13161,7 @@ input::-webkit-inner-spin-button {
 .seller-new-transaction .seller-new-transaction-seven ul li .s-n-t-s-r button {
   font-size: 10px;
   padding: 10px 15px;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 
   .seller-new-transaction .seller-new-transaction-three {
@@ -13277,7 +13279,7 @@ input::-webkit-inner-spin-button {
 
   #listing-creating-form .p-m-f .p-m-i-u .p-m-i-u-wrap {
     height: 150px;
-    border-radius: 12px;
+    border-radius: 6px;
 }
 
 #listing-creating-form .p-m-f .p-m-i-u p {
@@ -13510,7 +13512,7 @@ ul.active-inactive-schedule li {
     min-width: auto;
     box-shadow: unset;
     margin: 0px;
-    border-radius: 9px;
+    border-radius: 6px;
     padding: 20px;
     height: fit-content;
   }
@@ -13971,7 +13973,7 @@ line-height: 22px;
 
   .seller-shop-details .user-data {
     padding: 10px;
-    border-radius: 12px;
+    border-radius: 6px;
     width: 98%;
     margin-inline: auto;
     margin-top: -80px;
@@ -13989,7 +13991,7 @@ line-height: 22px;
   .single-product-detail .product-detail-wrap .p-d-w-1 .p-d-w-l .p-g .g-i img {
     width: 100%;
     height: 200px;
-    border-radius: 4.4px;
+    border-radius: 6px;
     object-fit: contain;
 }
   .single-product-detail .product-detail-wrap .p-d-w-1 .p-d-w-l .p-g .p-g-t-w{
@@ -14055,7 +14057,7 @@ line-height: 22px;
     font-size: 10px;
     line-height: 16px;
     padding: 5px 15px;
-    border-radius: 6%;
+    border-radius: 6px;
 }
 
   .single-product-detail .product-detail-wrap {
@@ -14100,7 +14102,7 @@ line-height: 22px;
 .single-product-detail .product-detail-wrap .p-d-w-1 .p-d-w-l .p-g .p-g-t div img {
   width: 80px;
   border: 0.4px solid #C6C6C6;
-  border-radius: 4.4px;
+  border-radius: 6px;
   height: 80px;
 }
 
@@ -14444,7 +14446,7 @@ line-height: 22px;
   font-size: 14px;
   line-height: 24px;
   padding: 10px 30px;
-  border-radius: 12px;
+  border-radius: 6px;
 }
 
   .seller-not-created .seller-not-created-wrap {
@@ -14468,7 +14470,7 @@ line-height: 22px;
     padding: 8px;
     height: 25px;
     width: 25px;
-    border-radius: 37px;
+    border-radius: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -14565,12 +14567,28 @@ line-height: 22px;
     margin-top: 20px;
   }
 
+  .home-category-slider .slick-prev {
+    width: 24px;
+    height: 22px;
+    margin-left: 5px;
+}
+
+.favoriteImg {
+  bottom: 12px;
+  right: 19px;
+}
+
   .home-category-slider .slick-next {
-    right: -10px;
+    width: 24px;
+    height: 24px;
+}
+
+  .home-category-slider .slick-next {
+    right: -15px;
   }
 
   .home-category-slider .slick-prev {
-    left: -10px;
+    left: -15px;
     z-index: 10;
   }
 
@@ -14588,11 +14606,16 @@ line-height: 22px;
     line-height: 34px;
   }
 
+  .productlist {
+    position: relative;
+    height: auto;
+}
+
   #product-recents-viewed .headings h3 {
     font-size: 20px;
     line-height: 28px;
     margin-bottom: 10px;
-    padding-inline: 10px;
+    padding-inline: 0px;
   }
 
   .top-category-listings .top-category-listings-wrap .title,
@@ -14611,8 +14634,8 @@ line-height: 22px;
   }
 
   header .header-wrap .header-top .header-right .notification {
-    width: 34px;
-    height: 34px;
+    width: 31px;
+    height: 31px;
   }
 
   .mobile-header {
@@ -14627,7 +14650,53 @@ line-height: 22px;
     margin-bottom: 20px;
   }
 
-  .mobile-header .top-bar img {}
+  .mobile-header .top-bar img {
+    width: 60px;
+  }
+
+  .switch1, .switch2, .switch3 {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+}
+
+.user-notification-setting .user-notification-setting-wrap ul li .check .switch3 {
+  font-family: 'Cairo';
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  text-align: left;
+  color: #696969;
+  margin: 0;
+  margin-bottom: 0px;
+  text-transform: capitalize;
+}
+
+.slider1:before, .slider2:before, .slider3:before {
+  position: absolute;
+  content: '';
+  height: 22px;
+  width: 22px;
+  left: 1px;
+  bottom: 1px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+.user-notification-setting .user-notification-setting-wrap ul li .check .switch3 .slider3 {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #8037A3;
+  transition: 0.4s;
+  border-radius: 34px;
+  cursor: pointer;
+  height: 24px;
+}
 
   .mobile-header .top-bar span {}
 
@@ -14651,7 +14720,7 @@ line-height: 22px;
     display: inline-flex;
     background: linear-gradient(91.2deg, #8B2CA0 -33.37%, #00C3C9 134.99%);
     color: #fff;
-    border-radius: 5px;
+    border-radius: 6px;
     padding: 10px 33px;
     text-decoration: none;
     justify-content: center;
@@ -14668,17 +14737,17 @@ line-height: 22px;
     display: block;
     padding: 0px 4px;
     border: 1px solid #2798bd;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
   }
 
   #hanburgur-header svg {
-    font-size: 28px;
+    font-size: 22px;
     color: #2798bd;
   }
 
   header .header-wrap .header-top .header-right .sign-in-button a {
-    border-radius: 5px;
+    border-radius: 6px;
     padding: 5px 15px;
     font-size: 12px;
     line-height: 22px;
@@ -14718,6 +14787,11 @@ line-height: 22px;
   }
 
   header .header-wrap .header-top .header-right .notification .notification-wrap {
+    width: 29px;
+    height: 29px;
+  }
+
+  header .header-wrap .header-top .header-right .twentyOnePlus .notification-wrap {
     width: 32px;
     height: 32px;
   }
@@ -14726,18 +14800,23 @@ line-height: 22px;
     width: 34px;
     height: 34px;
     position: fixed;
-    right: 10px;
-    bottom: 10px;
+    right: 20px;
+    bottom: 20px;
     z-index: 9999;
+    background-image: none;
+  }
+
+  header .header-wrap .header-top .header-right .twentyOnePlus .notification-wrap img {
+    width: 32px;
   }
 
   header .header-wrap .header-top .header-right .cart img {
-    width: 36px;
+    width: 32.5px;
   }
 
   header .header-wrap .header-top .header-right .user img {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
   }
 
   header .header-wrap .header-top .header-right .notification .notification-wrap .notification-count .notification-count-wrap{
@@ -14756,12 +14835,12 @@ line-height: 22px;
   }
 
   header .header-wrap .header-top .header-right {
-    gap: 10px;
+    gap: 8px;
   }
 
   header .header-wrap .header-top .header-left .header-logo a img {
-    width: 55px;
-    height: 55px;
+    width: 50px;
+    height: 50px;
   }
 
   .search-bar {
@@ -15003,6 +15082,10 @@ line-height: 22px;
 
 @media (max-width: 500px) {
 
+  .home-category-slider .home-category-slider-wrap .h-c-s-slider .h-c-s-slider-w {
+    margin: 0px;
+  }
+
   .user-notification-setting .user-notification-setting-wrap ul li .title p {
     font-size: 14px;
     line-height: 22px;
@@ -15052,7 +15135,7 @@ line-height: 22px;
 
   .seller-shop-details .user-data {
     padding: 10px;
-    border-radius: 12px;
+    border-radius: 6px;
     width: 98%;
     margin-inline: auto;
     margin-top: -80px;
@@ -15158,7 +15241,7 @@ section#singup .signup-form-fields.register .form-control::placeholder{
     font-size: 10px;
     line-height: 15px;
     padding: 5px 15px;
-    border-radius: 21px;
+    border-radius: 22px;
     width: 100%;
 }
 
@@ -15255,7 +15338,7 @@ section#singup .signup-form-fields.register .form-control::placeholder{
   .seller-new-transaction .seller-new-transaction-seven ul li .s-n-t-s-r button {
     font-size: 10px;
     padding: 8px 10px;
-    border-radius: 5px;
+    border-radius: 6px;
 }
 
   .seller-new-transaction .seller-new-transaction-seven ul li .s-n-t-s-l img {
@@ -15377,7 +15460,7 @@ section#singup .signup-form-fields.register .form-control::placeholder{
   #product-recents-viewed .headings h3 {
     font-size: 18px;
     line-height: 26px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
   .top-category-listings .top-category-listings-wrap .title,
@@ -15403,7 +15486,7 @@ section#singup .signup-form-fields.register .form-control::placeholder{
 
 .email-verifyfields .emailfields input#email-input, .email-verifyfields .emailfields input#password, .email-verifyfields .emailfields input#confirm-password {
   padding: 11px 20px;
-  border-radius: 12px;
+  border-radius: 6px;
   margin-bottom: 15px;
 }
 }
@@ -15720,7 +15803,7 @@ section#singup .signup-form-fields.register .form-control::placeholder{
     color: #fff;
     padding: 3px 10px;
     border: 0;
-    border-radius: 13px;
+    border-radius: 6px;
     margin-left: 10px;
   }
 
@@ -15906,7 +15989,7 @@ section#singup .signup-form-fields.register .form-control::placeholder{
     width: 120px;
     height: 110px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 6px;
   }
 
   .bidding-results {
@@ -15941,7 +16024,7 @@ section#singup .signup-form-fields.register .form-control::placeholder{
     width: 100px;
     height: 100px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 6px;
   }
 
   section#dashboard-panel .firstrow .col-sm-4 {
@@ -15977,7 +16060,7 @@ section#singup .signup-form-fields.register .form-control::placeholder{
     background: #7246a6;
     width: 100%;
     top: 37px;
-    border-radius: 10px;
+    border-radius: 6px;
     padding: 10px 13px;
   }
 
@@ -15996,7 +16079,7 @@ section#singup .signup-form-fields.register .form-control::placeholder{
     box-shadow: unset;
     width: 13%;
     padding: 4px 0px;
-    border-radius: 4px;
+    border-radius:6px;
     position: absolute;
     right: 10px;
   }
@@ -16188,4 +16271,9 @@ section#singup .signup-form-fields.register .form-control::placeholder{
   .header-top form#searchForm .input-group.categoruu {
     width: 40%;
   }
+}
+
+.footerlogo img{
+  width: 140px;
+  margin-bottom: 20px;
 }

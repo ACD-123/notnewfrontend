@@ -4,14 +4,7 @@ import Header from "../Header";
 import Footer from "../Footer";
 import { Link } from "react-router-dom";
 import WinningBidProduct from "../WinnigBidProduct";
-import BidPlacement from "../Elements/BidPlacement";
-import ReviewBid from "../Elements/ReviewBid";
-import PlaceYourBid from "../Elements/PlaceYourBid";
-import Checkimg from '../../assets/Images/Auction/check.png'
-import BidsServices from "../../services/API/BidsServices"; //~/services/API/BidsServices
-import UserServices from "../../services/API/UserServices"; //~/services/API/UserServices
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
-import moment from "moment";
+import UserServices from "../../services/API/UserServices";
 
 const BidWin = ({cartFullResponse , notificationCount}) => {
   const [totalbid, setTotalBid] = useState(0);
@@ -40,7 +33,6 @@ const BidWin = ({cartFullResponse , notificationCount}) => {
   }, []);
   return (
     <>
-      {/* Header */}
       <Header cartFullResponse={cartFullResponse} notificationCount={notificationCount}/>
       <section id="product-recents-viewed">
         <div className="container">
@@ -88,7 +80,6 @@ const BidWin = ({cartFullResponse , notificationCount}) => {
         </div>
         <ProductCard />
       </section>
-      {/* Footer */}
       <Footer />
     </>
   );

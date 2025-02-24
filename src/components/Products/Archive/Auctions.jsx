@@ -42,7 +42,6 @@ const Auctions = ({cartFullResponse , notificationCount}) => {
     const [latestProducts, setLatestProducts] = useState([]);
     const [pagination, setPagination] = useState([]);
     const [Loader, setLoader] = useState(true)
-    const user_details = JSON.parse(localStorage.getItem('user_details'));
     const user_id = localStorage.getItem('user_id');
     const pageSize = 12;
     const getAuctionProducts = (user_id , underage , page , page_size) => {

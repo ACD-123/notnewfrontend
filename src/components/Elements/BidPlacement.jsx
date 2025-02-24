@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ProductServices from "../../services/API/ProductServices"; //~/services/API/ProductServices
-import BidsServices from "../../services/API/BidsServices"; //~/services/API/BidsServices
-import { toast } from "react-toastify";
+import ProductServices from "../../services/API/ProductServices";
+import BidsServices from "../../services/API/BidsServices";
 import moment from "moment";
 
 const BidPlacement = (props) => {
-  const [totalBid, setTotalBid] = useState(0); // State to hold the total bid value
+  const [totalBid, setTotalBid] = useState(0);
   const [productData, setProductData] = useState([]);
   const [bidone, setBidOne] = useState(0);
   const [bidtwo, setBidTwo] = useState(0);
@@ -19,7 +18,7 @@ const BidPlacement = (props) => {
 
   const handleBidClick = (amount) => {
     props.parentCallback(amount)
-    setTotalBid(`${amount}`); // Update the total bid value when a button is clicked
+    setTotalBid(`${amount}`);
   };
   const getProduct = () => {
     ProductServices.get(id).then((response) => {
@@ -29,31 +28,21 @@ const BidPlacement = (props) => {
       setBidThree(parseFloat(response.bids) * 15);
       var date = new Date();
       var date1 = moment(date).format('MM/DD/YYYY');
-      var date2 = moment(response.auction_listing).format('MM/DD/YYYY');//moment(moment(response.auction_listing).toDate(), 'MM/DD/YYYY'); 
+      var date2 = moment(response.auction_listing).format('MM/DD/YYYY');
       if(date1 === date2){
         var startTime = moment(response.auction_listing).format("hh:mm:ss a");
         var endTime =  moment(response.auction_End_listing).format("hh:mm:ss a");
         var startTime1 = moment(startTime, 'HH:mm:ss a');
         var endTime1 = moment(endTime, 'HH:mm:ss a');
-        // calculate total duration
         var duration = moment.duration(endTime1.diff(startTime1));
-        // duration in hours
         var hours = parseInt(duration.asHours());
-
-        // duration in minutes
         var minutes = parseInt(duration.asMinutes()) % 60;
     
       }
-      
-      // var duration = moment.duration(date2.diff(date1));
-      // var hours = duration.asHours(); 
-      // // var minutes = duration.asMinutes(); 
-      // var minutes = hours.toFixed(2);
-      // setHour(hours.toString().split(".")[0]);
+
       setHour(hours);
-      // setMinutes(minutes.toString().split(".")[1]);
       setMinutes(minutes);
-      const currDate = new Date();//.toLocaleTimeString;
+      const currDate = new Date();
       setCurrentTime(moment(currDate).format('hh:mm A'))
     });
   };

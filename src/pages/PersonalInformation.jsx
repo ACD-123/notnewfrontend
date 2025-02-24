@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Leftmenuimage from '../assets/Images/leftmenu.png'
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import PersonalInfo from '../components/AccountsSetting/PersonalInfoAllPages/PersonalInfo';
 import SignSecurity from '../components/AccountsSetting/PersonalInfoAllPages/SignSecurity';
 import Addresses from '../components/AccountsSetting/PersonalInfoAllPages/Addresses';
-import NotFound_ from './NotFound_';
+import NotFound from './NotFound';
 import Header from '../components/Header';
 import { GiHamburgerMenu } from "react-icons/gi";
 import Drawer from 'react-modern-drawer'
@@ -40,10 +39,6 @@ const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
         setIsMenuOpen(false);
     };
 
-    const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
-
     const [isOpen, setIsOpen] = React.useState(false)
     const toggleDrawer = () => {
         setIsOpen((prevState) => !prevState)
@@ -59,11 +54,9 @@ const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
             case 'addresses':
                 return <Addresses />;
             case 'save-images':
-                return <NotFound_ />
-            // return <SavedImages />;
+                return <NotFound />
             case 'search-history':
-                // return <SearchHistory />;
-                return <NotFound_ />
+                return <NotFound />
             default:
                 return;
         }
@@ -137,7 +130,6 @@ const PersonalInformation = ({ cartFullResponse, notificationCount }) => {
                 className='mobile-product-filter'
                 size={'90%'}
             >
-
                 <div className='left-menu'>
                     <div className="title-selling-hub">Profile Info<span onClick={toggleDrawer}><RxCross2 /></span></div>
                     <div className="personal-info">

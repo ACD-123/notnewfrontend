@@ -45,7 +45,6 @@ const DetailedProductInfo = ({ order }) => {
       setOrderItems(JSON.parse(JSON.parse(order.orderItems)));
     }
   };
-  // Modify this component to display detailed product information as per your needs
   return (
     <>
       {order ? (
@@ -213,7 +212,6 @@ const DetailedProductInfo = ({ order }) => {
   );
 };
 const StripeTransactions = () => {
-  const [selectedLink, setSelectedLink] = useState(null);
   const [transactions, setTransactions] = useState({});
   const [trans, setTrans] = useState(false);
   const [orderid, setOrderID] = useState("");
@@ -347,7 +345,6 @@ const StripeTransactions = () => {
                    </>):('No transactions')}
                 </div>
               </section>
-            {/* <button className='backbutton-account' onClick={() => window.history.back()}><img src={Backimage} /> Back</button> */}
             </div>
           </div>
         </div>

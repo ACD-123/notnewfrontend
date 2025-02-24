@@ -1,19 +1,14 @@
-import React, { useState, useEffect } from "react";
-import Nav from "../../../assets/Images/SellerShop/nav.png";
+import React, { useState} from "react";
 import Footer from "../../Footer";
 import Header from "../../Header";
 import SellerProfileDetails from "../../Elements/SellerElements/SellerProfileDetails";
-import Search from "../../Elements/FilterAttributes/Search";
 import SellerCategories from "./SellerCategories";
-import SellerCategoryShop from "../../Elements/SellerElements/SellerCategoryShop";
 import SellerAbout from "./SellerAbout";
 import SellerFeedbackNew from "./SellerFeedBackNew";
-import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
 
 const SellerShop = ({ cartFullResponse, notificationCount }) => {
   const [activeTab, setActiveTab] = useState("seller1");
   const [tab, setTab] = useState(0);
-  const [shopdata, setShopData] = useState([]);
   const { pathname } = window.location;
   const id = pathname.split("/").pop();
 

@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Checkpay from '../../../assets/Images/check-pay.png';
-import SellingDetailsDashBoard from './SellingDetailsDashBoard';
-import SellerServices from "../../../services/API/SellerServices"; //~/services/API/SellerServices
-import UserServices from "../../../services/API/UserServices"; //~/services/API/AuthService
+import SellerServices from "../../../services/API/SellerServices";
+import UserServices from "../../../services/API/UserServices";
 import { toast } from "react-toastify";
-import { setUserDetails, isLoggedin, getUserDetails } from "../../../services/Auth"; // ~/services/Auth
 import Select from 'react-select'
 import LoadingComponents from '../../Shared/LoadingComponents';
 
@@ -107,9 +104,11 @@ const EditBankDetails = () => {
       setIsLoading(false)
     });
   }
+
   useEffect(() => {
     getBankDetail()
   }, []);
+  
   return (
     <>
 

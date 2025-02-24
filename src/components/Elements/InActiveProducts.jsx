@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import blank from '../../assets/Images/Productcard/blank.jpg';
-import defaultImages from '../../assets/Images/default-image.jpg';
 import ProductServices from '../../services/API/ProductServices';
-import { Spinner } from 'react-bootstrap';
 import SellerProductCard from '../Shared/Cards/SellerProductCard';
 import { toast } from 'react-toastify';
 import LoadingComponents from '../Shared/LoadingComponents';
@@ -16,7 +12,7 @@ const InActiveProducts = ({ setSubmitted, setProductId }) => {
   const activeProductData = async () => {
     try {
       const res = await ProductServices.sellerInActiveProducts();
-        setActiveProducts(res.data); // Limit to the first 5 products
+        setActiveProducts(res.data);
         setIsLoading(false)
     } catch (error) {
       toast.error(error?.response?.data?.message)
